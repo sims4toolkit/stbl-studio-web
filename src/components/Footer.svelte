@@ -5,65 +5,64 @@
 
 <section id="footer" class="flex-center text-center">
   <ContentArea>
-    <SplitView>
-      <div slot="left">
-        <p class="bottom-margin">
-          Created with <span class="heart">&#9829;</span> by Frankk
-        </p>
-        <p>
-          <a href="https://frankkmods.com" target="_blank" class="frankk-color"
-            >Website</a
-          >
-          |
-          <a
-            href="https://twitter.com/frankkulakmods"
-            target="_blank"
-            class="twitter-color">Twitter</a
-          >
-          |
-          <a
-            href="https://patreon.frankkmods.com"
-            target="_blank"
-            class="patreon-color">Patreon</a
-          >
-          |
-          <a
-            href="https://ko-fi.com/frankkulak"
-            target="_blank"
-            class="kofi-color">Ko-fi</a
-          >
-          |
-          <a
-            href="https://discord.gg/qNhD3Jh"
-            target="_blank"
-            class="discord-color">Discord</a
-          >
-        </p>
-      </div>
-      <div slot="right">
-        <p class="bottom-margin">Powered by Sims 4 Toolkit</p>
-        <p>
-          <a href="https://sims4toolkit.com" target="_blank" class="s4tk-color"
-            >Website</a
-          >
-          |
-          <a
-            href="https://twitter.com/simstoolkit"
-            target="_blank"
-            class="twitter-color">Twitter</a
-          >
-          |
-          <a
-            href="https://github.com/sims4toolkit"
-            target="_blank"
-            class="github-color">GitHub</a
-          >
-          |
-          <a href="https://npmjs.org/org/s4tk" target="_blank" class="npm-color"
-            >npm</a
-          >
-        </p>
-      </div>
+    <SplitView useGap={false}>
+      <p slot="left" class="bottom-margin">
+        Created with <span class="heart">&#9829;</span> by Frankk
+      </p>
+      <p slot="right">
+        <a href="https://frankkmods.com" target="_blank" class="frankk-color"
+          >Website</a
+        >
+        |
+        <a
+          href="https://twitter.com/frankkulakmods"
+          target="_blank"
+          class="twitter-color">Twitter</a
+        >
+        |
+        <a
+          href="https://patreon.frankkmods.com"
+          target="_blank"
+          class="patreon-color">Patreon</a
+        >
+        |
+        <a
+          href="https://ko-fi.com/frankkulak"
+          target="_blank"
+          class="kofi-color">Ko-fi</a
+        >
+        |
+        <a
+          href="https://discord.gg/qNhD3Jh"
+          target="_blank"
+          class="discord-color">Discord</a
+        >
+      </p>
+    </SplitView>
+    <br />
+    <SplitView useGap={false}>
+      <p slot="left" class="bottom-margin">Powered by Sims 4 Toolkit</p>
+      <p slot="right">
+        <a href="https://sims4toolkit.com" target="_blank" class="s4tk-color"
+          >Website</a
+        >
+        |
+        <a
+          href="https://twitter.com/simstoolkit"
+          target="_blank"
+          class="twitter-color">Twitter</a
+        >
+        |
+        <a
+          href="https://github.com/sims4toolkit"
+          target="_blank"
+          class="github-color">GitHub</a
+        >
+        |
+        <a href="https://npmjs.org/org/s4tk" target="_blank" class="npm-color"
+          >npm</a
+        >
+      </p>
     </SplitView>
     <hr />
     <p class="disclaimer">
@@ -108,6 +107,10 @@
       border: none;
       height: 1px;
       margin: 3em 0;
+    }
+
+    a {
+      white-space: nowrap;
     }
   }
 </style>
