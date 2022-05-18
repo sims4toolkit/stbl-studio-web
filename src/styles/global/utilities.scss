@@ -1,0 +1,128 @@
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-center-v {
+  display: flex;
+  align-items: center;
+}
+
+.flex-center-h {
+  display: flex;
+  justify-content: center;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.flex-space-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.hoverable:hover {
+  cursor: pointer;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-shadow {
+  text-shadow: 1px 2px 4px var(--color-shadow);
+}
+
+.drop-shadow {
+  box-shadow: 2px 4px 8px var(--color-shadow);
+}
+
+.bottom-shadow {
+  box-shadow: 0px 4px 8px var(--color-shadow);
+}
+
+.bg-blur {
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.m-0 {
+  margin: 0;
+}
+
+.mb-0 {
+  margin-bottom: 0;
+}
+
+.mt-0 {
+  margin-top: 0;
+}
+
+.move-on-hover {
+  position: relative;
+  transition: all ease 300ms;
+  top: 0;
+
+  &:hover {
+    top: -4px;
+    cursor: pointer;
+  }
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.smaller-font {
+  font-size: 0.85em;
+}
+
+.unbold {
+  font-weight: normal;
+}
+
+.accent-color {
+  color: var(--color-accent);
+}
+
+.frankk-color {
+  color: var(--color-frankk);
+}
+
+.discord-color {
+  color: var(--color-discord);
+}
+
+.kofi-color {
+  color: var(--color-kofi);
+}
+
+.patreon-color {
+  color: var(--color-patreon);
+}
+
+.twitter-color {
+  color: var(--color-twitter);
+}
+
+.newlines {
+  white-space: pre-wrap;
+}

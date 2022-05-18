@@ -1,0 +1,73 @@
+$cool-white: #ebedf0;
+$dark-gray: #2f343e;
+$darker-gray: #282c34;
+$darkest-gray: #1a1c20;
+$sage: #98c379;
+$seafoam: #70cfb6;
+$teal: #18ac87;
+$sky-blue: #49c6e6;
+$azure-blue: #0095eb;
+
+:root {
+  // brand colors
+  --color-frankk: #8989fa;
+  --color-discord: #7289da;
+  --color-kofi: #fbaa19;
+  --color-patreon: #f96854;
+  --color-twitter: #1da1f2;
+
+  // colors
+  --color-light: #{$cool-white};
+  --color-dark: #{$dark-gray};
+  --color-shadow: rgba(0, 0, 0, 0.2);
+
+  // filters
+  --filter-dark: invert(13%) sepia(3%) saturate(427%) hue-rotate(314deg)
+    brightness(105%) contrast(84%);
+  --filter-light: invert(99%) sepia(74%) saturate(352%) hue-rotate(196deg)
+    brightness(121%) contrast(100%);
+
+  // dark theme variables
+  &[data-theme="dark"] {
+    // colors
+    --color-bg: #{$darker-gray};
+    --color-bg-secondary: #2f343e;
+    --color-text: #{$cool-white};
+    --color-divider: #{rgb(108, 110, 110)};
+    --color-accent: #{$seafoam};
+    --color-accent-secondary: #{$sky-blue};
+    --color-card: #3a3f49;
+    --color-card-secondary: #2f343e;
+    --color-navbar: rgba(0, 0, 0, 0.7);
+    --color-footer: #{$darkest-gray};
+    --color-scrollbar: rgb(135, 137, 141);
+    --color-scrollbar-hover: rgb(190, 197, 199);
+    --color-blur-fallback: rgba(0, 0, 0, 0.9);
+
+    // filters
+    --filter-svg: var(--filter-light);
+    --filter-bg-blur: blur(12px) brightness(55%);
+  }
+
+  // light theme variables
+  &[data-theme="light"] {
+    // colors
+    --color-bg: #f1f3f5;
+    --color-bg-secondary: #{$cool-white};
+    --color-text: #{$darker-gray};
+    --color-divider: #{rgb(171, 175, 177)};
+    --color-accent: #{$teal};
+    --color-accent-secondary: #{$azure-blue};
+    --color-card: #e5e6eb;
+    --color-card-secondary: #e5e6ea; // unused right now
+    --color-navbar: rgba(231, 236, 238, 0.7);
+    --color-footer: #{$dark-gray};
+    --color-scrollbar: rgb(144, 147, 150);
+    --color-scrollbar-hover: rgb(95, 99, 100);
+    --color-blur-fallback: rgba(255, 255, 255, 0.9);
+
+    // filters
+    --filter-svg: var(--filter-dark);
+    --filter-bg-blur: blur(12px);
+  }
+}

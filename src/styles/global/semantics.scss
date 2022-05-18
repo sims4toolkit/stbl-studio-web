@@ -1,0 +1,34 @@
+.is-svg {
+  filter: var(--filter-svg);
+
+  &.dark-svg {
+    filter: var(--filter-dark);
+  }
+
+  &.light-svg {
+    filter: var(--filter-light);
+  }
+
+  &.hoverable:hover {
+    opacity: 0.6;
+  }
+}
+
+.disclaimer {
+  font-size: 0.65em;
+  opacity: 0.85;
+}
+
+.default-gradient-bg {
+  @include gradient-bg($sage, $sky-blue);
+}
+
+.under-navbar {
+  margin-top: 50px;
+}
+
+.floating-card {
+  background-color: var(--color-card);
+  padding: 1em 2em;
+  border-radius: 1em;
+}

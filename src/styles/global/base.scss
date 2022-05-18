@@ -1,0 +1,42 @@
+html {
+  font-family: $font-noto-sans, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+body {
+  margin: 0;
+
+  &.blur-effect-active {
+    height: 100vh;
+    overflow-y: hidden;
+    padding-right: 12px; // scrollbar
+  }
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+  background: var(--color-bg);
+  box-shadow: inset 0 0 6px var(--color-shadow);
+  -webkit-box-shadow: inset 0 0 6px var(--color-shadow);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-scrollbar);
+  z-index: 1024;
+
+  &:hover {
+    background: var(--color-scrollbar-hover);
+  }
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 8px;
+}
