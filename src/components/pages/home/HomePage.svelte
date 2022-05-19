@@ -13,7 +13,7 @@
   let projects: StblProject[] = [
     {
       id: "__stbl0",
-      name: "First STBL",
+      name: "Stbl with a very long name that should be truncated",
       group: "0",
       instance: "34567890ABCDEF",
       primaryLocale: StringTableLocale.English,
@@ -29,18 +29,13 @@
               key: "5678",
               value: "byte",
             },
-          ],
-        },
-        {
-          locale: StringTableLocale.Italian,
-          entries: [
             {
-              key: "1234",
-              value: "ciao",
+              key: "1357",
+              value: "byte",
             },
             {
-              key: "5678",
-              value: "arrivederci",
+              key: "ABCD",
+              value: "byte",
             },
           ],
         },
@@ -54,8 +49,21 @@
       name: "Second STBL",
       group: "0",
       instance: "34567890ABCDEF",
-      primaryLocale: StringTableLocale.English,
+      primaryLocale: StringTableLocale.Italian,
       stbls: [
+        {
+          locale: StringTableLocale.Italian,
+          entries: [
+            {
+              key: "1234",
+              value: "hi",
+            },
+            {
+              key: "5678",
+              value: "byte",
+            },
+          ],
+        },
         {
           locale: StringTableLocale.English,
           entries: [
@@ -80,7 +88,7 @@
   projects.push(projects[0]);
   projects.push(projects[1]);
   projects.push(projects[0]);
-  // projects.push(projects[1]);
+  projects.push(projects[1]);
 
   $: workspaceEmpty = projects?.length === 0;
 

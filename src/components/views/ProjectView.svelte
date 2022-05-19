@@ -22,26 +22,32 @@
 </script>
 
 <div
-  class="project-view drop-shadow hoverable"
+  class="project-view drop-shadow hoverable w-100"
   class:selected={project.selected}
   on:click={handleClick}
 >
-  {#if selectMode}
-    <div
-      in:fly={{ x: -10, duration: 500 }}
-      class:selected={project.selected}
-      class="selected-indicator flex-center"
-    >
-      {#if project.selected}
-        &#10003;
-      {/if}
-    </div>
-  {/if}
   <div class="w-100">
-    <h3 class="my-0 accent-color">{project.name}</h3>
-    <p class="instance monospace my-0">
-      {project.instance.padStart(14, "0")}
-    </p>
+    <div class="header-wrapper">
+      {#if selectMode}
+        <div
+          in:fly={{ x: -10, duration: 500 }}
+          class:selected={project.selected}
+          class="selected-indicator flex-center"
+        >
+          {#if project.selected}
+            &#10003;
+          {/if}
+        </div>
+      {/if}
+      <div class="mw-100">
+        <h3 class="my-0 accent-color project-name">
+          {project.name}
+        </h3>
+        <p class="instance monospace my-0">
+          {project.instance.padStart(14, "0")}
+        </p>
+      </div>
+    </div>
     <div class="stbl-features w-100">
       <div class="stbl-feature">
         <p class="small-title">source</p>
@@ -66,12 +72,24 @@
     border-radius: 8px;
     flex: 1 1 0px;
     max-width: 305px; // (content area width - 60px) / 4
-    display: flex;
+
+    .header-wrapper {
+      display: flex;
+    }
+
+    .project-name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-right: 1em;
+    }
 
     .selected-indicator {
       background: none;
-      width: 18px;
-      height: 18px;
+      min-width: 16px !important;
+      width: 16px;
+      height: 16px;
+      font-size: 12px;
       border-radius: 50%;
       border: 1px solid var(--color-text);
       padding: 2px;
