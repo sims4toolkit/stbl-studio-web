@@ -61,7 +61,7 @@
       border-right: none;
     }
 
-    img:hover {
+    &:hover img {
       filter: var(--filter-light);
     }
   }
