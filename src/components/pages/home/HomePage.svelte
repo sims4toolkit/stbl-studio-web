@@ -1,6 +1,7 @@
 <script lang="ts">
-  import ToolbarColor from "../../../enums/toolbar-colors";
+  import { StringTableLocale } from "@s4tk/models/enums";
   import type { StblProject } from "../../../global";
+  import ToolbarColor from "../../../enums/toolbar-colors";
   import ContentArea from "../../shared/ContentArea.svelte";
   import FloatingActionButtons from "../../shared/FloatingActionButtons.svelte";
   import SectionHeader from "../../shared/SectionHeader.svelte";
@@ -8,7 +9,58 @@
   import SplitView from "../../shared/SplitView.svelte";
 
   let selectMode = false;
-  let projects: StblProject[] = []; // FIXME:
+  let projects: StblProject[] = [
+    {
+      id: "__stbl0",
+      name: "First STBL",
+      group: "0",
+      instance: "34567890ABCDEF",
+      primaryLocale: StringTableLocale.English,
+      stbls: [
+        {
+          locale: StringTableLocale.English,
+          entries: [
+            {
+              key: "1234",
+              value: "hi",
+            },
+            {
+              key: "5678",
+              value: "byte",
+            },
+          ],
+        },
+      ],
+      toJson() {
+        return "";
+      },
+    },
+    {
+      id: "__stbl1",
+      name: "Second STBL",
+      group: "0",
+      instance: "34567890ABCDEF",
+      primaryLocale: StringTableLocale.English,
+      stbls: [
+        {
+          locale: StringTableLocale.English,
+          entries: [
+            {
+              key: "1234",
+              value: "hi",
+            },
+            {
+              key: "5678",
+              value: "byte",
+            },
+          ],
+        },
+      ],
+      toJson() {
+        return "";
+      },
+    },
+  ]; // FIXME:
 
   const normalModeToolbar = [
     {
@@ -81,6 +133,16 @@
           bind:selectables={projects}
         />
       </SplitView>
+      {#each projects as project, key (key)}
+        <h4
+          on:click={() => {
+            if (selectMode) project.selected = !project.selected;
+          }}
+        >
+          {project.name}
+        </h4>
+        <p>{project.selected ? "selected" : "not selected"}</p>
+      {/each}
     </slot>
   </ContentArea>
 </section>

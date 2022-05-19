@@ -4,16 +4,21 @@
   export let selectMode: boolean;
   export let selectables: Selectable[];
 
-  function selectAll() {
+  function changeAll(selected: boolean) {
     selectables.forEach((s) => {
-      s.selected = true;
+      s.selected = selected;
     });
+
+    selectables = selectables;
   }
 
-  function deselectAll() {
-    selectables.forEach((s) => {
-      s.selected = false;
-    });
+  const selectAll = () => changeAll(true);
+
+  const deselectAll = () => changeAll(false);
+
+  function toggleSelectMode() {
+    selectMode = !selectMode;
+    if (!selectMode) deselectAll();
   }
 </script>
 
@@ -25,7 +30,7 @@
   <button
     class="select-toggle"
     class:large-font={selectMode}
-    on:click={() => (selectMode = !selectMode)}
+    on:click={toggleSelectMode}
   >
     {#if selectMode}
       &times;

@@ -3,7 +3,7 @@
 import type { StringTableLocale } from "@s4tk/models/enums";
 
 interface Selectable {
-  selected: boolean;
+  selected?: boolean;
 }
 
 interface Stbl {
