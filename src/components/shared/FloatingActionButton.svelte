@@ -8,6 +8,8 @@
 
   let floatingActionButton: HTMLDivElement;
 
+  $: imagePath = `./assets/${icon}.svg`;
+
   function handleEnterOrFocus(e: MouseEvent | FocusEvent) {
     floatingActionButton.style.backgroundColor = color;
     floatingActionButton.style.borderColor = color;
@@ -31,8 +33,7 @@
   on:mouseleave={handleLeaveOrBlur}
   on:blur={handleLeaveOrBlur}
 >
-  <!-- TODO: Use img -->
-  {icon}
+  <img class="is-svg" src={imagePath} alt={title} />
 </div>
 
 <style lang="scss">

@@ -24,22 +24,22 @@
   <div class="buttons-row">
     <FloatingActionButton
       first={true}
-      color="#62AABF"
-      title="first"
-      icon="F"
+      color="#3DA8D0"
+      title="download"
+      icon="desktop-download"
       {toggleTitle}
     />
     <FloatingActionButton
       color="#6B77D3"
-      title="second"
-      icon="S"
+      title="upload"
+      icon="upload"
       {toggleTitle}
     />
     <FloatingActionButton
       last={true}
-      color="#62C488"
-      title="third"
-      icon="T"
+      color="#48AD6F"
+      title="create new"
+      icon="plus"
       {toggleTitle}
     />
   </div>
@@ -56,7 +56,9 @@
       border-radius: 4px;
       text-align: center;
       text-transform: uppercase;
-      font-size: 0.8em;
+      font-size: 0.85em;
+      padding-top: 0.2em;
+      padding-bottom: 0.2em;
     }
 
     .buttons-row {
