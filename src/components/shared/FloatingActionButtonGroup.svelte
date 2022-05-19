@@ -56,6 +56,7 @@
       font-size: 0.85em;
       padding-top: 0.2em;
       padding-bottom: 0.2em;
+      color: var(--color-light);
     }
 
     .buttons-row {

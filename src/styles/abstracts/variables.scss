@@ -15,8 +15,6 @@ $azure-blue: #0095eb;
   --color-kofi: #fbaa19;
   --color-patreon: #f96854;
   --color-twitter: #1da1f2;
-  --color-npm: rgb(225, 31, 18);
-  --color-github: rgb(155, 90, 201);
 
   // colors
   --color-light: #{$cool-white};
@@ -63,7 +61,7 @@ $azure-blue: #0095eb;
     --color-card: #e5e6eb;
     --color-card-secondary: #e5e6ea; // unused right now
     --color-navbar: rgba(231, 236, 238, 0.7);
-    --color-footer: #{$dark-gray};
+    --color-footer: rgba(231, 236, 238);
     --color-scrollbar: rgb(144, 147, 150);
     --color-scrollbar-hover: rgb(95, 99, 100);
     --color-blur-fallback: rgba(255, 255, 255, 0.9);

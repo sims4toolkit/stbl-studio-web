@@ -61,7 +61,7 @@
 <style lang="scss">
   section#footer {
     background-color: var(--color-footer);
-    color: var(--color-light);
+    color: var(--color-text);
     width: 100%;
     flex-direction: column;
 

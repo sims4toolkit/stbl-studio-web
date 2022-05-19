@@ -60,5 +60,9 @@
     &:not(.last) {
       border-right: none;
     }
+
+    img:hover {
+      filter: var(--filter-light);
+    }
   }
 </style>
