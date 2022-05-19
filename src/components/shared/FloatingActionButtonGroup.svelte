@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { fade, fly } from "svelte/transition";
   import FloatingActionButton from "./FloatingActionButton.svelte";
 
   export let buttonData: {
@@ -8,7 +9,6 @@
     onClick(): void;
   }[];
 
-  let titleContainer: HTMLDivElement;
   let titleText: string;
   let titleColor: string;
   $: showTitle = Boolean(titleText);
@@ -16,17 +16,19 @@
   function toggleTitle(text?: string, color?: string) {
     titleText = text;
     titleColor = color;
-
-    if (titleText) {
-      titleContainer.style.backgroundColor = titleColor;
-    }
   }
 </script>
 
 <div class="floating-action-buttons">
-  <div bind:this={titleContainer} class="title-container" hidden={!showTitle}>
-    {titleText}
-  </div>
+  {#if showTitle}
+    <div
+      class="title-container"
+      style="background-color: {titleColor};"
+      in:fly={{ y: 12, duration: 350 }}
+    >
+      {titleText}
+    </div>
+  {/if}
   <div class="buttons-row">
     {#each buttonData as data, key (key)}
       <FloatingActionButton
