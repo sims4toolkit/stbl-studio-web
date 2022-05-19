@@ -36,7 +36,9 @@
 
 <Navbar />
 <main>
-  <Router {routes} />
+  <div class="main-content-wrapper">
+    <Router {routes} />
+  </div>
   <Footer />
 </main>
 {#if showOverlay}
@@ -58,9 +60,8 @@
 
 <style lang="scss">
   main {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    .main-content-wrapper {
+      min-height: 100vh;
+    }
   }
 </style>

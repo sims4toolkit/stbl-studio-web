@@ -63,6 +63,10 @@
     },
   ]; // FIXME:
 
+  projects = []; // FIXME: temp
+
+  $: workspaceEmpty = projects?.length === 0;
+
   const normalModeToolbar = [
     {
       title: "save workspace",
@@ -126,17 +130,31 @@
 <section id="home">
   <ContentArea banded={false}>
     <slot>
-      <div class="mb-2">
-        <SplitView>
-          <SectionHeader slot="left" title="My Workspace" />
-          <SelectModeToggle
-            slot="right"
-            bind:selectMode
-            bind:selectables={projects}
-          />
-        </SplitView>
-      </div>
-      <ProjectViewGroup bind:projects bind:selectMode />
+      {#if workspaceEmpty}
+        <div>
+          <SectionHeader title="Your workspace is empty" />
+          <p>
+            Add or create projects by using the buttons in the bottom-right
+            corner.
+          </p>
+          <p>
+            Confused? Read <a href="#/help">the FAQs</a> to learn how to use STBL
+            Studio.
+          </p>
+        </div>
+      {:else}
+        <div class="mb-2">
+          <SplitView>
+            <SectionHeader slot="left" title="My Workspace" />
+            <SelectModeToggle
+              slot="right"
+              bind:selectMode
+              bind:selectables={projects}
+            />
+          </SplitView>
+        </div>
+        <ProjectViewGroup bind:projects bind:selectMode />
+      {/if}
     </slot>
   </ContentArea>
 </section>
