@@ -126,14 +126,16 @@
 <section id="home">
   <ContentArea banded={false}>
     <slot>
-      <SplitView>
-        <SectionHeader slot="left" title="My Workspace" />
-        <SelectModeToggle
-          slot="right"
-          bind:selectMode
-          bind:selectables={projects}
-        />
-      </SplitView>
+      <div class="mb-2">
+        <SplitView>
+          <SectionHeader slot="left" title="My Workspace" />
+          <SelectModeToggle
+            slot="right"
+            bind:selectMode
+            bind:selectables={projects}
+          />
+        </SplitView>
+      </div>
       <ProjectViewGroup bind:projects bind:selectMode />
     </slot>
   </ContentArea>

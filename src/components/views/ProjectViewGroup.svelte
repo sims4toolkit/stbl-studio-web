@@ -15,5 +15,6 @@
 <style lang="scss">
   .project-view-group {
     display: flex;
+    gap: 20px;
   }
 </style>

@@ -42,7 +42,7 @@
       &.selected {
         background-color: var(--color-accent);
         border-color: var(--color-accent);
-        color: var(--color-text);
+        color: var(--color-light);
       }
     }
   }
