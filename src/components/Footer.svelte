@@ -5,7 +5,7 @@
 
 <section id="footer" class="flex-center text-center">
   <ContentArea>
-    <div class="mb-2">
+    <div class="mb-3">
       <p>
         Created with <span class="heart">&#9829;</span> by Frankk using Sims 4 Toolkit
       </p>
