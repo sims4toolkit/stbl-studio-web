@@ -12,7 +12,9 @@
   </div>
   <div class="right flex-center-v flex-space-between">
     <a href="/help" use:link class:active={$location === "/help"}>Help</a>
-    <a href="https://github.com/sims4toolkit" target="_blank">GitHub</a>
+    <a href="/settings" use:link class:active={$location === "/settings"}
+      >Settings</a
+    >
     <ThemeToggler />
   </div>
 </nav>

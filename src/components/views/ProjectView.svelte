@@ -40,9 +40,9 @@
       padding: 0;
 
       &.selected {
-        background-color: var(--color-accent);
-        border-color: var(--color-accent);
-        color: var(--color-light);
+        background-color: var(--color-accent-secondary);
+        border-color: var(--color-accent-secondary);
+        color: var(--color-bg);
       }
     }
   }

@@ -46,7 +46,7 @@
     background: none;
     color: var(--color-text);
     text-transform: uppercase;
-    opacity: 0.6;
+    opacity: 0.65;
 
     &.large-font {
       font-size: 1.65em;

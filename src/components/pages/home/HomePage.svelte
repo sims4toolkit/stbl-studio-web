@@ -63,7 +63,7 @@
     },
   ]; // FIXME:
 
-  projects = []; // FIXME: temp
+  // projects = []; // FIXME: temp
 
   $: workspaceEmpty = projects?.length === 0;
 
@@ -127,22 +127,26 @@
 <svelte:head>
   <title>STBL Studio</title>
 </svelte:head>
-<section id="home">
-  <ContentArea banded={false}>
-    <slot>
-      {#if workspaceEmpty}
-        <div>
-          <SectionHeader title="Your workspace is empty" />
+<section id="home" class:center-v={workspaceEmpty}>
+  {#if workspaceEmpty}
+    <ContentArea>
+      <slot>
+        <div class="empty-workspace">
+          <h1>Your workspace is empty.</h1>
           <p>
-            Add or create projects by using the buttons in the bottom-right
-            corner.
+            Upload existing string tables or create new ones with the toolbar in
+            the bottom-right corner.
           </p>
           <p>
-            Confused? Read <a href="#/help">the FAQs</a> to learn how to use STBL
-            Studio.
+            Confused? Read <a href="#/help">the help page</a> to learn how to use
+            String Table Studio.
           </p>
         </div>
-      {:else}
+      </slot>
+    </ContentArea>
+  {:else}
+    <ContentArea>
+      <slot>
         <div class="mb-2">
           <SplitView>
             <SectionHeader slot="left" title="My Workspace" />
@@ -154,14 +158,31 @@
           </SplitView>
         </div>
         <ProjectViewGroup bind:projects bind:selectMode />
-      {/if}
-    </slot>
-  </ContentArea>
+      </slot>
+    </ContentArea>
+  {/if}
 </section>
 <FloatingActionButtonGroup buttonData={toolbarData} />
 
 <style lang="scss">
   #home {
-    margin-top: 50px;
+    padding-top: 50px;
+    min-height: 100vh;
+
+    &.center-v {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .empty-workspace {
+      h1 {
+        opacity: 0.65;
+        margin: {
+          top: 0;
+          bottom: 2em;
+        }
+      }
+    }
   }
 </style>

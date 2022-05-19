@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let banded: boolean = false;
+  export let banded = false;
 </script>
 
 <div class="content-area-wrapper flex-center" class:banded>
