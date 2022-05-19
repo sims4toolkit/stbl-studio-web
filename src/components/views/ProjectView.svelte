@@ -3,19 +3,26 @@
 
   export let project: StblProject;
   export let selectMode: boolean;
+
+  function handleClick() {
+    if (selectMode) {
+      project.selected = !project.selected;
+    } else {
+      // TODO: go to project
+    }
+  }
 </script>
 
-<div class="project-view drop-shadow">
+<div class="project-view drop-shadow hoverable" on:click={handleClick}>
   {#if selectMode}
-    <button
-      class="hoverable"
+    <div
+      class="selected-indicator flex-center"
       class:selected={project.selected}
-      on:click={() => (project.selected = !project.selected)}
     >
       {#if project.selected}
         &#10003;
       {/if}
-    </button>
+    </div>
   {/if}
   <div>
     <h4 class="m-0">{project.name}</h4>
@@ -30,14 +37,14 @@
     border-radius: 8px;
     display: flex;
 
-    button {
+    .selected-indicator {
       background: none;
       width: 18px;
       height: 18px;
       border-radius: 50%;
       border: 1px solid var(--color-text);
       margin-right: 1em;
-      padding: 0;
+      padding: 2px;
 
       &.selected {
         background-color: var(--color-accent-secondary);
