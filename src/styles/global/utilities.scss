@@ -64,8 +64,17 @@
   width: 100%;
 }
 
+//#region Margins
+
 .m-0 {
   margin: 0;
+}
+
+.my-0 {
+  margin: {
+    top: 0;
+    bottom: 0;
+  }
 }
 
 .mb-0 {
@@ -87,6 +96,20 @@
 .mt-0 {
   margin-top: 0;
 }
+
+.mt-1 {
+  margin-top: 1em;
+}
+
+.mt-2 {
+  margin-top: 2em;
+}
+
+.mt-3 {
+  margin-top: 3em;
+}
+
+//#endregion Margins
 
 .move-on-hover {
   position: relative;

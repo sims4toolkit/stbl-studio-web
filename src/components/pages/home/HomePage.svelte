@@ -31,6 +31,19 @@
             },
           ],
         },
+        {
+          locale: StringTableLocale.Italian,
+          entries: [
+            {
+              key: "1234",
+              value: "ciao",
+            },
+            {
+              key: "5678",
+              value: "arrivederci",
+            },
+          ],
+        },
       ],
       toJson() {
         return "";
@@ -64,6 +77,10 @@
   ]; // FIXME:
 
   // projects = []; // FIXME: temp
+  projects.push(projects[0]);
+  projects.push(projects[1]);
+  projects.push(projects[0]);
+  // projects.push(projects[1]);
 
   $: workspaceEmpty = projects?.length === 0;
 

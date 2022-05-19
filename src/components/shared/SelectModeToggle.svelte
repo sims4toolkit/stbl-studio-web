@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Selectable } from "../../global";
+  import { fade } from "svelte/transition";
 
   export let selectMode: boolean;
   export let selectables: Selectable[];
@@ -24,8 +25,12 @@
 
 <div class="flex-center-h">
   {#if selectMode}
-    <button class="select-toggle" on:click={selectAll}>select all</button>
-    <button class="select-toggle" on:click={deselectAll}>deselect all</button>
+    <button class="select-toggle" on:click={selectAll} in:fade
+      >select all</button
+    >
+    <button class="select-toggle" on:click={deselectAll} in:fade
+      >deselect all</button
+    >
   {/if}
   <button
     class="select-toggle"
@@ -33,9 +38,9 @@
     on:click={toggleSelectMode}
   >
     {#if selectMode}
-      &times;
+      <span in:fade>&times;</span>
     {:else}
-      select
+      <span in:fade>select</span>
     {/if}
   </button>
 </div>

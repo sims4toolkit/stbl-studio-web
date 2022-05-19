@@ -19,7 +19,6 @@ $azure-blue: #0095eb;
   // colors
   --color-light: #{$cool-white};
   --color-dark: #{$dark-gray};
-  --color-shadow: rgba(0, 0, 0, 0.2);
 
   // filters
   --filter-dark: invert(13%) sepia(3%) saturate(427%) hue-rotate(314deg)
@@ -43,6 +42,7 @@ $azure-blue: #0095eb;
     --color-scrollbar: rgb(135, 137, 141);
     --color-scrollbar-hover: rgb(190, 197, 199);
     --color-blur-fallback: rgba(0, 0, 0, 0.9);
+    --color-shadow: rgba(0, 0, 0, 0.2);
 
     // filters
     --filter-svg: var(--filter-light);
@@ -65,6 +65,7 @@ $azure-blue: #0095eb;
     --color-scrollbar: rgb(144, 147, 150);
     --color-scrollbar-hover: rgb(95, 99, 100);
     --color-blur-fallback: rgba(255, 255, 255, 0.9);
+    --color-shadow: rgba(64, 64, 64, 0.2);
 
     // filters
     --filter-svg: var(--filter-dark);
