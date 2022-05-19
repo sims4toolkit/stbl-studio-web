@@ -17,7 +17,7 @@
     if (selectMode) {
       project.selected = !project.selected;
     } else {
-      replace(`#/project/${project.id}`);
+      replace("/project/" + project.id);
     }
   }
 </script>

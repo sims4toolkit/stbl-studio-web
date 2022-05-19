@@ -152,7 +152,7 @@
 <svelte:head>
   <title>STBL Studio</title>
 </svelte:head>
-<section id="home" class:center-v={workspaceEmpty}>
+<section id="home-section" class:center-v={workspaceEmpty}>
   {#if workspaceEmpty}
     <ContentArea>
       <slot>
@@ -190,7 +190,7 @@
 <FloatingActionButtonGroup buttonData={toolbarData} />
 
 <style lang="scss">
-  #home {
+  #home-section {
     padding-top: 50px;
     min-height: 100vh;
 

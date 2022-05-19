@@ -7,6 +7,7 @@
   import BlurOverlay from "./components/layout/BlurOverlay.svelte";
   import { onMount } from "svelte";
   import HelpPage from "./components/pages/help/HelpPage.svelte";
+  import ProjectPage from "./components/pages/project/ProjectPage.svelte";
 
   let showOverlay = false;
 
@@ -24,6 +25,7 @@
   const routes = {
     "/": HomePage,
     "/help": HelpPage,
+    "/project/:id": ProjectPage,
     "*": NotFoundPage,
   };
 
