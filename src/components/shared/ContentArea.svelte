@@ -17,7 +17,7 @@
       background-color: var(--color-bg-secondary);
     }
 
-    $breakpoint: 1024px;
+    $breakpoint: 1280px;
 
     @media only screen and (max-width: $breakpoint) {
       .content-area {
