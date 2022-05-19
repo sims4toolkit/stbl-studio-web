@@ -21,26 +21,41 @@
       title: "save workspace",
       icon: "desktop-download",
       color: ToolbarColor.Download,
+      onClick() {
+        console.log("Save Clicked");
+      },
     },
     {
       title: "upload stbl",
       icon: "upload",
       color: ToolbarColor.Upload,
+      onClick() {
+        console.log("Upload Clicked");
+      },
     },
     {
       title: "create stbl",
       icon: "plus",
       color: ToolbarColor.Create,
+      onClick() {
+        console.log("Create Clicked");
+      },
     },
     {
       title: "merge stbls",
       icon: "git-merge",
       color: ToolbarColor.Merge,
+      onClick() {
+        console.log("Merge Clicked");
+      },
     },
     {
       title: "delete stbls",
       icon: "trash",
       color: ToolbarColor.Delete,
+      onClick() {
+        console.log("Delete Clicked");
+      },
     },
   ]}
 />

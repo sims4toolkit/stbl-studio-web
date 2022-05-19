@@ -5,6 +5,7 @@
   export let title: string;
   export let icon: string;
   export let toggleTitle: (text?: string, color?: string) => void;
+  export let handleClick: () => void;
 
   let floatingActionButton: HTMLDivElement;
 
@@ -32,6 +33,7 @@
   on:focus={handleEnterOrFocus}
   on:mouseleave={handleLeaveOrBlur}
   on:blur={handleLeaveOrBlur}
+  on:click={handleClick}
 >
   <img class="is-svg" src={imagePath} alt={title} />
 </div>

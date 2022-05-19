@@ -5,6 +5,7 @@
     color: string;
     title: string;
     icon: string;
+    onClick(): void;
   }[];
 
   let titleContainer: HTMLDivElement;
@@ -34,6 +35,7 @@
         color={data.color}
         title={data.title}
         icon={data.icon}
+        handleClick={data.onClick}
         {toggleTitle}
       />
     {/each}
