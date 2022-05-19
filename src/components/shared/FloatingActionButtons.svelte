@@ -1,6 +1,12 @@
 <script lang="ts">
   import FloatingActionButton from "./FloatingActionButton.svelte";
 
+  export let buttonData: {
+    color: string;
+    title: string;
+    icon: string;
+  }[];
+
   let titleContainer: HTMLDivElement;
   let titleText: string;
   let titleColor: string;
@@ -20,28 +26,17 @@
   <div bind:this={titleContainer} class="title-container" hidden={!showTitle}>
     {titleText}
   </div>
-  <!-- TODO: Replace with slot -->
   <div class="buttons-row">
-    <FloatingActionButton
-      first={true}
-      color="#3DA8D0"
-      title="download"
-      icon="desktop-download"
-      {toggleTitle}
-    />
-    <FloatingActionButton
-      color="#6B77D3"
-      title="upload"
-      icon="upload"
-      {toggleTitle}
-    />
-    <FloatingActionButton
-      last={true}
-      color="#48AD6F"
-      title="create new"
-      icon="plus"
-      {toggleTitle}
-    />
+    {#each buttonData as data, key (key)}
+      <FloatingActionButton
+        first={key === 0}
+        last={key === buttonData.length - 1}
+        color={data.color}
+        title={data.title}
+        icon={data.icon}
+        {toggleTitle}
+      />
+    {/each}
   </div>
 </div>
 
