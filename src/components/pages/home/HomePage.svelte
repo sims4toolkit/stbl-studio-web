@@ -1,10 +1,14 @@
 <script lang="ts">
   import ToolbarColor from "../../../enums/toolbar-colors";
+  import type { StblProject } from "../../../global";
   import ContentArea from "../../shared/ContentArea.svelte";
   import FloatingActionButtons from "../../shared/FloatingActionButtons.svelte";
+  import SectionHeader from "../../shared/SectionHeader.svelte";
+  import SelectModeToggle from "../../shared/SelectModeToggle.svelte";
+  import SplitView from "../../shared/SplitView.svelte";
 
   let selectMode = false;
-  $: selectModeToggleText = selectMode ? "X" : "select";
+  let projects: StblProject[] = []; // FIXME:
 
   const normalModeToolbar = [
     {
@@ -68,33 +72,22 @@
 </svelte:head>
 <section id="home">
   <ContentArea banded={false}>
-    <slot>First</slot>
-  </ContentArea>
-  <ContentArea banded={true}>
     <slot>
-      <div>
-        <button
-          class="select-toggle"
-          on:click={() => (selectMode = !selectMode)}
-          >{selectModeToggleText}</button
-        >
-      </div>
+      <SplitView>
+        <SectionHeader slot="left" title="My Workspace" />
+        <SelectModeToggle
+          slot="right"
+          bind:selectMode
+          bind:selectables={projects}
+        />
+      </SplitView>
     </slot>
   </ContentArea>
 </section>
 <FloatingActionButtons buttonData={toolbarData} />
 
 <style lang="scss">
-  .select-toggle {
-    border: none;
-    background: none;
-    color: var(--color-text);
-    text-transform: uppercase;
-    opacity: 0.6;
-
-    &:hover {
-      opacity: 1;
-      cursor: pointer;
-    }
+  #home {
+    margin-top: 50px;
   }
 </style>

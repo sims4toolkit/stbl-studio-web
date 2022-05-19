@@ -2,18 +2,22 @@
 
 import type { StringTableLocale } from "@s4tk/models/enums";
 
+interface Selectable {
+  selected: boolean;
+}
+
 interface Stbl {
   entries: StblEntry[];
   locale: StringTableLocale;
 }
 
-interface StblEntry {
+interface StblEntry extends Selectable {
   isUpdated?: boolean;
   key: string;
   value: string;
 }
 
-interface StblProject {
+interface StblProject extends Selectable {
   group: string;
   id: string;
   instance: string;
