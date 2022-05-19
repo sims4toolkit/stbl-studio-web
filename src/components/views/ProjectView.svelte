@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { StblProject } from "../../global";
   import { fly } from "svelte/transition";
+  import { replace } from "svelte-spa-router";
   import { getLocaleCode } from "../../scripts/helpers";
 
   export let project: StblProject;
@@ -16,7 +17,7 @@
     if (selectMode) {
       project.selected = !project.selected;
     } else {
-      // TODO: go to project
+      replace(`#/project/${project.id}`);
     }
   }
 </script>

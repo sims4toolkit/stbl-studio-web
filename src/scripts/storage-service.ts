@@ -1,4 +1,4 @@
-const STBL_ID_BASE = "__stbl";
+const STBL_ID_BASE = "__project";
 
 interface StorageProperty<T> {
   get: (prop: string) => T;
