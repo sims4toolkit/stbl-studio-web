@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { fade, fly } from "svelte/transition";
+  import { fly } from "svelte/transition";
   import FloatingActionButton from "./FloatingActionButton.svelte";
 
   export let buttonData: {
