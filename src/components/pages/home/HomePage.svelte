@@ -1,9 +1,10 @@
 <script lang="ts">
   import ContentArea from "../../shared/ContentArea.svelte";
+  import FloatingActionButtons from "../../shared/FloatingActionButtons.svelte";
 </script>
 
 <svelte:head>
-  <title>Sims 4 Toolkit</title>
+  <title>STBL Studio</title>
 </svelte:head>
 <section id="home">
   <ContentArea banded={false}>
@@ -13,6 +14,7 @@
     <slot>Second</slot>
   </ContentArea>
 </section>
+<FloatingActionButtons />
 
 <style lang="scss">
   // intentionally blank
