@@ -2,11 +2,11 @@
   import { StringTableLocale } from "@s4tk/models/enums";
   import type { StblProject } from "../../../global";
   import ToolbarColor from "../../../enums/toolbar-colors";
-  import ContentArea from "../../shared/ContentArea.svelte";
+  import ContentArea from "../../layout/ContentArea.svelte";
+  import SplitView from "../../layout/SplitView.svelte";
   import FloatingActionButtons from "../../shared/FloatingActionButtons.svelte";
   import SectionHeader from "../../shared/SectionHeader.svelte";
   import SelectModeToggle from "../../shared/SelectModeToggle.svelte";
-  import SplitView from "../../shared/SplitView.svelte";
 
   let selectMode = false;
   let projects: StblProject[] = [

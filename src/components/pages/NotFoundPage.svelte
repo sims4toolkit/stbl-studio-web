@@ -1,5 +1,5 @@
 <script lang="ts">
-  import ContentArea from "../shared/ContentArea.svelte";
+  import ContentArea from "../layout/ContentArea.svelte";
   import SectionHeader from "../shared/SectionHeader.svelte";
 
   // just silencing warnings in a hacky way, don't mind me

@@ -4,7 +4,7 @@
   import Footer from "./components/Footer.svelte";
   import HomePage from "./components/pages/home/HomePage.svelte";
   import NotFoundPage from "./components/pages/NotFoundPage.svelte";
-  import BlurOverlay from "./components/shared/BlurOverlay.svelte";
+  import BlurOverlay from "./components/layout/BlurOverlay.svelte";
   import { onMount } from "svelte";
   import HelpPage from "./components/pages/help/HelpPage.svelte";
 

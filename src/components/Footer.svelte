@@ -1,6 +1,6 @@
 <script lang="ts">
-  import ContentArea from "./shared/ContentArea.svelte";
-  import SplitView from "./shared/SplitView.svelte";
+  import ContentArea from "./layout/ContentArea.svelte";
+  import SplitView from "./layout/SplitView.svelte";
 </script>
 
 <section id="footer" class="flex-center text-center">
