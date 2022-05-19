@@ -24,10 +24,11 @@
 <div
   class="project-view drop-shadow hoverable w-100"
   class:selected={project.selected}
+  class:move-on-hover={!selectMode}
   on:click={handleClick}
 >
   <div class="w-100">
-    <div class="header-wrapper">
+    <div class="flex-center-v">
       {#if selectMode}
         <div
           in:fly={{ x: -10, duration: 500 }}
@@ -73,10 +74,6 @@
     flex: 1 1 0px;
     max-width: 305px; // (content area width - 60px) / 4
 
-    .header-wrapper {
-      display: flex;
-    }
-
     .project-name {
       white-space: nowrap;
       overflow: hidden;
@@ -93,11 +90,7 @@
       border-radius: 50%;
       border: 1px solid var(--color-text);
       padding: 2px;
-
-      margin: {
-        top: 4px;
-        right: 1em;
-      }
+      margin-right: 1em;
 
       &.selected {
         background-color: var(--color-accent-secondary);
