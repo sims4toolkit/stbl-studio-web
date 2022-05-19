@@ -4,9 +4,10 @@
   import ToolbarColor from "../../../enums/toolbar-colors";
   import ContentArea from "../../layout/ContentArea.svelte";
   import SplitView from "../../layout/SplitView.svelte";
-  import FloatingActionButtons from "../../shared/FloatingActionButtons.svelte";
+  import FloatingActionButtonGroup from "../../shared/FloatingActionButtonGroup.svelte";
   import SectionHeader from "../../shared/SectionHeader.svelte";
   import SelectModeToggle from "../../shared/SelectModeToggle.svelte";
+  import ProjectViewGroup from "../../views/ProjectViewGroup.svelte";
 
   let selectMode = false;
   let projects: StblProject[] = [
@@ -133,20 +134,11 @@
           bind:selectables={projects}
         />
       </SplitView>
-      {#each projects as project, key (key)}
-        <h4
-          on:click={() => {
-            if (selectMode) project.selected = !project.selected;
-          }}
-        >
-          {project.name}
-        </h4>
-        <p>{project.selected ? "selected" : "not selected"}</p>
-      {/each}
+      <ProjectViewGroup bind:projects bind:selectMode />
     </slot>
   </ContentArea>
 </section>
-<FloatingActionButtons buttonData={toolbarData} />
+<FloatingActionButtonGroup buttonData={toolbarData} />
 
 <style lang="scss">
   #home {

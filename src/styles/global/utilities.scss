@@ -99,6 +99,10 @@
   font-weight: normal;
 }
 
+.monospace {
+  font-family: monospace; // FIXME:
+}
+
 .accent-color {
   color: var(--color-accent);
 }
