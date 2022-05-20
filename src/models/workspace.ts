@@ -15,7 +15,7 @@ export default class Workspace {
    * 
    * @param json JSON that contains workspace data
    */
-  static async restore(json: StoredWorkspace): Promise<Workspace> {
+  static async restoreFromJson(json: StoredWorkspace): Promise<Workspace> {
     return new Promise(async (resolve, reject) => {
       try {
         const projects: Project[] = Object.entries(json.projects)
@@ -23,13 +23,32 @@ export default class Workspace {
           .map(projectData => new Project(projectData));
 
         localStorage.clear();
+
         StorageService.restoreSettings(json.settings);
         projects.forEach(StorageService.saveProjectData);
 
         resolve(new Workspace(projects));
       } catch (e) {
         console.error(e);
-        reject("Could not restore workspace.")
+        reject("Could not restore workspace from JSON.")
+      }
+    });
+  }
+
+  /**
+   * Restores a workspace from localStorage.
+   */
+  static async restoreFromStorage(): Promise<Workspace> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const projects = StorageService.settings.projectUuids.map(uuid => {
+          return new Project(StorageService.loadProjectData(uuid));
+        });
+
+        resolve(new Workspace(projects));
+      } catch (e) {
+        console.error(e);
+        reject("Could not restore workspace from storage.")
       }
     });
   }

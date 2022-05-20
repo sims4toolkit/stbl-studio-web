@@ -127,13 +127,11 @@ function writeProjectData(project: ProjectData): StoredProject {
  * 
  * @param uuid UUID of project to load
  */
-async function loadProjectData(uuid: string): Promise<ProjectData> {
-  return new Promise((resolve, reject) => {
-    const value = localStorage.getItem(getStorageKey(uuid));
-    if (!value) return reject("No project with ID: " + uuid);
-    const stored: StoredProject = JSON.parse(value);
-    resolve(readProjectData(uuid, stored));
-  });
+function loadProjectData(uuid: string): ProjectData {
+  const value = localStorage.getItem(getStorageKey(uuid));
+  if (!value) return undefined;
+  const stored: StoredProject = JSON.parse(value);
+  return readProjectData(uuid, stored);
 }
 
 /**
