@@ -1,8 +1,8 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { link } from "svelte-spa-router";
   import type { StblProject } from "../../../global";
   import ContentArea from "../../layout/ContentArea.svelte";
+  import BackButton from "../../shared/BackButton.svelte";
 
   export let params: { id: string };
   let project: StblProject;
@@ -17,7 +17,7 @@
 </svelte:head>
 <section id="project-section">
   <ContentArea banded={true}>
-    <a href="/" use:link>Back to Workspace</a>
+    <BackButton />
     {params.id}
   </ContentArea>
   <ContentArea banded={false}>
