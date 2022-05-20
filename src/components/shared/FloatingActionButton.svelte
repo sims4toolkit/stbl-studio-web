@@ -67,9 +67,12 @@
       border-right: none;
     }
 
-    &:not(.disabled):hover img {
-      filter: var(--filter-light);
+    &:not(.disabled):hover {
       cursor: pointer;
+
+      img {
+        filter: var(--filter-light);
+      }
     }
   }
 </style>
