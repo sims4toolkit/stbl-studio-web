@@ -5,7 +5,7 @@ import type { StringTableLocale } from "@s4tk/models/enums";
 interface StringTableWrapper {
   locale: StringTableLocale;
   readonly stbl: StringTableResource;
-  readonly updatedKeys: Set<number>;
+  readonly updatedKeys?: Set<number>;
 }
 
 interface ProjectData {

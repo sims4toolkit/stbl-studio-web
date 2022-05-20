@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { StringTableLocale } from "@s4tk/models/enums";
-  import type { Project } from "../../../global";
+  import Project from "../../../models/project";
   import ToolbarColor from "../../../enums/toolbar-colors";
   import ContentArea from "../../layout/ContentArea.svelte";
   import SplitView from "../../layout/SplitView.svelte";
@@ -8,85 +7,31 @@
   import SectionHeader from "../../shared/SectionHeader.svelte";
   import SelectModeToggle from "../../shared/SelectModeToggle.svelte";
   import ProjectViewGroup from "../../views/ProjectViewGroup.svelte";
+  import SelectionGroup from "../../../models/selection-group";
+  import { StringTableLocale } from "@s4tk/models/enums";
+  import { StringTableResource } from "@s4tk/models";
 
-  let selectMode = false;
-  let projects: Project[] = [
-    {
-      uuid: "__stbl0",
-      name: "Stbl with a very long name that should be truncated",
+  let projects: Project[] = [];
+  let selectionGroup = new SelectionGroup(projects, "uuid");
+
+  projects.push(
+    new Project({
       group: 0,
-      instance: 0x34567890abcdefn,
+      instanceBase: 12345n,
+      name: "Test Project",
       primaryLocale: StringTableLocale.English,
+      uuid: "0",
       stbls: [
         {
           locale: StringTableLocale.English,
-          entries: [
-            {
-              key: "1234",
-              value: "hi",
-            },
-            {
-              key: "5678",
-              value: "byte",
-            },
-            {
-              key: "1357",
-              value: "byte",
-            },
-            {
-              key: "ABCD",
-              value: "byte",
-            },
-          ],
+          stbl: new StringTableResource(),
         },
       ],
-    },
-    {
-      uuid: "__stbl1",
-      name: "Second STBL",
-      group: 0,
-      instance: 0x34567890abcdefn,
-      primaryLocale: StringTableLocale.Italian,
-      stbls: [
-        {
-          locale: StringTableLocale.Italian,
-          entries: [
-            {
-              key: "1234",
-              value: "hi",
-            },
-            {
-              key: "5678",
-              value: "byte",
-            },
-          ],
-        },
-        {
-          locale: StringTableLocale.English,
-          entries: [
-            {
-              key: "1234",
-              value: "hi",
-            },
-            {
-              key: "5678",
-              value: "byte",
-            },
-          ],
-        },
-      ],
-    },
-  ]; // FIXME:
-
-  // projects = []; // FIXME: temp
-  projects.push(projects[0]);
-  projects.push(projects[1]);
-  projects.push(projects[0]);
-  projects.push(projects[1]);
+    })
+  );
 
   $: workspaceEmpty = projects?.length === 0;
-
-  $: toolbarDisabled = selectMode && !projects.some((p) => p.selected);
+  $: toolbarDisabled = selectionGroup.noneSelected;
 
   const normalModeToolbar = [
     {
@@ -142,7 +87,9 @@
     },
   ];
 
-  $: toolbarData = selectMode ? selectModeToolbar : normalModeToolbar;
+  $: toolbarData = selectionGroup.selectMode
+    ? selectModeToolbar
+    : normalModeToolbar;
 </script>
 
 <svelte:head>
@@ -171,14 +118,10 @@
         <div class="mb-2">
           <SplitView>
             <SectionHeader slot="left" title="My Workspace" />
-            <SelectModeToggle
-              slot="right"
-              bind:selectMode
-              bind:selectables={projects}
-            />
+            <SelectModeToggle slot="right" bind:selectionGroup />
           </SplitView>
         </div>
-        <ProjectViewGroup bind:projects bind:selectMode />
+        <ProjectViewGroup bind:selectionGroup />
       </slot>
     </ContentArea>
   {/if}

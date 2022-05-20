@@ -1,43 +1,26 @@
 <script lang="ts">
-  import type { Selectable } from "../../global";
   import { fade } from "svelte/transition";
+  import type SelectionGroup from "../../models/selection-group";
+  import type Project from "../../models/project";
 
-  export let selectMode: boolean;
-  export let selectables: Selectable[];
-
-  function changeAll(selected: boolean) {
-    selectables.forEach((s) => {
-      s.selected = selected;
-    });
-
-    selectables = selectables;
-  }
-
-  const selectAll = () => changeAll(true);
-
-  const deselectAll = () => changeAll(false);
-
-  function toggleSelectMode() {
-    selectMode = !selectMode;
-    if (!selectMode) deselectAll();
-  }
+  export let selectionGroup: SelectionGroup<Project>;
 </script>
 
 <div class="flex-center-h">
-  {#if selectMode}
-    <button class="select-toggle" on:click={selectAll} in:fade
+  {#if selectionGroup.selectMode}
+    <button class="select-toggle" on:click={selectionGroup.selectAll} in:fade
       >select all</button
     >
-    <button class="select-toggle" on:click={deselectAll} in:fade
+    <button class="select-toggle" on:click={selectionGroup.deselectAll} in:fade
       >deselect all</button
     >
   {/if}
   <button
     class="select-toggle"
-    class:large-font={selectMode}
-    on:click={toggleSelectMode}
+    class:large-font={selectionGroup.selectMode}
+    on:click={selectionGroup.toggleSelectMode}
   >
-    {#if selectMode}
+    {#if selectionGroup.selectMode}
       <span in:fade>&times;</span>
     {:else}
       <span in:fade>select</span>

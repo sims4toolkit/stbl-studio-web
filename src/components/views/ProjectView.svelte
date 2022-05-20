@@ -1,12 +1,14 @@
 <script lang="ts">
-  import type { Project } from "../../global";
+  import type Project from "../../models/project";
   import { fly } from "svelte/transition";
   import { replace } from "svelte-spa-router";
   import { getLocaleCode } from "../../services/localization";
+  import type SelectionGroup from "../../models/selection-group";
 
   export let project: Project;
-  export let selectMode: boolean;
+  export let selectionGroup: SelectionGroup<Project>;
 
+  $: projectSelected = selectionGroup.isSelected(project);
   $: localeCode = getLocaleCode(project.primaryLocale);
   $: localeCount = project.stbls.length;
   $: stringCount = project.stbls.find(
@@ -14,8 +16,8 @@
   ).stbl.entries.length;
 
   function handleClick() {
-    if (selectMode) {
-      project.selected = !project.selected;
+    if (selectionGroup.selectMode) {
+      selectionGroup.toggleValue(project);
     } else {
       replace("/project/" + project.uuid);
     }
@@ -24,20 +26,20 @@
 
 <div
   class="project-view drop-shadow hoverable w-100"
-  class:selected={project.selected}
-  class:move-on-hover={!selectMode}
-  class:unselectable-text={selectMode}
+  class:selected={projectSelected}
+  class:move-on-hover={!selectionGroup.selectMode}
+  class:unselectable-text={selectionGroup.selectMode}
   on:click={handleClick}
 >
   <div class="w-100">
     <div class="flex-center-v">
-      {#if selectMode}
+      {#if selectionGroup.selectMode}
         <div
           in:fly={{ x: -10, duration: 500 }}
-          class:selected={project.selected}
+          class:selected={projectSelected}
           class="selected-indicator flex-center"
         >
-          {#if project.selected}
+          {#if projectSelected}
             &#10003;
           {/if}
         </div>
@@ -47,7 +49,7 @@
           {project.name}
         </h3>
         <p class="instance monospace my-0">
-          {project.instance.toString(16).padStart(14, "0")}
+          {project.instanceBase.toString(16).padStart(14, "0")}
         </p>
       </div>
     </div>

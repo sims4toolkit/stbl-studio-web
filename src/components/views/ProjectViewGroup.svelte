@@ -1,14 +1,14 @@
 <script lang="ts">
-  import type { Project } from "../../global";
+  import type Project from "../../models/project";
+  import type SelectionGroup from "../../models/selection-group";
   import ProjectView from "./ProjectView.svelte";
 
-  export let projects: Project[];
-  export let selectMode: boolean;
+  export let selectionGroup: SelectionGroup<Project>;
 </script>
 
 <div class="project-view-group">
-  {#each projects as project, key (key)}
-    <ProjectView bind:project bind:selectMode />
+  {#each selectionGroup.selectables as project, key (key)}
+    <ProjectView bind:project bind:selectionGroup />
   {/each}
 </div>
 
