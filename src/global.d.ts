@@ -2,43 +2,24 @@
 
 import type { StringTableLocale } from "@s4tk/models/enums";
 
-interface Selectable {
-  selected?: boolean;
-}
-
-interface Stbl {
-  entries: StblEntry[];
+interface StringTableWrapper {
   locale: StringTableLocale;
+  readonly stbl: StringTableResource;
+  readonly updatedKeys: Set<number>;
 }
 
-interface StblEntry extends Selectable {
-  isUpdated?: boolean;
-  key: string;
-  value: string;
-}
-
-interface StblProject extends Selectable {
-  group: string;
-  id: string;
-  instance: string;
+interface ProjectData {
+  group: number;
+  instanceBase: bigint;
   name: string;
   primaryLocale: StringTableLocale;
-  stbls: Stbl[];
-
-  toJson(): string;
+  readonly stbls: StringTableWrapper[];
+  readonly uuid: string;
 }
 
-interface Workspace {
-  version: number;
-  projects: StblProject[];
-  settings: WorkspaceSettings;
-
-  toJson(): string;
-}
-
-interface WorkspaceSettings {
+interface UserSettings {
   creatorName: string;
   defaultLocale: StringTableLocale;
   isDarkTheme: boolean;
-  nextProjectId: number;
+  projectUuids: string[]
 }

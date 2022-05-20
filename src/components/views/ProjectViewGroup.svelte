@@ -1,8 +1,8 @@
 <script lang="ts">
-  import type { StblProject } from "../../global";
+  import type { Project } from "../../global";
   import ProjectView from "./ProjectView.svelte";
 
-  export let projects: StblProject[];
+  export let projects: Project[];
   export let selectMode: boolean;
 </script>
 

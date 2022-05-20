@@ -1,6 +1,6 @@
 <script lang="ts">
   import { StringTableLocale } from "@s4tk/models/enums";
-  import type { StblProject } from "../../../global";
+  import type { Project } from "../../../global";
   import ToolbarColor from "../../../enums/toolbar-colors";
   import ContentArea from "../../layout/ContentArea.svelte";
   import SplitView from "../../layout/SplitView.svelte";
@@ -10,12 +10,12 @@
   import ProjectViewGroup from "../../views/ProjectViewGroup.svelte";
 
   let selectMode = false;
-  let projects: StblProject[] = [
+  let projects: Project[] = [
     {
-      id: "__stbl0",
+      uuid: "__stbl0",
       name: "Stbl with a very long name that should be truncated",
-      group: "0",
-      instance: "34567890ABCDEF",
+      group: 0,
+      instance: 0x34567890abcdefn,
       primaryLocale: StringTableLocale.English,
       stbls: [
         {
@@ -40,15 +40,12 @@
           ],
         },
       ],
-      toJson() {
-        return "";
-      },
     },
     {
-      id: "__stbl1",
+      uuid: "__stbl1",
       name: "Second STBL",
-      group: "0",
-      instance: "34567890ABCDEF",
+      group: 0,
+      instance: 0x34567890abcdefn,
       primaryLocale: StringTableLocale.Italian,
       stbls: [
         {
@@ -78,9 +75,6 @@
           ],
         },
       ],
-      toJson() {
-        return "";
-      },
     },
   ]; // FIXME:
 

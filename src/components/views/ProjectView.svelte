@@ -1,23 +1,23 @@
 <script lang="ts">
-  import type { StblProject } from "../../global";
+  import type { Project } from "../../global";
   import { fly } from "svelte/transition";
   import { replace } from "svelte-spa-router";
-  import { getLocaleCode } from "../../scripts/helpers";
+  import { getLocaleCode } from "../../services/localization";
 
-  export let project: StblProject;
+  export let project: Project;
   export let selectMode: boolean;
 
   $: localeCode = getLocaleCode(project.primaryLocale);
   $: localeCount = project.stbls.length;
   $: stringCount = project.stbls.find(
     (stbl) => stbl.locale === project.primaryLocale
-  ).entries.length;
+  ).stbl.entries.length;
 
   function handleClick() {
     if (selectMode) {
       project.selected = !project.selected;
     } else {
-      replace("/project/" + project.id);
+      replace("/project/" + project.uuid);
     }
   }
 </script>
@@ -26,6 +26,7 @@
   class="project-view drop-shadow hoverable w-100"
   class:selected={project.selected}
   class:move-on-hover={!selectMode}
+  class:unselectable-text={selectMode}
   on:click={handleClick}
 >
   <div class="w-100">
@@ -46,7 +47,7 @@
           {project.name}
         </h3>
         <p class="instance monospace my-0">
-          {project.instance.padStart(14, "0")}
+          {project.instance.toString(16).padStart(14, "0")}
         </p>
       </div>
     </div>
