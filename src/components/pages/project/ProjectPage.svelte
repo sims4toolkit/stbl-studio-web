@@ -19,7 +19,7 @@
   <ContentArea banded={true}>
     <div class="flex-center-v flex-space-between mb-2">
       <BackButton />
-      <h2 class="my-0 accent-color nowrap-truncate ml-2">
+      <h2 class="my-0 accent-color nowrap-truncate ml-2 text-shadow">
         {project?.name ?? "Language Barriers"}
       </h2>
     </div>

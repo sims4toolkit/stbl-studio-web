@@ -1,6 +1,9 @@
 <script lang="ts">
   import { link, location } from "svelte-spa-router";
   import ThemeToggler from "./ThemeToggler.svelte";
+
+  $: helpIcon = $location === "/help" ? "help-circle" : "help-circle-outline";
+  $: settingsIcon = $location === "/settings" ? "settings" : "settings-outline";
 </script>
 
 <nav class="flex-center-v flex-space-between bottom-shadow bg-blur">
@@ -11,10 +14,16 @@
     </a>
   </div>
   <div class="right flex-center-v flex-space-between">
-    <a href="/help" use:link class:active={$location === "/help"}>Help</a>
-    <a href="/settings" use:link class:active={$location === "/settings"}
-      >Settings</a
-    >
+    <a href="/help" use:link>
+      <img class="is-svg" src="./assets/{helpIcon}.svg" alt="Help" />
+    </a>
+    <a href="/settings" use:link>
+      <img
+        class="is-svg settings-img"
+        src="./assets/{settingsIcon}.svg"
+        alt="Settings"
+      />
+    </a>
     <ThemeToggler />
   </div>
 </nav>
@@ -44,6 +53,18 @@
       }
     }
 
+    div.right {
+      img {
+        height: 1.6em;
+        width: auto;
+        margin-top: 4px;
+
+        &.settings-img {
+          padding: 2px;
+        }
+      }
+    }
+
     a {
       color: var(--color-text);
       text-decoration: none;
@@ -54,11 +75,6 @@
 
       &:hover:not(.active) {
         opacity: 0.65;
-      }
-
-      &.active {
-        font-weight: bold;
-        pointer-events: none;
       }
     }
   }
