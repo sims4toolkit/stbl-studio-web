@@ -1,4 +1,3 @@
-import { StringTableResource } from "@s4tk/models";
 import type { ProjectData, StoredProject, UserSettings } from "../global";
 
 //#region Settings
@@ -87,8 +86,9 @@ function readProjectData(uuid: string, stored: StoredProject): ProjectData {
     name: stored.name,
     primaryLocale: stored.primaryLocale,
     stbls: stored.stbls.map(stbl => {
+      // FIXME: Buffer will probably be undefined
       const buffer = Buffer.from(stbl.data, "base64");
-      const parsedStbl = StringTableResource.from(buffer);
+      const parsedStbl = window.S4TK.models.StringTableResource.from(buffer);
 
       return {
         locale: stbl.locale,

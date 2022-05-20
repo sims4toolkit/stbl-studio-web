@@ -1,5 +1,6 @@
 /// <reference types="svelte" />
 
+import type { StringTableResource } from "@s4tk/models";
 import type { StringTableLocale } from "@s4tk/models/enums";
 
 interface StringTableWrapper {
@@ -41,3 +42,19 @@ interface StoredWorkspace {
   settings: UserSettings;
   version: number;
 }
+
+declare global {
+  interface Window {
+    S4TK: {
+      models: {
+        Package: typeof Package;
+        StringTableResource: typeof StringTableResource;
+      },
+      enums: {
+        StringTableLocale: typeof StringTableLocale;
+      }
+    };
+  }
+}
+
+window.S4TK = window.S4TK || {};

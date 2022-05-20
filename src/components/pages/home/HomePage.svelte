@@ -8,8 +8,9 @@
   import SelectModeToggle from "../../shared/SelectModeToggle.svelte";
   import ProjectViewGroup from "../../views/ProjectViewGroup.svelte";
   import SelectionGroup from "../../../models/selection-group";
-  import { StringTableLocale } from "@s4tk/models/enums";
-  import { StringTableResource } from "@s4tk/models";
+
+  const { StringTableLocale } = window.S4TK.enums;
+  const { StringTableResource } = window.S4TK.models;
 
   let projects: Project[] = [];
   let selectionGroup = new SelectionGroup(projects, "uuid");

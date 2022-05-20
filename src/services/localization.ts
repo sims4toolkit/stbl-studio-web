@@ -1,4 +1,5 @@
-import { StringTableLocale } from "@s4tk/models/enums";
+import type { StringTableLocale } from "@s4tk/models/enums";
+const StblLocaleImpl = window.S4TK.enums.StringTableLocale;
 
 /**
  * Returns 2-digit code to use for the given locale.
@@ -7,24 +8,24 @@ import { StringTableLocale } from "@s4tk/models/enums";
  */
 export function getLocaleCode(locale: StringTableLocale): string {
   switch (locale) {
-    case StringTableLocale.English: return "EN";
-    case StringTableLocale.ChineseSimplified: return "ZH";
-    case StringTableLocale.ChineseTraditional: return "ZH";
-    case StringTableLocale.Czech: return "CS";
-    case StringTableLocale.Danish: return "DA";
-    case StringTableLocale.Dutch: return "NL";
-    case StringTableLocale.Finnish: return "FI";
-    case StringTableLocale.French: return "FR";
-    case StringTableLocale.German: return "DE";
-    case StringTableLocale.Italian: return "IT";
-    case StringTableLocale.Japanese: return "JA";
-    case StringTableLocale.Korean: return "KO";
-    case StringTableLocale.Norwegian: return "NO";
-    case StringTableLocale.Polish: return "PL";
-    case StringTableLocale.Portuguese: return "PT";
-    case StringTableLocale.Russian: return "RU";
-    case StringTableLocale.Spanish: return "ES";
-    case StringTableLocale.Swedish: return "SV";
+    case StblLocaleImpl.English: return "EN";
+    case StblLocaleImpl.ChineseSimplified: return "ZH";
+    case StblLocaleImpl.ChineseTraditional: return "ZH";
+    case StblLocaleImpl.Czech: return "CS";
+    case StblLocaleImpl.Danish: return "DA";
+    case StblLocaleImpl.Dutch: return "NL";
+    case StblLocaleImpl.Finnish: return "FI";
+    case StblLocaleImpl.French: return "FR";
+    case StblLocaleImpl.German: return "DE";
+    case StblLocaleImpl.Italian: return "IT";
+    case StblLocaleImpl.Japanese: return "JA";
+    case StblLocaleImpl.Korean: return "KO";
+    case StblLocaleImpl.Norwegian: return "NO";
+    case StblLocaleImpl.Polish: return "PL";
+    case StblLocaleImpl.Portuguese: return "PT";
+    case StblLocaleImpl.Russian: return "RU";
+    case StblLocaleImpl.Spanish: return "ES";
+    case StblLocaleImpl.Swedish: return "SV";
     default: return "??";
   }
 }
@@ -36,11 +37,11 @@ export function getLocaleCode(locale: StringTableLocale): string {
  */
 export function getLocaleName(locale: StringTableLocale): string {
   switch (locale) {
-    case StringTableLocale.ChineseSimplified:
+    case StblLocaleImpl.ChineseSimplified:
       return "Chinese (Simplified)";
-    case StringTableLocale.ChineseTraditional:
+    case StblLocaleImpl.ChineseTraditional:
       return "Chinese (Traditional)";
     default:
-      return StringTableLocale[locale] ?? "Unknown";
+      return StblLocaleImpl[locale] ?? "Unknown";
   }
 }
