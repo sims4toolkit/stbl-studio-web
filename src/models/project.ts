@@ -42,10 +42,6 @@ export default class Project implements ProjectData {
     });
   }
 
-  deleteLocale(locale: StringTableLocale) {
-
-  }
-
   getLocale(locale: StringTableLocale): StringTableWrapper {
     return this.stbls.find(stbl => stbl.locale === locale);
   }
