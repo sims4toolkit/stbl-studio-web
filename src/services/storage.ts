@@ -1,5 +1,5 @@
 import { StringTableResource } from "@s4tk/models";
-import type { ProjectData, UserSettings } from "../global";
+import type { ProjectData, StoredProject, UserSettings } from "../global";
 
 //#region Settings
 
@@ -47,55 +47,65 @@ const StoredStringList: StoredSetting<string[]> = {
   }
 };
 
+function getSettingsProxy(settings: object): UserSettings {
+  return new Proxy(settings, {
+    get(target, prop) {
+      return target[prop].get(prop);
+    },
+    set(target, prop, value) {
+      target[prop].set(prop, value);
+      return true;
+    }
+  }) as unknown as UserSettings;
+}
+
+async function restoreSettings(settingsToRestore: Partial<UserSettings>) {
+  for (const [key, value] of Object.entries(settingsToRestore)) {
+    settings[key] = value;
+  }
+}
+
 //#endregion Settings
 
 //#region Projects
-
-interface StoredProject {
-  group: number;
-  instanceBase: string; // hex, no prefix
-  name: string;
-  primaryLocale: number;
-  stbls: {
-    locale: number;
-    data: string; // base64 binary
-    updatedKeys: number[];
-  }[];
-}
 
 function getStorageKey(uuid: string): string {
   return "project:" + uuid;
 }
 
-async function loadProjectData(uuid: string): Promise<ProjectData> {
-  return new Promise((resolve, reject) => {
-    const value = localStorage.getItem(getStorageKey(uuid));
-    if (!value) return reject("No project with ID: " + uuid);
+/**
+ * Converts stored project data into an actual project data object.
+ * 
+ * @param uuid UUID of project to read
+ * @param stored Data model of stored project
+ */
+function readProjectData(uuid: string, stored: StoredProject): ProjectData {
+  return {
+    uuid,
+    group: stored.group,
+    instanceBase: BigInt(stored.instanceBase),
+    name: stored.name,
+    primaryLocale: stored.primaryLocale,
+    stbls: stored.stbls.map(stbl => {
+      const buffer = Buffer.from(stbl.data, "base64");
+      const parsedStbl = StringTableResource.from(buffer);
 
-    const project: StoredProject = JSON.parse(value);
-
-    resolve({
-      uuid,
-      group: project.group,
-      instanceBase: BigInt(project.instanceBase),
-      name: project.name,
-      primaryLocale: project.primaryLocale,
-      stbls: project.stbls.map(stbl => {
-        const buffer = Buffer.from(stbl.data, "base64");
-        const parsedStbl = StringTableResource.from(buffer);
-
-        return {
-          locale: stbl.locale,
-          stbl: parsedStbl,
-          updatedKeys: new Set<number>(stbl.updatedKeys)
-        };
-      })
-    });
-  });
+      return {
+        locale: stbl.locale,
+        stbl: parsedStbl,
+        updatedKeys: new Set<number>(stbl.updatedKeys)
+      };
+    })
+  };
 }
 
-async function saveProjectData(project: ProjectData) {
-  const json: StoredProject = {
+/**
+ * Converts a project into an object that can be written to localStorage.
+ * 
+ * @param project Project to convert
+ */
+function writeProjectData(project: ProjectData): StoredProject {
+  return {
     group: project.group,
     instanceBase: project.instanceBase.toString(16),
     name: project.name,
@@ -110,33 +120,49 @@ async function saveProjectData(project: ProjectData) {
       };
     })
   };
+}
 
-  const value = JSON.stringify(json);
+/**
+ * Loads and returns a project from localStorage.
+ * 
+ * @param uuid UUID of project to load
+ */
+async function loadProjectData(uuid: string): Promise<ProjectData> {
+  return new Promise((resolve, reject) => {
+    const value = localStorage.getItem(getStorageKey(uuid));
+    if (!value) return reject("No project with ID: " + uuid);
+    const stored: StoredProject = JSON.parse(value);
+    resolve(readProjectData(uuid, stored));
+  });
+}
 
+/**
+ * Saves a project to localStorage.
+ * 
+ * @param project Project to save
+ */
+async function saveProjectData(project: ProjectData) {
+  const stored: StoredProject = writeProjectData(project);
+  const value = JSON.stringify(stored);
   localStorage.setItem(getStorageKey(project.uuid), value);
 }
 
 //#endregion Projects
 
-const settings: UserSettings = new Proxy({
+const settings = getSettingsProxy({
   creatorName: StoredString,
   defaultLocale: StoredInteger,
   isDarkTheme: StoredBoolean,
   projectUuids: StoredStringList,
-}, {
-  get(target, prop) {
-    return target[prop].get(prop);
-  },
-  set(target, prop, value) {
-    target[prop].set(prop, value);
-    return true;
-  }
-}) as unknown as UserSettings;
+});
 
 const StorageService = {
   settings,
+  restoreSettings,
+  readProjectData,
+  writeProjectData,
   loadProjectData,
-  saveProjectData
+  saveProjectData,
 };
 
 export default StorageService;

@@ -23,3 +23,21 @@ interface UserSettings {
   isDarkTheme: boolean;
   projectUuids: string[]
 }
+
+interface StoredProject {
+  group: number;
+  instanceBase: string; // hex, no prefix
+  name: string;
+  primaryLocale: number;
+  stbls: {
+    locale: number;
+    data: string; // base64 binary
+    updatedKeys: number[];
+  }[];
+}
+
+interface StoredWorkspace {
+  projects: { [key: string]: StoredProject; };
+  settings: UserSettings;
+  version: number;
+}
