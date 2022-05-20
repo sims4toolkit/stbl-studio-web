@@ -4,6 +4,7 @@
   export let color: string;
   export let title: string;
   export let icon: string;
+  export let disabled: boolean;
   export let toggleTitle: (text?: string, color?: string) => void;
   export let handleClick: () => void;
 
@@ -12,12 +13,14 @@
   $: imagePath = `./assets/${icon}.svg`;
 
   function handleEnterOrFocus(e: MouseEvent | FocusEvent) {
+    if (disabled) return;
     floatingActionButton.style.backgroundColor = color;
     floatingActionButton.style.borderColor = color;
     toggleTitle(title, color);
   }
 
   function handleLeaveOrBlur(e: MouseEvent | FocusEvent) {
+    if (disabled) return;
     floatingActionButton.style.backgroundColor = "transparent";
     floatingActionButton.style.borderColor = "var(--color-text)";
     toggleTitle();
@@ -26,14 +29,17 @@
 
 <div
   bind:this={floatingActionButton}
-  class="floating-action-button hoverable flex-center"
+  class="floating-action-button flex-center"
   class:first
   class:last
+  class:disabled
   on:mouseenter={handleEnterOrFocus}
   on:focus={handleEnterOrFocus}
   on:mouseleave={handleLeaveOrBlur}
   on:blur={handleLeaveOrBlur}
-  on:click={handleClick}
+  on:click={() => {
+    if (!disabled) handleClick();
+  }}
 >
   <img class="is-svg" src={imagePath} alt={title} />
 </div>
@@ -61,8 +67,9 @@
       border-right: none;
     }
 
-    &:hover img {
+    &:not(.disabled):hover img {
       filter: var(--filter-light);
+      cursor: pointer;
     }
   }
 </style>

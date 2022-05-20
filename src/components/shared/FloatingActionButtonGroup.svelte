@@ -2,6 +2,9 @@
   import { fly } from "svelte/transition";
   import FloatingActionButton from "./FloatingActionButton.svelte";
 
+  export let disabled = false;
+  export let disabledText = "disabled";
+
   export let buttonData: {
     color: string;
     title: string;
@@ -17,9 +20,17 @@
     titleText = text;
     titleColor = color;
   }
+
+  function handleEnterOrFocus(e: MouseEvent | FocusEvent) {
+    if (disabled) toggleTitle(disabledText, "var(--color-text)");
+  }
+
+  function handleLeaveOrBlur(e: MouseEvent | FocusEvent) {
+    if (disabled) toggleTitle();
+  }
 </script>
 
-<div class="floating-action-buttons">
+<div class="floating-action-buttons" class:disabled>
   {#if showTitle}
     <div
       class="title-container"
@@ -29,7 +40,13 @@
       {titleText}
     </div>
   {/if}
-  <div class="buttons-row">
+  <div
+    class="buttons-row"
+    on:mouseenter={handleEnterOrFocus}
+    on:focus={handleEnterOrFocus}
+    on:mouseleave={handleLeaveOrBlur}
+    on:blur={handleLeaveOrBlur}
+  >
     {#each buttonData as data, key (key)}
       <FloatingActionButton
         first={key === 0}
@@ -38,6 +55,7 @@
         title={data.title}
         icon={data.icon}
         handleClick={data.onClick}
+        {disabled}
         {toggleTitle}
       />
     {/each}
@@ -59,6 +77,14 @@
       padding-top: 0.2em;
       padding-bottom: 0.2em;
       color: var(--color-light);
+    }
+
+    &.disabled {
+      opacity: 0.55;
+
+      .title-container {
+        color: var(--color-bg);
+      }
     }
 
     .buttons-row {

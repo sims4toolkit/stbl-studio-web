@@ -92,6 +92,8 @@
 
   $: workspaceEmpty = projects?.length === 0;
 
+  $: toolbarDisabled = selectMode && !projects.some((p) => p.selected);
+
   const normalModeToolbar = [
     {
       title: "save workspace",
@@ -187,7 +189,11 @@
     </ContentArea>
   {/if}
 </section>
-<FloatingActionButtonGroup buttonData={toolbarData} />
+<FloatingActionButtonGroup
+  buttonData={toolbarData}
+  disabled={toolbarDisabled}
+  disabledText="nothing selected"
+/>
 
 <style lang="scss">
   #home-section {
