@@ -100,7 +100,7 @@
       icon: "desktop-download",
       color: ToolbarColor.Download,
       onClick() {
-        console.log("Save Clicked");
+        alert("Save Clicked");
       },
     },
     {
@@ -108,7 +108,7 @@
       icon: "upload",
       color: ToolbarColor.Upload,
       onClick() {
-        console.log("Upload Clicked");
+        alert("Upload Clicked");
       },
     },
     {
@@ -116,7 +116,7 @@
       icon: "plus",
       color: ToolbarColor.Create,
       onClick() {
-        console.log("Create Clicked");
+        alert("Create Clicked");
       },
     },
   ];
@@ -127,7 +127,7 @@
       icon: "trash",
       color: ToolbarColor.Delete,
       onClick() {
-        console.log("Delete Clicked");
+        alert("Delete Clicked");
       },
     },
     {
@@ -135,7 +135,7 @@
       icon: "git-merge",
       color: ToolbarColor.Merge,
       onClick() {
-        console.log("Merge Clicked");
+        alert("Merge Clicked");
       },
     },
     {
@@ -143,7 +143,7 @@
       icon: "download",
       color: ToolbarColor.Download,
       onClick() {
-        console.log("Download Clicked");
+        alert("Download Clicked");
       },
     },
   ];
