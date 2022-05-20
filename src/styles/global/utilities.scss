@@ -43,6 +43,12 @@
   text-align: right;
 }
 
+.nowrap-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .text-shadow {
   text-shadow: 1px 2px 4px var(--color-shadow);
 }
@@ -111,6 +117,38 @@
 
 .mt-3 {
   margin-top: 3em;
+}
+
+.ml-0 {
+  margin-left: 0;
+}
+
+.ml-1 {
+  margin-left: 1em;
+}
+
+.ml-2 {
+  margin-left: 2em;
+}
+
+.ml-3 {
+  margin-left: 3em;
+}
+
+.mr-0 {
+  margin-right: 0;
+}
+
+.mr-1 {
+  margin-right: 1em;
+}
+
+.mr-2 {
+  margin-right: 2em;
+}
+
+.mr-3 {
+  margin-right: 3em;
 }
 
 //#endregion Margins

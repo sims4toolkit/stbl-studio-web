@@ -17,7 +17,12 @@
 </svelte:head>
 <section id="project-section">
   <ContentArea banded={true}>
-    <BackButton />
+    <div class="flex-center-v flex-space-between mb-2">
+      <BackButton />
+      <h2 class="my-0 accent-color nowrap-truncate ml-2">
+        {project?.name ?? "Language Barriers"}
+      </h2>
+    </div>
     {params.id}
   </ContentArea>
   <ContentArea banded={false}>

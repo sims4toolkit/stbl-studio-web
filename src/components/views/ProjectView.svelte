@@ -42,7 +42,7 @@
         </div>
       {/if}
       <div class="mw-100">
-        <h3 class="my-0 accent-color project-name">
+        <h3 class="my-0 accent-color nowrap-truncate mr-1">
           {project.name}
         </h3>
         <p class="instance monospace my-0">
@@ -74,13 +74,6 @@
     border-radius: 8px;
     flex: 1 1 0px;
     max-width: 305px; // (content area width - 60px) / 4
-
-    .project-name {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin-right: 1em;
-    }
 
     .selected-indicator {
       background: none;
