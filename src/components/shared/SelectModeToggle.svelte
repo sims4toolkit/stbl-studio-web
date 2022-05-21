@@ -4,23 +4,29 @@
   import type Project from "../../models/project";
 
   export let selectionGroup: SelectionGroup<Project>;
+
+  $: isInSelectMode = selectionGroup.selectMode;
 </script>
 
 <div class="flex-center-h">
-  {#if selectionGroup.selectMode}
-    <button class="select-toggle" on:click={selectionGroup.selectAll} in:fade
-      >select all</button
+  {#if isInSelectMode}
+    <button
+      class="select-toggle"
+      on:click={() => selectionGroup.selectAll()}
+      in:fade>select all</button
     >
-    <button class="select-toggle" on:click={selectionGroup.deselectAll} in:fade
-      >deselect all</button
+    <button
+      class="select-toggle"
+      on:click={() => selectionGroup.deselectAll()}
+      in:fade>deselect all</button
     >
   {/if}
   <button
     class="select-toggle"
-    class:large-font={selectionGroup.selectMode}
-    on:click={selectionGroup.toggleSelectMode}
+    class:large-font={isInSelectMode}
+    on:click={() => selectionGroup.toggleSelectMode()}
   >
-    {#if selectionGroup.selectMode}
+    {#if isInSelectMode}
       <span in:fade>&times;</span>
     {:else}
       <span in:fade>select</span>

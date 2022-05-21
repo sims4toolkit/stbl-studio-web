@@ -8,6 +8,7 @@
   export let project: Project;
   export let selectionGroup: SelectionGroup<Project>;
 
+  $: isInSelectMode = selectionGroup.selectMode;
   $: projectSelected = selectionGroup.isSelected(project);
   $: localeCode = getLocaleCode(project.primaryLocale);
   $: localeCount = project.stbls.length;
@@ -27,13 +28,13 @@
 <div
   class="project-view drop-shadow hoverable w-100"
   class:selected={projectSelected}
-  class:move-on-hover={!selectionGroup.selectMode}
-  class:unselectable-text={selectionGroup.selectMode}
+  class:move-on-hover={!isInSelectMode}
+  class:unselectable-text={isInSelectMode}
   on:click={handleClick}
 >
   <div class="w-100">
     <div class="flex-center-v">
-      {#if selectionGroup.selectMode}
+      {#if isInSelectMode}
         <div
           in:fly={{ x: -10, duration: 500 }}
           class:selected={projectSelected}

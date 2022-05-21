@@ -9,12 +9,18 @@
   import ProjectViewGroup from "../../views/ProjectViewGroup.svelte";
   import SelectionGroup from "../../../models/selection-group";
 
-  const { StringTableLocale } = window.S4TK.enums;
-  const { StringTableResource } = window.S4TK.models;
+  const { StringTableLocale } = window.S4TK.enums; // FIXME: get rid of this
+  const { StringTableResource } = window.S4TK.models; // FIXME: get rid of this
 
   let projects: Project[] = [];
-  let selectionGroup = new SelectionGroup(projects, "uuid");
 
+  let selectionGroup: SelectionGroup<Project>;
+  selectionGroup = new SelectionGroup(projects, "uuid", () => {
+    // needed for svelte reactivity
+    selectionGroup = selectionGroup;
+  });
+
+  // FIXME: get rid of this
   projects.push(
     new Project({
       group: 0,
