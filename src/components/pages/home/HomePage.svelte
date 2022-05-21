@@ -1,5 +1,7 @@
 <script lang="ts">
-  import Project from "../../../models/project";
+  import type Project from "../../../models/project";
+  import type Workspace from "../../../models/workspace";
+  import SelectionGroup from "../../../models/selection-group";
   import ToolbarColor from "../../../enums/toolbar-colors";
   import ContentArea from "../../layout/ContentArea.svelte";
   import SplitView from "../../layout/SplitView.svelte";
@@ -7,65 +9,31 @@
   import SectionHeader from "../../shared/SectionHeader.svelte";
   import SelectModeToggle from "../../shared/SelectModeToggle.svelte";
   import ProjectViewGroup from "../../views/ProjectViewGroup.svelte";
-  import SelectionGroup from "../../../models/selection-group";
-  import ActiveSession from "../../../services/session";
+  import Downloader from "../../shared/Downloader.svelte";
+  import { activeWorkspace } from "../../../services/stores";
 
-  const { StringTableLocale } = window.S4TK.enums; // FIXME: get rid of this
-  const { StringTableResource } = window.S4TK.models; // FIXME: get rid of this
-
-  let projects: Project[] = [];
-
+  let workspace: Workspace;
   let selectionGroup: SelectionGroup<Project>;
-  selectionGroup = new SelectionGroup(projects, "uuid", () => {
-    // needed for svelte reactivity
-    selectionGroup = selectionGroup;
+  activeWorkspace.subscribe((value) => {
+    if (value) {
+      workspace = value;
+      selectionGroup = new SelectionGroup(value.projects, "uuid", () => {
+        selectionGroup = selectionGroup;
+      });
+    }
   });
 
-  // FIXME: get rid of this
-  projects.push(
-    new Project({
-      group: 0,
-      instanceBase: 12345n,
-      name: "Test Project",
-      primaryLocale: StringTableLocale.English,
-      uuid: "0",
-      stbls: [
-        {
-          locale: StringTableLocale.English,
-          stbl: new StringTableResource([
-            {
-              key: 1234,
-              value: "hi",
-            },
-            {
-              key: 5678,
-              value: "bye",
-            },
-            {
-              key: 2468,
-              value: "untranslated",
-            },
-          ]),
-        },
-        {
-          locale: StringTableLocale.Italian,
-          stbl: new StringTableResource([
-            {
-              key: 1234,
-              value: "ciao",
-            },
-            {
-              key: 5678,
-              value: "arrivederci",
-            },
-          ]),
-        },
-      ],
-    })
-  );
+  let showDownload = false;
+  let downloadFilename: string;
+  let downloadContentGenerator: () => Blob;
+  function download(filename: string, contentGenerator: () => Blob) {
+    downloadFilename = filename;
+    downloadContentGenerator = contentGenerator;
+    showDownload = true;
+  }
 
-  $: workspaceEmpty = projects?.length === 0;
-  $: toolbarDisabled = selectionGroup.noneSelected;
+  $: workspaceEmpty = Boolean(!workspace?.projects.length);
+  $: toolbarDisabled = !workspace || selectionGroup?.noneSelected;
 
   const normalModeToolbar = [
     {
@@ -73,8 +41,7 @@
       icon: "desktop-download",
       color: ToolbarColor.Download,
       async onClick() {
-        const content = JSON.stringify(ActiveSession.workspace.toJson());
-        console.log(content);
+        download("StblStudioWorkspace.json", () => workspace.toBlob());
       },
     },
     {
@@ -122,7 +89,7 @@
     },
   ];
 
-  $: toolbarData = selectionGroup.selectMode
+  $: toolbarData = selectionGroup?.selectMode
     ? selectModeToolbar
     : normalModeToolbar;
 </script>
@@ -131,34 +98,39 @@
   <title>STBL Studio</title>
 </svelte:head>
 <section id="home-section" class:center-v={workspaceEmpty}>
-  {#if workspaceEmpty}
-    <ContentArea>
-      <slot>
-        <div class="empty-workspace">
-          <h1>Your workspace is empty.</h1>
-          <p>
-            Upload existing string tables or create new ones with the toolbar in
-            the bottom-right corner.
-          </p>
-          <p>
-            Confused? Read <a href="#/help">the help page</a> to learn how to use
-            String Table Studio.
-          </p>
-        </div>
-      </slot>
-    </ContentArea>
-  {:else}
-    <ContentArea>
-      <slot>
-        <div class="mb-2">
-          <SplitView>
-            <SectionHeader slot="left" title="My Workspace" />
-            <SelectModeToggle slot="right" bind:selectionGroup />
-          </SplitView>
-        </div>
-        <ProjectViewGroup bind:selectionGroup />
-      </slot>
-    </ContentArea>
+  {#if workspace}
+    {#if workspaceEmpty}
+      <ContentArea>
+        <slot>
+          <div>
+            <h1 class="mb-2">
+              <span class="default-gradient-text">Your workspace is empty.</span
+              >
+            </h1>
+            <p>
+              Upload existing string tables or create new ones with the toolbar
+              in the bottom-right corner.
+            </p>
+            <p>
+              Confused? Read <a href="#/help">the help page</a> to learn how to use
+              String Table Studio.
+            </p>
+          </div>
+        </slot>
+      </ContentArea>
+    {:else}
+      <ContentArea>
+        <slot>
+          <div class="mb-2">
+            <SplitView>
+              <SectionHeader slot="left" title="My Workspace" />
+              <SelectModeToggle slot="right" bind:selectionGroup />
+            </SplitView>
+          </div>
+          <ProjectViewGroup bind:selectionGroup />
+        </slot>
+      </ContentArea>
+    {/if}
   {/if}
 </section>
 <FloatingActionButtonGroup
@@ -166,6 +138,13 @@
   disabled={toolbarDisabled}
   disabledText="nothing selected"
 />
+{#if showDownload}
+  <Downloader
+    filename={downloadFilename}
+    contentGenerator={downloadContentGenerator}
+    onDownload={() => (showDownload = false)}
+  />
+{/if}
 
 <style lang="scss">
   #home-section {
@@ -176,16 +155,6 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-    }
-
-    .empty-workspace {
-      h1 {
-        opacity: 0.65;
-        margin: {
-          top: 0;
-          bottom: 2em;
-        }
-      }
     }
   }
 </style>

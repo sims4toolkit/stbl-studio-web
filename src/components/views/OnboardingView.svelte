@@ -1,8 +1,8 @@
 <script lang="ts">
   import { fade, fly } from "svelte/transition";
   import Workspace from "../../models/workspace";
-  import ActiveSession from "../../services/session";
   import StorageService from "../../services/storage";
+  import { activeWorkspace } from "../../services/stores";
   import NavigationButton from "../shared/NavigationButton.svelte";
   import ProgressCircles from "../shared/ProgressCircles.svelte";
 
@@ -21,7 +21,7 @@
     } else if (page === "disclaimers") {
       StorageService.settings.creatorName = creatorName;
       StorageService.settings.hasWorkspace = true;
-      ActiveSession.workspace = new Workspace();
+      activeWorkspace.set(new Workspace());
       exitOnboarding();
     }
   }

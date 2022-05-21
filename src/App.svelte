@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import Router from "svelte-spa-router";
+  import { activeWorkspace } from "./services/stores";
   import StorageService from "./services/storage";
   import Navbar from "./components/Navbar.svelte";
   import Footer from "./components/Footer.svelte";
@@ -11,20 +12,15 @@
   import BlurOverlay from "./components/layout/BlurOverlay.svelte";
   import Workspace from "./models/workspace";
   import OnboardingView from "./components/views/OnboardingView.svelte";
-  import ActiveSession from "./services/session";
 
   let onboardUser = false;
   let restoreError = false;
-
-  function exitOnboarding() {
-    onboardUser = false;
-  }
 
   onMount(() => {
     if (StorageService.settings.hasWorkspace) {
       Workspace.restoreFromStorage()
         .then((workspace) => {
-          ActiveSession.workspace = workspace;
+          activeWorkspace.set(workspace);
         })
         .catch((error) => {
           console.error(error);
@@ -42,7 +38,6 @@
     "*": NotFoundPage,
   };
 
-  // FIXME: is this needed?
   window.addEventListener("hashchange", function (event) {
     if (event.oldURL || event.newURL) {
       window.scrollTo(0, 0);
@@ -85,7 +80,10 @@
   </BlurOverlay>
 {:else if onboardUser}
   <BlurOverlay>
-    <OnboardingView slot="content" {exitOnboarding} />
+    <OnboardingView
+      slot="content"
+      exitOnboarding={() => (onboardUser = false)}
+    />
   </BlurOverlay>
 {/if}
 
