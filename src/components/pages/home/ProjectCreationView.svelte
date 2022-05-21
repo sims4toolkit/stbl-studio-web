@@ -2,26 +2,42 @@
   import { v4 as uuidv4 } from "uuid";
   import type Workspace from "../../../models/workspace";
   import { allLocales } from "../../../services/localization";
+  import StorageService from "../../../services/storage";
+  import { validateHexString } from "../../../services/validation";
   import { activeWorkspace } from "../../../services/stores";
   import GradientHeader from "../../shared/GradientHeader.svelte";
+  import SelectWithLabel from "../../shared/SelectWithLabel.svelte";
   import TextInput from "../../shared/TextInput.svelte";
 
   const { StringTableLocale } = window.S4TK.enums;
   const { fnv64 } = window.S4TK.hashing;
   const { formatAsHexString } = window.S4TK.formatting;
 
-  let uuid: string = uuidv4();
-  let name = "";
-  // let group = 0;
-  let groupString = formatAsHexString(0, 8, false);
-  let primaryLocale = StringTableLocale.English;
-  // let instanceBase = fnv64(uuid) & 0xffffffffffffffn;
-  let instanceBaseString = formatAsHexString(0, 14, false);
-
   let workspace: Workspace;
   activeWorkspace.subscribe((value) => {
     workspace = value;
   });
+
+  const localeOptions = allLocales.map((data) => {
+    return {
+      value: data.enumValue,
+      text: `${data.englishName} (${data.nativeName})`,
+    };
+  });
+
+  let uuid: string = uuidv4();
+  let name = "";
+  let primaryLocale = StorageService.settings.defaultLocale;
+  let group = 0;
+  let groupString = formatAsHexString(0, 8, false);
+  let instanceBase = fnv64(uuid) & 0xffffffffffffffn;
+  let instanceBaseString = formatAsHexString(instanceBase, 14, false);
+
+  let isNameValid = false;
+  let isGroupValid = false;
+  let isInstanceValid = false;
+
+  $: isEverythingValid = isNameValid && isGroupValid && isInstanceValid;
 
   // $: groupString = formatAsHexString(group, 8, false);
   // $: instanceBaseString = formatAsHexString(instanceBase, 14, false);
@@ -37,7 +53,7 @@
       label="project name"
       placeholder="Project name..."
       bind:value={name}
-      isValid={false}
+      isValid={isNameValid}
       validators={[
         {
           error: "Must be non-empty",
@@ -63,48 +79,44 @@
     <TextInput
       monospace={true}
       name="group-text-input"
-      label="Group"
+      label="group"
       placeholder="Group..."
       bind:value={groupString}
-      isValid={false}
+      isValid={isGroupValid}
       validators={[
         {
           error: "Must be valid 8-digit hex",
           test(value) {
-            return false;
+            return validateHexString(value, 8);
           },
         },
       ]}
     />
-    <input
-      class="tgi-input"
-      type="text"
-      placeholder="Instance Base..."
+    <TextInput
+      monospace={true}
+      name="instance-text-input"
+      label="instance base"
+      placeholder="Instance base..."
       bind:value={instanceBaseString}
+      isValid={isInstanceValid}
+      validators={[
+        {
+          error: "Must be valid 14-digit hex",
+          test(value) {
+            return validateHexString(value, 14);
+          },
+        },
+      ]}
     />
-    <label for="primary-locale-select">Primary Locale</label>
-    <select
+    <SelectWithLabel
       name="primary-locale-select"
-      id="primary-locale-select"
-      bind:value={primaryLocale}
-    >
-      {#each allLocales as localeData, key (key)}
-        <option value={localeData.enumValue}>
-          {localeData.englishName}
-          {#if localeData.enumValue !== StringTableLocale.English}
-            ({localeData.nativeName})
-          {/if}
-        </option>
-      {/each}
-    </select>
+      label="primary locale"
+      bind:selected={primaryLocale}
+      options={localeOptions}
+    />
   </form>
 </div>
 
 <style lang="scss">
-  .project-creation-view {
-    .tgi-input,
-    .tgi-input::placeholder {
-      font-family: monospace;
-    }
-  }
+  // intentionally blank
 </style>
