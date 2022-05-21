@@ -47,6 +47,7 @@
 
 <style lang="scss">
   .downloader {
+    z-index: 1024;
     position: fixed;
     bottom: 25px;
     left: 25px;

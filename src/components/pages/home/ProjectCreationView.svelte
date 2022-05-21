@@ -2,6 +2,7 @@
   import { fly } from "svelte/transition";
   import { v4 as uuidv4 } from "uuid";
   import type Workspace from "../../../models/workspace";
+  import type Project from "../../../models/project";
   import { allLocales } from "../../../services/localization";
   import StorageService from "../../../services/storage";
   import { hashInstanceBase, validateHexString } from "../../../services/tgi";
@@ -11,12 +12,13 @@
   import TextInput from "../../shared/TextInput.svelte";
   import ProgressCircles from "../../shared/ProgressCircles.svelte";
   import NavigationButton from "../../shared/NavigationButton.svelte";
+  import StickyCloseButton from "../../shared/StickyCloseButton.svelte";
 
   const { formatAsHexString } = window.S4TK.formatting;
 
   const animationDuration = 1000;
 
-  export let onComplete: () => Promise<Workspace>;
+  export let onComplete: (project?: Project) => void;
 
   let workspace: Workspace;
   activeWorkspace.subscribe((value) => {
@@ -26,7 +28,9 @@
   const localeOptions = allLocales.map((data) => {
     return {
       value: data.enumValue,
-      text: `${data.englishName} (${data.nativeName})`,
+      text: data.enumValue
+        ? `${data.englishName} (${data.nativeName})`
+        : data.englishName,
     };
   });
 
@@ -63,7 +67,7 @@
       label="project name"
       placeholder="Project name..."
       bind:value={name}
-      isValid={isNameValid}
+      bind:isValid={isNameValid}
       validators={[
         {
           error: "Must be non-empty",
@@ -94,7 +98,7 @@
         label="group"
         placeholder="Group..."
         bind:value={groupString}
-        isValid={isGroupValid}
+        bind:isValid={isGroupValid}
         validators={[
           {
             error: "Must be valid 8-digit hex",
@@ -111,7 +115,7 @@
         label="instance base"
         placeholder="Instance base..."
         bind:value={instanceBaseString}
-        isValid={isInstanceValid}
+        bind:isValid={isInstanceValid}
         validators={[
           {
             error: "Must be valid 14-digit hex",
@@ -156,9 +160,15 @@
     in:fly={{ y: 35, duration: animationDuration }}
   >
     <ProgressCircles circles={2} filled={1} />
-    <NavigationButton text="Next" direction="right" onClick={onComplete} />
+    <NavigationButton
+      text="Next"
+      direction="right"
+      onClick={onComplete}
+      bind:active={isEverythingValid}
+    />
   </div>
 </div>
+<StickyCloseButton onClick={() => onComplete()} />
 
 <style lang="scss">
   .project-creation-view {

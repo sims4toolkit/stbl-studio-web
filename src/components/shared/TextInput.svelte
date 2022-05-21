@@ -52,7 +52,7 @@
     class:valid={isValid}
   />
   {#if !isValid}
-    <p transition:fade class="subtle-text error-color my-0">
+    <p in:fade class="subtle-text error-color my-0">
       {errorMessage}
     </p>
   {/if}

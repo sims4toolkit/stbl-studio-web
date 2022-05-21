@@ -25,7 +25,7 @@
 
 <style lang="scss">
   .overlay {
-    z-index: 50000;
+    z-index: 2048;
     position: fixed;
     top: 0;
     left: 0;

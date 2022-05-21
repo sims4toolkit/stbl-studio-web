@@ -37,6 +37,9 @@
   }
 
   let creatingProject = false;
+  function onProjectCreatorExit(project?: Project) {
+    creatingProject = false;
+  }
 
   $: workspaceEmpty = Boolean(!workspace?.projects.length);
   $: toolbarDisabledText = workspace ? "none selected" : "no workspace";
@@ -153,7 +156,7 @@
 
 {#if creatingProject}
   <BlurOverlay>
-    <ProjectCreationView slot="content" />
+    <ProjectCreationView slot="content" onComplete={onProjectCreatorExit} />
   </BlurOverlay>
 {/if}
 
