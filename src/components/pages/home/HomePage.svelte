@@ -111,16 +111,14 @@
       <ContentArea>
         <slot>
           <div>
-            <h1 class="mb-2">
-              <span class="default-gradient-text">Your workspace is empty</span>
-            </h1>
-            <p>
+            <GradientHeader title="Your workspace is empty" />
+            <p class="mt-2">
               Upload existing string tables or create new ones with the toolbar
               in the bottom-right corner.
             </p>
             <p>
-              Confused? Read <a href="#/help">the help page</a> to learn how to use
-              String Table Studio.
+              Confused? Visit the <a href="#/help">help page</a> to learn how to
+              use String Table Studio.
             </p>
           </div>
         </slot>

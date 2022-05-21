@@ -55,11 +55,11 @@
             target="_blank">feature list</a
           > to learn more about what it can do.
         </p>
-        <p class="mb-2">Please provide your creator name to get started.</p>
+        <p class="mb-2">Please provide your name to get started.</p>
         <input
           class="w-100"
           type="text"
-          placeholder="Creator Name..."
+          placeholder="Name..."
           bind:value={creatorName}
         />
       {:else}

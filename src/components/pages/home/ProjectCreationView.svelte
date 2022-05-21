@@ -12,17 +12,19 @@
 
   let uuid: string = uuidv4();
   let name = "";
-  let group = 0;
+  // let group = 0;
+  let groupString = formatAsHexString(0, 8, false);
   let primaryLocale = StringTableLocale.English;
-  let instanceBase = fnv64(uuid) & 0xffffffffffffffn;
+  // let instanceBase = fnv64(uuid) & 0xffffffffffffffn;
+  let instanceBaseString = formatAsHexString(0, 14, false);
 
   let workspace: Workspace;
   activeWorkspace.subscribe((value) => {
     workspace = value;
   });
 
-  $: groupString = formatAsHexString(group, 8, false);
-  $: instanceBaseString = formatAsHexString(instanceBase, 14, false);
+  // $: groupString = formatAsHexString(group, 8, false);
+  // $: instanceBaseString = formatAsHexString(instanceBase, 14, false);
 </script>
 
 <div class="project-creation-view">
