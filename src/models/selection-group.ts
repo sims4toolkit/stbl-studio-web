@@ -35,7 +35,12 @@ export default class SelectionGroup<T> {
 
   toggleSelectMode(value?: boolean) {
     this._selectMode = value ?? !this._selectMode;
-    this._refreshCallback();
+
+    if (!this._selectMode) {
+      this.deselectAll();
+    } else {
+      this._refreshCallback();
+    }
   }
 
   toggleValue(value: T) {

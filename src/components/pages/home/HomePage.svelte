@@ -31,7 +31,33 @@
       stbls: [
         {
           locale: StringTableLocale.English,
-          stbl: new StringTableResource(),
+          stbl: new StringTableResource([
+            {
+              key: 1234,
+              value: "hi",
+            },
+            {
+              key: 5678,
+              value: "bye",
+            },
+            {
+              key: 2468,
+              value: "untranslated",
+            },
+          ]),
+        },
+        {
+          locale: StringTableLocale.Italian,
+          stbl: new StringTableResource([
+            {
+              key: 1234,
+              value: "ciao",
+            },
+            {
+              key: 5678,
+              value: "arrivederci",
+            },
+          ]),
         },
       ],
     })
