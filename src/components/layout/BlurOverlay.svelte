@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount, onDestroy } from "svelte";
+  import { fade } from "svelte/transition";
 
   export let fill: boolean = true;
 
@@ -14,7 +15,7 @@
   });
 </script>
 
-<div class="overlay fadein">
+<div class="overlay" transition:fade>
   <div class="popup" class:fill>
     <div class="overlay-content-wrapper">
       <slot name="content" />
