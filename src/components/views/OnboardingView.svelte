@@ -1,16 +1,17 @@
 <script lang="ts">
   import { fade, fly } from "svelte/transition";
+  import Workspace from "../../models/workspace";
+  import ActiveSession from "../../services/session";
+  import StorageService from "../../services/storage";
   import NavigationButton from "../shared/NavigationButton.svelte";
   import ProgressCircles from "../shared/ProgressCircles.svelte";
 
+  export let exitOnboarding: () => void;
+
   const animationDuration = 1000;
-
   let page: "name" | "disclaimers" | "upload" = "name";
-
   let creatorName: string = "";
-
   $: nameFilledIn = Boolean(creatorName);
-
   $: filledInCircles =
     (nameFilledIn ? 1 : 0) + (page === "disclaimers" ? 1 : 0);
 
@@ -18,7 +19,10 @@
     if (page === "name") {
       page = "disclaimers";
     } else if (page === "disclaimers") {
-      // TODO:
+      StorageService.settings.creatorName = creatorName;
+      StorageService.settings.hasWorkspace = true;
+      ActiveSession.workspace = new Workspace();
+      exitOnboarding();
     }
   }
 

@@ -7,42 +7,46 @@ interface StoredSetting<T> {
   set: (setting: string, value: T) => void;
 }
 
+function getSettingStorageKey(setting: string): string {
+  return "setting:" + setting;
+}
+
 const StoredString: StoredSetting<string> = {
   get(prop: string, defaultValue: string = "") {
-    return localStorage.getItem(prop) ?? defaultValue;
+    return localStorage.getItem(getSettingStorageKey(prop)) ?? defaultValue;
   },
   set(prop: string, value: string) {
-    localStorage.setItem(prop, value);
+    localStorage.setItem(getSettingStorageKey(prop), value);
   }
 };
 
 const StoredBoolean: StoredSetting<boolean> = {
   get(prop: string, defaultValue: boolean = false) {
-    const value = localStorage.getItem(prop);
+    const value = localStorage.getItem(getSettingStorageKey(prop));
     return value ? value === "true" : defaultValue;
   },
   set(prop: string, value: boolean) {
-    localStorage.setItem(prop, value ? "true" : "false");
+    localStorage.setItem(getSettingStorageKey(prop), value ? "true" : "false");
   }
 };
 
 const StoredInteger: StoredSetting<number> = {
   get(prop: string, defaultValue: number = 0) {
-    const value = localStorage.getItem(prop);
+    const value = localStorage.getItem(getSettingStorageKey(prop));
     return value ? parseInt(value) : defaultValue;
   },
   set(prop: string, value: number) {
-    localStorage.setItem(prop, value.toString());
+    localStorage.setItem(getSettingStorageKey(prop), value.toString());
   }
 };
 
 const StoredStringList: StoredSetting<string[]> = {
   get(prop: string, defaultValue: string[] = []) {
-    const value = localStorage.getItem(prop);
+    const value = localStorage.getItem(getSettingStorageKey(prop));
     return value ? JSON.parse(value) as string[] : defaultValue;
   },
   set(prop: string, value: string[]) {
-    localStorage.setItem(prop, JSON.stringify(value));
+    localStorage.setItem(getSettingStorageKey(prop), JSON.stringify(value));
   }
 };
 
@@ -68,7 +72,7 @@ async function restoreSettings(settingsToRestore: Partial<UserSettings>) {
 
 //#region Projects
 
-function getStorageKey(uuid: string): string {
+function getProjectStorageKey(uuid: string): string {
   return "project:" + uuid;
 }
 
@@ -128,7 +132,7 @@ function writeProjectData(project: ProjectData): StoredProject {
  * @param uuid UUID of project to load
  */
 function loadProjectData(uuid: string): ProjectData {
-  const value = localStorage.getItem(getStorageKey(uuid));
+  const value = localStorage.getItem(getProjectStorageKey(uuid));
   if (!value) return undefined;
   const stored: StoredProject = JSON.parse(value);
   return readProjectData(uuid, stored);
@@ -142,7 +146,7 @@ function loadProjectData(uuid: string): ProjectData {
 async function saveProjectData(project: ProjectData) {
   const stored: StoredProject = writeProjectData(project);
   const value = JSON.stringify(stored);
-  localStorage.setItem(getStorageKey(project.uuid), value);
+  localStorage.setItem(getProjectStorageKey(project.uuid), value);
 }
 
 //#endregion Projects

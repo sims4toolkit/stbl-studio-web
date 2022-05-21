@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount, setContext } from "svelte";
+  import { onMount } from "svelte";
   import Router from "svelte-spa-router";
   import StorageService from "./services/storage";
   import Navbar from "./components/Navbar.svelte";
@@ -11,15 +11,20 @@
   import BlurOverlay from "./components/layout/BlurOverlay.svelte";
   import Workspace from "./models/workspace";
   import OnboardingView from "./components/views/OnboardingView.svelte";
+  import ActiveSession from "./services/session";
 
   let onboardUser = false;
   let restoreError = false;
+
+  function exitOnboarding() {
+    onboardUser = false;
+  }
 
   onMount(() => {
     if (StorageService.settings.hasWorkspace) {
       Workspace.restoreFromStorage()
         .then((workspace) => {
-          setContext("workspace", { workspace });
+          ActiveSession.workspace = workspace;
         })
         .catch((error) => {
           console.error(error);
@@ -28,12 +33,10 @@
     } else {
       setTimeout(() => {
         onboardUser = true;
-        // StorageService.settings.hasWorkspace = true;
-      }, 200);
+      }, 50);
     }
   });
 
-  // https://github.com/ItalyPaleAle/svelte-spa-router
   const routes = {
     "/": HomePage,
     "/help": HelpPage,
@@ -84,7 +87,7 @@
   </BlurOverlay>
 {:else if onboardUser}
   <BlurOverlay>
-    <OnboardingView slot="content" />
+    <OnboardingView slot="content" {exitOnboarding} />
   </BlurOverlay>
 {/if}
 
