@@ -2,26 +2,26 @@
   import { onMount } from "svelte";
   import StorageService from "../services/storage";
 
-  let isDarkTheme: boolean = true;
+  let isLightTheme: boolean = true;
 
-  $: themeImgSrc = `../assets/${isDarkTheme ? "moon" : "sunny"}-outline.svg`;
-  $: themeImgAlt = `${isDarkTheme ? "Dark" : "Light"} Theme`;
+  $: themeImgSrc = `../assets/${isLightTheme ? "sunny" : "moon"}-outline.svg`;
+  $: themeImgAlt = `${isLightTheme ? "Light" : "Dark"} Theme`;
 
   function toggleTheme() {
-    isDarkTheme = !isDarkTheme;
+    isLightTheme = !isLightTheme;
     setTheme();
-    StorageService.settings.isDarkTheme = isDarkTheme;
+    StorageService.settings.isLightTheme = isLightTheme;
   }
 
   function setTheme() {
     document.documentElement.setAttribute(
       "data-theme",
-      isDarkTheme ? "dark" : "light"
+      isLightTheme ? "light" : "dark"
     );
   }
 
   onMount(() => {
-    isDarkTheme = StorageService.settings.isDarkTheme;
+    isLightTheme = StorageService.settings.isLightTheme;
     setTheme();
   });
 </script>

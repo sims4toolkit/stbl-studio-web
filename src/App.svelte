@@ -1,22 +1,23 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import Router from "svelte-spa-router";
+  import StorageService from "./services/storage";
   import Navbar from "./components/Navbar.svelte";
   import Footer from "./components/Footer.svelte";
-  import HomePage from "./components/pages/home/HomePage.svelte";
   import NotFoundPage from "./components/pages/NotFoundPage.svelte";
-  import BlurOverlay from "./components/layout/BlurOverlay.svelte";
-  import { onMount } from "svelte";
+  import HomePage from "./components/pages/home/HomePage.svelte";
   import HelpPage from "./components/pages/help/HelpPage.svelte";
   import ProjectPage from "./components/pages/project/ProjectPage.svelte";
+  import BlurOverlay from "./components/layout/BlurOverlay.svelte";
 
   let showOverlay = false;
 
   onMount(() => {
-    const hasBeenOnboarded = localStorage.getItem("hasBeenOnboarded");
-    if (!hasBeenOnboarded) {
+    const hasWorkspace = StorageService.settings.hasWorkspace;
+    if (!hasWorkspace) {
       setTimeout(() => {
         showOverlay = true;
-        localStorage.setItem("hasBeenOnboarded", "true");
+        StorageService.settings.hasWorkspace = true;
       }, 200);
     }
   });
@@ -29,6 +30,7 @@
     "*": NotFoundPage,
   };
 
+  // FIXME: is this needed?
   window.addEventListener("hashchange", function (event) {
     if (event.oldURL || event.newURL) {
       window.scrollTo(0, 0);

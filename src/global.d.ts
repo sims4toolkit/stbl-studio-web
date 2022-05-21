@@ -21,8 +21,8 @@ interface ProjectData {
 interface UserSettings {
   creatorName: string;
   defaultLocale: StringTableLocale;
-  hasBeenOnboarded: boolean;
-  isDarkTheme: boolean;
+  hasWorkspace: boolean;
+  isLightTheme: boolean;
   projectUuids: string[]
 }
 

@@ -17,7 +17,7 @@ const StoredString: StoredSetting<string> = {
 };
 
 const StoredBoolean: StoredSetting<boolean> = {
-  get(prop: string, defaultValue: boolean = true) {
+  get(prop: string, defaultValue: boolean = false) {
     const value = localStorage.getItem(prop);
     return value ? value === "true" : defaultValue;
   },
@@ -150,8 +150,8 @@ async function saveProjectData(project: ProjectData) {
 const settings = getSettingsProxy({
   creatorName: StoredString,
   defaultLocale: StoredInteger,
-  hasBeenOnboarded: StoredBoolean,
-  isDarkTheme: StoredBoolean,
+  hasWorkspace: StoredBoolean,
+  isLightTheme: StoredBoolean,
   projectUuids: StoredStringList,
 });
 
