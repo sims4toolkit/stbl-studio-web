@@ -31,9 +31,7 @@
           restoreError = true;
         });
     } else {
-      setTimeout(() => {
-        onboardUser = true;
-      }, 50);
+      onboardUser = true;
     }
   });
 

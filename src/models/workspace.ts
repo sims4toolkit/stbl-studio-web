@@ -58,14 +58,14 @@ export default class Workspace {
   /**
    * Writes this workspace into a JSON that can be written.
    */
-  toJson(): StoredWorkspace {
+  toBlob(): Blob {
     const projects: { [key: string]: StoredProject } = {};
 
     this.projects.forEach(project => {
       projects[project.uuid] = StorageService.writeProjectData(project);
     });
 
-    return {
+    const json = {
       version: CURRENT_VERSION,
       settings: {
         creatorName: StorageService.settings.creatorName,
@@ -76,6 +76,10 @@ export default class Workspace {
       },
       projects
     };
+
+    const content = JSON.stringify(json);
+
+    return new Blob([content]);
   }
 
   //#endregion Methods
