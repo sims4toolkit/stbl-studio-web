@@ -38,7 +38,6 @@
 
   let creatingProject = false;
 
-  $: workspaceHeaderText = StorageService.settings.creatorName + "'s workspace";
   $: workspaceEmpty = Boolean(!workspace?.projects.length);
   $: toolbarDisabledText = workspace ? "none selected" : "no workspace";
   $: toolbarDisabled = !workspace || selectionGroup?.noneSelected;
@@ -131,7 +130,7 @@
         <slot>
           <div class="mb-2">
             <SplitView>
-              <GradientHeader slot="left" title={workspaceHeaderText} />
+              <GradientHeader slot="left" title="My Workspace" />
               <SelectModeToggle slot="right" bind:selectionGroup />
             </SplitView>
           </div>

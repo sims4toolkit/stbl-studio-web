@@ -2,6 +2,7 @@
   export let centerV = true;
   export let useGap = true;
   export let reverseOnCollapse = false;
+  export let centerOnCollapse = false;
 </script>
 
 <div
@@ -9,6 +10,7 @@
   class:flex-center-v={centerV}
   class:use-gap={useGap}
   class:reverse-on-collapse={reverseOnCollapse}
+  class:center-on-collapse={centerOnCollapse}
 >
   <div class="left">
     <slot name="left" />
@@ -34,6 +36,13 @@
 
       &.reverse-on-collapse {
         flex-direction: column-reverse;
+      }
+
+      &:not(.center-on-collapse) {
+        .left,
+        .right {
+          width: 100%;
+        }
       }
     }
   }

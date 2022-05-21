@@ -1,15 +1,16 @@
 <script lang="ts">
   import { v4 as uuidv4 } from "uuid";
   import { allLocales } from "../../../services/localization";
+  import GradientHeader from "../../shared/GradientHeader.svelte";
 
   const { StringTableLocale } = window.S4TK.enums;
   const { fnv64 } = window.S4TK.hashing;
   const { formatAsHexString } = window.S4TK.formatting;
 
   let uuid: string = uuidv4();
-  let projectName = "";
+  let name = "";
   let group = 0;
-  let sourceLanguage = StringTableLocale.English;
+  let primaryLocale = StringTableLocale.English;
   let instanceBase = fnv64(uuid) & 0xffffffffffffffn;
 
   $: groupString = formatAsHexString(group, 8, false);
@@ -17,11 +18,10 @@
 </script>
 
 <div class="project-creation-view">
-  <h2 class="my-0">
-    <span class="default-gradient-text">New Project</span>
-  </h2>
+  <GradientHeader title="New Project" />
   <p class="mt-1 mb-0 subtle-text">UUID: {uuid}</p>
   <form>
+    <input type="text" placeholder="Project name..." bind:value={name} />
     <input
       class="tgi-input"
       type="text"
@@ -35,7 +35,11 @@
       bind:value={instanceBaseString}
     />
     <label for="primary-locale-select">Primary Locale</label>
-    <select name="primary-locale-select" id="primary-locale-select">
+    <select
+      name="primary-locale-select"
+      id="primary-locale-select"
+      bind:value={primaryLocale}
+    >
       {#each allLocales as localeData, key (key)}
         <option value={localeData.enumValue}>
           {localeData.englishName}
