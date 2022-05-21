@@ -2,17 +2,24 @@
   export let label: string = undefined;
   export let name: string;
   export let selected: number;
+  export let fillWidth = false;
   export let options: {
     value: number;
     text: string;
   }[];
 </script>
 
-<div class="select-with-label my-1">
+<div class="select-with-label" class:w-100={fillWidth}>
   {#if Boolean(label)}
     <label class="small-title" for={name}>{label}</label>
   {/if}
-  <select {name} id={name} bind:value={selected} class="mt-half">
+  <select
+    {name}
+    id={name}
+    bind:value={selected}
+    class="mt-half"
+    class:w-100={fillWidth}
+  >
     {#each options as option, key (key)}
       <option value={option.value}>
         {option.text}

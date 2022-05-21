@@ -29,7 +29,7 @@
   let name = "";
   let primaryLocale = StorageService.settings.defaultLocale;
   let group = 0;
-  let groupString = formatAsHexString(0, 8, false);
+  let groupString = "80000000";
   let instanceBase = fnv64(uuid) & 0xffffffffffffffn;
   let instanceBaseString = formatAsHexString(instanceBase, 14, false);
 
@@ -45,7 +45,7 @@
 
 <div class="project-creation-view">
   <GradientHeader title="New Project" />
-  <p class="mt-1 mb-0 subtle-text">UUID: {uuid}</p>
+  <p class="my-1 subtle-text">UUID: {uuid}</p>
   <form class="w-100">
     <TextInput
       name="project-name-text-input"
@@ -71,52 +71,80 @@
           error: "Project name already in use",
           test(value) {
             if (!workspace) return true;
-            return !Boolean(workspace.projects.find((p) => p.name === value));
+            return !workspace.projects.some((p) => p.name === value);
           },
         },
       ]}
     />
-    <TextInput
-      monospace={true}
-      name="group-text-input"
-      label="group"
-      placeholder="Group..."
-      bind:value={groupString}
-      isValid={isGroupValid}
-      validators={[
-        {
-          error: "Must be valid 8-digit hex",
-          test(value) {
-            return validateHexString(value, 8);
+    <div class="mt-1 tgi-inputs flex-space-between">
+      <TextInput
+        monospace={true}
+        name="group-text-input"
+        fillWidth={true}
+        label="group"
+        placeholder="Group..."
+        bind:value={groupString}
+        isValid={isGroupValid}
+        validators={[
+          {
+            error: "Must be valid 8-digit hex",
+            test(value) {
+              return validateHexString(value, 8);
+            },
           },
-        },
-      ]}
-    />
-    <TextInput
-      monospace={true}
-      name="instance-text-input"
-      label="instance base"
-      placeholder="Instance base..."
-      bind:value={instanceBaseString}
-      isValid={isInstanceValid}
-      validators={[
-        {
-          error: "Must be valid 14-digit hex",
-          test(value) {
-            return validateHexString(value, 14);
+        ]}
+      />
+      <TextInput
+        monospace={true}
+        name="instance-text-input"
+        fillWidth={true}
+        label="instance base"
+        placeholder="Instance base..."
+        bind:value={instanceBaseString}
+        isValid={isInstanceValid}
+        validators={[
+          {
+            error: "Must be valid 14-digit hex",
+            test(value) {
+              return validateHexString(value, 14);
+            },
           },
-        },
-      ]}
-    />
-    <SelectWithLabel
-      name="primary-locale-select"
-      label="primary locale"
-      bind:selected={primaryLocale}
-      options={localeOptions}
-    />
+          {
+            error: "Instance base already in use",
+            test(value) {
+              if (!workspace) return true;
+              const instanceBaseNumber = BigInt("0x" + value);
+              return !workspace.projects.some(
+                (p) => p.instanceBase === instanceBaseNumber
+              );
+            },
+          },
+        ]}
+      />
+      <SelectWithLabel
+        name="primary-locale-select"
+        label="primary locale"
+        fillWidth={true}
+        bind:selected={primaryLocale}
+        options={localeOptions}
+      />
+    </div>
   </form>
 </div>
 
 <style lang="scss">
-  // intentionally blank
+  .project-creation-view {
+    .tgi-inputs {
+      gap: 1em;
+    }
+  }
+
+  @media only screen and (max-width: 768px) {
+    .project-creation-view {
+      .tgi-inputs {
+        flex-direction: column;
+        width: 100%;
+      }
+    }
+  }
 </style>

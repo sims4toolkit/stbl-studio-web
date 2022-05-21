@@ -34,7 +34,7 @@
   }
 </script>
 
-<div class="text-input my-1" class:w-100={fillWidth}>
+<div class="text-input" class:w-100={fillWidth}>
   {#if Boolean(label)}
     <label class="small-title" for={name}>{label}</label>
   {/if}
