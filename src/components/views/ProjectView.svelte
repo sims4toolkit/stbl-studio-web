@@ -99,6 +99,7 @@
 
     .instance {
       opacity: 0.65;
+      text-transform: uppercase;
     }
 
     .stbl-features {

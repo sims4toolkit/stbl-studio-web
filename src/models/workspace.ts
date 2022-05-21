@@ -1,6 +1,12 @@
-import type { StoredProject, StoredWorkspace } from "../global";
+import { fnv64 } from "@s4tk/hashing";
+import { v4 as uuidv4 } from "uuid";
+import type { ProjectData, StoredProject, StoredWorkspace } from "../global";
 import StorageService from "../services/storage";
+import { activeWorkspace } from "../services/stores";
 import Project from "./project";
+
+const { StringTableResource } = window.S4TK.models;
+const { StringTableLocale } = window.S4TK.enums;
 
 const CURRENT_VERSION = 1;
 
@@ -45,7 +51,9 @@ export default class Workspace {
           return new Project(StorageService.loadProjectData(uuid));
         });
 
-        resolve(new Workspace(projects));
+        const workspace = new Workspace(projects);
+
+        resolve(workspace);
       } catch (e) {
         console.error(e);
         reject("Could not restore workspace from storage.")
@@ -54,6 +62,42 @@ export default class Workspace {
   }
 
   //#region Methods
+
+  /**
+   * Creates and adds a new project to this workspace.
+   * 
+   * @param data Object containing data for project
+   */
+  addProject(data: Partial<ProjectData> = {}) {
+    const uuid = data.uuid ?? uuidv4();
+    const primaryLocale = data.primaryLocale ?? StringTableLocale.English;
+    const stbls = data.stbls ?? [];
+
+    if (!stbls.find(stbl => stbl.locale === primaryLocale)) {
+      stbls.push({
+        locale: primaryLocale,
+        stbl: new StringTableResource(),
+      });
+    }
+
+    const project = new Project({
+      uuid,
+      name: data.name ?? "New Project",
+      group: data.group ?? 0,
+      instanceBase: data.instanceBase ?? fnv64(uuid) & 0xFFFFFFFFFFFFFFn,
+      primaryLocale,
+      stbls,
+    });
+
+    this.projects.push(project);
+
+    StorageService.saveProjectData(project);
+    const projectUuids = StorageService.settings.projectUuids;
+    projectUuids.push(uuid);
+    StorageService.settings.projectUuids = projectUuids;
+
+    activeWorkspace.set(this); // to update components
+  }
 
   /**
    * Writes this workspace into a JSON that can be written.

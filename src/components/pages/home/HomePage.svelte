@@ -33,6 +33,7 @@
   }
 
   $: workspaceEmpty = Boolean(!workspace?.projects.length);
+  $: toolbarDisabledText = workspace ? "no workspace" : "not selected";
   $: toolbarDisabled = !workspace || selectionGroup?.noneSelected;
 
   const normalModeToolbar = [
@@ -57,7 +58,7 @@
       icon: "plus",
       color: ToolbarColor.Create,
       async onClick() {
-        alert("Create Clicked");
+        workspace.addProject(); // FIXME:
       },
     },
   ];
@@ -136,7 +137,7 @@
 <FloatingActionButtonGroup
   buttonData={toolbarData}
   disabled={toolbarDisabled}
-  disabledText="nothing selected"
+  disabledText={toolbarDisabledText}
 />
 {#if showDownload}
   <Downloader

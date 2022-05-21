@@ -111,7 +111,7 @@ function readProjectData(uuid: string, stored: StoredProject): ProjectData {
 function writeProjectData(project: ProjectData): StoredProject {
   return {
     group: project.group,
-    instanceBase: project.instanceBase.toString(16),
+    instanceBase: "0x" + project.instanceBase.toString(16),
     name: project.name,
     primaryLocale: project.primaryLocale,
     stbls: project.stbls.map(wrapper => {
