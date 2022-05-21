@@ -176,7 +176,8 @@
   font-weight: normal;
 }
 
-.monospace {
+.monospace,
+input.monospace::placeholder {
   font-family: monospace; // FIXME:
 }
 

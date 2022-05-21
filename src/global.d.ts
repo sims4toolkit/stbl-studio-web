@@ -1,8 +1,18 @@
 /// <reference types="svelte" />
 
 import type { fnv64 } from "@s4tk/hashing";
+import type { formatAsHexString } from "@s4tk/hashing/formatting";
 import type { StringTableResource } from "@s4tk/models";
 import type { StringTableLocale } from "@s4tk/models/enums";
+
+interface LocaleData {
+  enumName: string;
+  enumValue: number;
+  englishName: string;
+  country: string;
+  nativeName: string;
+  code: string;
+}
 
 interface StringTableWrapper {
   locale: StringTableLocale;
@@ -57,6 +67,9 @@ declare global {
       },
       hashing: {
         fnv64: typeof fnv64
+      },
+      formatting: {
+        formatAsHexString: typeof formatAsHexString
       },
       Node: {
         Buffer: typeof Buffer

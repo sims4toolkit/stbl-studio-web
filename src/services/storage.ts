@@ -131,9 +131,7 @@ function writeProjectData(project: ProjectData): StoredProject {
  * @param uuid UUID of project to load
  */
 function loadProjectData(uuid: string): ProjectData {
-  console.log(getProjectStorageKey(uuid));
   const value = localStorage.getItem(getProjectStorageKey(uuid));
-
   if (!value) return undefined;
   const stored: StoredProject = JSON.parse(value);
   return readProjectData(uuid, stored);
