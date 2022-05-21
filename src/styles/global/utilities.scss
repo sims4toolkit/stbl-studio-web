@@ -87,8 +87,40 @@
   }
 }
 
+.my-half {
+  margin: {
+    top: 0.5em;
+    bottom: 0.5em;
+  }
+}
+
+.my-1 {
+  margin: {
+    top: 1em;
+    bottom: 1em;
+  }
+}
+
+.my-2 {
+  margin: {
+    top: 2em;
+    bottom: 2em;
+  }
+}
+
+.my-3 {
+  margin: {
+    top: 3em;
+    bottom: 3em;
+  }
+}
+
 .mb-0 {
   margin-bottom: 0;
+}
+
+.mb-half {
+  margin-bottom: 0.5em;
 }
 
 .mb-1 {
@@ -107,6 +139,10 @@
   margin-top: 0;
 }
 
+.mt-half {
+  margin-top: 0.5em;
+}
+
 .mt-1 {
   margin-top: 1em;
 }
@@ -123,6 +159,10 @@
   margin-left: 0;
 }
 
+.ml-half {
+  margin-left: 0.5em;
+}
+
 .ml-1 {
   margin-left: 1em;
 }
@@ -137,6 +177,10 @@
 
 .mr-0 {
   margin-right: 0;
+}
+
+.mr-half {
+  margin-right: 0.5em;
 }
 
 .mr-1 {
@@ -183,6 +227,10 @@ input.monospace::placeholder {
 
 .accent-color {
   color: var(--color-accent);
+}
+
+.error-color {
+  color: var(--color-error);
 }
 
 .frankk-color {

@@ -127,13 +127,6 @@
         p {
           margin: 0;
         }
-
-        .small-title {
-          opacity: 0.65;
-          text-transform: uppercase;
-          font-size: 0.65em;
-          font-weight: bold;
-        }
       }
     }
   }

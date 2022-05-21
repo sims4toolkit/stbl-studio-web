@@ -20,6 +20,13 @@
   opacity: 0.65;
 }
 
+.small-title {
+  opacity: 0.65;
+  text-transform: uppercase;
+  font-size: 0.8em;
+  font-weight: bold;
+}
+
 .default-gradient-bg {
   @include gradient-bg($sage, $sky-blue);
 }

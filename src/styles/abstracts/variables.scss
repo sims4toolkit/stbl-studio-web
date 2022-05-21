@@ -43,6 +43,7 @@ $azure-blue: #0095eb;
     --color-scrollbar-hover: rgb(190, 197, 199);
     --color-blur-fallback: rgba(0, 0, 0, 0.9);
     --color-shadow: rgba(0, 0, 0, 0.2);
+    --color-error: #e45f61;
 
     // filters
     --filter-svg: var(--filter-light);
@@ -66,6 +67,7 @@ $azure-blue: #0095eb;
     --color-scrollbar-hover: rgb(95, 99, 100);
     --color-blur-fallback: rgba(255, 255, 255, 0.9);
     --color-shadow: rgba(64, 64, 64, 0.2);
+    --color-error: #d60c0c;
 
     // filters
     --filter-svg: var(--filter-dark);

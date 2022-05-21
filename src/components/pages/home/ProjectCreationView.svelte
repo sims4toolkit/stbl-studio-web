@@ -1,7 +1,10 @@
 <script lang="ts">
   import { v4 as uuidv4 } from "uuid";
+  import type Workspace from "../../../models/workspace";
   import { allLocales } from "../../../services/localization";
+  import { activeWorkspace } from "../../../services/stores";
   import GradientHeader from "../../shared/GradientHeader.svelte";
+  import TextInput from "../../shared/TextInput.svelte";
 
   const { StringTableLocale } = window.S4TK.enums;
   const { fnv64 } = window.S4TK.hashing;
@@ -13,6 +16,11 @@
   let primaryLocale = StringTableLocale.English;
   let instanceBase = fnv64(uuid) & 0xffffffffffffffn;
 
+  let workspace: Workspace;
+  activeWorkspace.subscribe((value) => {
+    workspace = value;
+  });
+
   $: groupString = formatAsHexString(group, 8, false);
   $: instanceBaseString = formatAsHexString(instanceBase, 14, false);
 </script>
@@ -20,13 +28,51 @@
 <div class="project-creation-view">
   <GradientHeader title="New Project" />
   <p class="mt-1 mb-0 subtle-text">UUID: {uuid}</p>
-  <form>
-    <input type="text" placeholder="Project name..." bind:value={name} />
-    <input
-      class="tgi-input"
-      type="text"
+  <form class="w-100">
+    <TextInput
+      name="project-name-text-input"
+      fillWidth={true}
+      label="project name"
+      placeholder="Project name..."
+      bind:value={name}
+      isValid={false}
+      validators={[
+        {
+          error: "Must be non-empty",
+          test(value) {
+            return Boolean(value);
+          },
+        },
+        {
+          error: "Must be <= 40 characters",
+          test(value) {
+            return value.length <= 40;
+          },
+        },
+        {
+          error: "Project name already in use",
+          test(value) {
+            if (!workspace) return true;
+            return !Boolean(workspace.projects.find((p) => p.name === value));
+          },
+        },
+      ]}
+    />
+    <TextInput
+      monospace={true}
+      name="group-text-input"
+      label="Group"
       placeholder="Group..."
       bind:value={groupString}
+      isValid={false}
+      validators={[
+        {
+          error: "Must be valid 8-digit hex",
+          test(value) {
+            return false;
+          },
+        },
+      ]}
     />
     <input
       class="tgi-input"
