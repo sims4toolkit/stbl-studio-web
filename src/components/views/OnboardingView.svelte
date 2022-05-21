@@ -123,11 +123,6 @@
       margin-bottom: 0.6em;
     }
 
-    .subtle-text {
-      font-size: 0.8em;
-      opacity: 0.65;
-    }
-
     a {
       color: var(--color-text);
     }
