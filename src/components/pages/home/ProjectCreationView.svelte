@@ -2,7 +2,7 @@
   import { fly } from "svelte/transition";
   import { v4 as uuidv4 } from "uuid";
   import type Workspace from "../../../models/workspace";
-  import type Project from "../../../models/project";
+  import Project from "../../../models/project";
   import { allLocales } from "../../../services/localization";
   import StorageService from "../../../services/storage";
   import { hashInstanceBase, validateHexString } from "../../../services/tgi";
@@ -15,6 +15,7 @@
   import StickyCloseButton from "../../shared/StickyCloseButton.svelte";
 
   const { formatAsHexString } = window.S4TK.formatting;
+  const { StringTableResource } = window.S4TK.models;
 
   const animationDuration = 1000;
 
@@ -53,6 +54,24 @@
   function hashName() {
     instanceBaseString = formatAsHexString(hashInstanceBase(name), 14, false);
   }
+
+  function createProjectAndClose() {
+    const project = new Project({
+      uuid,
+      name,
+      primaryLocale,
+      group: parseInt(groupString, 16),
+      instanceBase: BigInt("0x" + instanceBaseString),
+      stbls: [
+        {
+          locale: primaryLocale,
+          stbl: new StringTableResource(),
+        },
+      ],
+    });
+
+    onComplete(project);
+  }
 </script>
 
 <div class="project-creation-view">
@@ -85,7 +104,9 @@
           error: "Project name already in use",
           test(value) {
             if (!workspace) return true;
-            return !workspace.projects.some((p) => p.name === value);
+            return !workspace.projects.some(
+              (p) => p.uuid !== uuid && p.name === value
+            );
           },
         },
       ]}
@@ -129,7 +150,7 @@
               if (!workspace) return true;
               const instanceBaseNumber = BigInt("0x" + value);
               return !workspace.projects.some(
-                (p) => p.instanceBase === instanceBaseNumber
+                (p) => p.uuid !== uuid && p.instanceBase === instanceBaseNumber
               );
             },
           },
@@ -163,7 +184,7 @@
     <NavigationButton
       text="Next"
       direction="right"
-      onClick={onComplete}
+      onClick={createProjectAndClose}
       bind:active={isEverythingValid}
     />
   </div>

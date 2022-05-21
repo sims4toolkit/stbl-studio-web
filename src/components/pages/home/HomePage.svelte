@@ -6,7 +6,6 @@
   import ContentArea from "../../layout/ContentArea.svelte";
   import SplitView from "../../layout/SplitView.svelte";
   import FloatingActionButtonGroup from "../../shared/FloatingActionButtonGroup.svelte";
-  import SectionHeader from "../../shared/SectionHeader.svelte";
   import SelectModeToggle from "../../shared/SelectModeToggle.svelte";
   import ProjectViewGroup from "../../views/ProjectViewGroup.svelte";
   import Downloader from "../../shared/Downloader.svelte";
@@ -14,7 +13,6 @@
   import BlurOverlay from "../../layout/BlurOverlay.svelte";
   import ProjectCreationView from "./ProjectCreationView.svelte";
   import GradientHeader from "../../shared/GradientHeader.svelte";
-  import StorageService from "../../../services/storage";
 
   let workspace: Workspace;
   let selectionGroup: SelectionGroup<Project>;
@@ -39,6 +37,7 @@
   let creatingProject = false;
   function onProjectCreatorExit(project?: Project) {
     creatingProject = false;
+    if (project) workspace.addProject(project);
   }
 
   $: workspaceEmpty = Boolean(!workspace?.projects.length);
