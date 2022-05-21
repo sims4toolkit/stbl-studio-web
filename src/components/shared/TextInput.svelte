@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { fly } from "svelte/transition";
+  import { fade } from "svelte/transition";
 
   interface InputValidator {
     test: (value: string) => boolean;
@@ -52,10 +52,7 @@
     class:valid={isValid}
   />
   {#if !isValid}
-    <p
-      transition:fly={{ y: -20, duration: 800 }}
-      class="subtle-text error-color my-0"
-    >
+    <p transition:fade class="subtle-text error-color my-0">
       {errorMessage}
     </p>
   {/if}

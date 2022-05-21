@@ -1,17 +1,22 @@
 <script lang="ts">
+  import { fly } from "svelte/transition";
   import { v4 as uuidv4 } from "uuid";
   import type Workspace from "../../../models/workspace";
   import { allLocales } from "../../../services/localization";
   import StorageService from "../../../services/storage";
-  import { validateHexString } from "../../../services/validation";
+  import { hashInstanceBase, validateHexString } from "../../../services/tgi";
   import { activeWorkspace } from "../../../services/stores";
   import GradientHeader from "../../shared/GradientHeader.svelte";
   import SelectWithLabel from "../../shared/SelectWithLabel.svelte";
   import TextInput from "../../shared/TextInput.svelte";
+  import ProgressCircles from "../../shared/ProgressCircles.svelte";
+  import NavigationButton from "../../shared/NavigationButton.svelte";
 
-  const { StringTableLocale } = window.S4TK.enums;
-  const { fnv64 } = window.S4TK.hashing;
   const { formatAsHexString } = window.S4TK.formatting;
+
+  const animationDuration = 1000;
+
+  export let onComplete: () => Promise<Workspace>;
 
   let workspace: Workspace;
   activeWorkspace.subscribe((value) => {
@@ -28,10 +33,12 @@
   let uuid: string = uuidv4();
   let name = "";
   let primaryLocale = StorageService.settings.defaultLocale;
-  let group = 0;
   let groupString = "80000000";
-  let instanceBase = fnv64(uuid) & 0xffffffffffffffn;
-  let instanceBaseString = formatAsHexString(instanceBase, 14, false);
+  let instanceBaseString = formatAsHexString(
+    hashInstanceBase(uuid, false), // UUID is already unique
+    14,
+    false
+  );
 
   let isNameValid = false;
   let isGroupValid = false;
@@ -39,14 +46,17 @@
 
   $: isEverythingValid = isNameValid && isGroupValid && isInstanceValid;
 
-  // $: groupString = formatAsHexString(group, 8, false);
-  // $: instanceBaseString = formatAsHexString(instanceBase, 14, false);
+  function hashName() {
+    instanceBaseString = formatAsHexString(hashInstanceBase(name), 14, false);
+  }
 </script>
 
 <div class="project-creation-view">
-  <GradientHeader title="New Project" />
-  <p class="my-1 subtle-text">UUID: {uuid}</p>
-  <form class="w-100">
+  <div in:fly={{ y: -15, duration: animationDuration }}>
+    <GradientHeader title="New Project" />
+    <p class="mt-1 subtle-text">UUID: {uuid}</p>
+  </div>
+  <form class="w-100 my-2" in:fly={{ y: 15, duration: animationDuration }}>
     <TextInput
       name="project-name-text-input"
       fillWidth={true}
@@ -62,9 +72,9 @@
           },
         },
         {
-          error: "Must be <= 40 characters",
+          error: "Must be <= 30 characters",
           test(value) {
-            return value.length <= 40;
+            return value.length <= 30;
           },
         },
         {
@@ -130,12 +140,39 @@
       />
     </div>
   </form>
+  <div in:fly={{ y: 25, duration: animationDuration }}>
+    <p class="subtle-text">
+      The 2-digit locale code will automatically be appended to the instance.
+    </p>
+    <p class="subtle-text">
+      The instance is a hash of the UUID by default, but it can be changed. <span
+        class="hash-name"
+        on:click={hashName}>Click here to hash its name</span
+      >.
+    </p>
+  </div>
+  <div
+    class="flex-space-between mt-2"
+    in:fly={{ y: 35, duration: animationDuration }}
+  >
+    <ProgressCircles circles={2} filled={1} />
+    <NavigationButton text="Next" direction="right" onClick={onComplete} />
+  </div>
 </div>
 
 <style lang="scss">
   .project-creation-view {
     .tgi-inputs {
       gap: 1em;
+    }
+
+    .hash-name {
+      text-decoration: underline;
+
+      &:hover {
+        cursor: pointer;
+        text-decoration: none;
+      }
     }
   }
 
