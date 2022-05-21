@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import StorageService from "../services/storage";
 
   let isDarkTheme: boolean = true;
 
@@ -9,7 +10,7 @@
   function toggleTheme() {
     isDarkTheme = !isDarkTheme;
     setTheme();
-    localStorage.setItem("isDarkTheme", isDarkTheme.toString());
+    StorageService.settings.isDarkTheme = isDarkTheme;
   }
 
   function setTheme() {
@@ -20,8 +21,7 @@
   }
 
   onMount(() => {
-    const isDarkThemeStr = localStorage.getItem("isDarkTheme");
-    isDarkTheme = !isDarkThemeStr || isDarkThemeStr === "true";
+    isDarkTheme = StorageService.settings.isDarkTheme;
     setTheme();
   });
 </script>

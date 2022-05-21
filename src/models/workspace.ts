@@ -70,6 +70,7 @@ export default class Workspace {
       settings: {
         creatorName: StorageService.settings.creatorName,
         defaultLocale: StorageService.settings.defaultLocale,
+        hasBeenOnboarded: StorageService.settings.hasBeenOnboarded,
         isDarkTheme: StorageService.settings.isDarkTheme,
         projectUuids: StorageService.settings.projectUuids,
       },

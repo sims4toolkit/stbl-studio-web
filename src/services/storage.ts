@@ -150,6 +150,7 @@ async function saveProjectData(project: ProjectData) {
 const settings = getSettingsProxy({
   creatorName: StoredString,
   defaultLocale: StoredInteger,
+  hasBeenOnboarded: StoredBoolean,
   isDarkTheme: StoredBoolean,
   projectUuids: StoredStringList,
 });
