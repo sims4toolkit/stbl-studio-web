@@ -8,6 +8,7 @@
   import SelectModeToggle from "../../shared/SelectModeToggle.svelte";
   import ProjectViewGroup from "../../views/ProjectViewGroup.svelte";
   import SelectionGroup from "../../../models/selection-group";
+  import ActiveSession from "../../../services/session";
 
   const { StringTableLocale } = window.S4TK.enums; // FIXME: get rid of this
   const { StringTableResource } = window.S4TK.models; // FIXME: get rid of this
@@ -71,15 +72,16 @@
       title: "save workspace",
       icon: "desktop-download",
       color: ToolbarColor.Download,
-      onClick() {
-        alert("Save Clicked");
+      async onClick() {
+        const content = JSON.stringify(ActiveSession.workspace.toJson());
+        console.log(content);
       },
     },
     {
       title: "upload",
       icon: "upload",
       color: ToolbarColor.Upload,
-      onClick() {
+      async onClick() {
         alert("Upload Clicked");
       },
     },
@@ -87,7 +89,7 @@
       title: "create",
       icon: "plus",
       color: ToolbarColor.Create,
-      onClick() {
+      async onClick() {
         alert("Create Clicked");
       },
     },
@@ -98,7 +100,7 @@
       title: "delete",
       icon: "trash",
       color: ToolbarColor.Delete,
-      onClick() {
+      async onClick() {
         alert("Delete Clicked");
       },
     },
@@ -106,7 +108,7 @@
       title: "merge",
       icon: "git-merge",
       color: ToolbarColor.Merge,
-      onClick() {
+      async onClick() {
         alert("Merge Clicked");
       },
     },
@@ -114,7 +116,7 @@
       title: "download",
       icon: "download",
       color: ToolbarColor.Download,
-      onClick() {
+      async onClick() {
         alert("Download Clicked");
       },
     },
