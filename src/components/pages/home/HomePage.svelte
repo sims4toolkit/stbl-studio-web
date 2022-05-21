@@ -33,7 +33,7 @@
   }
 
   $: workspaceEmpty = Boolean(!workspace?.projects.length);
-  $: toolbarDisabledText = workspace ? "no workspace" : "not selected";
+  $: toolbarDisabledText = workspace ? "none selected" : "no workspace";
   $: toolbarDisabled = !workspace || selectionGroup?.noneSelected;
 
   const normalModeToolbar = [
