@@ -1,4 +1,3 @@
-import { fnv64 } from "@s4tk/hashing";
 import { v4 as uuidv4 } from "uuid";
 import type { ProjectData, StoredProject, StoredWorkspace } from "../global";
 import StorageService from "../services/storage";
@@ -7,6 +6,7 @@ import Project from "./project";
 
 const { StringTableResource } = window.S4TK.models;
 const { StringTableLocale } = window.S4TK.enums;
+const { fnv64 } = window.S4TK.hashing;
 
 const CURRENT_VERSION = 1;
 

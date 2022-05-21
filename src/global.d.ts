@@ -1,5 +1,6 @@
 /// <reference types="svelte" />
 
+import type { fnv64 } from "@s4tk/hashing";
 import type { StringTableResource } from "@s4tk/models";
 import type { StringTableLocale } from "@s4tk/models/enums";
 
@@ -53,6 +54,12 @@ declare global {
       },
       enums: {
         StringTableLocale: typeof StringTableLocale;
+      },
+      hashing: {
+        fnv64: typeof fnv64
+      },
+      Node: {
+        Buffer: typeof Buffer
       }
     };
   }

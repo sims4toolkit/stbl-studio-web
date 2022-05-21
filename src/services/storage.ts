@@ -90,8 +90,7 @@ function readProjectData(uuid: string, stored: StoredProject): ProjectData {
     name: stored.name,
     primaryLocale: stored.primaryLocale,
     stbls: stored.stbls.map(stbl => {
-      // FIXME: Buffer will probably be undefined
-      const buffer = Buffer.from(stbl.data, "base64");
+      const buffer = window.S4TK.Node.Buffer.from(stbl.data, "base64");
       const parsedStbl = window.S4TK.models.StringTableResource.from(buffer);
 
       return {
@@ -119,7 +118,7 @@ function writeProjectData(project: ProjectData): StoredProject {
 
       return {
         locale: wrapper.locale,
-        updatedKeys: [...wrapper.updatedKeys],
+        updatedKeys: wrapper.updatedKeys ? [...wrapper.updatedKeys] : null,
         data: buffer.toString("base64")
       };
     })
@@ -132,7 +131,9 @@ function writeProjectData(project: ProjectData): StoredProject {
  * @param uuid UUID of project to load
  */
 function loadProjectData(uuid: string): ProjectData {
+  console.log(getProjectStorageKey(uuid));
   const value = localStorage.getItem(getProjectStorageKey(uuid));
+
   if (!value) return undefined;
   const stored: StoredProject = JSON.parse(value);
   return readProjectData(uuid, stored);
