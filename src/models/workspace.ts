@@ -100,6 +100,15 @@ export default class Workspace {
   }
 
   /**
+   * TODO:
+   * 
+   * @param uuid TODO:
+   */
+  removeProject(uuid: string) {
+    // TODO:
+  }
+
+  /**
    * Writes this workspace into a JSON that can be written.
    */
   toBlob(): Blob {

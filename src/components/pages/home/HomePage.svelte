@@ -11,6 +11,10 @@
   import ProjectViewGroup from "../../views/ProjectViewGroup.svelte";
   import Downloader from "../../shared/Downloader.svelte";
   import { activeWorkspace } from "../../../services/stores";
+  import BlurOverlay from "../../layout/BlurOverlay.svelte";
+  import ProjectCreationView from "./ProjectCreationView.svelte";
+  import GradientHeader from "../../shared/GradientHeader.svelte";
+  import StorageService from "../../../services/storage";
 
   let workspace: Workspace;
   let selectionGroup: SelectionGroup<Project>;
@@ -32,6 +36,9 @@
     showDownload = true;
   }
 
+  let creatingProject = false;
+
+  $: workspaceHeaderText = StorageService.settings.creatorName + "'s workspace";
   $: workspaceEmpty = Boolean(!workspace?.projects.length);
   $: toolbarDisabledText = workspace ? "none selected" : "no workspace";
   $: toolbarDisabled = !workspace || selectionGroup?.noneSelected;
@@ -58,7 +65,8 @@
       icon: "plus",
       color: ToolbarColor.Create,
       async onClick() {
-        workspace.addProject(); // FIXME:
+        // workspace.addProject(); // FIXME:
+        creatingProject = true;
       },
     },
   ];
@@ -105,8 +113,7 @@
         <slot>
           <div>
             <h1 class="mb-2">
-              <span class="default-gradient-text">Your workspace is empty.</span
-              >
+              <span class="default-gradient-text">Your workspace is empty</span>
             </h1>
             <p>
               Upload existing string tables or create new ones with the toolbar
@@ -124,7 +131,7 @@
         <slot>
           <div class="mb-2">
             <SplitView>
-              <SectionHeader slot="left" title="My Workspace" />
+              <GradientHeader slot="left" title={workspaceHeaderText} />
               <SelectModeToggle slot="right" bind:selectionGroup />
             </SplitView>
           </div>
@@ -145,6 +152,12 @@
     contentGenerator={downloadContentGenerator}
     onDownload={() => (showDownload = false)}
   />
+{/if}
+
+{#if creatingProject}
+  <BlurOverlay>
+    <ProjectCreationView slot="content" />
+  </BlurOverlay>
 {/if}
 
 <style lang="scss">

@@ -6,6 +6,10 @@ export default class SelectionGroup<T> {
     return this._selectMode;
   }
 
+  get allSelections(): T[] {
+    return [...(this._selections)];
+  }
+
   get noneSelected(): boolean {
     return this._selectMode && this._selections.size === 0;
   }

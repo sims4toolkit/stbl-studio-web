@@ -55,9 +55,7 @@
             target="_blank">feature list</a
           > to learn more about what it can do.
         </p>
-        <p class="mb-2">
-          Please provide your creator name to help keep your hashes unique.
-        </p>
+        <p class="mb-2">Please provide your creator name to get started.</p>
         <input
           class="w-100"
           type="text"
@@ -100,7 +98,9 @@
     </div>
   {:else}
     <div in:fly={{ y: -20, duration: animationDuration }}>
-      <h2><span class="default-gradient-text">Welcome back!</span></h2>
+      <h2>
+        <span class="default-gradient-text text-shadow">Welcome back!</span>
+      </h2>
       <p>Upload your workspace file to pick up where you left off.</p>
     </div>
     <div in:fly={{ y: 20, duration: animationDuration }}>Something</div>

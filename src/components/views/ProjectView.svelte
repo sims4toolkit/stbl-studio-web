@@ -2,7 +2,7 @@
   import type Project from "../../models/project";
   import { fly } from "svelte/transition";
   import { replace } from "svelte-spa-router";
-  import { getLocaleCode } from "../../services/localization";
+  import { getLocaleData } from "../../services/localization";
   import type SelectionGroup from "../../models/selection-group";
 
   export let project: Project;
@@ -10,7 +10,7 @@
 
   $: isInSelectMode = selectionGroup.selectMode;
   $: projectSelected = selectionGroup.isSelected(project);
-  $: localeCode = getLocaleCode(project.primaryLocale);
+  $: localeCode = getLocaleData(project.primaryLocale).code;
   $: localeCount = project.stbls.length;
   $: stringCount = project.stbls.find(
     (stbl) => stbl.locale === project.primaryLocale
@@ -46,7 +46,7 @@
         </div>
       {/if}
       <div class="mw-100">
-        <h3 class="my-0 accent-color nowrap-truncate mr-1">
+        <h3 class="mt-0 nowrap-truncate mr-1">
           {project.name}
         </h3>
         <p class="instance monospace my-0">
@@ -78,6 +78,10 @@
     border-radius: 8px;
     flex: 1 1 0px;
     max-width: 305px; // (content area width - 60px) / 4
+
+    h3 {
+      margin-bottom: 0.5em;
+    }
 
     .selected-indicator {
       background: none;
