@@ -10,6 +10,11 @@
     // TODO:
     alert("next");
   }
+
+  function uploadWorkspaceButtonClicked() {
+    // TODO:
+    alert("upload");
+  }
 </script>
 
 <div class="onboarding-view">
@@ -51,6 +56,11 @@
       onClick={nextButtonClicked}
     />
   </div>
+  <div class="upload-workspace text-center">
+    <span on:click={uploadWorkspaceButtonClicked}
+      >I have a workspace to upload.</span
+    >
+  </div>
 </div>
 
 <style lang="scss">
@@ -67,6 +77,23 @@
 
     a {
       color: var(--color-text);
+    }
+
+    .upload-workspace {
+      font-size: 0.8em;
+      position: fixed;
+      bottom: 32px;
+      left: 0;
+      right: 0;
+
+      span {
+        text-decoration: underline;
+      }
+
+      span:hover {
+        text-decoration: none;
+        cursor: pointer;
+      }
     }
   }
 </style>
