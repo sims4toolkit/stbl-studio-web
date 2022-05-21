@@ -4,6 +4,10 @@ html {
   color: var(--color-text);
 }
 
+*::placeholder {
+  font-family: $font-noto-sans, sans-serif;
+}
+
 body {
   margin: 0;
 

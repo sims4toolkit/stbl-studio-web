@@ -23,6 +23,16 @@
   @include gradient-bg($sage, $sky-blue);
 }
 
+.default-gradient-text {
+  @include gradient-bg(var(--color-accent), var(--color-accent-secondary));
+
+  background-clip: text;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+}
+
 .under-navbar {
   margin-top: 50px;
 }

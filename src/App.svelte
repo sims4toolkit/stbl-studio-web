@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onMount, setContext } from "svelte";
   import Router from "svelte-spa-router";
   import StorageService from "./services/storage";
   import Navbar from "./components/Navbar.svelte";
@@ -9,15 +9,26 @@
   import HelpPage from "./components/pages/help/HelpPage.svelte";
   import ProjectPage from "./components/pages/project/ProjectPage.svelte";
   import BlurOverlay from "./components/layout/BlurOverlay.svelte";
+  import Workspace from "./models/workspace";
+  import OnboardingView from "./components/views/OnboardingView.svelte";
 
-  let showOverlay = false;
+  let onboardUser = false;
+  let restoreError = false;
 
   onMount(() => {
-    const hasWorkspace = StorageService.settings.hasWorkspace;
-    if (!hasWorkspace) {
+    if (StorageService.settings.hasWorkspace) {
+      Workspace.restoreFromStorage()
+        .then((workspace) => {
+          setContext("workspace", { workspace });
+        })
+        .catch((error) => {
+          console.error(error);
+          restoreError = true;
+        });
+    } else {
       setTimeout(() => {
-        showOverlay = true;
-        StorageService.settings.hasWorkspace = true;
+        onboardUser = true;
+        // StorageService.settings.hasWorkspace = true;
       }, 200);
     }
   });
@@ -45,20 +56,35 @@
   </div>
   <Footer />
 </main>
-{#if showOverlay}
+{#if restoreError}
   <BlurOverlay>
     <div slot="content">
-      <h2>Welcome, stranger!</h2>
+      <h2>Well, this is awkward...</h2>
       <p>
-        It looks like you're new here, so please note that Sims 4 Toolkit is in
-        early development. There may be some bugs, some features may be missing,
-        and the documentation may change frequently. Keep in mind that breaking
-        changes may occur until version 1.0.0 is released.
+        An error occurred and your workspace could not be restored. Do not worry
+        - your data is most likely safe, and this is just an error on the front
+        end. Please reach out to Frank either
+        <a href="https://discord.gg/qNhD3Jh" target="_blank">on Discord</a> or
+        by opening an issue
+        <a
+          href="https://github.com/sims4toolkit/stbl-studio-web/issues"
+          target="_blank">on GitHub</a
+        >, and he can help you get your projects back.
       </p>
+      <p>If you're more tech-savvy, you can try the following:</p>
+      <ol>
+        <li>Open your browser's developer tools.</li>
+        <li>Check Local Storage (under "Application").</li>
+        <li>Look for long, Base64-encoded strings. These are your STBLs.</li>
+      </ol>
     </div>
     <div slot="actions">
-      <span class="button" on:click={() => (showOverlay = false)}>Got it</span>
+      <span class="button" on:click={() => (restoreError = false)}>Got it</span>
     </div>
+  </BlurOverlay>
+{:else if onboardUser}
+  <BlurOverlay>
+    <OnboardingView slot="content" />
   </BlurOverlay>
 {/if}
 

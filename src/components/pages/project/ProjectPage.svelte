@@ -1,15 +1,20 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import type { StblProject } from "../../../global";
+  import { replace } from "svelte-spa-router";
+  import type Project from "../../../models/project";
   import ContentArea from "../../layout/ContentArea.svelte";
-  import BackButton from "../../shared/BackButton.svelte";
+  import NavigationButton from "../../shared/NavigationButton.svelte";
 
   export let params: { id: string };
-  let project: StblProject;
+  let project: Project;
 
   onMount(() => {
     project = undefined;
   });
+
+  function onBackClicked() {
+    replace("/");
+  }
 </script>
 
 <svelte:head>
@@ -18,7 +23,7 @@
 <section id="project-section">
   <ContentArea banded={true}>
     <div class="flex-center-v flex-space-between mb-2">
-      <BackButton />
+      <NavigationButton text="Back" onClick={onBackClicked} />
       <h2 class="my-0 accent-color nowrap-truncate ml-2 text-shadow">
         {project?.name ?? "Language Barriers"}
       </h2>
