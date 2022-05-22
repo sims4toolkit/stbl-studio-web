@@ -1,6 +1,6 @@
 <script lang="ts">
-  import FileInput from "../../shared/FileInput.svelte";
-  import GradientHeader from "../../shared/GradientHeader.svelte";
+  import FileInput from "../../elements/FileInput.svelte";
+  import GradientHeader from "../../elements/GradientHeader.svelte";
 
   export let onComplete: () => void;
 

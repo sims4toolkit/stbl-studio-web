@@ -3,9 +3,9 @@
   import Workspace from "../../typescript/models/workspace";
   import StorageService from "../../typescript/storage-service";
   import { activeWorkspace } from "../../typescript/stores";
-  import NavigationButton from "../shared/NavigationButton.svelte";
-  import ProgressCircles from "../shared/ProgressCircles.svelte";
-  import FileInput from "../shared/FileInput.svelte";
+  import NavigationButton from "../elements/NavigationButton.svelte";
+  import ProgressCircles from "../elements/ProgressCircles.svelte";
+  import FileInput from "../elements/FileInput.svelte";
 
   export let exitOnboarding: () => void;
 

@@ -5,15 +5,15 @@
   import ToolbarColor from "../../../typescript/enums/toolbar-colors";
   import ContentArea from "../../layout/ContentArea.svelte";
   import SplitView from "../../layout/SplitView.svelte";
-  import FloatingActionButtonGroup from "../../shared/FloatingActionButtonGroup.svelte";
-  import SelectModeToggle from "../../shared/SelectModeToggle.svelte";
+  import FloatingActionButtonGroup from "../../elements/FloatingActionButtonGroup.svelte";
+  import SelectModeToggle from "../../elements/SelectModeToggle.svelte";
   import ProjectViewGroup from "../../views/ProjectViewGroup.svelte";
-  import Downloader from "../../shared/Downloader.svelte";
+  import Downloader from "../../elements/Downloader.svelte";
   import { activeWorkspace } from "../../../typescript/stores";
   import BlurOverlay from "../../layout/BlurOverlay.svelte";
   import ProjectCreationView from "./ProjectCreationView.svelte";
-  import GradientHeader from "../../shared/GradientHeader.svelte";
-  import StickyCloseButton from "../../shared/StickyCloseButton.svelte";
+  import GradientHeader from "../../elements/GradientHeader.svelte";
+  import StickyCloseButton from "../../elements/StickyCloseButton.svelte";
   import ProjectDeletionView from "./ProjectDeletionView.svelte";
   import ProjectUploadView from "./ProjectUploadView.svelte";
 

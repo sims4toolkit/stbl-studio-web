@@ -2,10 +2,10 @@
   import type Project from "../../../typescript/models/project";
   import type Workspace from "../../../typescript/models/workspace";
   import { activeWorkspace } from "../../../typescript/stores";
-  import GradientHeader from "../../shared/GradientHeader.svelte";
-  import NavigationButton from "../../shared/NavigationButton.svelte";
-  import ProgressCircles from "../../shared/ProgressCircles.svelte";
-  import TextInput from "../../shared/TextInput.svelte";
+  import GradientHeader from "../../elements/GradientHeader.svelte";
+  import NavigationButton from "../../elements/NavigationButton.svelte";
+  import ProgressCircles from "../../elements/ProgressCircles.svelte";
+  import TextInput from "../../elements/TextInput.svelte";
 
   export let selectedProjects: Project[];
   export let onComplete: () => void;

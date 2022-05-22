@@ -1,7 +1,7 @@
 <script lang="ts">
   import { link } from "svelte-spa-router";
   import ContentArea from "../../layout/ContentArea.svelte";
-  import SectionHeader from "../../shared/SectionHeader.svelte";
+  import SectionHeader from "../../elements/SectionHeader.svelte";
 
   const discordLink = "https://discord.gg/qNhD3Jh";
 </script>

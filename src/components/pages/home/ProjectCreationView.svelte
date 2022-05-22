@@ -14,11 +14,11 @@
     validateHexString,
   } from "../../../typescript/helpers/tgi";
   import { activeWorkspace } from "../../../typescript/stores";
-  import GradientHeader from "../../shared/GradientHeader.svelte";
-  import Select from "../../shared/Select.svelte";
-  import TextInput from "../../shared/TextInput.svelte";
-  import ProgressCircles from "../../shared/ProgressCircles.svelte";
-  import NavigationButton from "../../shared/NavigationButton.svelte";
+  import GradientHeader from "../../elements/GradientHeader.svelte";
+  import Select from "../../elements/Select.svelte";
+  import TextInput from "../../elements/TextInput.svelte";
+  import ProgressCircles from "../../elements/ProgressCircles.svelte";
+  import NavigationButton from "../../elements/NavigationButton.svelte";
   import LocaleCheckboxesView from "../../views/LocaleCheckboxesView.svelte";
   import type { LocaleData } from "../../../global";
 
