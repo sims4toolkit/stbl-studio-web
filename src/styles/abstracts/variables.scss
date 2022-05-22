@@ -53,16 +53,16 @@ $azure-blue: #0095eb;
   // light theme variables
   &[data-theme="light"] {
     // colors
-    --color-bg: #f1f3f5;
+    --color-bg: rgb(240, 242, 245);
     --color-bg-secondary: #{$cool-white};
     --color-text: #{$darker-gray};
     --color-divider: #{rgb(171, 175, 177)};
     --color-accent: #{$teal};
     --color-accent-secondary: #{$azure-blue};
-    --color-card: rgb(229, 232, 233);
+    --color-card: white;
     --color-card-secondary: #e5e6ea; // unused right now
     --color-navbar: rgba(231, 236, 238, 0.7);
-    --color-footer: rgba(231, 236, 238);
+    --color-footer: rgb(228, 230, 234);
     --color-scrollbar: rgb(144, 147, 150);
     --color-scrollbar-hover: rgb(95, 99, 100);
     --color-blur-fallback: rgba(255, 255, 255, 0.9);
