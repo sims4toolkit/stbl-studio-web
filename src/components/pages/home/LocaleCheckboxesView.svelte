@@ -31,6 +31,8 @@
 
 <style lang="scss">
   .locale-checkboxes {
+    font-size: 0.8em;
+
     .selection-toggles {
       gap: 20px;
 

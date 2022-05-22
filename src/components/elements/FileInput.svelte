@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { fly } from "svelte/transition";
+  import { fade } from "svelte/transition";
 
   export let accept: string;
   export let files: FileList = undefined;
@@ -11,7 +11,14 @@
 
 <div>
   {#if Boolean(label)}
-    <label for="file-upload" class="small-title">{label}</label>
+    <div class="flex-center-v">
+      <label for="file-upload" class="small-title">{label}</label>
+      {#if filesInvalid}
+        <p in:fade class="subtle-text error-color my-0 ml-half">
+          • {errorMessage}
+        </p>
+      {/if}
+    </div>
   {/if}
   <input
     id="file-upload"
@@ -23,11 +30,6 @@
     {multiple}
     bind:files
   />
-  {#if filesInvalid}
-    <p in:fly={{ y: -20, duration: 800 }} class="subtle-text error-color mb-0">
-      {errorMessage}
-    </p>
-  {/if}
 </div>
 
 <style lang="scss">

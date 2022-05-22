@@ -16,5 +16,10 @@
 <style lang="scss">
   .checkbox {
     white-space: nowrap;
+
+    input:hover,
+    label:hover {
+      cursor: pointer;
+    }
   }
 </style>

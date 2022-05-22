@@ -143,7 +143,7 @@
             },
           },
           {
-            error: "Project name already in use",
+            error: "Already in use",
             test(value) {
               if (!workspace) return true;
               return !workspace.projects.some(
@@ -155,7 +155,6 @@
       />
       <div class="mt-1 tgi-inputs flex-space-between">
         <TextInput
-          monospace={true}
           name="group-text-input"
           fillWidth={true}
           label="group"
@@ -164,7 +163,7 @@
           bind:isValid={isGroupValid}
           validators={[
             {
-              error: "Must be valid 8-digit hex",
+              error: "Must be 8-digit hex",
               test(value) {
                 return validateHexString(value, 8);
               },
@@ -172,22 +171,21 @@
           ]}
         />
         <TextInput
-          monospace={true}
           name="instance-text-input"
           fillWidth={true}
-          label="instance base"
-          placeholder="Instance base..."
+          label="instance"
+          placeholder="Instances..."
           bind:value={instanceBaseString}
           bind:isValid={isInstanceValid}
           validators={[
             {
-              error: "Must be valid 14-digit hex",
+              error: "Must be 14-digit hex",
               test(value) {
                 return validateHexString(value, 14);
               },
             },
             {
-              error: "Instance base already in use",
+              error: "Already in use",
               test(value) {
                 if (!workspace) return true;
                 const instanceBaseNumber = BigInt("0x" + value);

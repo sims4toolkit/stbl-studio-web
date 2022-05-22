@@ -36,7 +36,14 @@
 
 <div class="text-input" class:w-100={fillWidth}>
   {#if Boolean(label)}
-    <label class="small-title" for={name}>{label}</label>
+    <div class="flex-center-v">
+      <label class="small-title" for={name}>{label}</label>
+      {#if !isValid}
+        <p in:fade class="subtle-text error-color my-0 ml-half">
+          • {errorMessage}
+        </p>
+      {/if}
+    </div>
   {/if}
   <input
     id={name}
@@ -51,11 +58,6 @@
     class:highlight={validators?.length}
     class:valid={isValid}
   />
-  {#if !isValid}
-    <p in:fade class="subtle-text error-color my-0">
-      {errorMessage}
-    </p>
-  {/if}
 </div>
 
 <style lang="scss">

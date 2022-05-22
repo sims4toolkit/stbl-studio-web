@@ -1,11 +1,19 @@
 <script lang="ts">
+  import type Project from "../../../typescript/models/project";
   import FileInput from "../../elements/FileInput.svelte";
   import GradientHeader from "../../elements/GradientHeader.svelte";
 
-  export let onComplete: () => void;
+  export let onComplete: (project?: Project) => void;
 
   let uploadedFiles: FileList;
   let filesInvalid = false;
+
+  $: {
+    if (uploadedFiles?.length) {
+      // TODO:
+      onComplete();
+    }
+  }
 </script>
 
 <GradientHeader title="Upload String Tables" />
