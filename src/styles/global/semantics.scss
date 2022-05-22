@@ -1,23 +1,5 @@
 // Styling that uses semantics/classes to apply styling
 
-.button {
-  background-color: transparent;
-  color: var(--color-text);
-  border: 1px solid var(--color-text);
-  border-radius: 6px;
-  padding: 8px 16px;
-  text-decoration: none;
-  font-size: 16px;
-  display: inline-block;
-
-  &:hover {
-    cursor: pointer;
-    background-color: var(--color-accent);
-    border-color: var(--color-accent);
-    color: var(--color-bg);
-  }
-}
-
 .is-svg {
   filter: var(--filter-svg);
 
@@ -77,4 +59,15 @@
 
 .hoverable:hover {
   cursor: pointer;
+}
+
+button.button-wrapper {
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+
+  &:hover {
+    cursor: pointer;
+  }
 }

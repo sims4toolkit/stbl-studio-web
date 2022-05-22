@@ -26,17 +26,23 @@
   });
 </script>
 
-<img
-  src={themeImgSrc}
-  alt={themeImgAlt}
-  class="is-svg theme-toggle hoverable"
-  on:click={toggleTheme}
-  title="Toggle Theme"
-/>
+<button on:click={toggleTheme} class="button-wrapper">
+  <img
+    src={themeImgSrc}
+    alt={themeImgAlt}
+    class="is-svg"
+    title="Toggle Theme"
+  />
+</button>
 
 <style lang="scss">
-  img.theme-toggle {
+  button {
     height: 1.25em;
-    width: auto;
+    width: 1.25em;
+
+    img {
+      height: 100%;
+      width: auto;
+    }
   }
 </style>

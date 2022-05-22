@@ -8,7 +8,7 @@
   export let toggleTitle: (text?: string, color?: string) => void;
   export let handleClick: () => void;
 
-  let floatingActionButton: HTMLDivElement;
+  let floatingActionButton: HTMLButtonElement;
 
   $: imagePath = `./assets/${icon}.svg`;
 
@@ -21,13 +21,13 @@
 
   function handleLeaveOrBlur(e: MouseEvent | FocusEvent) {
     if (disabled) return;
-    floatingActionButton.style.backgroundColor = "transparent";
+    floatingActionButton.style.backgroundColor = "var(--color-bg)";
     floatingActionButton.style.borderColor = "var(--color-text)";
     toggleTitle();
   }
 </script>
 
-<div
+<button
   bind:this={floatingActionButton}
   class="floating-action-button flex-center"
   class:first
@@ -42,7 +42,7 @@
   }}
 >
   <img class="is-svg" src={imagePath} alt={title} />
-</div>
+</button>
 
 <style lang="scss">
   .floating-action-button {
@@ -50,7 +50,7 @@
 
     height: 36px;
     width: 48px;
-    background-color: transparent;
+    background-color: var(--color-bg);
     border: 1px solid var(--color-text);
 
     &.first {

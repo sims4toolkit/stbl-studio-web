@@ -74,9 +74,6 @@
         <li>Look for long, Base64-encoded strings. These are your STBLs.</li>
       </ol>
     </div>
-    <div slot="actions">
-      <span class="button" on:click={() => (restoreError = false)}>Got it</span>
-    </div>
   </BlurOverlay>
 {:else if onboardUser}
   <BlurOverlay>

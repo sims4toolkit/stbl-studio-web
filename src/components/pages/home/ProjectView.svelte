@@ -35,15 +35,15 @@
   <div class="w-100">
     <div class="flex-center-v">
       {#if isInSelectMode}
-        <div
+        <button
           in:fly={{ x: -10, duration: 500 }}
           class:selected={projectSelected}
-          class="selected-indicator flex-center"
+          class="selected-indicator button-wrapper flex-center"
         >
           {#if projectSelected}
             &#10003;
           {/if}
-        </div>
+        </button>
       {/if}
       <div class="mw-100">
         <h3 class="mt-0 nowrap-truncate mr-1">
