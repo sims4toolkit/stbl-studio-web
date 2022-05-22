@@ -18,3 +18,13 @@ export const allLocales = localeData as LocaleData[];
 export function getLocaleData(locale: StringTableLocale): LocaleData {
   return allLocales.find(data => data.enumValue === locale);
 }
+
+/**
+ * Gets the name to display for a given locale.
+ * 
+ * @param localeData Locale to get display name for
+ */
+export function getDisplayName(localeData: LocaleData): string {
+  if (!localeData.enumValue) return localeData.englishName;
+  return `${localeData.englishName} (${localeData.nativeName})`;
+}
