@@ -22,9 +22,11 @@
     <button on:click={() => toggleAll(true)}>select all</button>
     <button on:click={() => toggleAll(false)}>deselect all</button>
   </div>
-  {#each localeChoices as choice, key (key)}
-    <Checkbox label={getDisplayName(choice.data)} bind:checkable={choice} />
-  {/each}
+  <div class="checkboxes-wrapper">
+    {#each localeChoices as choice, key (key)}
+      <Checkbox label={getDisplayName(choice.data)} bind:checkable={choice} />
+    {/each}
+  </div>
 </div>
 
 <style lang="scss">
@@ -45,6 +47,12 @@
           cursor: pointer;
         }
       }
+    }
+
+    .checkboxes-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1em;
     }
   }
 </style>

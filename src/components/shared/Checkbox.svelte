@@ -6,11 +6,15 @@
   };
 </script>
 
-<label>
-  <input type="checkbox" bind:checked={checkable.checked} />
-  {label}
-</label>
+<div class="checkbox">
+  <label>
+    <input type="checkbox" bind:checked={checkable.checked} />
+    {label}
+  </label>
+</div>
 
 <style lang="scss">
-  // intentionally blank
+  .checkbox {
+    white-space: nowrap;
+  }
 </style>
