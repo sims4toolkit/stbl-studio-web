@@ -1,3 +1,7 @@
+// General utilities that can be used to avoid semantic classes
+
+//#region Flexbox
+
 .flex-center {
   display: flex;
   justify-content: center;
@@ -27,27 +31,9 @@
   flex-wrap: wrap;
 }
 
-.hoverable:hover {
-  cursor: pointer;
-}
+//#endregion Flexbox
 
-.text-center {
-  text-align: center;
-}
-
-.text-left {
-  text-align: left;
-}
-
-.text-right {
-  text-align: right;
-}
-
-.nowrap-truncate {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+//#region Shadows
 
 .text-shadow {
   text-shadow: 1px 2px 4px var(--color-shadow);
@@ -61,10 +47,9 @@
   box-shadow: 0px 4px 8px var(--color-shadow);
 }
 
-.bg-blur {
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-}
+//#endregion Shadows
+
+//#region Widths
 
 .w-100 {
   width: 100%;
@@ -73,6 +58,8 @@
 .mw-100 {
   max-width: 100%;
 }
+
+//#endregion Widths
 
 //#region Margins
 
@@ -155,6 +142,41 @@
   margin-top: 3em;
 }
 
+.mx-0 {
+  margin: {
+    left: 0;
+    right: 0;
+  }
+}
+
+.mx-half {
+  margin: {
+    left: 0.5em;
+    right: 0.5em;
+  }
+}
+
+.mx-1 {
+  margin: {
+    left: 1em;
+    right: 1em;
+  }
+}
+
+.mx-2 {
+  margin: {
+    left: 2em;
+    right: 2em;
+  }
+}
+
+.mx-3 {
+  margin: {
+    left: 3em;
+    right: 3em;
+  }
+}
+
 .ml-0 {
   margin-left: 0;
 }
@@ -196,76 +218,3 @@
 }
 
 //#endregion Margins
-
-.move-on-hover {
-  position: relative;
-  transition: all ease 300ms;
-  top: 0;
-
-  &:hover {
-    top: -4px;
-    cursor: pointer;
-  }
-}
-
-.nowrap {
-  white-space: nowrap;
-}
-
-.smaller-font {
-  font-size: 0.85em;
-}
-
-.unbold {
-  font-weight: normal;
-}
-
-.monospace,
-input.monospace::placeholder {
-  font-family: monospace; // FIXME:
-}
-
-.accent-color {
-  color: var(--color-accent);
-}
-
-.error-color {
-  color: var(--color-error);
-}
-
-.frankk-color {
-  color: var(--color-frankk);
-}
-
-.s4tk-color {
-  color: var(--color-accent);
-}
-
-.discord-color {
-  color: var(--color-discord);
-}
-
-.kofi-color {
-  color: var(--color-kofi);
-}
-
-.patreon-color {
-  color: var(--color-patreon);
-}
-
-.twitter-color {
-  color: var(--color-twitter);
-}
-
-.newlines {
-  white-space: pre-wrap;
-}
-
-.unselectable-text {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}

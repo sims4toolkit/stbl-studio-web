@@ -9,7 +9,7 @@
 <svelte:head>
   <title>S4TK | Help</title>
 </svelte:head>
-<section id="help-page" class="under-navbar">
+<section id="help-page">
   <ContentArea>
     <SectionHeader title="Website troubles" />
     <p>

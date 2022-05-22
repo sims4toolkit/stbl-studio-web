@@ -1,11 +1,8 @@
+// Universal styling that affects everything on the site
+
 html {
-  font-family: $font-noto-sans, sans-serif;
   background-color: var(--color-bg);
   color: var(--color-text);
-}
-
-*::placeholder {
-  font-family: $font-noto-sans, sans-serif;
 }
 
 body {

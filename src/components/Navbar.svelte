@@ -6,7 +6,7 @@
   $: settingsIcon = $location === "/settings" ? "settings" : "settings-outline";
 </script>
 
-<nav class="flex-center-v flex-space-between bottom-shadow bg-blur">
+<nav class="flex-center-v flex-space-between bottom-shadow">
   <div class="left flex-center-v flex-space-between">
     <a href="/" use:link class="flex-center-v flex-space-between">
       <img src="../assets/s4tk-transparent.png" alt="Sims 4 Toolkit Icon" />
@@ -42,6 +42,8 @@
     overflow-x: auto;
     z-index: 1024;
     white-space: nowrap;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
 
     div.left {
       margin-right: 2em;

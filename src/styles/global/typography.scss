@@ -1,0 +1,77 @@
+// Styles for fonts and text appearance
+
+*,
+*::placeholder {
+  font-family: $font-noto-sans, sans-serif;
+}
+
+.monospace,
+.monospace::placeholder {
+  font-family: monospace;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.nowrap-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.unbold {
+  font-weight: normal;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+//#region Text Colors
+
+.accent-color {
+  color: var(--color-accent);
+}
+
+.error-color {
+  color: var(--color-error);
+}
+
+.frankk-color {
+  color: var(--color-frankk);
+}
+
+.s4tk-color {
+  color: var(--color-accent);
+}
+
+.discord-color {
+  color: var(--color-discord);
+}
+
+.kofi-color {
+  color: var(--color-kofi);
+}
+
+.patreon-color {
+  color: var(--color-patreon);
+}
+
+.twitter-color {
+  color: var(--color-twitter);
+}
+
+//#endregion Text Colors

@@ -44,8 +44,5 @@
 </section>
 
 <style lang="scss">
-  #project-section {
-    padding-top: 50px;
-    min-height: 100vh;
-  }
+  // intentionally blank
 </style>

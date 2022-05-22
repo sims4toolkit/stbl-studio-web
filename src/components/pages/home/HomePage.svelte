@@ -209,9 +209,6 @@
 
 <style lang="scss">
   #home-section {
-    padding-top: 50px;
-    min-height: 100vh;
-
     &.center-v {
       display: flex;
       flex-direction: column;
