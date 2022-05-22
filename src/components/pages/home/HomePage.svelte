@@ -15,6 +15,7 @@
   import GradientHeader from "../../shared/GradientHeader.svelte";
   import StickyCloseButton from "../../shared/StickyCloseButton.svelte";
   import ProjectDeletionView from "./ProjectDeletionView.svelte";
+  import ProjectUploadView from "./ProjectUploadView.svelte";
 
   let workspace: Workspace;
   let selectionGroup: SelectionGroup<Project>;
@@ -39,6 +40,12 @@
   let creatingProject = false;
   function onProjectCreatorExit(project?: Project) {
     creatingProject = false;
+    if (project) workspace.addProject(project);
+  }
+
+  let uploadingProject = false;
+  function onProjectUploaderExit(project?: Project) {
+    uploadingProject = false;
     if (project) workspace.addProject(project);
   }
 
@@ -68,7 +75,7 @@
       icon: "upload",
       color: ToolbarColor.Upload,
       async onClick() {
-        alert("Upload Clicked");
+        uploadingProject = true;
       },
     },
     {
@@ -167,6 +174,22 @@
   <BlurOverlay>
     <ProjectCreationView slot="content" onComplete={onProjectCreatorExit} />
   </BlurOverlay>
+  <StickyCloseButton
+    onClick={() => {
+      creatingProject = false;
+    }}
+  />
+{/if}
+
+{#if uploadingProject}
+  <BlurOverlay>
+    <ProjectUploadView slot="content" onComplete={onProjectUploaderExit} />
+  </BlurOverlay>
+  <StickyCloseButton
+    onClick={() => {
+      uploadingProject = false;
+    }}
+  />
 {/if}
 
 {#if confirmingDeletion}

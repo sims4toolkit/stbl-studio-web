@@ -1,8 +1,16 @@
 <script lang="ts">
+  import { fade } from "svelte/transition";
+
   export let onClick: () => void;
 </script>
 
-<img class="is-svg" on:click={onClick} src="./assets/x.svg" alt="X" />
+<img
+  class="is-svg"
+  transition:fade
+  on:click={onClick}
+  src="./assets/x.svg"
+  alt="X"
+/>
 
 <style lang="scss">
   img {

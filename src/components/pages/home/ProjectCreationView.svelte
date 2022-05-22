@@ -242,7 +242,6 @@
     />
   </div>
 </div>
-<StickyCloseButton onClick={() => onComplete()} />
 
 <style lang="scss">
   .project-creation-view {
