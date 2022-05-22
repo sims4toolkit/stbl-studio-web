@@ -100,12 +100,25 @@ export default class Workspace {
   }
 
   /**
-   * TODO:
+   * Removes projects from the workspace and deletes them from storage.
    * 
-   * @param uuid TODO:
+   * @param uuids UUIDs of projects to remove
    */
-  removeProject(uuid: string) {
-    // TODO:
+  removeProjects(...uuids: string[]) {
+    uuids.forEach(uuid => {
+      const projectIndex = this.projects.findIndex(project => {
+        return uuid === project.uuid;
+      });
+
+      console.log("index:", projectIndex);
+
+      if (projectIndex != -1) {
+        this.projects.splice(projectIndex, 1);
+        StorageService.deleteProjectData(uuid);
+      }
+    });
+
+    activeWorkspace.set(this); // to update components
   }
 
   /**

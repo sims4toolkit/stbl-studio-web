@@ -66,7 +66,6 @@
       icon: "plus",
       color: ToolbarColor.Create,
       async onClick() {
-        // workspace.addProject(); // FIXME:
         creatingProject = true;
       },
     },
@@ -78,7 +77,7 @@
       icon: "trash",
       color: ToolbarColor.Delete,
       async onClick() {
-        alert("Delete Clicked");
+        workspace.removeProjects(...selectionGroup.allSelections);
       },
     },
     {

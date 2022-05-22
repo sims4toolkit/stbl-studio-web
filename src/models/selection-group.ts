@@ -1,13 +1,13 @@
 export default class SelectionGroup<T> {
-  private _selections: Set<T>;
+  private _selections: Set<string>;
 
   private _selectMode: boolean;
   get selectMode(): boolean {
     return this._selectMode;
   }
 
-  get allSelections(): T[] {
-    return [...(this._selections)];
+  get allSelections(): string[] {
+    return Array.from(this._selections);
   }
 
   get noneSelected(): boolean {

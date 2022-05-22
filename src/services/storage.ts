@@ -148,6 +148,22 @@ async function saveProjectData(project: ProjectData) {
   localStorage.setItem(getProjectStorageKey(project.uuid), value);
 }
 
+/**
+ * Deletes a project from localStorage.
+ * 
+ * @param uuid UUID of project to delete
+ */
+async function deleteProjectData(uuid: string) {
+  const projectUuids = settings.projectUuids;
+  const uuidIndex = projectUuids.findIndex(value => value === uuid);
+  if (uuidIndex != -1) {
+    projectUuids.splice(uuidIndex, 1);
+    settings.projectUuids = projectUuids;
+  }
+
+  localStorage.removeItem(getProjectStorageKey(uuid));
+}
+
 //#endregion Projects
 
 const settings = getSettingsProxy({
@@ -165,6 +181,7 @@ const StorageService = {
   writeProjectData,
   loadProjectData,
   saveProjectData,
+  deleteProjectData,
 };
 
 export default StorageService;
