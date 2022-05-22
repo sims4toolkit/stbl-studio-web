@@ -4,13 +4,9 @@
   export let onClick: () => void;
 </script>
 
-<img
-  class="is-svg"
-  transition:fade
-  on:click={onClick}
-  src="./assets/x.svg"
-  alt="X"
-/>
+<button class="button-wrapper" on:click={onClick} transition:fade>
+  <img class="is-svg" src="./assets/x.svg" alt="X" />
+</button>
 
 <style lang="scss">
   img {

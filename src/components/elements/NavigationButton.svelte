@@ -9,8 +9,8 @@
   }
 </script>
 
-<div
-  class="navigation-button unselectable-text flex-center-v"
+<button
+  class="navigation-button unselectable-text flex-center-v button-wrapper"
   class:active
   on:click={handleClick}
 >
@@ -21,7 +21,7 @@
   {#if direction === "right"}
     <img class="is-svg" src="./assets/chevron-right.svg" alt=">" />
   {/if}
-</div>
+</button>
 
 <style lang="scss">
   .navigation-button {

@@ -27,6 +27,12 @@
   function focusBlocker(e: FocusEvent) {
     //@ts-ignore Idk why TS is being annoying about this...
     if (!modal.contains(e.target)) {
+      if (!document.contains(firstFocusableChild)) {
+        firstFocusableChild = modal.querySelector(
+          "a, button, input, textarea, select"
+        );
+      }
+
       try {
         //@ts-ignore I do know why it's being annoying about this one...
         firstFocusableChild?.focus();

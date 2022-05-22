@@ -141,13 +141,16 @@
     </div>
   {/if}
   <div class="upload-workspace text-center">
-    <span on:click={uploadWorkspaceButtonClicked}>
+    <button
+      class="button-wrapper text-color"
+      on:click={uploadWorkspaceButtonClicked}
+    >
       {#if page !== "upload"}
         I have a workspace to upload.
       {:else}
         I don't have a workspace file.
       {/if}
-    </span>
+    </button>
   </div>
 </div>
 
@@ -169,13 +172,12 @@
       left: 0;
       right: 0;
 
-      span {
+      button {
         text-decoration: underline;
       }
 
-      span:hover {
+      button:hover {
         text-decoration: none;
-        cursor: pointer;
       }
     }
 
