@@ -1,5 +1,6 @@
 <script lang="ts">
   import { fly } from "svelte/transition";
+  import { v4 as uuidv4 } from "uuid";
   import type Project from "../../../typescript/models/project";
   import FileInput from "../../elements/FileInput.svelte";
   import GradientHeader from "../../elements/GradientHeader.svelte";
@@ -10,6 +11,7 @@
 
   const animationDuration = 1000;
 
+  const uuid: string = uuidv4();
   let uploadedFiles: FileList;
   let filesInvalid = false;
   let circlesFilled = 0;
@@ -29,30 +31,30 @@
 <div>
   <div in:fly={{ y: -15, duration: animationDuration }}>
     <GradientHeader title="Upload Project" />
+    <p class="mt-1 subtle-text">UUID: {uuid}</p>
   </div>
   <div in:fly={{ y: 15, duration: animationDuration }}>
     <p class="my-2">
-      Upload string tables that belong to the same project (i.e. they have the
-      same instance base, but different locales). String table binaries, JSONs
-      containing key/value pairs*, and packages containing string tables are all
-      accepted.
+      Upload string tables to include in this project. A single string table can
+      be uploaded as binary or JSON, but multiple string tables must be uploaded
+      in a package or JSON.
     </p>
     <FileInput
-      label="upload string tables"
+      label="binary, json, or package only"
       bind:files={uploadedFiles}
-      accept=".json,.bnry,.stbl,.binary,.package"
-      multiple={true}
+      accept=".json,.stbl,.bnry,.binary,.package"
       bind:filesInvalid
     />
-    <p class="mb-0 mt-2 subtle-text">
-      * JSON must be a list of objects that have &quot;key&quot; and
-      &quot;value&quot; properties. The key must be a number or a string
-      containing a hex number (with or without &quot;0x&quot;). The value must
-      be a string.
+    <p class="my-2 subtle-text">
+      Using JSON? Read about the expected syntax <a
+        class="text-color"
+        href="#/help?title=json"
+        target="_blank">here</a
+      >.
     </p>
   </div>
   <div
-    class="flex-space-between mt-2"
+    class="flex-space-between"
     in:fly={{ y: 25, duration: animationDuration }}
   >
     <ProgressCircles circles={2} filled={circlesFilled} />
