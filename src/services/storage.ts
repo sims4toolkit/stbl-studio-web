@@ -90,8 +90,12 @@ function readProjectData(uuid: string, stored: StoredProject): ProjectData {
     name: stored.name,
     primaryLocale: stored.primaryLocale,
     stbls: stored.stbls.map(stbl => {
-      const buffer = window.S4TK.Node.Buffer.from(stbl.data, "base64");
-      const parsedStbl = window.S4TK.models.StringTableResource.from(buffer);
+      if (stbl.data != null) {
+        const buffer = window.S4TK.Node.Buffer.from(stbl.data, "base64");
+        var parsedStbl = window.S4TK.models.StringTableResource.from(buffer);
+      } else {
+        var parsedStbl = new window.S4TK.models.StringTableResource();
+      }
 
       return {
         locale: stbl.locale,
@@ -114,12 +118,14 @@ function writeProjectData(project: ProjectData): StoredProject {
     name: project.name,
     primaryLocale: project.primaryLocale,
     stbls: project.stbls.map(wrapper => {
-      const buffer: Buffer = wrapper.stbl.getBuffer(true);
+      const data = wrapper.stbl.size === 0
+        ? null
+        : wrapper.stbl.getBuffer(true).toString("base64");
 
       return {
         locale: wrapper.locale,
         updatedKeys: wrapper.updatedKeys ? [...wrapper.updatedKeys] : null,
-        data: buffer.toString("base64")
+        data
       };
     })
   };
