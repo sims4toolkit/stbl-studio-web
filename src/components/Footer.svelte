@@ -2,7 +2,7 @@
   import ContentArea from "./layout/ContentArea.svelte";
 </script>
 
-<section id="footer" class="flex-center text-center">
+<div id="footer" class="flex-center text-center">
   <ContentArea>
     <div class="mb-3">
       <p>
@@ -55,10 +55,10 @@
     </p>
     <p class="disclaimer">2022 © Frank Kulak</p>
   </ContentArea>
-</section>
+</div>
 
 <style lang="scss">
-  section#footer {
+  #footer {
     background-color: var(--color-footer);
     color: var(--color-text);
     width: 100%;

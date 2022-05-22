@@ -1,6 +1,6 @@
 <script lang="ts">
   import ContentArea from "../layout/ContentArea.svelte";
-  import SectionHeader from "../shared/SectionHeader.svelte";
+  import GradientHeader from "../shared/GradientHeader.svelte";
 
   // just silencing warnings in a hacky way, don't mind me
   export let params: any;
@@ -12,7 +12,7 @@
 </svelte:head>
 <section id="page-not-found">
   <ContentArea>
-    <SectionHeader title="Unlock this page for $4.04" />
+    <GradientHeader title="Unlock this page for $4.04" />
     <p>
       Just kidding. This page doesn't exist. Please <a href="/">go home</a>.
     </p>

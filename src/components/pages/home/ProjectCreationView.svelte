@@ -15,7 +15,7 @@
   } from "../../../typescript/helpers/tgi";
   import { activeWorkspace } from "../../../typescript/stores";
   import GradientHeader from "../../shared/GradientHeader.svelte";
-  import SelectWithLabel from "../../shared/SelectWithLabel.svelte";
+  import Select from "../../shared/Select.svelte";
   import TextInput from "../../shared/TextInput.svelte";
   import ProgressCircles from "../../shared/ProgressCircles.svelte";
   import NavigationButton from "../../shared/NavigationButton.svelte";
@@ -199,7 +199,7 @@
             },
           ]}
         />
-        <SelectWithLabel
+        <Select
           name="primary-locale-select"
           label="primary locale"
           fillWidth={true}
