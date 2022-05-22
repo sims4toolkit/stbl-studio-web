@@ -2,7 +2,7 @@
   import type Project from "../../../models/project";
   import type Workspace from "../../../models/workspace";
   import SelectionGroup from "../../../models/selection-group";
-  import ToolbarColor from "../../../enums/toolbar-colors";
+  import ToolbarColor from "../../../typescript/enums/toolbar-colors";
   import ContentArea from "../../layout/ContentArea.svelte";
   import SplitView from "../../layout/SplitView.svelte";
   import FloatingActionButtonGroup from "../../shared/FloatingActionButtonGroup.svelte";

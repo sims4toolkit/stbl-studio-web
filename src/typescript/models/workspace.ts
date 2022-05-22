@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
-import type { ProjectData, StoredProject, StoredWorkspace } from "../global";
-import StorageService from "../services/storage";
-import { activeWorkspace } from "../services/stores";
+import type { ProjectData, StoredProject, StoredWorkspace } from "../../global";
+import StorageService from "../storage-service";
+import { activeWorkspace } from "../stores";
 import Project from "./project";
 
 const { StringTableResource } = window.S4TK.models;

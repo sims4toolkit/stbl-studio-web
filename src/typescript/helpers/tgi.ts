@@ -1,4 +1,4 @@
-import StorageService from "./storage";
+import StorageService from "../storage-service";
 
 const { fnv64 } = window.S4TK.hashing;
 

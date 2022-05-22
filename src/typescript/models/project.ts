@@ -1,6 +1,6 @@
 import type { StringTableLocale } from "@s4tk/models/enums";
-import type { ProjectData, StringTableWrapper } from "../global";
-import StorageService from "../services/storage";
+import type { ProjectData, StringTableWrapper } from "../../global";
+import StorageService from "../storage-service";
 
 export default class Project implements ProjectData {
   group: number;
