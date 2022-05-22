@@ -32,6 +32,7 @@ $azure-blue: #0095eb;
     --color-bg: #{$darker-gray};
     --color-bg-secondary: #2f343e;
     --color-text: #{$cool-white};
+    --color-text-subtle: rgb(143, 143, 143);
     --color-divider: rgb(108, 110, 110);
     --color-accent: #{$seafoam};
     --color-accent-secondary: #{$sky-blue};
@@ -43,7 +44,7 @@ $azure-blue: #0095eb;
     --color-scrollbar-hover: rgb(190, 197, 199);
     --color-blur-fallback: rgba(0, 0, 0, 0.9);
     --color-shadow: rgba(0, 0, 0, 0.2);
-    --color-error: #e04848;
+    --color-error: #dc6060;
 
     // filters
     --filter-svg: var(--filter-light);
@@ -56,6 +57,7 @@ $azure-blue: #0095eb;
     --color-bg: rgb(240, 242, 245);
     --color-bg-secondary: #{$cool-white};
     --color-text: #{$darker-gray};
+    --color-text-subtle: rgb(95, 99, 100);
     --color-divider: rgb(171, 175, 177);
     --color-accent: #{$teal};
     --color-accent-secondary: #{$azure-blue};

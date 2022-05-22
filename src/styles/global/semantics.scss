@@ -19,11 +19,11 @@
 .disclaimer,
 .subtle-text {
   font-size: 0.8em;
-  opacity: 0.65;
+  color: var(--color-text-subtle);
 }
 
 .small-title {
-  opacity: 0.65;
+  color: var(--color-text-subtle);
   text-transform: uppercase;
   font-size: 0.8em;
   font-weight: bold;

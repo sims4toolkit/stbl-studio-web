@@ -140,15 +140,12 @@
       />
     </div>
   {/if}
-  <div class="upload-workspace text-center">
-    <button
-      class="button-wrapper text-color"
-      on:click={uploadWorkspaceButtonClicked}
-    >
+  <div class="upload-workspace text-center" in:fade>
+    <button on:click={uploadWorkspaceButtonClicked}>
       {#if page !== "upload"}
-        I have a workspace to upload.
+        Upload Workspace File
       {:else}
-        I don't have a workspace file.
+        Create New Workspace
       {/if}
     </button>
   </div>
@@ -161,10 +158,6 @@
       margin-bottom: 0.6em;
     }
 
-    a {
-      color: var(--color-text);
-    }
-
     .upload-workspace {
       font-size: 0.8em;
       position: fixed;
@@ -173,11 +166,18 @@
       right: 0;
 
       button {
-        text-decoration: underline;
-      }
+        background: none;
+        padding: 8px;
+        border-radius: 4px;
+        border: 1px solid var(--color-text-subtle);
+        color: var(--color-text-subtle);
 
-      button:hover {
-        text-decoration: none;
+        &:hover {
+          background-color: var(--color-accent-secondary);
+          color: var(--color-bg);
+          border-color: var(--color-accent-secondary);
+          cursor: pointer;
+        }
       }
     }
 

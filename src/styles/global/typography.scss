@@ -43,39 +43,43 @@
 //#region Text Colors
 
 .text-color {
-  color: var(--color-text);
+  color: var(--color-text) !important;
+}
+
+.subtle-color {
+  color: var(--color-text-subtle) !important;
 }
 
 .accent-color {
-  color: var(--color-accent);
+  color: var(--color-accent) !important;
 }
 
 .error-color {
-  color: var(--color-error);
+  color: var(--color-error) !important;
 }
 
 .frankk-color {
-  color: var(--color-frankk);
+  color: var(--color-frankk) !important;
 }
 
 .s4tk-color {
-  color: var(--color-accent);
+  color: var(--color-accent) !important;
 }
 
 .discord-color {
-  color: var(--color-discord);
+  color: var(--color-discord) !important;
 }
 
 .kofi-color {
-  color: var(--color-kofi);
+  color: var(--color-kofi) !important;
 }
 
 .patreon-color {
-  color: var(--color-patreon);
+  color: var(--color-patreon) !important;
 }
 
 .twitter-color {
-  color: var(--color-twitter);
+  color: var(--color-twitter) !important;
 }
 
 //#endregion Text Colors

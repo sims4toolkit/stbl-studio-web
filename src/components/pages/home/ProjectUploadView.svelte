@@ -35,9 +35,9 @@
   </div>
   <div in:fly={{ y: 15, duration: animationDuration }}>
     <p class="my-2">
-      Upload string tables to include in this project. A single string table can
-      be uploaded as binary or JSON, but multiple string tables must be uploaded
-      in a package or JSON.
+      Upload the string table(s) you'd like to include in this project. A single
+      string table can be uploaded as binary or JSON, but multiple string tables
+      must be uploaded in a package.
     </p>
     <FileInput
       label="binary, json, or package only"
@@ -45,13 +45,17 @@
       accept=".json,.stbl,.bnry,.binary,.package"
       bind:filesInvalid
     />
-    <p class="my-2 subtle-text">
-      Using JSON? Read about the expected syntax <a
-        class="text-color"
-        href="#/help?title=json"
-        target="_blank">here</a
-      >.
-    </p>
+    <div class="my-2">
+      <p class="subtle-text">
+        If multiple string tables have the same locale, they will be merged.
+      </p>
+      <p class="subtle-text">
+        Using JSON? Read about the expected structure <a
+          href="#/help?title=json"
+          target="_blank">here</a
+        >.
+      </p>
+    </div>
   </div>
   <div
     class="flex-space-between"

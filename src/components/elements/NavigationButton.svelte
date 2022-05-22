@@ -33,6 +33,7 @@
     &:not(.active),
     &.active:hover {
       opacity: 0.65;
+      cursor: not-allowed;
     }
 
     &.active:hover {
