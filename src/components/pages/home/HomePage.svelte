@@ -13,9 +13,8 @@
   import BlurOverlay from "../../layout/BlurOverlay.svelte";
   import ProjectCreationView from "./ProjectCreationView.svelte";
   import GradientHeader from "../../shared/GradientHeader.svelte";
-  import TextInput from "../../shared/TextInput.svelte";
   import StickyCloseButton from "../../shared/StickyCloseButton.svelte";
-  import NavigationButton from "../../shared/NavigationButton.svelte";
+  import ProjectDeletionView from "./ProjectDeletionView.svelte";
 
   let workspace: Workspace;
   let selectionGroup: SelectionGroup<Project>;
@@ -44,9 +43,7 @@
   }
 
   let confirmingDeletion = false;
-  let deletionConfirmationIsValid = false;
-  function onDeletionConfirmation() {
-    workspace.removeProjects(...selectionGroup.allSelections);
+  function onDeletionComplete() {
     confirmingDeletion = false;
   }
 
@@ -174,41 +171,11 @@
 
 {#if confirmingDeletion}
   <BlurOverlay>
-    <div slot="content">
-      <GradientHeader title="Confirm Deletion" />
-      <p class="mt-2">
-        Are you sure you want to permanently delete the following projects?
-      </p>
-      <ul class="mb-2">
-        {#each selectedProjects as project, key (key)}
-          <li>{project.name} ({project.primaryStbl.stbl.size} strings)</li>
-        {/each}
-      </ul>
-      <TextInput
-        name="confirm-deletion-input"
-        placeholder="Yes"
-        label="type &quot;yes&quot; to confirm"
-        fillWidth={true}
-        bind:isValid={deletionConfirmationIsValid}
-        validators={[
-          {
-            error: 'Value must be "yes"',
-            test(value) {
-              return value?.trim().toLowerCase() === "yes";
-            },
-          },
-        ]}
-      />
-      <div class="mt-2 flex-space-between">
-        <p />
-        <NavigationButton
-          text="Confirm"
-          onClick={onDeletionConfirmation}
-          direction="right"
-          active={deletionConfirmationIsValid}
-        />
-      </div>
-    </div>
+    <ProjectDeletionView
+      slot="content"
+      {selectedProjects}
+      onComplete={onDeletionComplete}
+    />
   </BlurOverlay>
   <StickyCloseButton
     onClick={() => {

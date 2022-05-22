@@ -115,10 +115,12 @@ export default class Workspace {
   /**
    * Removes projects from the workspace and deletes them from storage.
    * 
-   * @param uuids UUIDs of projects to remove
+   * @param projects Projects to remove
    */
-  removeProjects(...uuids: string[]) {
-    uuids.forEach(uuid => {
+  removeProjects(...projects: Project[]) {
+    projects.forEach(project => {
+      const { uuid } = project;
+
       const projectIndex = this.projects.findIndex(project => {
         return uuid === project.uuid;
       });
