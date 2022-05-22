@@ -104,6 +104,15 @@ export default class Workspace {
   }
 
   /**
+   * Finds and returns a project from its UUID.
+   * 
+   * @param uuid UUID of project to get
+   */
+  getProject(uuid: string): Project {
+    return this.projects.find(project => project.uuid === uuid);
+  }
+
+  /**
    * Removes projects from the workspace and deletes them from storage.
    * 
    * @param uuids UUIDs of projects to remove
@@ -113,8 +122,6 @@ export default class Workspace {
       const projectIndex = this.projects.findIndex(project => {
         return uuid === project.uuid;
       });
-
-      console.log("index:", projectIndex);
 
       if (projectIndex != -1) {
         this.projects.splice(projectIndex, 1);

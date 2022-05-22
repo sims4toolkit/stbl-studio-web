@@ -10,9 +10,9 @@
   export let name: string;
   export let placeholder: string;
   export let monospace = false;
-  export let value: string;
+  export let value: string = "";
   export let validators: InputValidator[] = [];
-  export let isValid: boolean;
+  export let isValid: boolean = true;
   export let fillWidth = false;
 
   let errorMessage: string;

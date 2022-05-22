@@ -13,6 +13,9 @@
   import BlurOverlay from "../../layout/BlurOverlay.svelte";
   import ProjectCreationView from "./ProjectCreationView.svelte";
   import GradientHeader from "../../shared/GradientHeader.svelte";
+  import TextInput from "../../shared/TextInput.svelte";
+  import StickyCloseButton from "../../shared/StickyCloseButton.svelte";
+  import NavigationButton from "../../shared/NavigationButton.svelte";
 
   let workspace: Workspace;
   let selectionGroup: SelectionGroup<Project>;
@@ -40,9 +43,19 @@
     if (project) workspace.addProject(project);
   }
 
+  let confirmingDeletion = false;
+  let deletionConfirmationIsValid = false;
+  function onDeletionConfirmation() {
+    workspace.removeProjects(...selectionGroup.allSelections);
+    confirmingDeletion = false;
+  }
+
   $: workspaceEmpty = Boolean(!workspace?.projects.length);
   $: toolbarDisabledText = workspace ? "none selected" : "no workspace";
   $: toolbarDisabled = !workspace || selectionGroup?.noneSelected;
+  $: selectedProjects = selectionGroup?.allSelections.map((uuid) =>
+    workspace.getProject(uuid)
+  );
 
   const normalModeToolbar = [
     {
@@ -77,7 +90,7 @@
       icon: "trash",
       color: ToolbarColor.Delete,
       async onClick() {
-        workspace.removeProjects(...selectionGroup.allSelections);
+        confirmingDeletion = true;
       },
     },
     {
@@ -144,6 +157,7 @@
   disabled={toolbarDisabled}
   disabledText={toolbarDisabledText}
 />
+
 {#if showDownload}
   <Downloader
     filename={downloadFilename}
@@ -156,6 +170,51 @@
   <BlurOverlay>
     <ProjectCreationView slot="content" onComplete={onProjectCreatorExit} />
   </BlurOverlay>
+{/if}
+
+{#if confirmingDeletion}
+  <BlurOverlay>
+    <div slot="content">
+      <GradientHeader title="Confirm Deletion" />
+      <p class="mt-2">
+        Are you sure you want to permanently delete the following projects?
+      </p>
+      <ul class="mb-2">
+        {#each selectedProjects as project, key (key)}
+          <li>{project.name} ({project.primaryStbl.stbl.size} strings)</li>
+        {/each}
+      </ul>
+      <TextInput
+        name="confirm-deletion-input"
+        placeholder="Yes"
+        label="type &quot;yes&quot; to confirm"
+        fillWidth={true}
+        bind:isValid={deletionConfirmationIsValid}
+        validators={[
+          {
+            error: 'Value must be "yes"',
+            test(value) {
+              return value?.trim().toLowerCase() === "yes";
+            },
+          },
+        ]}
+      />
+      <div class="mt-2 flex-space-between">
+        <p />
+        <NavigationButton
+          text="Confirm"
+          onClick={onDeletionConfirmation}
+          direction="right"
+          active={deletionConfirmationIsValid}
+        />
+      </div>
+    </div>
+  </BlurOverlay>
+  <StickyCloseButton
+    onClick={() => {
+      confirmingDeletion = false;
+    }}
+  />
 {/if}
 
 <style lang="scss">
