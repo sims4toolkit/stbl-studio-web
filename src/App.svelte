@@ -43,6 +43,24 @@
       window.scrollTo(0, 0);
     }
   });
+
+  let storageSyncTimeout: any;
+
+  function startStorageSyncTimeout() {
+    storageSyncTimeout = setTimeout(async () => {
+      console.log("hi");
+      activeWorkspace.set(await Workspace.restoreFromStorage());
+    }, 500);
+  }
+
+  window.addEventListener("storage", async () => {
+    if (storageSyncTimeout === undefined) {
+      startStorageSyncTimeout();
+    } else {
+      clearTimeout(storageSyncTimeout);
+      startStorageSyncTimeout();
+    }
+  });
 </script>
 
 <Navbar />
