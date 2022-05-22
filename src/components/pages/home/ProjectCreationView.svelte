@@ -42,7 +42,7 @@
   });
 
   let page: "tgi" | "locales" = "tgi";
-  let uuid: string = uuidv4();
+  const uuid: string = uuidv4();
   let name = "";
   let primaryLocale = StorageService.settings.defaultLocale;
   let groupString = "80000000";

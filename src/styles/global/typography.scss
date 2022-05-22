@@ -42,6 +42,10 @@
 
 //#region Text Colors
 
+.text-color {
+  color: var(--color-text);
+}
+
 .accent-color {
   color: var(--color-accent);
 }

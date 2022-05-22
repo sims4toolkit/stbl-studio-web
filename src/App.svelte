@@ -22,8 +22,8 @@
         .then((workspace) => {
           activeWorkspace.set(workspace);
         })
-        .catch((error) => {
-          console.error(error);
+        .catch((err) => {
+          console.error("Could not restore workspace from storage:", err);
           restoreError = true;
         });
     } else {

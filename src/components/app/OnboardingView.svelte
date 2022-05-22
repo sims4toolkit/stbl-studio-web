@@ -52,7 +52,7 @@
       activeWorkspace.set(workspace);
       exitOnboarding();
     } catch (err) {
-      console.error(err);
+      console.error("Could not restore workspace from JSON:", err);
       workspaceFileIsInvalid = true;
     }
   }
@@ -132,7 +132,7 @@
         Upload your workspace file to pick up where you left off.
       </p>
       <FileInput
-        label="upload json file"
+        label="workspace json only"
         errorMessage="File is not a valid workspace"
         accept=".json"
         bind:files={uploadedFiles}
