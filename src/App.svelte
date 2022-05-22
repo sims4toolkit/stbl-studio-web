@@ -34,7 +34,7 @@
   const routes = {
     "/": HomePage,
     "/help": HelpPage,
-    "/project/:id": ProjectPage,
+    "/project/:uuid": ProjectPage,
     "*": NotFoundPage,
   };
 

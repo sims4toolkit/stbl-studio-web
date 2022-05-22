@@ -2,14 +2,22 @@
   import { onMount } from "svelte";
   import { replace } from "svelte-spa-router";
   import type Project from "../../../models/project";
+  import type Workspace from "../../../models/workspace";
+  import { activeWorkspace } from "../../../services/stores";
   import ContentArea from "../../layout/ContentArea.svelte";
+  import GradientHeader from "../../shared/GradientHeader.svelte";
   import NavigationButton from "../../shared/NavigationButton.svelte";
 
-  export let params: { id: string };
+  export let params: { uuid: string };
+
+  let workspace: Workspace;
   let project: Project;
 
-  onMount(() => {
-    project = undefined;
+  activeWorkspace.subscribe((value) => {
+    if (value) {
+      workspace = value;
+      project = workspace.projects.find(({ uuid }) => uuid === params.uuid);
+    }
   });
 
   function onBackClicked() {
@@ -18,21 +26,21 @@
 </script>
 
 <svelte:head>
-  <title>STBL | {params.id}</title>
+  <title>STBL | {project?.name ?? "Loading..."}</title>
 </svelte:head>
 <section id="project-section">
-  <ContentArea banded={true}>
-    <div class="flex-center-v flex-space-between mb-2">
-      <NavigationButton text="Back" onClick={onBackClicked} />
-      <h2 class="my-0 accent-color nowrap-truncate ml-2 text-shadow">
-        {project?.name ?? "Language Barriers"}
-      </h2>
-    </div>
-    {params.id}
-  </ContentArea>
-  <ContentArea banded={false}>
-    {params.id}
-  </ContentArea>
+  {#if Boolean(project)}
+    <ContentArea banded={true}>
+      <div class="flex-center-v flex-space-between mb-2">
+        <NavigationButton text="Back" onClick={onBackClicked} />
+        <GradientHeader title={project.name} />
+      </div>
+      {params.uuid}
+    </ContentArea>
+    <ContentArea banded={false}>
+      {params.uuid}
+    </ContentArea>
+  {/if}
 </section>
 
 <style lang="scss">

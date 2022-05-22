@@ -11,7 +11,9 @@ const { fnv64 } = window.S4TK.hashing;
 const CURRENT_VERSION = 1;
 
 export default class Workspace {
-  constructor(readonly projects: Project[] = []) { }
+  constructor(readonly projects: Project[] = []) {
+    this._sortProjects();
+  }
 
   /**
    * Restores a workspace from a JSON.
@@ -96,6 +98,8 @@ export default class Workspace {
     projectUuids.push(uuid);
     StorageService.settings.projectUuids = projectUuids;
 
+    this._sortProjects();
+
     activeWorkspace.set(this); // to update components
   }
 
@@ -149,4 +153,18 @@ export default class Workspace {
   }
 
   //#endregion Methods
+
+  //#region Private Methods
+
+  private _sortProjects() {
+    this.projects.sort((p1, p2) => {
+      const name1 = p1.name.toLowerCase();
+      const name2 = p2.name.toLowerCase();
+      if (name1 < name2) return -1;
+      if (name1 > name2) return 1;
+      return 0;
+    });
+  }
+
+  //#endregion Private Methods
 }
