@@ -218,15 +218,15 @@
       </p>
     </div>
   {:else if page === "locales"}
-    <div in:fade>
-      <p class="mt-2 mb-0">Select the locales to include in this project.</p>
-      <div class="my-2">
+    <div in:fade class="mb-1">
+      <p class="mt-2 mb-0">
+        Select the additional locales to include in this project. Strings added
+        in its primary locale ({getLocaleData(primaryLocale).englishName}) will
+        automatically be added to these ones as well.
+      </p>
+      <div class="mt-2">
         <LocaleCheckboxesView bind:localeChoices={otherLocaleOptions} />
       </div>
-      <p class="subtle-text">
-        Strings added to your primary locale ({getLocaleData(primaryLocale)
-          .englishName}) will automatically be added to these ones as well.
-      </p>
     </div>
   {/if}
   <div

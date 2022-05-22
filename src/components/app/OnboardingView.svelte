@@ -6,6 +6,7 @@
   import NavigationButton from "../elements/NavigationButton.svelte";
   import ProgressCircles from "../elements/ProgressCircles.svelte";
   import FileInput from "../elements/FileInput.svelte";
+  import GradientHeader from "../elements/GradientHeader.svelte";
 
   export let exitOnboarding: () => void;
 
@@ -123,9 +124,9 @@
       />
     </div>
   {:else}
-    <h2 class="my-0" in:fly={{ y: -15, duration: animationDuration }}>
-      <span class="default-gradient-text text-shadow">Welcome back!</span>
-    </h2>
+    <div in:fly={{ y: -15, duration: animationDuration }}>
+      <GradientHeader title="Welcome back!" />
+    </div>
     <div in:fly={{ y: 15, duration: animationDuration }}>
       <p class="my-2">
         Upload your workspace file to pick up where you left off.
