@@ -1,7 +1,7 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
-  import type SelectionGroup from "../../models/selection-group";
-  import type Project from "../../models/project";
+  import type SelectionGroup from "../../typescript/models/selection-group";
+  import type Project from "../../typescript/models/project";
 
   export let selectionGroup: SelectionGroup<Project>;
 

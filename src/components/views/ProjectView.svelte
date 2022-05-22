@@ -1,9 +1,9 @@
 <script lang="ts">
-  import type Project from "../../models/project";
+  import type Project from "../../typescript/models/project";
   import { fly } from "svelte/transition";
   import { replace } from "svelte-spa-router";
-  import { getLocaleData } from "../../services/localization";
-  import type SelectionGroup from "../../models/selection-group";
+  import { getLocaleData } from "../../typescript/helpers/localization";
+  import type SelectionGroup from "../../typescript/models/selection-group";
 
   export let project: Project;
   export let selectionGroup: SelectionGroup<Project>;

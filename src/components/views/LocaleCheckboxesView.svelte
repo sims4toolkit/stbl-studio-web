@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { LocaleData } from "../../global";
-  import { getDisplayName } from "../../services/localization";
+  import { getDisplayName } from "../../typescript/helpers/localization";
   import Checkbox from "../shared/Checkbox.svelte";
 
   export let localeChoices: {

@@ -1,8 +1,8 @@
 <script lang="ts">
   import { fade, fly } from "svelte/transition";
-  import Workspace from "../../models/workspace";
-  import StorageService from "../../services/storage";
-  import { activeWorkspace } from "../../services/stores";
+  import Workspace from "../../typescript/models/workspace";
+  import StorageService from "../../typescript/storage-service";
+  import { activeWorkspace } from "../../typescript/stores";
   import NavigationButton from "../shared/NavigationButton.svelte";
   import ProgressCircles from "../shared/ProgressCircles.svelte";
   import FileInput from "../shared/FileInput.svelte";

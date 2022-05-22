@@ -1,8 +1,9 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import Router from "svelte-spa-router";
-  import { activeWorkspace } from "./services/stores";
-  import StorageService from "./services/storage";
+  import { activeWorkspace } from "./typescript/stores";
+  import StorageService from "./typescript/storage-service";
+  import Workspace from "./typescript/models/workspace";
   import Navbar from "./components/Navbar.svelte";
   import Footer from "./components/Footer.svelte";
   import NotFoundPage from "./components/pages/NotFoundPage.svelte";
@@ -10,7 +11,6 @@
   import HelpPage from "./components/pages/help/HelpPage.svelte";
   import ProjectPage from "./components/pages/project/ProjectPage.svelte";
   import BlurOverlay from "./components/layout/BlurOverlay.svelte";
-  import Workspace from "./models/workspace";
   import OnboardingView from "./components/views/OnboardingView.svelte";
 
   let onboardUser = false;

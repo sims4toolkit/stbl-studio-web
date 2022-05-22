@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type Project from "../../models/project";
-  import type SelectionGroup from "../../models/selection-group";
+  import type Project from "../../typescript/models/project";
+  import type SelectionGroup from "../../typescript/models/selection-group";
   import ProjectView from "./ProjectView.svelte";
 
   export let selectionGroup: SelectionGroup<Project>;

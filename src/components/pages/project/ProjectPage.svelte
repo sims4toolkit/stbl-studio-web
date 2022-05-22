@@ -1,9 +1,9 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { replace } from "svelte-spa-router";
-  import type Project from "../../../models/project";
-  import type Workspace from "../../../models/workspace";
-  import { activeWorkspace } from "../../../services/stores";
+  import type Project from "../../../typescript/models/project";
+  import type Workspace from "../../../typescript/models/workspace";
+  import { activeWorkspace } from "../../../typescript/stores";
   import ContentArea from "../../layout/ContentArea.svelte";
   import GradientHeader from "../../shared/GradientHeader.svelte";
   import NavigationButton from "../../shared/NavigationButton.svelte";

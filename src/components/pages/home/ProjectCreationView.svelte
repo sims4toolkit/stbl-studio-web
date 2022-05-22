@@ -1,22 +1,24 @@
 <script lang="ts">
   import { fade, fly } from "svelte/transition";
   import { v4 as uuidv4 } from "uuid";
-  import type Workspace from "../../../models/workspace";
-  import Project from "../../../models/project";
+  import type Workspace from "../../../typescript/models/workspace";
+  import Project from "../../../typescript/models/project";
   import {
     allLocales,
     getDisplayName,
     getLocaleData,
-  } from "../../../services/localization";
-  import StorageService from "../../../services/storage";
-  import { hashInstanceBase, validateHexString } from "../../../services/tgi";
-  import { activeWorkspace } from "../../../services/stores";
+  } from "../../../typescript/helpers/localization";
+  import StorageService from "../../../typescript/storage-service";
+  import {
+    hashInstanceBase,
+    validateHexString,
+  } from "../../../typescript/helpers/tgi";
+  import { activeWorkspace } from "../../../typescript/stores";
   import GradientHeader from "../../shared/GradientHeader.svelte";
   import SelectWithLabel from "../../shared/SelectWithLabel.svelte";
   import TextInput from "../../shared/TextInput.svelte";
   import ProgressCircles from "../../shared/ProgressCircles.svelte";
   import NavigationButton from "../../shared/NavigationButton.svelte";
-  import StickyCloseButton from "../../shared/StickyCloseButton.svelte";
   import LocaleCheckboxesView from "../../views/LocaleCheckboxesView.svelte";
   import type { LocaleData } from "../../../global";
 
