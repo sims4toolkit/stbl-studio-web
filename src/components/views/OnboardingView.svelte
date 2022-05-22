@@ -3,6 +3,7 @@
   import Workspace from "../../models/workspace";
   import StorageService from "../../services/storage";
   import { activeWorkspace } from "../../services/stores";
+  import WorkspaceUploadView from "./WorkspaceUploadView.svelte";
   import NavigationButton from "../shared/NavigationButton.svelte";
   import ProgressCircles from "../shared/ProgressCircles.svelte";
 
@@ -97,13 +98,15 @@
       />
     </div>
   {:else}
-    <div in:fly={{ y: -20, duration: animationDuration }}>
-      <h2>
-        <span class="default-gradient-text text-shadow">Welcome back!</span>
-      </h2>
-      <p>Upload your workspace file to pick up where you left off.</p>
+    <h2 class="my-0" in:fly={{ y: -15, duration: animationDuration }}>
+      <span class="default-gradient-text text-shadow">Welcome back!</span>
+    </h2>
+    <div in:fly={{ y: 15, duration: animationDuration }}>
+      <p class="my-2">
+        Upload your workspace file to pick up where you left off.
+      </p>
+      <WorkspaceUploadView onSuccess={exitOnboarding} />
     </div>
-    <div in:fly={{ y: 20, duration: animationDuration }}>Something</div>
   {/if}
   <div class="upload-workspace text-center">
     <span on:click={uploadWorkspaceButtonClicked}>
