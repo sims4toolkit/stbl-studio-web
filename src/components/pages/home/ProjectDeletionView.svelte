@@ -40,6 +40,12 @@
   bind:isValid={deletionConfirmed}
   validators={[
     {
+      error: "Click the X in the top-right corner",
+      test(value) {
+        return value?.trim().toLowerCase() !== "no";
+      },
+    },
+    {
       error: 'Value must be "yes"',
       test(value) {
         return value?.trim().toLowerCase() === "yes";

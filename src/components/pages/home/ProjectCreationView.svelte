@@ -64,10 +64,6 @@
   $: circlesFilled = (isEverythingValid ? 1 : 0) + (page === "locales" ? 1 : 0);
   $: nextButtonText = page === "tgi" ? "Next" : "Create";
 
-  function hashName() {
-    instanceBaseString = formatAsHexString(hashInstanceBase(name), 14, false);
-  }
-
   function nextButtonClicked() {
     if (page === "tgi") {
       otherLocaleOptions = allLocales
@@ -104,7 +100,7 @@
 
     const project = new Project({
       uuid,
-      name,
+      name: name.trim(),
       primaryLocale,
       group: parseInt(groupString, 16),
       instanceBase: BigInt("0x" + instanceBaseString),
@@ -133,7 +129,7 @@
           {
             error: "Must be non-empty",
             test(value) {
-              return Boolean(value);
+              return Boolean(value.trim());
             },
           },
           {
@@ -146,9 +142,11 @@
             error: "Already in use",
             test(value) {
               if (!workspace) return true;
-              return !workspace.projects.some(
-                (p) => p.uuid !== uuid && p.name === value
-              );
+              const formattedName = value.trim().toLowerCase();
+              return !workspace.projects.some((p) => {
+                if (p.uuid === uuid) return false;
+                return p.name.trim().toLowerCase() === formattedName;
+              });
             },
           },
         ]}
@@ -207,26 +205,22 @@
       </div>
     </form>
     <div in:fly={{ y: 25, duration: animationDuration }}>
-      <p class="subtle-text">
-        The 2-digit locale code will automatically be appended to the instance.
+      <p class="subtle-text mt-0 mb-half">
+        The instance is a hash of the UUID by default, but it can be changed
+        manually.
       </p>
-      <p class="subtle-text">
-        The instance is a hash of the UUID by default, but it can be changed. <span
-          class="hash-name"
-          on:click={hashName}>Click here to hash its name</span
-        >.
+      <p class="subtle-text my-0">
+        The 2-digit locale code will automatically be prepended to the instance.
       </p>
     </div>
   {:else if page === "locales"}
     <div in:fade class="mb-1">
-      <p class="mt-2 mb-0">
-        Select the additional locales to include in this project. Strings added
-        in its primary locale ({getLocaleData(primaryLocale).englishName}) will
+      <p class="my-2">
+        Select additional locales to include in this project. Strings added to
+        your primary locale ({getLocaleData(primaryLocale).englishName}) will
         automatically be added to these ones as well.
       </p>
-      <div class="mt-2">
-        <LocaleCheckboxesView bind:localeChoices={otherLocaleOptions} />
-      </div>
+      <LocaleCheckboxesView bind:localeChoices={otherLocaleOptions} />
     </div>
   {/if}
   <div
@@ -247,15 +241,6 @@
   .project-creation-view {
     .tgi-inputs {
       gap: 1em;
-    }
-
-    .hash-name {
-      text-decoration: underline;
-
-      &:hover {
-        cursor: pointer;
-        text-decoration: none;
-      }
     }
   }
 
