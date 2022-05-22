@@ -3,9 +3,9 @@
   import Workspace from "../../models/workspace";
   import StorageService from "../../services/storage";
   import { activeWorkspace } from "../../services/stores";
-  import WorkspaceUploadView from "./WorkspaceUploadView.svelte";
   import NavigationButton from "../shared/NavigationButton.svelte";
   import ProgressCircles from "../shared/ProgressCircles.svelte";
+  import FileInput from "../shared/FileInput.svelte";
 
   export let exitOnboarding: () => void;
 
@@ -29,6 +29,31 @@
 
   function uploadWorkspaceButtonClicked() {
     page = page === "upload" ? "name" : "upload";
+  }
+
+  let uploadedFiles: FileList;
+  let workspaceFileIsInvalid = false;
+
+  $: {
+    if (uploadedFiles?.length) {
+      readWorkspaceFile();
+    }
+  }
+
+  async function readWorkspaceFile() {
+    try {
+      workspaceFileIsInvalid = false;
+      const file = uploadedFiles[0];
+      const arrayBuffer = await file.arrayBuffer();
+      const buffer = window.S4TK.Node.Buffer.from(arrayBuffer);
+      const json = JSON.parse(buffer.toString());
+      const workspace = await Workspace.restoreFromJson(json);
+      activeWorkspace.set(workspace);
+      exitOnboarding();
+    } catch (err) {
+      console.error(err);
+      workspaceFileIsInvalid = true;
+    }
   }
 </script>
 
@@ -105,7 +130,13 @@
       <p class="my-2">
         Upload your workspace file to pick up where you left off.
       </p>
-      <WorkspaceUploadView onSuccess={exitOnboarding} />
+      <FileInput
+        label="upload json file"
+        errorMessage="File is not a valid workspace"
+        accept=".json"
+        bind:files={uploadedFiles}
+        bind:filesInvalid={workspaceFileIsInvalid}
+      />
     </div>
   {/if}
   <div class="upload-workspace text-center">
