@@ -1,6 +1,6 @@
 <script lang="ts">
   import { link, location } from "svelte-spa-router";
-  import ThemeToggler from "./ThemeToggler.svelte";
+  import ThemeToggler from "../elements/ThemeToggler.svelte";
 
   $: helpIcon = $location === "/help" ? "help-circle" : "help-circle-outline";
   $: settingsIcon = $location === "/settings" ? "settings" : "settings-outline";

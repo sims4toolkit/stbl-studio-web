@@ -4,14 +4,14 @@
   import { activeWorkspace } from "./typescript/stores";
   import StorageService from "./typescript/storage-service";
   import Workspace from "./typescript/models/workspace";
-  import Navbar from "./components/Navbar.svelte";
-  import Footer from "./components/Footer.svelte";
+  import Navbar from "./components/app/Navbar.svelte";
+  import Footer from "./components/app/Footer.svelte";
   import NotFoundPage from "./components/pages/NotFoundPage.svelte";
   import HomePage from "./components/pages/home/HomePage.svelte";
   import HelpPage from "./components/pages/help/HelpPage.svelte";
   import ProjectPage from "./components/pages/project/ProjectPage.svelte";
   import BlurOverlay from "./components/layout/BlurOverlay.svelte";
-  import OnboardingView from "./components/views/OnboardingView.svelte";
+  import OnboardingView from "./components/app/OnboardingView.svelte";
 
   let onboardUser = false;
   let restoreError = false;

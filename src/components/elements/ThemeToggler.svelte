@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import StorageService from "../typescript/storage-service";
+  import StorageService from "../../typescript/storage-service";
 
   let isLightTheme: boolean = true;
 

@@ -7,7 +7,7 @@
   import SplitView from "../../layout/SplitView.svelte";
   import FloatingActionButtonGroup from "../../elements/FloatingActionButtonGroup.svelte";
   import SelectModeToggle from "../../elements/SelectModeToggle.svelte";
-  import ProjectViewGroup from "../../views/ProjectViewGroup.svelte";
+  import ProjectViewGroup from "./ProjectViewGroup.svelte";
   import Downloader from "../../elements/Downloader.svelte";
   import { activeWorkspace } from "../../../typescript/stores";
   import BlurOverlay from "../../layout/BlurOverlay.svelte";

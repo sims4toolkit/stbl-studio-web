@@ -19,7 +19,7 @@
   import TextInput from "../../elements/TextInput.svelte";
   import ProgressCircles from "../../elements/ProgressCircles.svelte";
   import NavigationButton from "../../elements/NavigationButton.svelte";
-  import LocaleCheckboxesView from "../../views/LocaleCheckboxesView.svelte";
+  import LocaleCheckboxesView from "./LocaleCheckboxesView.svelte";
   import type { LocaleData } from "../../../global";
 
   const { formatAsHexString } = window.S4TK.formatting;
