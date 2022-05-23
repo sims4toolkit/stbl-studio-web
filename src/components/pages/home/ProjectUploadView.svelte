@@ -101,7 +101,7 @@
   }
 
   function readDbpf(buffer: Buffer): StblWithKey[] {
-    return Package.extractResources(buffer, {
+    const allStbls: StblWithKey[] = Package.extractResources(buffer, {
       resourceFilter(type) {
         return type === BinaryResourceType.StringTable;
       },
@@ -114,6 +114,21 @@
         },
       };
     });
+
+    const primaryStbl = allStbls.find(
+      (stbl) => stbl.stbl.locale === StringTableLocale.English
+    ).stbl.stbl;
+
+    allStbls.forEach((pair) => {
+      if (pair.stbl.locale === StringTableLocale.English) return;
+      pair.stbl.stbl.entries.forEach((entry) => {
+        if (entry.valueEquals(primaryStbl.getByKey(entry.key)?.value)) {
+          pair.stbl.stbl.deleteByKey(entry.key);
+        }
+      });
+    });
+
+    return allStbls;
   }
 
   function getTgi(filename: string) {

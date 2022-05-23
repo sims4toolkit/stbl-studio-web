@@ -34,7 +34,9 @@
 
 			for (const prop in localStorage) {
 				if (typeof localStorage[prop] !== "string") continue;
-				total += Buffer.byteLength(prop) + Buffer.byteLength(localStorage[prop]);
+				const amount = Buffer.byteLength(prop) + Buffer.byteLength(localStorage[prop]);
+				console.log(`${prop} = ${amount} bytes`);
+				total += amount;
 			}
 
 			console.log(`${total} bytes (${((total / 5000000) * 100).toFixed(2)}%)`);
