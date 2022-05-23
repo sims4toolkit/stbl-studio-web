@@ -1,9 +1,10 @@
 <script lang="ts">
+  import type { ResourceKey } from "@s4tk/models/types";
   import type { KeyStringPair } from "@s4tk/models/lib/resources/stbl/types";
   import { fly } from "svelte/transition";
   import { v4 as uuidv4 } from "uuid";
   import type { StringTableWrapper } from "../../../global";
-  import type Project from "../../../typescript/models/project";
+  import Project from "../../../typescript/models/project";
   import FileInput from "../../elements/FileInput.svelte";
   import GradientHeader from "../../elements/GradientHeader.svelte";
   import NavigationButton from "../../elements/NavigationButton.svelte";
@@ -21,6 +22,11 @@
   let uploadedFiles: FileList;
   let filesInvalid = false;
   let circlesFilled = 0;
+
+  interface StblWithKey {
+    key: ResourceKey;
+    stbl: StringTableWrapper;
+  }
 
   $: {
     if (uploadedFiles?.length) {
@@ -44,10 +50,25 @@
       var stbls = [readStbl(buffer, file.name)];
     }
 
-    console.log(stbls);
+    const primaryLocale = StringTableLocale.English;
+
+    const primaryStbl = stbls.find(
+      (stbl) => stbl.stbl.locale === primaryLocale
+    );
+
+    const project = new Project({
+      group: primaryStbl.key.group,
+      instanceBase: primaryStbl.key.instance & 0xffffffffffffffn,
+      name: file.name,
+      primaryLocale,
+      stbls: stbls.map((stbl) => stbl.stbl),
+      uuid,
+    });
+
+    onComplete(project);
   }
 
-  function readJson(buffer: Buffer, name: string): StringTableWrapper {
+  function readJson(buffer: Buffer, name: string): StblWithKey {
     const json: KeyStringPair[] = JSON.parse(buffer.toString()).map(
       ({ key, value }) => {
         return {
@@ -57,30 +78,56 @@
       }
     );
 
+    const key = getTgi(name);
+
     return {
-      locale: 0,
-      stbl: new StringTableResource(json),
+      key,
+      stbl: {
+        locale: StringTableLocale.getLocale(key.instance),
+        stbl: new StringTableResource(json),
+      },
     };
   }
 
-  function readStbl(buffer: Buffer, name: string): StringTableWrapper {
+  function readStbl(buffer: Buffer, name: string): StblWithKey {
+    const key = getTgi(name);
+
     return {
-      locale: 0,
-      stbl: StringTableResource.from(buffer),
+      key,
+      stbl: {
+        locale: StringTableLocale.getLocale(key.instance),
+        stbl: StringTableResource.from(buffer),
+      },
     };
   }
 
-  function readDbpf(buffer: Buffer): StringTableWrapper[] {
+  function readDbpf(buffer: Buffer): StblWithKey[] {
     return Package.extractResources(buffer, {
       resourceFilter(type) {
         return type === BinaryResourceType.StringTable;
       },
     }).map(({ key, value }) => {
       return {
-        locale: StringTableLocale.getLocale(key.instance),
-        stbl: value as any,
+        key,
+        stbl: {
+          locale: StringTableLocale.getLocale(key.instance),
+          stbl: value as any,
+        },
       };
     });
+  }
+
+  function getTgi(filename: string) {
+    const { t, g, i } =
+      /(?<t>[a-fA-F\d]{8})[_!]?(?<g>[a-fA-F\d]{8})[_!]?(?<i>[a-fA-F\d]{16})/.exec(
+        filename
+      ).groups;
+
+    return {
+      type: parseInt(t, 16),
+      group: parseInt(g, 16),
+      instance: BigInt("0x" + i),
+    };
   }
 
   function nextClicked() {
