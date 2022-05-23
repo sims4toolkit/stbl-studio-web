@@ -1,10 +1,11 @@
 /// <reference types="svelte" />
 
+import type { CompressionType, compressBuffer, decompressBuffer } from "@s4tk/compression";
+import type { BinaryEncoder, BinaryDecoder } from "@s4tk/encoding";
 import type { fnv64 } from "@s4tk/hashing";
 import type { formatAsHexString } from "@s4tk/hashing/formatting";
 import type { Package, StringTableResource } from "@s4tk/models";
 import type { StringTableLocale, BinaryResourceType } from "@s4tk/models/enums";
-import type { deflateSync, unzipSync } from "zlib";
 
 interface LocaleData {
   enumName: string;
@@ -20,7 +21,7 @@ interface ProjectData {
   instanceBase: bigint;
   name: string;
   primaryLocale: StringTableLocale;
-  readonly pkg: Package;
+  readonly stblMap: Map<StringTableLocale, StringTableResource>;
   readonly uuid: string;
 }
 
@@ -46,24 +47,32 @@ interface StoredWorkspace {
 declare global {
   interface Window {
     S4TK: {
-      models: {
-        Package: typeof Package;
-        StringTableResource: typeof StringTableResource;
+      compression: {
+        CompressionType: typeof CompressionType;
+        compressBuffer: typeof compressBuffer;
+        decompressBuffer: typeof decompressBuffer;
+      },
+      encoding: {
+        BinaryEncoder: typeof BinaryEncoder;
+        BinaryDecoder: typeof BinaryDecoder;
       },
       enums: {
         StringTableLocale: typeof StringTableLocale;
         BinaryResourceType: typeof BinaryResourceType;
       },
-      hashing: {
-        fnv64: typeof fnv64
-      },
       formatting: {
-        formatAsHexString: typeof formatAsHexString
+        formatAsHexString: typeof formatAsHexString;
+      },
+      hashing: {
+        fnv64: typeof fnv64;
+        fnv32: typeof fnv32;
+      },
+      models: {
+        Package: typeof Package;
+        StringTableResource: typeof StringTableResource;
       },
       Node: {
-        Buffer: typeof Buffer,
-        deflateSync: typeof deflateSync,
-        unzipSync: typeof unzipSync
+        Buffer: typeof Buffer;
       }
     };
   }
