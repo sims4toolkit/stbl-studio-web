@@ -32,6 +32,10 @@
   .select-with-label {
     select {
       height: 42px;
+
+      option {
+        background-color: var(--color-bg);
+      }
     }
 
     label,

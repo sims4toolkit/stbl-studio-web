@@ -8,35 +8,43 @@
 
   let modal: HTMLDivElement;
   let firstFocusableChild: Element;
+  let lastFocusableChild: Element;
 
   const bodyClassName = "blur-effect-active";
   const focusQuery = "a, button, input, textarea, select";
 
   onMount(() => {
     document.body.classList.add(bodyClassName);
-
-    firstFocusableChild = modal.querySelector(focusQuery);
-
-    window.addEventListener("focusin", focusBlocker);
+    resetChildrenRefs();
+    window.addEventListener("focusin", onFocusIn);
+    window.addEventListener("focusout", onFocusOut);
   });
 
   onDestroy(() => {
     document.body.classList.remove(bodyClassName);
-    window.removeEventListener("focusin", focusBlocker);
+    window.removeEventListener("focusin", onFocusIn);
+    window.removeEventListener("focusout", onFocusOut);
   });
 
-  function focusBlocker(e: FocusEvent) {
-    //@ts-ignore Idk why TS is being annoying about this...
-    if (!modal.contains(e.target)) {
-      if (!document.contains(firstFocusableChild)) {
-        firstFocusableChild = modal.querySelector(focusQuery);
-      }
+  function resetChildrenRefs() {
+    const focusableChildren = modal.querySelectorAll(focusQuery);
+    firstFocusableChild = focusableChildren[0];
+    lastFocusableChild = focusableChildren[focusableChildren.length - 1];
+  }
 
-      try {
-        //@ts-ignore I do know why it's being annoying about this one...
-        firstFocusableChild?.focus();
-      } catch (e) {}
-    }
+  function focusOnFirstChild() {
+    if (!document.contains(firstFocusableChild)) resetChildrenRefs();
+    //@ts-ignore I do know why it's being annoying about this one...
+    firstFocusableChild?.focus();
+  }
+
+  function onFocusOut(e: FocusEvent) {
+    if (lastFocusableChild === e.target) focusOnFirstChild();
+  }
+
+  function onFocusIn(e: FocusEvent) {
+    //@ts-ignore Idk why TS is being annoying about this...
+    if (!modal.contains(e.target)) focusOnFirstChild();
   }
 </script>
 
