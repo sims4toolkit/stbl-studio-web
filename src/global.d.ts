@@ -2,8 +2,8 @@
 
 import type { fnv64 } from "@s4tk/hashing";
 import type { formatAsHexString } from "@s4tk/hashing/formatting";
-import type { StringTableResource } from "@s4tk/models";
-import type { StringTableLocale } from "@s4tk/models/enums";
+import type { Package, StringTableResource } from "@s4tk/models";
+import type { StringTableLocale, BinaryResourceType } from "@s4tk/models/enums";
 
 interface LocaleData {
   enumName: string;
@@ -64,6 +64,7 @@ declare global {
       },
       enums: {
         StringTableLocale: typeof StringTableLocale;
+        BinaryResourceType: typeof BinaryResourceType;
       },
       hashing: {
         fnv64: typeof fnv64

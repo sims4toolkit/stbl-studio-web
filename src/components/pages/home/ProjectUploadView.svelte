@@ -1,11 +1,17 @@
 <script lang="ts">
+  import type { KeyStringPair } from "@s4tk/models/lib/resources/stbl/types";
   import { fly } from "svelte/transition";
   import { v4 as uuidv4 } from "uuid";
+  import type { StringTableWrapper } from "../../../global";
   import type Project from "../../../typescript/models/project";
   import FileInput from "../../elements/FileInput.svelte";
   import GradientHeader from "../../elements/GradientHeader.svelte";
   import NavigationButton from "../../elements/NavigationButton.svelte";
   import ProgressCircles from "../../elements/ProgressCircles.svelte";
+
+  const { BinaryResourceType, StringTableLocale } = window.S4TK.enums;
+  const { Package, StringTableResource } = window.S4TK.models;
+  const { Buffer } = window.S4TK.Node;
 
   export let onComplete: (project?: Project) => void;
 
@@ -18,9 +24,63 @@
 
   $: {
     if (uploadedFiles?.length) {
-      // TODO:
-      onComplete();
+      const file = uploadedFiles[0];
+
+      readFile(file);
+
+      if (!file) onComplete(); // TODO: shut up
     }
+  }
+
+  async function readFile(file: File) {
+    const ext = file.name.split(".").at(-1);
+    const buffer = Buffer.from(await file.arrayBuffer());
+
+    if (ext === "json") {
+      var stbls = [readJson(buffer, file.name)];
+    } else if (ext === "package") {
+      var stbls = readDbpf(buffer);
+    } else {
+      var stbls = [readStbl(buffer, file.name)];
+    }
+
+    console.log(stbls);
+  }
+
+  function readJson(buffer: Buffer, name: string): StringTableWrapper {
+    const json: KeyStringPair[] = JSON.parse(buffer.toString()).map(
+      ({ key, value }) => {
+        return {
+          key: typeof key === "number" ? key : parseInt(key, 16),
+          value,
+        };
+      }
+    );
+
+    return {
+      locale: 0,
+      stbl: new StringTableResource(json),
+    };
+  }
+
+  function readStbl(buffer: Buffer, name: string): StringTableWrapper {
+    return {
+      locale: 0,
+      stbl: StringTableResource.from(buffer),
+    };
+  }
+
+  function readDbpf(buffer: Buffer): StringTableWrapper[] {
+    return Package.extractResources(buffer, {
+      resourceFilter(type) {
+        return type === BinaryResourceType.StringTable;
+      },
+    }).map(({ key, value }) => {
+      return {
+        locale: StringTableLocale.getLocale(key.instance),
+        stbl: value as any,
+      };
+    });
   }
 
   function nextClicked() {
