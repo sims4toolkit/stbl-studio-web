@@ -4,6 +4,7 @@
 
   $: helpIcon = $location === "/help" ? "help-circle" : "help-circle-outline";
   $: settingsIcon = $location === "/settings" ? "settings" : "settings-outline";
+  $: homeIcon = $location === "/" ? "home" : "home-outline";
 </script>
 
 <nav class="flex-center-v flex-space-between bottom-shadow">
@@ -14,12 +15,24 @@
     </a>
   </div>
   <div class="right flex-center-v flex-space-between">
-    <a href="/help" use:link>
+    <a href="/" class:active={$location === "/"} use:link title="Home">
+      <img
+        class="is-svg ionicon-img"
+        src="./assets/{homeIcon}.svg"
+        alt="Home"
+      />
+    </a>
+    <a href="/help" class:active={$location === "/help"} use:link title="Help">
       <img class="is-svg" src="./assets/{helpIcon}.svg" alt="Help" />
     </a>
-    <a href="/settings" use:link>
+    <a
+      href="/settings"
+      class:active={$location === "/settings"}
+      use:link
+      title="Settings"
+    >
       <img
-        class="is-svg settings-img"
+        class="is-svg ionicon-img"
         src="./assets/{settingsIcon}.svg"
         alt="Settings"
       />
@@ -61,7 +74,7 @@
         width: auto;
         margin-top: 4px;
 
-        &.settings-img {
+        &.ionicon-img {
           padding: 2px;
         }
       }
@@ -77,6 +90,10 @@
 
       &:hover:not(.active) {
         opacity: 0.65;
+      }
+
+      &.active {
+        pointer-events: none;
       }
     }
   }
