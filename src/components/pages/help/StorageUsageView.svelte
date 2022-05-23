@@ -19,7 +19,7 @@
     setTimeout(() => {
       // using timeout because there's some lag with computed properties
       usedStorageBar.style.width = usedStorageBarWidth;
-    }, 100);
+    }, 10);
   }
 
   onMount(() => {
