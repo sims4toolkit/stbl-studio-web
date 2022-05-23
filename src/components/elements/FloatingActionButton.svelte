@@ -67,7 +67,8 @@
       border-right: none;
     }
 
-    &:not(.disabled):hover {
+    &:not(.disabled):hover,
+    &:not(.disabled):focus {
       cursor: pointer;
 
       img {
