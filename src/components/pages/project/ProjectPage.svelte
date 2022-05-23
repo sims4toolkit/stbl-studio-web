@@ -31,10 +31,7 @@
 <section id="project-section">
   {#if Boolean(project)}
     <ContentArea banded={true}>
-      <div class="flex-center-v flex-space-between mb-2">
-        <NavigationButton text="Back" onClick={onBackClicked} />
-        <GradientHeader title={project.name} />
-      </div>
+      <GradientHeader title={project.name} />
       {params.uuid}
     </ContentArea>
     <ContentArea banded={false}>
