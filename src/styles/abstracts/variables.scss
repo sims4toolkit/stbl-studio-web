@@ -35,6 +35,7 @@ $azure-blue: #0095eb;
     --color-text-subtle: rgb(160, 160, 160);
     --color-divider: rgb(104, 107, 107);
     --color-accent: #{$seafoam};
+    --color-accent-contrast: #293a31;
     --color-accent-secondary: #{$sky-blue};
     --color-card: #3a3f49;
     --color-card-secondary: #2f343e;
@@ -45,6 +46,7 @@ $azure-blue: #0095eb;
     --color-blur-fallback: rgba(0, 0, 0, 0.9);
     --color-shadow: rgba(0, 0, 0, 0.2);
     --color-error: #dc6060;
+    --color-error-contrast: #3c1f1f;
 
     // filters
     --filter-svg: var(--filter-light);
@@ -60,6 +62,7 @@ $azure-blue: #0095eb;
     --color-text-subtle: rgb(108, 109, 109);
     --color-divider: rgb(171, 175, 177);
     --color-accent: #{$teal};
+    --color-accent-contrast: #bae2d0;
     --color-accent-secondary: #{$azure-blue};
     --color-card: white;
     --color-card-secondary: #e5e6ea; // unused right now
@@ -69,7 +72,8 @@ $azure-blue: #0095eb;
     --color-scrollbar-hover: rgb(95, 99, 100);
     --color-blur-fallback: rgba(255, 255, 255, 0.9);
     --color-shadow: rgba(64, 64, 64, 0.2);
-    --color-error: #d60c0c;
+    --color-error: #db4444;
+    --color-error-contrast: #e09292;
 
     // filters
     --filter-svg: var(--filter-dark);

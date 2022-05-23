@@ -176,6 +176,25 @@ async function deleteProjectData(uuid: string) {
 
 //#endregion Projects
 
+//#region General
+
+function byteLength(value: string): number {
+  return window.S4TK.Node.Buffer.byteLength(value);
+}
+
+function getTotalBytesUsed(): number {
+  let total = 0;
+
+  for (const prop in localStorage) {
+    if (typeof localStorage[prop] !== "string") continue;
+    total += byteLength(prop) + byteLength(localStorage[prop]);
+  }
+
+  return total;
+}
+
+//#endregion General
+
 const settings = getSettingsProxy({
   creatorName: StoredString,
   defaultLocale: StoredInteger,
@@ -192,6 +211,7 @@ const StorageService = {
   loadProjectData,
   saveProjectData,
   deleteProjectData,
+  getTotalBytesUsed,
 };
 
 export default StorageService;
