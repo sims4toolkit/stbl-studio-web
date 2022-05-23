@@ -132,16 +132,24 @@
   }
 
   function getTgi(filename: string) {
-    const { t, g, i } =
-      /(?<t>[a-fA-F\d]{8})[_!]?(?<g>[a-fA-F\d]{8})[_!]?(?<i>[a-fA-F\d]{16})/.exec(
-        filename
-      ).groups;
+    try {
+      const { t, g, i } =
+        /(?<t>[a-fA-F\d]{8})[_!]?(?<g>[a-fA-F\d]{8})[_!]?(?<i>[a-fA-F\d]{16})/.exec(
+          filename
+        ).groups;
 
-    return {
-      type: parseInt(t, 16),
-      group: parseInt(g, 16),
-      instance: BigInt("0x" + i),
-    };
+      return {
+        type: parseInt(t, 16),
+        group: parseInt(g, 16),
+        instance: BigInt("0x" + i),
+      };
+    } catch (e) {
+      return {
+        type: BinaryResourceType.StringTable,
+        group: 0,
+        instance: 0n,
+      };
+    }
   }
 
   function nextClicked() {
