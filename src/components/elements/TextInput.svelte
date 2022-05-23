@@ -51,7 +51,7 @@
     type="text"
     class:monospace
     class:w-100={fillWidth}
-    class="my-half"
+    class="mt-half"
     bind:value
     {placeholder}
     autocomplete="off"
@@ -62,6 +62,10 @@
 
 <style lang="scss">
   .text-input {
+    input {
+      height: 42px;
+    }
+
     input,
     label {
       display: block;

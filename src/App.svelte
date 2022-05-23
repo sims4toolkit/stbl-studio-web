@@ -48,8 +48,14 @@
 
   function startStorageSyncTimeout() {
     storageSyncTimeout = setTimeout(async () => {
-      activeWorkspace.set(await Workspace.restoreFromStorage());
-      isLightThemeStore.set(StorageService.settings.isLightTheme);
+      if (StorageService.settings.hasWorkspace) {
+        onboardUser = false;
+        activeWorkspace.set(await Workspace.restoreFromStorage());
+        isLightThemeStore.set(StorageService.settings.isLightTheme);
+      } else {
+        onboardUser = true;
+        activeWorkspace.set(undefined);
+      }
     }, 500);
   }
 

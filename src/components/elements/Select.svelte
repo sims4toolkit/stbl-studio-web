@@ -30,6 +30,10 @@
 
 <style lang="scss">
   .select-with-label {
+    select {
+      height: 42px;
+    }
+
     label,
     select {
       display: block;

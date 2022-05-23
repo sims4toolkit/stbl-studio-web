@@ -8,7 +8,7 @@
   $: isInSelectMode = selectionGroup.selectMode;
 </script>
 
-<div class="flex-center-h">
+<div class="select-mode-toggle flex-center-h">
   {#if isInSelectMode}
     <button
       class="select-toggle"
@@ -35,20 +35,23 @@
 </div>
 
 <style lang="scss">
-  .select-toggle {
-    border: none;
-    background: none;
-    color: var(--color-text);
-    text-transform: uppercase;
-    opacity: 0.65;
+  .select-mode-toggle {
+    height: 42px;
 
-    &.large-font {
-      font-size: 1.65em;
-    }
+    .select-toggle {
+      border: none;
+      background: none;
+      color: var(--color-text);
+      text-transform: uppercase;
 
-    &:hover {
-      opacity: 1;
-      cursor: pointer;
+      &.large-font {
+        font-size: 1.65em;
+      }
+
+      &:hover {
+        color: var(--color-text-subtle);
+        cursor: pointer;
+      }
     }
   }
 </style>

@@ -1,20 +1,21 @@
 <script lang="ts">
   import { onMount, onDestroy } from "svelte";
   import { fade } from "svelte/transition";
+  import StickyCloseButton from "../elements/StickyCloseButton.svelte";
 
   export let fill: boolean = true;
+  export let onClose: () => void = undefined;
 
   let modal: HTMLDivElement;
   let firstFocusableChild: Element;
 
   const bodyClassName = "blur-effect-active";
+  const focusQuery = "a, button, input, textarea, select";
 
   onMount(() => {
     document.body.classList.add(bodyClassName);
 
-    firstFocusableChild = modal.querySelector(
-      "a, button, input, textarea, select"
-    );
+    firstFocusableChild = modal.querySelector(focusQuery);
 
     window.addEventListener("focusin", focusBlocker);
   });
@@ -28,9 +29,7 @@
     //@ts-ignore Idk why TS is being annoying about this...
     if (!modal.contains(e.target)) {
       if (!document.contains(firstFocusableChild)) {
-        firstFocusableChild = modal.querySelector(
-          "a, button, input, textarea, select"
-        );
+        firstFocusableChild = modal.querySelector(focusQuery);
       }
 
       try {
@@ -48,6 +47,9 @@
     </div>
     <slot name="actions" />
   </div>
+  {#if onClose != undefined}
+    <StickyCloseButton onClick={onClose} />
+  {/if}
 </div>
 
 <style lang="scss">

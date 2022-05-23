@@ -57,7 +57,7 @@
 
     div.right {
       img {
-        height: 1.6em;
+        height: 24px;
         width: auto;
         margin-top: 4px;
 

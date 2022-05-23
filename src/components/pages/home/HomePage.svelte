@@ -13,7 +13,6 @@
   import BlurOverlay from "../../layout/BlurOverlay.svelte";
   import ProjectCreationView from "./ProjectCreationView.svelte";
   import GradientHeader from "../../elements/GradientHeader.svelte";
-  import StickyCloseButton from "../../elements/StickyCloseButton.svelte";
   import ProjectDeletionView from "./ProjectDeletionView.svelte";
   import ProjectUploadView from "./ProjectUploadView.svelte";
 
@@ -171,40 +170,37 @@
 {/if}
 
 {#if creatingProject}
-  <BlurOverlay>
-    <ProjectCreationView slot="content" onComplete={onProjectCreatorExit} />
-  </BlurOverlay>
-  <StickyCloseButton
-    onClick={() => {
+  <BlurOverlay
+    onClose={() => {
       creatingProject = false;
     }}
-  />
+  >
+    <ProjectCreationView slot="content" onComplete={onProjectCreatorExit} />
+  </BlurOverlay>
 {/if}
 
 {#if uploadingProject}
-  <BlurOverlay>
-    <ProjectUploadView slot="content" onComplete={onProjectUploaderExit} />
-  </BlurOverlay>
-  <StickyCloseButton
-    onClick={() => {
+  <BlurOverlay
+    onClose={() => {
       uploadingProject = false;
     }}
-  />
+  >
+    <ProjectUploadView slot="content" onComplete={onProjectUploaderExit} />
+  </BlurOverlay>
 {/if}
 
 {#if confirmingDeletion}
-  <BlurOverlay>
+  <BlurOverlay
+    onClose={() => {
+      confirmingDeletion = false;
+    }}
+  >
     <ProjectDeletionView
       slot="content"
       {selectedProjects}
       onComplete={onDeletionComplete}
     />
   </BlurOverlay>
-  <StickyCloseButton
-    onClick={() => {
-      confirmingDeletion = false;
-    }}
-  />
 {/if}
 
 <style lang="scss">

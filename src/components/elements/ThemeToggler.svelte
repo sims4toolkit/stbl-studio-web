@@ -27,8 +27,8 @@
 
 <style lang="scss">
   button {
-    height: 1.25em;
-    width: 1.25em;
+    height: 20px;
+    width: 20px;
 
     img {
       height: 100%;

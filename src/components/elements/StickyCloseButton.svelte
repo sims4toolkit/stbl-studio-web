@@ -9,17 +9,22 @@
 </button>
 
 <style lang="scss">
-  img {
+  button {
     position: fixed;
     z-index: 4096;
     top: 25px;
     right: 25px;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
 
-    &:hover {
-      cursor: pointer;
-      opacity: 0.65;
+    img {
+      width: 100%;
+      height: 100%;
+
+      &:hover {
+        cursor: pointer;
+        opacity: 0.65;
+      }
     }
   }
 </style>

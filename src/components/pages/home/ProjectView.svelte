@@ -25,8 +25,8 @@
   }
 </script>
 
-<div
-  class="project-view drop-shadow hoverable w-100"
+<button
+  class="button-wrapper text-color project-view drop-shadow hoverable w-100"
   class:selected={projectSelected}
   class:move-on-hover={!isInSelectMode}
   class:unselectable-text={isInSelectMode}
@@ -35,21 +35,21 @@
   <div class="w-100">
     <div class="flex-center-v">
       {#if isInSelectMode}
-        <button
+        <div
           in:fly={{ x: -10, duration: 500 }}
           class:selected={projectSelected}
-          class="selected-indicator button-wrapper flex-center"
+          class="selected-indicator flex-center"
         >
           {#if projectSelected}
             &#10003;
           {/if}
-        </button>
+        </div>
       {/if}
-      <div class="mw-100">
-        <h3 class="mt-0 nowrap-truncate mr-1">
+      <div class="mw-100 text-left">
+        <h3 class="mt-0 mb-half ml-0 nowrap-truncate mr-1">
           {project.name}
         </h3>
-        <p class="instance monospace my-0">
+        <p class="subtle-color uppercase monospace my-0">
           {project.instanceBase.toString(16).padStart(14, "0")}
         </p>
       </div>
@@ -69,7 +69,7 @@
       </div>
     </div>
   </div>
-</div>
+</button>
 
 <style lang="scss">
   .project-view {
@@ -78,10 +78,7 @@
     border-radius: 8px;
     flex: 1 1 0px;
     max-width: 305px; // (content area width - 60px) / 4
-
-    h3 {
-      margin-bottom: 0.5em;
-    }
+    font-size: 1em;
 
     .selected-indicator {
       background: none;
@@ -99,11 +96,6 @@
         border-color: var(--color-accent-secondary);
         color: var(--color-bg);
       }
-    }
-
-    .instance {
-      opacity: 0.65;
-      text-transform: uppercase;
     }
 
     .stbl-features {
