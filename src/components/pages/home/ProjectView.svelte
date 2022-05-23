@@ -11,10 +11,8 @@
   $: isInSelectMode = selectionGroup.selectMode;
   $: projectSelected = selectionGroup.isSelected(project);
   $: localeCode = getLocaleData(project.primaryLocale).code;
-  $: localeCount = project.stbls.length;
-  $: stringCount = project.stbls.find(
-    (stbl) => stbl.locale === project.primaryLocale
-  ).stbl.entries.length;
+  $: localeCount = project.pkg.size;
+  $: stringCount = project.primaryStbl.size;
 
   function handleClick() {
     if (selectionGroup.selectMode) {

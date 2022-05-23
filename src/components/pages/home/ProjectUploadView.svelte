@@ -1,9 +1,9 @@
 <script lang="ts">
+  import type { StringTableResource as StblType } from "@s4tk/models";
   import type { ResourceKey } from "@s4tk/models/types";
   import type { KeyStringPair } from "@s4tk/models/lib/resources/stbl/types";
   import { fly } from "svelte/transition";
   import { v4 as uuidv4 } from "uuid";
-  import type { StringTableWrapper } from "../../../global";
   import Project from "../../../typescript/models/project";
   import FileInput from "../../elements/FileInput.svelte";
   import GradientHeader from "../../elements/GradientHeader.svelte";
@@ -25,7 +25,7 @@
 
   interface StblWithKey {
     key: ResourceKey;
-    stbl: StringTableWrapper;
+    stbl: StblType;
   }
 
   $: {
@@ -61,7 +61,6 @@
       instanceBase: primaryStbl.key.instance & 0xffffffffffffffn,
       name: file.name,
       primaryLocale,
-      stbls: stbls.map((stbl) => stbl.stbl),
       uuid,
     });
 
@@ -81,10 +80,7 @@
 
     return {
       key,
-      stbl: {
-        locale: StringTableLocale.getLocale(key.instance),
-        stbl: new StringTableResource(json),
-      },
+      stbl: new StringTableResource(json),
     };
   }
 
@@ -93,10 +89,7 @@
 
     return {
       key,
-      stbl: {
-        locale: StringTableLocale.getLocale(key.instance),
-        stbl: StringTableResource.from(buffer),
-      },
+      stbl: new StringTableResource(json),
     };
   }
 

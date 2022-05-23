@@ -3,7 +3,7 @@ import { getInstanceBase } from "./helpers/tgi";
 
 const { Buffer } = window.S4TK.Node;
 const { Package } = window.S4TK.models;
-const { StringTableLocale, BinaryResourceType } = window.S4TK.enums;
+const { StringTableLocale } = window.S4TK.enums;
 
 //#region Settings
 
@@ -89,8 +89,8 @@ function getProjectStorageKey(uuid: string): string {
  */
 function readProjectData(uuid: string, stored: StoredProject): ProjectData {
   const buffer = Buffer.from(stored.data, "base64");
-  const stblEntries = Package.extractResources(buffer);
-  const primary = stblEntries[0];
+  const pkg = Package.from(buffer);
+  const primary = pkg.entries[0];
 
   return {
     uuid,
@@ -98,12 +98,7 @@ function readProjectData(uuid: string, stored: StoredProject): ProjectData {
     group: primary.key.group,
     instanceBase: getInstanceBase(primary.key.instance),
     primaryLocale: StringTableLocale.getLocale(primary.key.instance),
-    stbls: stblEntries.map(entry => {
-      return {
-        locale: StringTableLocale.getLocale(entry.key.instance),
-        stbl: entry.value as any,
-      };
-    })
+    pkg
   };
 }
 
@@ -113,22 +108,9 @@ function readProjectData(uuid: string, stored: StoredProject): ProjectData {
  * @param project Project to convert
  */
 function writeProjectData(project: ProjectData): StoredProject {
-  const entries = project.stbls.map(wrapper => {
-    return {
-      key: {
-        type: BinaryResourceType.StringTable,
-        group: project.group,
-        instance: StringTableLocale.setHighByte(wrapper.locale, project.instanceBase)
-      },
-      value: wrapper.stbl
-    };
-  });
-
-  const pkg = new Package(entries);
-
   return {
     name: project.name,
-    data: pkg.getBuffer().toString("base64")
+    data: project.pkg.getBuffer(true).toString("base64")
   };
 }
 
@@ -143,6 +125,9 @@ function loadProjectData(uuid: string): ProjectData {
   const stored: StoredProject = JSON.parse(json);
   return readProjectData(uuid, stored);
 }
+
+// TODO: separate project metadata from package, so that they can be previewed
+// without loading them all at once
 
 /**
  * Saves a project to localStorage.

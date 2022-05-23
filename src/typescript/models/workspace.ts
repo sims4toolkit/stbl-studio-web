@@ -1,12 +1,7 @@
-import { v4 as uuidv4 } from "uuid";
 import type { ProjectData, StoredProject, StoredWorkspace } from "../../global";
 import StorageService from "../storage-service";
 import { activeWorkspace } from "../stores";
 import Project from "./project";
-
-const { StringTableResource } = window.S4TK.models;
-const { StringTableLocale } = window.S4TK.enums;
-const { fnv64 } = window.S4TK.hashing;
 
 const CURRENT_VERSION = 1;
 
@@ -71,35 +66,15 @@ export default class Workspace {
    * @param data Object containing data for project
    */
   addProject(data: Partial<ProjectData> = {}) {
-    const uuid = data.uuid ?? uuidv4();
-    const primaryLocale = data.primaryLocale ?? StringTableLocale.English;
-    const stbls = data.stbls ?? [];
-
-    if (!stbls.find(stbl => stbl.locale === primaryLocale)) {
-      stbls.push({
-        locale: primaryLocale,
-        stbl: new StringTableResource(),
-      });
-    }
-
-    const project = new Project({
-      uuid,
-      name: data.name ?? "New Project",
-      group: data.group ?? 0,
-      instanceBase: data.instanceBase ?? fnv64(uuid) & 0xFFFFFFFFFFFFFFn,
-      primaryLocale,
-      stbls,
-    });
-
+    const project = new Project(data);
     this.projects.push(project);
-
     StorageService.saveProjectData(project);
+
     const projectUuids = StorageService.settings.projectUuids;
-    projectUuids.push(uuid);
+    projectUuids.push(project.uuid);
     StorageService.settings.projectUuids = projectUuids;
 
     this._sortProjects();
-
     activeWorkspace.set(this); // to update components
   }
 

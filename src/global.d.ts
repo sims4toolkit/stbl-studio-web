@@ -15,17 +15,12 @@ interface LocaleData {
   code: string;
 }
 
-interface StringTableWrapper {
-  locale: StringTableLocale;
-  readonly stbl: StringTableResource;
-}
-
 interface ProjectData {
   group: number;
   instanceBase: bigint;
   name: string;
   primaryLocale: StringTableLocale;
-  readonly stbls: StringTableWrapper[];
+  readonly pkg: Package;
   readonly uuid: string;
 }
 

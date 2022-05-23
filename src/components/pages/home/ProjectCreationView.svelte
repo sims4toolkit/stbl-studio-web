@@ -82,30 +82,18 @@
   }
 
   function createProjectAndClose() {
-    const stbls = [
+    const project = new Project(
       {
-        locale: primaryLocale,
-        stbl: new StringTableResource(),
+        uuid,
+        name: name.trim(),
+        primaryLocale,
+        group: parseInt(groupString, 16),
+        instanceBase: BigInt("0x" + instanceBaseString),
       },
-    ];
-
-    otherLocaleOptions.forEach((option) => {
-      if (option.checked) {
-        stbls.push({
-          locale: option.data.enumValue,
-          stbl: new StringTableResource(),
-        });
-      }
-    });
-
-    const project = new Project({
-      uuid,
-      name: name.trim(),
-      primaryLocale,
-      group: parseInt(groupString, 16),
-      instanceBase: BigInt("0x" + instanceBaseString),
-      stbls,
-    });
+      otherLocaleOptions
+        .filter((option) => option.checked)
+        .map((option) => option.data.enumValue)
+    );
 
     onComplete(project);
   }

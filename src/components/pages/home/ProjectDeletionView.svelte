@@ -29,7 +29,7 @@
 </p>
 <ul class="mb-2">
   {#each selectedProjects as project, key (key)}
-    <li>{project.name} ({project.primaryStbl.stbl.size} strings)</li>
+    <li>{project.name} ({project.primaryStbl.size} strings)</li>
   {/each}
 </ul>
 <TextInput
