@@ -4,6 +4,7 @@ import type { fnv64 } from "@s4tk/hashing";
 import type { formatAsHexString } from "@s4tk/hashing/formatting";
 import type { Package, StringTableResource } from "@s4tk/models";
 import type { StringTableLocale, BinaryResourceType } from "@s4tk/models/enums";
+import type { deflateSync, unzipSync } from "zlib";
 
 interface LocaleData {
   enumName: string;
@@ -73,7 +74,9 @@ declare global {
         formatAsHexString: typeof formatAsHexString
       },
       Node: {
-        Buffer: typeof Buffer
+        Buffer: typeof Buffer,
+        deflateSync: typeof deflateSync,
+        unzipSync: typeof unzipSync
       }
     };
   }

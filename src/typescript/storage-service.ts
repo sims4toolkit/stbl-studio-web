@@ -137,9 +137,11 @@ function writeProjectData(project: ProjectData): StoredProject {
  * @param uuid UUID of project to load
  */
 function loadProjectData(uuid: string): ProjectData {
-  const value = localStorage.getItem(getProjectStorageKey(uuid));
-  if (!value) return undefined;
-  const stored: StoredProject = JSON.parse(value);
+  const base64 = localStorage.getItem(getProjectStorageKey(uuid));
+  const buffer = window.S4TK.Node.Buffer.from(base64, "base64");
+  const json = window.S4TK.Node.unzipSync(buffer).toString();
+  if (!json) return undefined;
+  const stored: StoredProject = JSON.parse(json);
   return readProjectData(uuid, stored);
 }
 
@@ -150,8 +152,10 @@ function loadProjectData(uuid: string): ProjectData {
  */
 async function saveProjectData(project: ProjectData) {
   const stored: StoredProject = writeProjectData(project);
-  const value = JSON.stringify(stored);
-  localStorage.setItem(getProjectStorageKey(project.uuid), value);
+  const json = JSON.stringify(stored);
+  const buffer = window.S4TK.Node.Buffer.from(json);
+  const base64 = window.S4TK.Node.deflateSync(buffer).toString("base64");
+  localStorage.setItem(getProjectStorageKey(project.uuid), base64);
 }
 
 /**
