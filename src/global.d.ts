@@ -39,15 +39,8 @@ interface UserSettings {
 }
 
 interface StoredProject {
-  group: number;
-  instanceBase: string; // hex, no prefix
   name: string;
-  primaryLocale: number;
-  stbls: {
-    locale: number;
-    data: string; // base64 binary
-    updatedKeys: number[];
-  }[];
+  data: string; // Base64 DBPF containing all STBLs; First STBL is primary
 }
 
 interface StoredWorkspace {

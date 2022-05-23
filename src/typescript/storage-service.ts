@@ -1,4 +1,9 @@
 import type { ProjectData, StoredProject, UserSettings } from "../global";
+import { getInstanceBase } from "./helpers/tgi";
+
+const { Buffer } = window.S4TK.Node;
+const { Package } = window.S4TK.models;
+const { StringTableLocale, BinaryResourceType } = window.S4TK.enums;
 
 //#region Settings
 
@@ -8,7 +13,7 @@ interface StoredSetting<T> {
 }
 
 function getSettingStorageKey(setting: string): string {
-  return "setting:" + setting;
+  return "s:" + setting;
 }
 
 const StoredString: StoredSetting<string> = {
@@ -73,7 +78,7 @@ async function restoreSettings(settingsToRestore: Partial<UserSettings>) {
 //#region Projects
 
 function getProjectStorageKey(uuid: string): string {
-  return "project:" + uuid;
+  return "p:" + uuid;
 }
 
 /**
@@ -83,24 +88,20 @@ function getProjectStorageKey(uuid: string): string {
  * @param stored Data model of stored project
  */
 function readProjectData(uuid: string, stored: StoredProject): ProjectData {
+  const buffer = Buffer.from(stored.data, "base64");
+  const stblEntries = Package.extractResources(buffer);
+  const primary = stblEntries[0];
+
   return {
     uuid,
-    group: stored.group,
-    instanceBase: BigInt(stored.instanceBase),
     name: stored.name,
-    primaryLocale: stored.primaryLocale,
-    stbls: stored.stbls.map(stbl => {
-      if (stbl.data != null) {
-        const buffer = window.S4TK.Node.Buffer.from(stbl.data, "base64");
-        var parsedStbl = window.S4TK.models.StringTableResource.from(buffer);
-      } else {
-        var parsedStbl = new window.S4TK.models.StringTableResource();
-      }
-
+    group: primary.key.group,
+    instanceBase: getInstanceBase(primary.key.instance),
+    primaryLocale: StringTableLocale.getLocale(primary.key.instance),
+    stbls: stblEntries.map(entry => {
       return {
-        locale: stbl.locale,
-        stbl: parsedStbl,
-        updatedKeys: new Set<number>(stbl.updatedKeys)
+        locale: StringTableLocale.getLocale(entry.key.instance),
+        stbl: entry.value as any,
       };
     })
   };
@@ -112,22 +113,22 @@ function readProjectData(uuid: string, stored: StoredProject): ProjectData {
  * @param project Project to convert
  */
 function writeProjectData(project: ProjectData): StoredProject {
-  return {
-    group: project.group,
-    instanceBase: "0x" + project.instanceBase.toString(16),
-    name: project.name,
-    primaryLocale: project.primaryLocale,
-    stbls: project.stbls.map(wrapper => {
-      const data = wrapper.stbl.size === 0
-        ? null
-        : wrapper.stbl.getBuffer(true).toString("base64");
+  const entries = project.stbls.map(wrapper => {
+    return {
+      key: {
+        type: BinaryResourceType.StringTable,
+        group: project.group,
+        instance: StringTableLocale.setHighByte(wrapper.locale, project.instanceBase)
+      },
+      value: wrapper.stbl
+    };
+  });
 
-      return {
-        locale: wrapper.locale,
-        updatedKeys: wrapper.updatedKeys ? [...wrapper.updatedKeys] : null,
-        data
-      };
-    })
+  const pkg = new Package(entries);
+
+  return {
+    name: project.name,
+    data: pkg.getBuffer().toString("base64")
   };
 }
 
@@ -137,9 +138,7 @@ function writeProjectData(project: ProjectData): StoredProject {
  * @param uuid UUID of project to load
  */
 function loadProjectData(uuid: string): ProjectData {
-  const base64 = localStorage.getItem(getProjectStorageKey(uuid));
-  const buffer = window.S4TK.Node.Buffer.from(base64, "base64");
-  const json = window.S4TK.Node.unzipSync(buffer).toString();
+  const json = localStorage.getItem(getProjectStorageKey(uuid));
   if (!json) return undefined;
   const stored: StoredProject = JSON.parse(json);
   return readProjectData(uuid, stored);
@@ -153,9 +152,7 @@ function loadProjectData(uuid: string): ProjectData {
 async function saveProjectData(project: ProjectData) {
   const stored: StoredProject = writeProjectData(project);
   const json = JSON.stringify(stored);
-  const buffer = window.S4TK.Node.Buffer.from(json);
-  const base64 = window.S4TK.Node.deflateSync(buffer).toString("base64");
-  localStorage.setItem(getProjectStorageKey(project.uuid), base64);
+  localStorage.setItem(getProjectStorageKey(project.uuid), json);
 }
 
 /**
