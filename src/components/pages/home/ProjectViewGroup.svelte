@@ -14,8 +14,8 @@
 
 <style lang="scss">
   .project-view-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   }
 </style>

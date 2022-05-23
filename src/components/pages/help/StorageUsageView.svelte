@@ -1,19 +1,33 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import StorageService from "../../../typescript/storage-service";
+  import { activeWorkspace } from "../../../typescript/stores";
 
   const availableBytes = 5000000;
   let usedStorageBar: HTMLDivElement;
+  let usedBytes = StorageService.getTotalBytesUsed();
 
-  $: usedBytes = StorageService.getTotalBytesUsed();
   $: usedMbText = (usedBytes / 1000000).toFixed(2);
   $: usedBytesPercent = (usedBytes / availableBytes) * 100;
   $: usedBytesPercentText = usedBytesPercent.toFixed(1) + "%";
   $: usedStorageBarWidth = usedBytesPercent.toFixed(0) + "%";
   $: isLowOnStorage = usedBytesPercent >= 90;
 
+  function refresh() {
+    usedBytes = StorageService.getTotalBytesUsed();
+
+    setTimeout(() => {
+      // using timeout because there's some lag with computed properties
+      usedStorageBar.style.width = usedStorageBarWidth;
+    }, 100);
+  }
+
   onMount(() => {
     usedStorageBar.style.width = usedStorageBarWidth;
+
+    activeWorkspace.subscribe((value) => {
+      if (value) refresh();
+    });
   });
 </script>
 

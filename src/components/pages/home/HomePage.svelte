@@ -15,6 +15,7 @@
   import GradientHeader from "../../elements/GradientHeader.svelte";
   import ProjectDeletionView from "./ProjectDeletionView.svelte";
   import ProjectUploadView from "./ProjectUploadView.svelte";
+  import StorageUsageView from "../help/StorageUsageView.svelte";
 
   let workspace: Workspace;
   let selectionGroup: SelectionGroup<Project>;
@@ -122,35 +123,40 @@
 <svelte:head>
   <title>STBL Studio</title>
 </svelte:head>
-<section id="home-section" class:center-v={workspaceEmpty}>
+<section id="home-section">
   {#if workspace}
+    <ContentArea banded={true} bottomShadow={true}>
+      <div class="flex-space-between">
+        <StorageUsageView />
+        <div class="flex-center-v">
+          <p>hi</p>
+          <p>bye</p>
+        </div>
+      </div>
+    </ContentArea>
     {#if workspaceEmpty}
       <ContentArea>
-        <slot>
-          <div>
-            <GradientHeader title="Your workspace is empty" />
-            <p class="mt-2">
-              Upload existing string tables or create new ones with the toolbar
-              in the bottom-right corner.
-            </p>
-            <p>
-              Confused? Visit the <a href="#/help">help page</a> to learn how to
-              use String Table Studio.
-            </p>
-          </div>
-        </slot>
+        <div>
+          <GradientHeader title="Your workspace is empty" />
+          <p class="mt-2">
+            Upload existing string tables or create new ones with the toolbar in
+            the bottom-right corner.
+          </p>
+          <p>
+            Confused? Visit the <a href="#/help">help page</a> to learn how to use
+            String Table Studio.
+          </p>
+        </div>
       </ContentArea>
     {:else}
       <ContentArea>
-        <slot>
-          <div class="mb-2">
-            <SplitView>
-              <GradientHeader slot="left" title="My Workspace" />
-              <SelectModeToggle slot="right" bind:selectionGroup />
-            </SplitView>
-          </div>
-          <ProjectViewGroup bind:selectionGroup />
-        </slot>
+        <div class="mb-2">
+          <SplitView centerOnCollapse={true}>
+            <GradientHeader slot="left" title="My Workspace" />
+            <SelectModeToggle slot="right" bind:selectionGroup />
+          </SplitView>
+        </div>
+        <ProjectViewGroup bind:selectionGroup />
       </ContentArea>
     {/if}
   {/if}
@@ -204,11 +210,5 @@
 {/if}
 
 <style lang="scss">
-  #home-section {
-    &.center-v {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-  }
+  // intentionally blank
 </style>

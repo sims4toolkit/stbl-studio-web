@@ -1,8 +1,13 @@
 <script lang="ts">
   export let banded = false;
+  export let bottomShadow = false;
 </script>
 
-<div class="content-area-wrapper flex-center" class:banded>
+<div
+  class="content-area-wrapper flex-center"
+  class:banded
+  class:bottom-shadow={bottomShadow}
+>
   <div class="content-area">
     <slot />
   </div>

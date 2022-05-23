@@ -76,8 +76,8 @@
     background-color: var(--color-card);
     padding: 16px;
     border-radius: 8px;
-    flex: 1 1 0px;
-    max-width: 305px; // (content area width - 60px) / 4
+    min-width: 300px;
+    max-width: 100%;
     font-size: 1em;
 
     .selected-indicator {

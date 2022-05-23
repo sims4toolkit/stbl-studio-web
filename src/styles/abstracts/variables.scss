@@ -56,8 +56,8 @@ $azure-blue: #0095eb;
   // light theme variables
   &[data-theme="light"] {
     // colors
-    --color-bg: rgb(240, 242, 245);
-    --color-bg-secondary: #{$cool-white};
+    --color-bg: rgb(246, 248, 250);
+    --color-bg-secondary: white;
     --color-text: #{$darker-gray};
     --color-text-subtle: rgb(108, 109, 109);
     --color-divider: rgb(171, 175, 177);

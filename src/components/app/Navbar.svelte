@@ -64,7 +64,7 @@
       img {
         width: auto;
         height: 1.5em;
-        margin-right: 1em;
+        margin-right: 10px;
       }
     }
 
