@@ -69,14 +69,13 @@
   }
 
   function readJson(buffer: Buffer, name: string): StblWithKey {
-    const json: KeyStringPair[] = JSON.parse(buffer.toString()).map(
-      ({ key, value }) => {
-        return {
-          key: typeof key === "number" ? key : parseInt(key, 16),
-          value,
-        };
-      }
-    );
+    const json: KeyStringPair[] = JSON.parse(buffer.toString()).map((entry) => {
+      return {
+        key:
+          typeof entry.key === "number" ? entry.key : parseInt(entry.key, 16),
+        value: entry.value ?? entry.string,
+      };
+    });
 
     const key = getTgi(name);
 

@@ -25,5 +25,20 @@
 </head>
 
 <body>
+	<script>
+		// FIXME: remove
+		function checkLocalStorageUsage() {
+			let total = 0;
+
+			const Buffer = window.S4TK.Node.Buffer;
+
+			for (const prop in localStorage) {
+				if (typeof localStorage[prop] !== "string") continue;
+				total += Buffer.byteLength(prop) + Buffer.byteLength(localStorage[prop]);
+			}
+
+			console.log(`${total} bytes (${((total / 5000000) * 100).toFixed(2)}%)`);
+		}
+	</script>
 </body>
 </html>
