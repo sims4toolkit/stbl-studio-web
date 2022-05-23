@@ -37,7 +37,6 @@ export default class Project implements ProjectData {
     this.stbls.push({
       locale,
       stbl: new window.S4TK.models.StringTableResource(),
-      updatedKeys: new Set()
     });
   }
 

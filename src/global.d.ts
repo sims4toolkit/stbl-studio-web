@@ -18,7 +18,6 @@ interface LocaleData {
 interface StringTableWrapper {
   locale: StringTableLocale;
   readonly stbl: StringTableResource;
-  readonly updatedKeys?: Set<number>;
 }
 
 interface ProjectData {
