@@ -52,7 +52,7 @@
       activeWorkspace.set(workspace);
       exitOnboarding();
     } catch (err) {
-      console.error("Could not restore workspace from JSON:", err);
+      console.error(err);
       workspaceFileIsInvalid = true;
     }
   }

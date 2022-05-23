@@ -23,7 +23,7 @@
           activeWorkspace.set(workspace);
         })
         .catch((err) => {
-          console.error("Could not restore workspace from storage:", err);
+          console.error(err);
           restoreError = true;
         });
     } else {

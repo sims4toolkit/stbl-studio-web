@@ -1,5 +1,3 @@
-import StorageService from "../storage-service";
-
 const { fnv64 } = window.S4TK.hashing;
 
 /**
@@ -20,7 +18,17 @@ export function validateHexString(hexString: string, digits: number): boolean {
  */
 export function hashInstanceBase(value: string, useCreatorName = true): bigint {
   let toHash = value;
-  if (useCreatorName)
-    toHash = StorageService.settings.creatorName + ":" + value;
-  return fnv64(toHash) & 0xffffffffffffffn
+  // FIXME: gonna use UUIDs...
+  // if (useCreatorName)
+  //   toHash = StorageService.settings.creatorName + ":" + value;
+  return getInstanceBase(fnv64(toHash));
+}
+
+/**
+ * Removes the locale code from an instance.
+ * 
+ * @param value Instance value to remove locale from
+ */
+export function getInstanceBase(value: bigint): bigint {
+  return value & 0xffffffffffffffn;
 }
