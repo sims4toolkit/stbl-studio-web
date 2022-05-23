@@ -1,29 +1,19 @@
 <script lang="ts">
-  import { onMount } from "svelte";
   import StorageService from "../../typescript/storage-service";
+  import { isLightThemeStore } from "../../typescript/stores";
 
-  let isLightTheme: boolean = true;
+  let isLightTheme = StorageService.settings.isLightTheme;
+  isLightThemeStore.subscribe((value) => {
+    isLightTheme = value;
+  });
 
   $: themeImgSrc = `../assets/${isLightTheme ? "sunny" : "moon"}-outline.svg`;
   $: themeImgAlt = `${isLightTheme ? "Light" : "Dark"} Theme`;
 
   function toggleTheme() {
     isLightTheme = !isLightTheme;
-    setTheme();
-    StorageService.settings.isLightTheme = isLightTheme;
+    isLightThemeStore.set(isLightTheme);
   }
-
-  function setTheme() {
-    document.documentElement.setAttribute(
-      "data-theme",
-      isLightTheme ? "light" : "dark"
-    );
-  }
-
-  onMount(() => {
-    isLightTheme = StorageService.settings.isLightTheme;
-    setTheme();
-  });
 </script>
 
 <button on:click={toggleTheme} class="button-wrapper">
@@ -43,6 +33,10 @@
     img {
       height: 100%;
       width: auto;
+    }
+
+    &:hover {
+      opacity: 0.65;
     }
   }
 </style>

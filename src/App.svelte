@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import Router from "svelte-spa-router";
-  import { activeWorkspace } from "./typescript/stores";
+  import { activeWorkspace, isLightThemeStore } from "./typescript/stores";
   import StorageService from "./typescript/storage-service";
   import Workspace from "./typescript/models/workspace";
   import Navbar from "./components/app/Navbar.svelte";
@@ -48,8 +48,8 @@
 
   function startStorageSyncTimeout() {
     storageSyncTimeout = setTimeout(async () => {
-      console.log("hi");
       activeWorkspace.set(await Workspace.restoreFromStorage());
+      isLightThemeStore.set(StorageService.settings.isLightTheme);
     }, 500);
   }
 
