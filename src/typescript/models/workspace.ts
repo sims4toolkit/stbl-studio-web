@@ -100,9 +100,9 @@ export default class Workspace {
   /**
   * Gets a JSON blob that represents the current workspace.
   */
-  toBlob(): Blob {
+  toBlob(prettyPrint = false): Blob {
     const json = getWorkspaceJson();
-    const content = JSON.stringify(json);
+    const content = JSON.stringify(json, null, prettyPrint ? 2 : 0)
     return new Blob([content]);
   }
 

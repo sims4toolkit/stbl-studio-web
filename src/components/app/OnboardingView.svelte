@@ -94,9 +94,9 @@
           <p>Thanks, {creatorName}! Before proceeding, please keep in mind:</p>
           <ul>
             <li>
-              The data that this website uses is stored locally on your
-              computer. If you clear your browser's cookies, you will lose your
-              data.
+              All data that you create or upload on this website is stored
+              locally on your computer, not on the internet. If you clear your
+              browser's storage, you will lose your data.
             </li>
             <li>
               You can download your data at any time, and use it to backup,

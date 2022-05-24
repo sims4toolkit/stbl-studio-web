@@ -67,6 +67,10 @@
       border-right: none;
     }
 
+    &.disabled:hover {
+      cursor: not-allowed;
+    }
+
     &:not(.disabled):hover,
     &:not(.disabled):focus {
       cursor: pointer;
