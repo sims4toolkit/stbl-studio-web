@@ -1,7 +1,6 @@
 <script lang="ts">
   import type { StringTableResource as StblResourceType } from "@s4tk/models";
   import type { ResourceKey } from "@s4tk/models/types";
-  import { replace } from "svelte-spa-router";
   import FileInput from "../../elements/FileInput.svelte";
   import GradientHeader from "../../elements/GradientHeader.svelte";
   import ContentArea from "../../layout/ContentArea.svelte";
@@ -194,40 +193,49 @@
   <ContentArea banded={true}>
     <GradientHeader title="Pronoun Batch Fix" />
     <div class="mt-2">
-      <p class="mt-0">
-        Upload as many string table binaries or packages as you want, and your
-        English* strings will be updated.
-      </p>
-      <p class="subtle-text mb-0">
-        * Other locales are not supported at this time.
+      <p class="small-title mt-0">The Problem</p>
+      <p>
+        The pronoun update is here, and there are new tokens to use instead of
+        M/F. Most M/F tokens still work, as the game automatically replaces them
+        at runtime. However, there are some issues. For instance, it doesn't
+        always know what to do with <code>{"{F#.her}"}</code> and
+        <code>{"{M#.his}"}</code>, since they each have two different meanings.
       </p>
     </div>
-    <div class="mt-2">
-      <p class="small-title mt-0 mb-1">how it works</p>
+    <div class="my-2">
+      <p class="small-title mt-0 mb-1">The Solution</p>
       <ol>
         <li class="mb-half">
-          English string tables are extracted from your uploaded files.
+          Upload your strings to this website, either in string table binaries
+          or packages.
         </li>
         <li class="mb-half">
-          Each string in each table is checked for <code>{"{M/F}"}</code>
-          patterns that can be replaced with custom pronouns tokens.
+          All English string tables will be extracted from your uploaded files,
+          and their strings will be replaced as needed.
         </li>
         <li>
-          You can review the edits that were made to your string tables before
-          downloading them as a ZIP or Package.
+          When the batch fix is done, you can review the changes that were made
+          and download your updated string tables.
         </li>
       </ol>
     </div>
+    <p class="subtle-text my-0">
+      Note that this tool will <strong>not</strong> correct verb conjugation (i.e.
+      "they is" &rarr; "they are"), as there is currently no way to do so.
+    </p>
   </ContentArea>
   <ContentArea>
-    <FileInput
-      bind:files
-      multiple={true}
-      label="STBLs and packages only"
-      accept=".binary,.bnry,.stbl,.package"
-      {filesInvalid}
-      errorMessage="No English STBLs found"
-    />
+    <GradientHeader title="1) Upload Your String Tables" />
+    <div class="my-2">
+      <FileInput
+        bind:files
+        multiple={true}
+        label="STBLs and/or Packages only"
+        accept=".binary,.bnry,.stbl,.package"
+        {filesInvalid}
+        errorMessage="No English STBLs found"
+      />
+    </div>
     <div class="py-2">
       {#if batchFixResult}
         {#each batchFixResult as stblSummary, key (key)}

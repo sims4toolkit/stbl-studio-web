@@ -10,14 +10,15 @@
 <section id="temporary-home-page">
   <ContentArea>
     <GradientHeader title="Under Construction" />
-    <p>
-      This website is not ready. I didn't plan on making it public yet, but the
-      pronoun update threw a wrench in my plans.
+    <p class="mt-2">
+      This website is going to replace <a
+        href="https://frankkmods.com/#/ts4-tools/stbl-editor"
+        target="_blank">the current string table editor</a
+      >.
     </p>
-    <p>
-      For now, use the <a href="/batch-fix/pronouns" use:link
-        >Pronoun Batch Fix</a
-      > tool to fix your string tables.
+    <p class="mb-0">
+      It is not ready yet, but was published early to host
+      <a href="/batch-fix/pronouns" use:link>the pronoun batch fix tool</a>.
     </p>
   </ContentArea>
 </section>
