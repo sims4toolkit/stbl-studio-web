@@ -3,11 +3,11 @@
   import { getTotalBytesUsed } from "../../../typescript/storage";
   import { activeWorkspace } from "../../../typescript/stores";
 
-  const availableBytes = 5000000;
+  const availableBytes = 5242880;
   let usedStorageBar: HTMLDivElement;
   let usedBytes = getTotalBytesUsed();
 
-  $: usedMbText = (usedBytes / 1000000).toFixed(2);
+  $: usedMbText = (usedBytes / 1024 / 1024).toFixed(2);
   $: usedBytesPercent = (usedBytes / availableBytes) * 100;
   $: usedBytesPercentText = usedBytesPercent.toFixed(1) + "%";
   $: usedStorageBarWidth = usedBytesPercent.toFixed(0) + "%";

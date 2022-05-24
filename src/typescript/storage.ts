@@ -120,6 +120,8 @@ export const Settings = getSettingsProxy({
 
 //#region Projects
 
+// TODO: add safeguards to make sure added/updated projects never exceed storage
+
 function readProjectMetaData(uuid: string, base64: string): ProjectMetaData {
   const buffer = Buffer.from(base64, "base64");
   const decoder = new BinaryDecoder(buffer);
@@ -269,10 +271,9 @@ export async function deleteProject(uuid: string) {
   if (uuidIndex !== -1) {
     projectUuids.splice(uuidIndex, 1);
     Settings.projectUuids = projectUuids; // to save
+    localStorage.removeItem(projectKey(uuid));
+    localStorage.removeItem(stblMapKey(uuid));
   }
-
-  localStorage.removeItem(projectKey(uuid));
-  localStorage.removeItem(stblMapKey(uuid));
 }
 
 //#endregion Projects
