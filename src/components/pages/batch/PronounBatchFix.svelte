@@ -33,24 +33,34 @@
     ];
   }
 
+  function getReplacements(m: string, f: string, token: string) {
+    return [
+      {
+        patterns: getPatterns(m.toLowerCase(), f.toLowerCase()),
+        result: `{#.${token}}`,
+      },
+      {
+        patterns: getPatterns(m, f),
+        result: `{#.${token}|xxUpper}`,
+      },
+      {
+        patterns: getPatterns(m.toUpperCase(), f.toUpperCase()),
+        result: `{#.${token}|xxAllCaps}`,
+      },
+    ];
+  }
+
   const replacements = [
-    {
-      patterns: getPatterns("him", "her"),
-      result: "{#.SimPronounObjective}",
-    },
-    {
-      patterns: getPatterns("his", "her"),
-      result: "{#.SimPronounPossessiveDependent}",
-    },
-    {
-      patterns: getPatterns("his", "hers"),
-      result: "{#.SimPronounPossessiveIndependent}",
-    },
+    ...getReplacements("Him", "Her", "SimPronounObjective"),
+    ...getReplacements("His", "Her", "SimPronounPossessiveDependent"),
+    ...getReplacements("His", "Hers", "SimPronounPossessiveIndependent"),
   ];
 
   let files: FileList;
   let filesInvalid = false;
   let batchFixResult: BatchFixResult;
+
+  $: currentStep = batchFixResult ? 2 : 1;
 
   $: {
     if (files) parseFiles();
@@ -200,6 +210,8 @@
         at runtime. However, there are some issues. For instance, it doesn't
         always know what to do with <code>{"{F#.her}"}</code> and
         <code>{"{M#.his}"}</code>, since they each have two different meanings.
+        So, this tool will replace all his/her tokens with their new
+        equivalents.
       </p>
     </div>
     <div class="my-2">
@@ -268,6 +280,11 @@
       {/if}
     </div>
   </ContentArea>
+  {#if currentStep >= 2}
+    <ContentArea banded={true}>
+      <p>Hello</p>
+    </ContentArea>
+  {/if}
 </section>
 
 <style lang="scss">
