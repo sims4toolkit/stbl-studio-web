@@ -7,6 +7,7 @@
   import ProgressCircles from "../elements/ProgressCircles.svelte";
   import FileInput from "../elements/FileInput.svelte";
   import GradientHeader from "../elements/GradientHeader.svelte";
+  import IconTextButton from "../elements/IconTextButton.svelte";
 
   export let exitOnboarding: () => void;
 
@@ -140,14 +141,12 @@
       />
     </div>
   {/if}
-  <div class="upload-workspace text-center" in:fade>
-    <button on:click={uploadWorkspaceButtonClicked}>
-      {#if page !== "upload"}
-        Upload Workspace File
-      {:else}
-        Create New Workspace
-      {/if}
-    </button>
+  <div class="upload-workspace flex-center-h" in:fade>
+    <IconTextButton
+      icon={page === "upload" ? "x" : "upload"}
+      text={page === "upload" ? "Stop Uploading" : "Upload Workspace"}
+      onClick={uploadWorkspaceButtonClicked}
+    />
   </div>
 </div>
 
@@ -164,21 +163,6 @@
       bottom: 32px;
       left: 0;
       right: 0;
-
-      button {
-        background: none;
-        padding: 8px;
-        border-radius: 4px;
-        border: 1px solid var(--color-text-subtle);
-        color: var(--color-text-subtle);
-
-        &:hover {
-          background-color: var(--color-accent-secondary);
-          color: var(--color-bg);
-          border-color: var(--color-accent-secondary);
-          cursor: pointer;
-        }
-      }
     }
 
     li {

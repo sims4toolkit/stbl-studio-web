@@ -25,6 +25,13 @@
     floatingActionButton.style.borderColor = "var(--color-text)";
     toggleTitle();
   }
+
+  function onButtonClick() {
+    if (!disabled) {
+      floatingActionButton.blur();
+      handleClick();
+    }
+  }
 </script>
 
 <button
@@ -37,9 +44,7 @@
   on:focus={handleEnterOrFocus}
   on:mouseleave={handleLeaveOrBlur}
   on:blur={handleLeaveOrBlur}
-  on:click={() => {
-    if (!disabled) handleClick();
-  }}
+  on:click={onButtonClick}
 >
   <img class="is-svg" src={imagePath} alt={title} />
 </button>

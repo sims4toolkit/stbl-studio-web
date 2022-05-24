@@ -125,12 +125,12 @@
 <section id="home-section">
   {#if workspace}
     <ContentArea banded={true} bottomShadow={true}>
-      <div class="flex-space-between">
-        <StorageUsageView />
-        <div class="flex-center-v">
+      <SplitView>
+        <StorageUsageView slot="left" />
+        <div class="flex-center-v" slot="right">
           <QuickActions />
         </div>
-      </div>
+      </SplitView>
     </ContentArea>
     {#if workspaceEmpty}
       <ContentArea>

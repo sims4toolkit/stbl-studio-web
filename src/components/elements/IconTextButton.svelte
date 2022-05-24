@@ -3,9 +3,21 @@
   export let text: string;
   export let onClick: () => void;
   export let active = true;
+
+  let button: HTMLButtonElement;
+
+  function onButtonClick() {
+    button.blur();
+    onClick();
+  }
 </script>
 
-<button class="flex-center-v py-half px-1" class:active on:click={onClick}>
+<button
+  bind:this={button}
+  class="flex-center-v py-half px-1"
+  class:active
+  on:click={onButtonClick}
+>
   <img class="is-svg" src="./assets/{icon}.svg" alt={icon} />
   <p class="my-0">{text}</p>
 </button>
