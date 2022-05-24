@@ -12,6 +12,7 @@
   import ProjectPage from "./components/pages/project/ProjectPage.svelte";
   import BlurOverlay from "./components/layout/BlurOverlay.svelte";
   import OnboardingView from "./components/app/OnboardingView.svelte";
+  import SettingsPage from "./components/pages/settings/SettingsPage.svelte";
 
   let onboardUser = false;
   let restoreError = false;
@@ -34,6 +35,7 @@
   const routes = {
     "/": HomePage,
     "/help": HelpPage,
+    "/settings": SettingsPage,
     "/project/:uuid": ProjectPage,
     "*": NotFoundPage,
   };
