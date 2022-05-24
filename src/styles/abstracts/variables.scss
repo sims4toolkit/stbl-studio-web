@@ -50,6 +50,7 @@ $azure-blue: #0095eb;
 
     // filters
     --filter-svg: var(--filter-light);
+    --filter-svg-invert: var(--filter-dark);
     --filter-bg-blur: blur(12px) brightness(55%);
   }
 
@@ -77,6 +78,7 @@ $azure-blue: #0095eb;
 
     // filters
     --filter-svg: var(--filter-dark);
+    --filter-svg-invert: var(--filter-light);
     --filter-bg-blur: blur(12px);
   }
 }

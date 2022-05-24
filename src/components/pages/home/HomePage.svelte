@@ -16,6 +16,7 @@
   import ProjectDeletionView from "./ProjectDeletionView.svelte";
   import ProjectUploadView from "./ProjectUploadView.svelte";
   import StorageUsageView from "../help/StorageUsageView.svelte";
+  import QuickActions from "./QuickActions.svelte";
 
   let workspace: Workspace;
   let selectionGroup: SelectionGroup<Project>;
@@ -127,23 +128,7 @@
       <div class="flex-space-between">
         <StorageUsageView />
         <div class="flex-center-v">
-          <div class="quick-actions-container">
-            <p class="small-title mt-0 mb-1">quick actions</p>
-            <div class="flex-center-v">
-              <button class="button-wrapper flex-center-v">
-                <img class="is-svg" src="./assets/git-merge.svg" alt="Merge" />
-                <p>Merge</p>
-              </button>
-              <button class="button-wrapper flex-center-v">
-                <img
-                  class="is-svg"
-                  src="./assets/earth-outline.svg"
-                  alt="Earth"
-                />
-                <p>Translate</p>
-              </button>
-            </div>
-          </div>
+          <QuickActions />
         </div>
       </div>
     </ContentArea>
@@ -223,26 +208,5 @@
 {/if}
 
 <style lang="scss">
-  .quick-actions-container {
-    button {
-      color: var(--color-text);
-      border: 1px solid var(--color-text);
-      border-radius: 4px;
-      padding: 0.5em;
-
-      &:not(:last-child) {
-        margin-right: 1em;
-      }
-
-      p {
-        margin: 0;
-      }
-    }
-
-    img {
-      height: 18px;
-      width: auto;
-      margin-right: 10px;
-    }
-  }
+  // intentionally blank
 </style>

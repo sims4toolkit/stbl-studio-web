@@ -8,6 +8,10 @@
   align-items: center;
 }
 
+.flex-gap {
+  gap: 1em;
+}
+
 .flex-center-v {
   display: flex;
   align-items: center;
@@ -218,3 +222,161 @@
 }
 
 //#endregion Margins
+
+//#region Paddings
+
+.p-0 {
+  padding: 0;
+}
+
+.py-0 {
+  padding: {
+    top: 0;
+    bottom: 0;
+  }
+}
+
+.py-half {
+  padding: {
+    top: 0.5em;
+    bottom: 0.5em;
+  }
+}
+
+.py-1 {
+  padding: {
+    top: 1em;
+    bottom: 1em;
+  }
+}
+
+.py-2 {
+  padding: {
+    top: 2em;
+    bottom: 2em;
+  }
+}
+
+.py-3 {
+  padding: {
+    top: 3em;
+    bottom: 3em;
+  }
+}
+
+.pb-0 {
+  padding-bottom: 0;
+}
+
+.pb-half {
+  padding-bottom: 0.5em;
+}
+
+.pb-1 {
+  padding-bottom: 1em;
+}
+
+.pb-2 {
+  padding-bottom: 2em;
+}
+
+.pb-3 {
+  padding-bottom: 3em;
+}
+
+.pt-0 {
+  padding-top: 0;
+}
+
+.pt-half {
+  padding-top: 0.5em;
+}
+
+.pt-1 {
+  padding-top: 1em;
+}
+
+.pt-2 {
+  padding-top: 2em;
+}
+
+.pt-3 {
+  padding-top: 3em;
+}
+
+.px-0 {
+  padding: {
+    left: 0;
+    right: 0;
+  }
+}
+
+.px-half {
+  padding: {
+    left: 0.5em;
+    right: 0.5em;
+  }
+}
+
+.px-1 {
+  padding: {
+    left: 1em;
+    right: 1em;
+  }
+}
+
+.px-2 {
+  padding: {
+    left: 2em;
+    right: 2em;
+  }
+}
+
+.px-3 {
+  padding: {
+    left: 3em;
+    right: 3em;
+  }
+}
+
+.pl-0 {
+  padding-left: 0;
+}
+
+.pl-half {
+  padding-left: 0.5em;
+}
+
+.pl-1 {
+  padding-left: 1em;
+}
+
+.pl-2 {
+  padding-left: 2em;
+}
+
+.pl-3 {
+  padding-left: 3em;
+}
+
+.pr-0 {
+  padding-right: 0;
+}
+
+.pr-half {
+  padding-right: 0.5em;
+}
+
+.pr-1 {
+  padding-right: 1em;
+}
+
+.pr-2 {
+  padding-right: 2em;
+}
+
+.pr-3 {
+  padding-right: 3em;
+}
+
+//#endregion Paddings
