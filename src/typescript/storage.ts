@@ -254,7 +254,6 @@ export async function addProject(project: Project) {
   const { projectUuids } = Settings;
   projectUuids.push(project.uuid)
   Settings.projectUuids = projectUuids; // to save
-
   saveProjectMetaData(project);
   saveStblMap(project.uuid, project.stblMap);
 }

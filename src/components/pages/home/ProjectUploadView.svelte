@@ -1,10 +1,6 @@
 <script lang="ts">
-  import type {
-    StringTableResource as StblType,
-    Package as PackageType,
-  } from "@s4tk/models";
+  import type { StringTableResource as StblType } from "@s4tk/models";
   import type { ResourceKey } from "@s4tk/models/types";
-  import type { KeyStringPair } from "@s4tk/models/lib/resources/stbl/types";
   import { fly } from "svelte/transition";
   import { v4 as uuidv4 } from "uuid";
   import Project from "../../../typescript/models/project";
@@ -12,12 +8,17 @@
   import GradientHeader from "../../elements/GradientHeader.svelte";
   import NavigationButton from "../../elements/NavigationButton.svelte";
   import ProgressCircles from "../../elements/ProgressCircles.svelte";
+  import type Workspace from "../../../typescript/models/workspace";
+  import { activeWorkspace } from "../../../typescript/stores";
+  import type { StringTableLocale as StblLocaleType } from "@s4tk/models/enums";
+  import type { StblMap } from "../../../global";
+  import { getInstanceBase } from "../../../typescript/helpers/tgi";
 
   const { BinaryResourceType, StringTableLocale } = window.S4TK.enums;
   const { Package, StringTableResource } = window.S4TK.models;
   const { Buffer } = window.S4TK.Node;
 
-  export let onComplete: (project?: Project) => void;
+  export let onComplete: () => void;
 
   const animationDuration = 1000;
 
@@ -26,142 +27,146 @@
   let filesInvalid = false;
   let circlesFilled = 0;
 
+  let workspace: Workspace;
+  activeWorkspace.subscribe((value) => {
+    workspace = value;
+  });
+
   interface StblWithKey {
     key: ResourceKey;
-    stbl: StblType;
+    value: StblType;
   }
 
   $: {
     if (uploadedFiles?.length) {
       const file = uploadedFiles[0];
 
-      createProject(file)
-        .then((project) => {
-          onComplete(project);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+      createProject(file);
     }
   }
 
-  async function createProject(file: File): Promise<Project> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const ext = file.name.split(".").at(-1);
-        const buffer = Buffer.from(await file.arrayBuffer());
-        const pkg = getPackage(ext, buffer);
-        // TODO:
-      } catch (e) {
-        reject(e);
-      }
-    });
+  async function createProject(file: File) {
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const project = readDbpf(file.name, buffer);
+    workspace.addProject(project);
+    onComplete();
   }
 
-  function getPackage(ext: string, buffer: Buffer): PackageType {
-    if (ext === "package") return Package.from(buffer);
+  // function getPackage(ext: string, buffer: Buffer): PackageType {
+  //   if (ext === "package") return Package.from(buffer);
 
-    const stbl = read;
-    if (ext === "json") {
-      var stbls = [readJson(buffer, file.name)];
-    } else {
-      var stbls = [readStbl(buffer, file.name)];
-    }
+  //   const stbl = read;
+  //   if (ext === "json") {
+  //     var stbls = [readJson(buffer, file.name)];
+  //   } else {
+  //     var stbls = [readStbl(buffer, file.name)];
+  //   }
 
-    const primaryLocale = StringTableLocale.English;
+  //   const primaryLocale = StringTableLocale.English;
 
-    const primaryStbl = stbls.find(
-      (stbl) => stbl.stbl.locale === primaryLocale
-    );
+  //   const primaryStbl = stbls.find(
+  //     (stbl) => stbl.stbl.locale === primaryLocale
+  //   );
 
-    const project = new Project({
-      group: primaryStbl.key.group,
-      instanceBase: primaryStbl.key.instance & 0xffffffffffffffn,
-      name: file.name,
-      primaryLocale,
-      uuid,
-    });
+  //   const project = new Project({
+  //     group: primaryStbl.key.group,
+  //     instanceBase: primaryStbl.key.instance & 0xffffffffffffffn,
+  //     name: file.name,
+  //     primaryLocale,
+  //     uuid,
+  //   });
 
-    onComplete(project);
-  }
+  //   onComplete(project);
+  // }
 
-  function readJson(buffer: Buffer, name: string): StblWithKey {
-    const json: KeyStringPair[] = JSON.parse(buffer.toString()).map((entry) => {
-      return {
-        key:
-          typeof entry.key === "number" ? entry.key : parseInt(entry.key, 16),
-        value: entry.value ?? entry.string,
-      };
-    });
+  // function readJson(buffer: Buffer, name: string): StblWithKey {
+  //   const json: KeyStringPair[] = JSON.parse(buffer.toString()).map((entry) => {
+  //     return {
+  //       key:
+  //         typeof entry.key === "number" ? entry.key : parseInt(entry.key, 16),
+  //       value: entry.value ?? entry.string,
+  //     };
+  //   });
 
-    const key = getTgi(name);
+  //   const key = getTgi(name);
 
-    return {
-      key,
-      stbl: new StringTableResource(json),
-    };
-  }
+  //   return {
+  //     key,
+  //     stbl: new StringTableResource(json),
+  //   };
+  // }
 
-  function readStbl(buffer: Buffer, name: string): StblWithKey {
-    const key = getTgi(name);
+  // function readStbl(buffer: Buffer, name: string): StblWithKey {
+  //   const key = getTgi(name);
 
-    return {
-      key,
-      stbl: new StringTableResource(json),
-    };
-  }
+  //   return {
+  //     key,
+  //     stbl: new StringTableResource(json),
+  //   };
+  // }
 
-  function readDbpf(buffer: Buffer): StblWithKey[] {
+  function readDbpf(filename: string, buffer: Buffer): Project {
     const allStbls: StblWithKey[] = Package.extractResources(buffer, {
       resourceFilter(type) {
         return type === BinaryResourceType.StringTable;
       },
-    }).map(({ key, value }) => {
-      return {
-        key,
-        stbl: {
-          locale: StringTableLocale.getLocale(key.instance),
-          stbl: value as any,
-        },
-      };
-    });
+    }) as unknown as StblWithKey[];
 
-    const primaryStbl = allStbls.find(
-      (stbl) => stbl.stbl.locale === StringTableLocale.English
-    ).stbl.stbl;
+    const primaryEntry = allStbls.find(
+      (entry) =>
+        StringTableLocale.getLocale(entry.key.instance) ===
+        StringTableLocale.English
+    );
 
-    allStbls.forEach((pair) => {
-      if (pair.stbl.locale === StringTableLocale.English) return;
-      pair.stbl.stbl.entries.forEach((entry) => {
+    const primaryStbl = primaryEntry.value as StblType;
+
+    allStbls.forEach(({ key, value }) => {
+      if (value === primaryStbl) return;
+      (value as StblType).entries.forEach((entry) => {
         if (entry.valueEquals(primaryStbl.getByKey(entry.key)?.value)) {
-          pair.stbl.stbl.deleteByKey(entry.key);
+          (value as StblType).deleteByKey(entry.key);
         }
       });
     });
 
-    return allStbls;
+    const stblMap: StblMap = new Map();
+
+    allStbls.forEach(({ key, value }) => {
+      stblMap.set(StringTableLocale.getLocale(key.instance), value);
+    });
+
+    return new Project(
+      {
+        uuid,
+        name: filename,
+        group: primaryEntry.key.group,
+        instanceBase: getInstanceBase(primaryEntry.key.instance),
+        primaryLocale: StringTableLocale.English,
+      },
+      stblMap
+    );
   }
 
-  function getTgi(filename: string) {
-    try {
-      const { t, g, i } =
-        /(?<t>[a-fA-F\d]{8})[_!]?(?<g>[a-fA-F\d]{8})[_!]?(?<i>[a-fA-F\d]{16})/.exec(
-          filename
-        ).groups;
+  // function getTgi(filename: string) {
+  //   try {
+  //     const { t, g, i } =
+  //       /(?<t>[a-fA-F\d]{8})[_!]?(?<g>[a-fA-F\d]{8})[_!]?(?<i>[a-fA-F\d]{16})/.exec(
+  //         filename
+  //       ).groups;
 
-      return {
-        type: parseInt(t, 16),
-        group: parseInt(g, 16),
-        instance: BigInt("0x" + i),
-      };
-    } catch (e) {
-      return {
-        type: BinaryResourceType.StringTable,
-        group: 0,
-        instance: 0n,
-      };
-    }
-  }
+  //     return {
+  //       type: parseInt(t, 16),
+  //       group: parseInt(g, 16),
+  //       instance: BigInt("0x" + i),
+  //     };
+  //   } catch (e) {
+  //     return {
+  //       type: BinaryResourceType.StringTable,
+  //       group: 0,
+  //       instance: 0n,
+  //     };
+  //   }
+  // }
 
   function nextClicked() {
     // TODO:
