@@ -3,7 +3,7 @@
 import type { CompressionType, compressBuffer, decompressBuffer } from "@s4tk/compression";
 import type { BinaryEncoder, BinaryDecoder } from "@s4tk/encoding";
 import type { fnv64 } from "@s4tk/hashing";
-import type { formatAsHexString } from "@s4tk/hashing/formatting";
+import type { formatAsHexString, formatResourceKey, formatStringKey } from "@s4tk/hashing/formatting";
 import type { Package, StringTableResource } from "@s4tk/models";
 import type { StringTableLocale, BinaryResourceType } from "@s4tk/models/enums";
 
@@ -66,6 +66,8 @@ declare global {
       },
       formatting: {
         formatAsHexString: typeof formatAsHexString;
+        formatResourceKey: typeof formatResourceKey;
+        formatStringKey: typeof formatStringKey;
       },
       hashing: {
         fnv64: typeof fnv64;
