@@ -36,11 +36,17 @@ interface UserSettings {
   projectUuids: string[]
 }
 
-// interface StoredWorkspace {
-//   projects: { [key: string]: StoredProject; };
-//   settings: UserSettings;
-//   version: number;
-// }
+interface WorkspaceJson {
+  version: number;
+
+  settings: Omit<UserSettings, "hasWorkspace" | "projectUuids">;
+
+  projects: {
+    uuid: string;
+    metaData: string;
+    stblMap: string;
+  }[];
+}
 
 declare global {
   interface Window {

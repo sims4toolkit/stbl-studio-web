@@ -1,4 +1,4 @@
-import type { ProjectMetaData, StblMap, UserSettings } from "../global";
+import type { ProjectMetaData, StblMap, UserSettings, WorkspaceJson } from "../global";
 import type Project from "./models/project";
 
 const { StringTableResource } = window.S4TK.models;
@@ -95,18 +95,18 @@ function getSettingsProxy(settings: object): UserSettings {
 }
 
 /**
- * Saves the given settings into localStorage.
+ * Overwrites the given settings in localStorage.
  * 
- * @param settings Object of settings to restore 
+ * @param settings Object of settings to overwrite 
  */
-export async function restoreSettings(settings: Partial<UserSettings>) {
+export async function overwriteSettings(settings: Partial<UserSettings>) {
   for (const [key, value] of Object.entries(settings)) {
     Settings[key] = value;
   }
 }
 
 /**
- * Interface for all user settings.
+ * Interface for all user settings and single values.
  */
 export const Settings = getSettingsProxy({
   creatorName: StoredString,
@@ -120,13 +120,7 @@ export const Settings = getSettingsProxy({
 
 //#region Projects
 
-/**
- * Loads project meta data from localStorage.
- * 
- * @param uuid UUID of project data to load
- */
-export function loadProjectMetaData(uuid: string): ProjectMetaData {
-  const base64 = localStorage.getItem(projectKey(uuid));
+function readProjectMetaData(uuid: string, base64: string): ProjectMetaData {
   const buffer = Buffer.from(base64, "base64");
   const decoder = new BinaryDecoder(buffer);
 
@@ -141,6 +135,16 @@ export function loadProjectMetaData(uuid: string): ProjectMetaData {
     instanceBase: decoder.uint64(),
     name: decoder.string(),
   };
+}
+
+/**
+ * Loads project meta data from localStorage.
+ * 
+ * @param uuid UUID of project data to load
+ */
+export function loadProjectMetaData(uuid: string): ProjectMetaData {
+  const base64 = localStorage.getItem(projectKey(uuid));
+  return readProjectMetaData(uuid, base64);
 }
 
 /**
@@ -164,13 +168,7 @@ export async function saveProjectMetaData(data: ProjectMetaData) {
   localStorage.setItem(projectKey(data.uuid), base64);
 }
 
-/**
- * Loads a stbl map from localStorage.
- * 
- * @param uuid UUID of stbl map to load
- */
-export function loadStblMap(uuid: string): StblMap {
-  const base64 = localStorage.getItem(stblMapKey(uuid));
+function readStblMap(base64: string): StblMap {
   const buffer = Buffer.from(base64, "base64");
   const decoder = new BinaryDecoder(buffer);
 
@@ -197,6 +195,16 @@ export function loadStblMap(uuid: string): StblMap {
   }
 
   return stblMap;
+}
+
+/**
+ * Loads a stbl map from localStorage.
+ * 
+ * @param uuid UUID of stbl map to load
+ */
+export function loadStblMap(uuid: string): StblMap {
+  const base64 = localStorage.getItem(stblMapKey(uuid));
+  return readStblMap(base64);
 }
 
 /**
@@ -269,3 +277,48 @@ export async function deleteProject(uuid: string) {
 }
 
 //#endregion Projects
+
+//#region Workspace
+
+/**
+ * Overwrites all localStorage with the given workspace data.
+ * 
+ * @param workspace Workspace JSON to restore
+ */
+export async function overwriteWorkspace(workspace: WorkspaceJson) {
+  localStorage.clear();
+  overwriteSettings(workspace.settings);
+
+  let projectUuids: string[] = [];
+  workspace.projects.forEach(project => {
+    projectUuids.push(project.uuid);
+    localStorage.setItem(projectKey(project.uuid), project.metaData);
+    localStorage.setItem(stblMapKey(project.uuid), project.stblMap);
+  });
+
+  Settings.projectUuids = projectUuids;
+  Settings.hasWorkspace = true;
+}
+
+/**
+ * Creates a JSON that represents the workspace.
+ */
+export function getWorkspaceJson(): WorkspaceJson {
+  return {
+    version: 0,
+    settings: {
+      creatorName: Settings.creatorName,
+      defaultLocale: Settings.defaultLocale,
+      isLightTheme: Settings.isLightTheme
+    },
+    projects: Settings.projectUuids.map(uuid => {
+      return {
+        uuid,
+        metaData: localStorage.getItem(projectKey(uuid)),
+        stblMap: localStorage.getItem(stblMapKey(uuid))
+      };
+    })
+  };
+}
+
+//#endregion Workspace

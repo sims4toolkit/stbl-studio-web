@@ -1,10 +1,11 @@
-import type { ProjectData, StoredProject, StoredWorkspace } from "../../global";
-import StorageService from "../storage";
+import type { WorkspaceJson } from "../../global";
+import { addProject, deleteProject, getWorkspaceJson, loadProjectMetaData, overwriteWorkspace, Settings } from "../storage";
 import { activeWorkspace } from "../stores";
 import Project from "./project";
 
-const CURRENT_VERSION = 1;
-
+/**
+ * A workspace that contains projects.
+ */
 export default class Workspace {
   constructor(readonly projects: Project[] = []) {
     this._sortProjects();
@@ -13,24 +14,20 @@ export default class Workspace {
   /**
    * Restores a workspace from a JSON.
    * 
-   * WARNING: This will clear localStorage and replace all values with thise
+   * WARNING: This will clear localStorage and replace all values with those
    * in the JSON.
    * 
    * @param json JSON that contains workspace data
    */
-  static async restoreFromJson(json: StoredWorkspace): Promise<Workspace> {
+  static async restoreFromJson(json: WorkspaceJson): Promise<Workspace> {
     return new Promise(async (resolve, reject) => {
       try {
-        const projects: Project[] = Object.entries(json.projects)
-          .map(([uuid, stored]) => StorageService.readProjectData(uuid, stored))
-          .map(projectData => new Project(projectData));
+        await overwriteWorkspace(json);
 
-        localStorage.clear();
-
-        StorageService.restoreSettings(json.settings);
-        projects.forEach(StorageService.saveProjectData);
-
-        resolve(new Workspace(projects));
+        Workspace.restoreFromStorage()
+          .then(workspace => {
+            resolve(workspace)
+          });
       } catch (e) {
         console.error(e);
         reject("Could not restore workspace from JSON.")
@@ -44,13 +41,12 @@ export default class Workspace {
   static async restoreFromStorage(): Promise<Workspace> {
     return new Promise(async (resolve, reject) => {
       try {
-        const projects = StorageService.settings.projectUuids.map(uuid => {
-          return new Project(StorageService.loadProjectData(uuid));
+        const projects = Settings.projectUuids.map(uuid => {
+          const data = loadProjectMetaData(uuid);
+          return new Project(data);
         });
 
-        const workspace = new Workspace(projects);
-
-        resolve(workspace);
+        resolve(new Workspace(projects));
       } catch (e) {
         console.error(e);
         reject("Could not restore workspace from storage.")
@@ -61,21 +57,15 @@ export default class Workspace {
   //#region Methods
 
   /**
-   * Creates and adds a new project to this workspace.
+   * Adds a new project to this workspace and saves it to storage.
    * 
-   * @param data Object containing data for project
+   * @param project Project to add
    */
-  addProject(data: Partial<ProjectData> = {}) {
-    const project = new Project(data);
+  addProject(project: Project) {
     this.projects.push(project);
-    StorageService.saveProjectData(project);
-
-    const projectUuids = StorageService.settings.projectUuids;
-    projectUuids.push(project.uuid);
-    StorageService.settings.projectUuids = projectUuids;
-
     this._sortProjects();
-    activeWorkspace.set(this); // to update components
+    addProject(project);
+    this._updateComponents();
   }
 
   /**
@@ -92,48 +82,19 @@ export default class Workspace {
    * 
    * @param projects Projects to remove
    */
-  removeProjects(...projects: Project[]) {
-    projects.forEach(project => {
-      const { uuid } = project;
-
+  deleteProjects(...projects: Project[]) {
+    projects.forEach(({ uuid }) => {
       const projectIndex = this.projects.findIndex(project => {
         return uuid === project.uuid;
       });
 
-      if (projectIndex != -1) {
+      if (projectIndex !== -1) {
         this.projects.splice(projectIndex, 1);
-        StorageService.deleteProjectData(uuid);
+        deleteProject(uuid);
       }
     });
 
-    activeWorkspace.set(this); // to update components
-  }
-
-  /**
-   * Writes this workspace into a JSON that can be written.
-   */
-  toBlob(): Blob {
-    const projects: { [key: string]: StoredProject } = {};
-
-    this.projects.forEach(project => {
-      projects[project.uuid] = StorageService.writeProjectData(project);
-    });
-
-    const json = {
-      version: CURRENT_VERSION,
-      settings: {
-        creatorName: StorageService.settings.creatorName,
-        defaultLocale: StorageService.settings.defaultLocale,
-        hasWorkspace: StorageService.settings.hasWorkspace,
-        isLightTheme: StorageService.settings.isLightTheme,
-        projectUuids: StorageService.settings.projectUuids,
-      },
-      projects
-    };
-
-    const content = JSON.stringify(json);
-
-    return new Blob([content]);
+    this._updateComponents();
   }
 
   //#endregion Methods
@@ -148,6 +109,10 @@ export default class Workspace {
       if (name1 > name2) return 1;
       return 0;
     });
+  }
+
+  private _updateComponents() {
+    activeWorkspace.set(this);
   }
 
   //#endregion Private Methods
