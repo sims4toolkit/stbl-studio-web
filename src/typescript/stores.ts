@@ -1,14 +1,15 @@
 import { Writable, writable } from "svelte/store";
 import type Workspace from "./models/workspace";
-import StorageService from "./storage-service";
+import { Settings } from "./storage";
 
-export const activeWorkspace: Writable<Workspace> = writable(null);
+export const activeWorkspace: Writable<Workspace> =
+  writable(null);
 
 export const isLightThemeStore: Writable<boolean> =
-  writable(StorageService.settings.isLightTheme);
+  writable(Settings.isLightTheme);
 
 isLightThemeStore.subscribe(isLightTheme => {
-  StorageService.settings.isLightTheme = isLightTheme;
+  Settings.isLightTheme = isLightTheme;
 
   document.documentElement.setAttribute(
     "data-theme",

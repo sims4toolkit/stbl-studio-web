@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import Router from "svelte-spa-router";
   import { activeWorkspace, isLightThemeStore } from "./typescript/stores";
-  import StorageService from "./typescript/storage-service";
+  import { Settings } from "./typescript/storage";
   import Workspace from "./typescript/models/workspace";
   import Navbar from "./components/app/Navbar.svelte";
   import Footer from "./components/app/Footer.svelte";
@@ -17,7 +17,7 @@
   let restoreError = false;
 
   onMount(() => {
-    if (StorageService.settings.hasWorkspace) {
+    if (Settings.hasWorkspace) {
       Workspace.restoreFromStorage()
         .then((workspace) => {
           activeWorkspace.set(workspace);
@@ -48,10 +48,10 @@
 
   function startStorageSyncTimeout() {
     storageSyncTimeout = setTimeout(async () => {
-      if (StorageService.settings.hasWorkspace) {
+      if (Settings.hasWorkspace) {
         onboardUser = false;
         activeWorkspace.set(await Workspace.restoreFromStorage());
-        isLightThemeStore.set(StorageService.settings.isLightTheme);
+        isLightThemeStore.set(Settings.isLightTheme);
       } else {
         onboardUser = true;
         activeWorkspace.set(undefined);

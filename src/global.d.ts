@@ -7,6 +7,8 @@ import type { formatAsHexString } from "@s4tk/hashing/formatting";
 import type { Package, StringTableResource } from "@s4tk/models";
 import type { StringTableLocale, BinaryResourceType } from "@s4tk/models/enums";
 
+type StblMap = Map<StringTableLocale, StringTableResource>;
+
 interface LocaleData {
   enumName: string;
   enumValue: number;
@@ -16,12 +18,12 @@ interface LocaleData {
   code: string;
 }
 
-interface ProjectData {
+interface ProjectMetaData {
   group: number;
   instanceBase: bigint;
   name: string;
+  numLocales: number;
   primaryLocale: StringTableLocale;
-  readonly stblMap: Map<StringTableLocale, StringTableResource>;
   readonly uuid: string;
 }
 
@@ -33,16 +35,11 @@ interface UserSettings {
   projectUuids: string[]
 }
 
-interface StoredProject {
-  name: string;
-  data: string; // Base64 DBPF containing all STBLs; First STBL is primary
-}
-
-interface StoredWorkspace {
-  projects: { [key: string]: StoredProject; };
-  settings: UserSettings;
-  version: number;
-}
+// interface StoredWorkspace {
+//   projects: { [key: string]: StoredProject; };
+//   settings: UserSettings;
+//   version: number;
+// }
 
 declare global {
   interface Window {

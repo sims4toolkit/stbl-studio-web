@@ -1,8 +1,8 @@
 <script lang="ts">
-  import StorageService from "../../typescript/storage-service";
+  import { Settings } from "../../typescript/storage";
   import { isLightThemeStore } from "../../typescript/stores";
 
-  let isLightTheme = StorageService.settings.isLightTheme;
+  let isLightTheme = Settings.isLightTheme;
   isLightThemeStore.subscribe((value) => {
     isLightTheme = value;
   });

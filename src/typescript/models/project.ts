@@ -1,9 +1,9 @@
-import type { StringTableResource as StblType } from "@s4tk/models";
+import type { StringTableResource as StblResourceType } from "@s4tk/models";
 import type { StringTableLocale as StblLocaleType } from "@s4tk/models/enums";
-import type { ProjectData } from "../../global";
+import type { ProjectMetaData, StblMap } from "../../global";
 import { v4 as uuidv4 } from "uuid";
 import { getInstanceBase } from "../helpers/tgi";
-import StorageService from "../storage-service";
+import StorageService from "../storage";
 
 const { StringTableResource } = window.S4TK.models;
 const { compressBuffer, decompressBuffer, CompressionType } = window.S4TK.compression;
@@ -14,13 +14,18 @@ const { Buffer } = window.S4TK.Node;
 /**
  * A project that contains string tables and associated meta data.
  */
-export default class Project implements ProjectData {
+export default class Project implements ProjectMetaData {
   group: number;
   instanceBase: bigint;
   name: string;
+  numLocales: number;
   primaryLocale: StblLocaleType;
-  readonly stblMap: Map<StblLocaleType, StblType>;
   readonly uuid: string;
+
+  private _stblMap: StblMap;
+  get stblMap() {
+    return this._stblMap ??= StorageService.loadStblMap(this.uuid);
+  }
 
   //#region Initialization
 
@@ -31,7 +36,8 @@ export default class Project implements ProjectData {
    * @param otherLocales Optional list of locales to ensure are in this STBL
    */
   constructor(
-    data: Partial<ProjectData>,
+    data: Partial<ProjectMetaData>,
+    stblMap?: StblMap,
     otherLocales?: StblLocaleType[]
   ) {
     this.uuid = data.uuid ?? uuidv4();
@@ -39,7 +45,7 @@ export default class Project implements ProjectData {
     this.group = data.group ?? 0;
     this.instanceBase = data.instanceBase ?? getInstanceBase(fnv64(this.uuid));
     this.primaryLocale = data.primaryLocale ?? StorageService.settings.defaultLocale;
-    this.stblMap = data.stblMap ?? new Map();
+    this.numLocales = data.numLocales ?? stblMap?.size ?? 1;
 
     if (!this.stblMap.has(this.primaryLocale))
       this.addLocale(this.primaryLocale);
@@ -51,25 +57,25 @@ export default class Project implements ProjectData {
   }
 
   /**
-   * Parses a project from a buffer.
+   * Parses a StblMap from a buffer.
    * 
-   * @param buffer Buffer containing project data
+   * @param buffer Buffer containing stbl binaries
    */
-  static from(buffer: Buffer): Project {
+  static parseBinaryStblMap(buffer: Buffer): StblMap {
     const decoder = new BinaryDecoder(buffer);
     decoder.skip(2); // version not needed yet
 
     const numStbls = decoder.uint8();
 
-    const data: Partial<ProjectData> = {
+    const data: Partial<ProjectMetaData> = {
+      uuid,
       primaryLocale: decoder.uint8(),
       group: decoder.uint32(),
       instanceBase: decoder.uint64(),
-      uuid: decoder.string(),
       name: decoder.string(),
     };
 
-    const stblMap: Map<StblLocaleType, StblType> = new Map();
+    const stblMap: Map<StblLocaleType, StblResourceType> = new Map();
     for (let i = 0; i < numStbls; i++) {
       const locale = decoder.uint8();
       const length = decoder.uint32();
@@ -101,7 +107,7 @@ export default class Project implements ProjectData {
   /**
    * The string table of the primary locale. 
    */
-  get primaryStbl(): StblType {
+  get primaryStbl(): StblResourceType {
     return this.stblMap.get(this.primaryLocale);
   }
 
@@ -129,44 +135,7 @@ export default class Project implements ProjectData {
    * Serializes this project into a buffer.
    */
   serialize(): Buffer {
-    // project header
-    let headerSize = 2 + 1 + 1 + 4 + 8;
-    headerSize += Buffer.byteLength(this.uuid) + 1; // +1 for null
-    headerSize += Buffer.byteLength(this.name) + 1; // +1 for null
-    const headerBuffer = Buffer.alloc(headerSize);
-    const headerBufferEncoder = new BinaryEncoder(headerBuffer);
-    headerBufferEncoder.uint16(0); // version
-    headerBufferEncoder.uint8(this.stblMap.size);
-    headerBufferEncoder.uint8(this.primaryLocale);
-    headerBufferEncoder.uint32(this.group);
-    headerBufferEncoder.uint64(this.instanceBase);
-    headerBufferEncoder.charsUtf8(this.uuid);
-    headerBufferEncoder.skip(1); // null
-    headerBufferEncoder.charsUtf8(this.name);
-    headerBufferEncoder.skip(1); // null
 
-    // list to concat later
-    const allBuffers: Buffer[] = [headerBuffer];
-
-    // stbls data
-    this.stblMap.forEach((stbl, locale) => {
-      // individual stbl header
-      const stblHeaderBuffer = Buffer.alloc(5); // locale + length
-      const stblHeaderBufferEncoder = new BinaryEncoder(stblHeaderBuffer);
-
-      if (stbl.size === 0) {
-        stblHeaderBufferEncoder.uint8(locale);
-        stblHeaderBufferEncoder.uint32(0);
-        allBuffers.push(stblHeaderBuffer);
-      } else {
-        const stblBuffer = compressBuffer(stbl.getBuffer(true), CompressionType.ZLIB);
-        stblHeaderBufferEncoder.uint8(locale);
-        stblHeaderBufferEncoder.uint32(stblBuffer.byteLength);
-        allBuffers.push(stblHeaderBuffer, stblBuffer);
-      }
-    });
-
-    return Buffer.concat(allBuffers);
   }
 
   //#endregion Methods
