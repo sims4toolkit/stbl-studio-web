@@ -1,9 +1,9 @@
 <script lang="ts">
-  import type Project from "../../../typescript/models/project";
   import { fly } from "svelte/transition";
   import { replace } from "svelte-spa-router";
-  import { getLocaleData } from "../../../typescript/helpers/localization";
+  import type Project from "../../../typescript/models/project";
   import type SelectionGroup from "../../../typescript/models/selection-group";
+  import { getLocaleData } from "../../../typescript/helpers/localization";
 
   export let project: Project;
   export let selectionGroup: SelectionGroup<Project>;
@@ -11,8 +11,6 @@
   $: isInSelectMode = selectionGroup.selectMode;
   $: projectSelected = selectionGroup.isSelected(project);
   $: localeCode = getLocaleData(project.primaryLocale).code;
-  $: localeCount = project.pkg.size;
-  $: stringCount = project.primaryStbl.size;
 
   function handleClick() {
     if (selectionGroup.selectMode) {
@@ -59,11 +57,11 @@
       </div>
       <div class="stbl-feature">
         <p class="small-title">locales</p>
-        <p>{localeCount}</p>
+        <p>{project.numLocales}</p>
       </div>
       <div class="stbl-feature">
         <p class="small-title">strings</p>
-        <p>{stringCount}</p>
+        <p>{project.numStrings}</p>
       </div>
     </div>
   </div>

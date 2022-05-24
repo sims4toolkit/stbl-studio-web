@@ -97,6 +97,15 @@ export default class Workspace {
     this._updateComponents();
   }
 
+  /**
+  * Gets a JSON blob that represents the current workspace.
+  */
+  toBlob(): Blob {
+    const json = getWorkspaceJson();
+    const content = JSON.stringify(json);
+    return new Blob([content]);
+  }
+
   //#endregion Methods
 
   //#region Private Methods

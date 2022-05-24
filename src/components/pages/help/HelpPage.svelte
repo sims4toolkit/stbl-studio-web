@@ -2,7 +2,6 @@
   import { link } from "svelte-spa-router";
   import ContentArea from "../../layout/ContentArea.svelte";
   import SectionHeader from "../../elements/SectionHeader.svelte";
-  import StorageUsageView from "./StorageUsageView.svelte";
 
   const discordLink = "https://discord.gg/qNhD3Jh";
 </script>
@@ -11,14 +10,6 @@
   <title>S4TK | Help</title>
 </svelte:head>
 <section id="help-page">
-  <ContentArea banded={true}>
-    <StorageUsageView />
-    <p class="subtle-text">
-      You may notice that your downloaded workspace file is larger than what is
-      mentioned here. This is because your projects are compressed before being
-      stored on this webpage, but are plaintext JSON when downloaded.
-    </p>
-  </ContentArea>
   <ContentArea>
     <SectionHeader title="Website troubles" />
     <p>

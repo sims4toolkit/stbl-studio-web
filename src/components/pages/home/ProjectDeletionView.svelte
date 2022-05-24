@@ -18,7 +18,7 @@
   });
 
   function deleteSelectedProjects() {
-    if (deletionConfirmed) workspace.removeProjects(...selectedProjects);
+    if (deletionConfirmed) workspace.deleteProjects(...selectedProjects);
     onComplete();
   }
 </script>

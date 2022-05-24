@@ -38,9 +38,8 @@
   }
 
   let creatingProject = false;
-  function onProjectCreatorExit(project?: Project) {
+  function onProjectCreatorExit() {
     creatingProject = false;
-    if (project) workspace.addProject(project);
   }
 
   let uploadingProject = false;

@@ -8,7 +8,6 @@
     getDisplayName,
     getLocaleData,
   } from "../../../typescript/helpers/localization";
-  import StorageService from "../../../typescript/storage-service";
   import {
     hashInstanceBase,
     validateHexString,
@@ -21,13 +20,13 @@
   import NavigationButton from "../../elements/NavigationButton.svelte";
   import LocaleCheckboxesView from "./LocaleCheckboxesView.svelte";
   import type { LocaleData } from "../../../global";
+  import { Settings } from "../../../typescript/storage";
 
   const { formatAsHexString } = window.S4TK.formatting;
-  const { StringTableResource } = window.S4TK.models;
 
   const animationDuration = 1000;
 
-  export let onComplete: (project?: Project) => void;
+  export let onComplete: () => void;
 
   let workspace: Workspace;
   activeWorkspace.subscribe((value) => {
@@ -44,7 +43,7 @@
   let page: "tgi" | "locales" = "tgi";
   const uuid: string = uuidv4();
   let name = "";
-  let primaryLocale = StorageService.settings.defaultLocale;
+  let primaryLocale = Settings.defaultLocale;
   let groupString = "80000000";
   let instanceBaseString = formatAsHexString(
     hashInstanceBase(uuid, false), // UUID is already unique
@@ -82,20 +81,23 @@
   }
 
   function createProjectAndClose() {
-    const project = new Project(
-      {
-        uuid,
-        name: name.trim(),
-        primaryLocale,
-        group: parseInt(groupString, 16),
-        instanceBase: BigInt("0x" + instanceBaseString),
-      },
-      otherLocaleOptions
-        .filter((option) => option.checked)
-        .map((option) => option.data.enumValue)
+    workspace.addProject(
+      new Project(
+        {
+          uuid,
+          name: name.trim(),
+          primaryLocale,
+          group: parseInt(groupString, 16),
+          instanceBase: BigInt("0x" + instanceBaseString),
+        },
+        new Map(),
+        otherLocaleOptions
+          .filter((option) => option.checked)
+          .map((option) => option.data.enumValue)
+      )
     );
 
-    onComplete(project);
+    onComplete();
   }
 </script>
 

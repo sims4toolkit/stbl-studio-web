@@ -1,5 +1,8 @@
 <script lang="ts">
-  import type { StringTableResource as StblType } from "@s4tk/models";
+  import type {
+    StringTableResource as StblType,
+    Package as PackageType,
+  } from "@s4tk/models";
   import type { ResourceKey } from "@s4tk/models/types";
   import type { KeyStringPair } from "@s4tk/models/lib/resources/stbl/types";
   import { fly } from "svelte/transition";
@@ -32,20 +35,35 @@
     if (uploadedFiles?.length) {
       const file = uploadedFiles[0];
 
-      readFile(file);
-
-      if (!file) onComplete(); // TODO: shut up
+      createProject(file)
+        .then((project) => {
+          onComplete(project);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     }
   }
 
-  async function readFile(file: File) {
-    const ext = file.name.split(".").at(-1);
-    const buffer = Buffer.from(await file.arrayBuffer());
+  async function createProject(file: File): Promise<Project> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const ext = file.name.split(".").at(-1);
+        const buffer = Buffer.from(await file.arrayBuffer());
+        const pkg = getPackage(ext, buffer);
+        // TODO:
+      } catch (e) {
+        reject(e);
+      }
+    });
+  }
 
+  function getPackage(ext: string, buffer: Buffer): PackageType {
+    if (ext === "package") return Package.from(buffer);
+
+    const stbl = read;
     if (ext === "json") {
       var stbls = [readJson(buffer, file.name)];
-    } else if (ext === "package") {
-      var stbls = readDbpf(buffer);
     } else {
       var stbls = [readStbl(buffer, file.name)];
     }
