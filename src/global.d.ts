@@ -23,6 +23,7 @@ interface ProjectMetaData {
   instanceBase: bigint;
   name: string;
   numLocales: number;
+  numStrings: number;
   primaryLocale: StringTableLocale;
   readonly uuid: string;
 }

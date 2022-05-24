@@ -136,6 +136,7 @@ export function loadProjectMetaData(uuid: string): ProjectMetaData {
     uuid,
     primaryLocale: decoder.uint8(),
     numLocales: decoder.uint8(),
+    numStrings: decoder.uint32(),
     group: decoder.uint32(),
     instanceBase: decoder.uint64(),
     name: decoder.string(),
@@ -147,12 +148,13 @@ export function loadProjectMetaData(uuid: string): ProjectMetaData {
  * 
  */
 export async function saveProjectMetaData(data: ProjectMetaData) {
-  const buffer = Buffer.alloc(16 + byteLength(data.name)); // +1 for null
+  const buffer = Buffer.alloc(20 + byteLength(data.name)); // +1 for null
   const encoder = new BinaryEncoder(buffer);
 
   encoder.uint8(0); // version
   encoder.uint8(data.primaryLocale);
   encoder.uint8(data.numLocales);
+  encoder.uint32(data.numStrings);
   encoder.uint32(data.group);
   encoder.uint64(data.instanceBase);
   encoder.charsUtf8(data.name);

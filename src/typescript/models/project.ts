@@ -3,13 +3,10 @@ import type { StringTableLocale as StblLocaleType } from "@s4tk/models/enums";
 import type { ProjectMetaData, StblMap } from "../../global";
 import { v4 as uuidv4 } from "uuid";
 import { getInstanceBase } from "../helpers/tgi";
-import StorageService from "../storage";
+import { loadStblMap, Settings } from "../storage";
 
 const { StringTableResource } = window.S4TK.models;
-const { compressBuffer, decompressBuffer, CompressionType } = window.S4TK.compression;
-const { BinaryEncoder, BinaryDecoder } = window.S4TK.encoding;
 const { fnv64 } = window.S4TK.hashing;
-const { Buffer } = window.S4TK.Node;
 
 /**
  * A project that contains string tables and associated meta data.
@@ -18,16 +15,23 @@ export default class Project implements ProjectMetaData {
   group: number;
   instanceBase: bigint;
   name: string;
-  numLocales: number;
+  numLocales: number; // display only, use stblMap.size for logic
+  numStrings: number; // display only, use primaryStbl.size for logic
   primaryLocale: StblLocaleType;
   readonly uuid: string;
 
   private _stblMap: StblMap;
   get stblMap() {
-    return this._stblMap ??= StorageService.loadStblMap(this.uuid);
+    return this._stblMap ??= loadStblMap(this.uuid);
   }
 
-  //#region Initialization
+  get allLocales(): StblLocaleType[] {
+    return Array.from(this.stblMap.keys());
+  }
+
+  get primaryStbl(): StblResourceType {
+    return this.stblMap.get(this.primaryLocale);
+  }
 
   /**
    * Creates a new STBL from given data.
@@ -44,99 +48,57 @@ export default class Project implements ProjectMetaData {
     this.name = data.name ?? this.uuid;
     this.group = data.group ?? 0;
     this.instanceBase = data.instanceBase ?? getInstanceBase(fnv64(this.uuid));
-    this.primaryLocale = data.primaryLocale ?? StorageService.settings.defaultLocale;
-    this.numLocales = data.numLocales ?? stblMap?.size ?? 1;
+    this.primaryLocale = data.primaryLocale ?? Settings.defaultLocale;
+    this._stblMap = stblMap;
 
-    if (!this.stblMap.has(this.primaryLocale))
+    if (stblMap) {
       this.addLocale(this.primaryLocale);
-
-    otherLocales?.forEach(locale => {
-      if (!this.stblMap.has(locale))
+      otherLocales?.forEach(locale => {
         this.addLocale(locale);
-    });
-  }
-
-  /**
-   * Parses a StblMap from a buffer.
-   * 
-   * @param buffer Buffer containing stbl binaries
-   */
-  static parseBinaryStblMap(buffer: Buffer): StblMap {
-    const decoder = new BinaryDecoder(buffer);
-    decoder.skip(2); // version not needed yet
-
-    const numStbls = decoder.uint8();
-
-    const data: Partial<ProjectMetaData> = {
-      uuid,
-      primaryLocale: decoder.uint8(),
-      group: decoder.uint32(),
-      instanceBase: decoder.uint64(),
-      name: decoder.string(),
-    };
-
-    const stblMap: Map<StblLocaleType, StblResourceType> = new Map();
-    for (let i = 0; i < numStbls; i++) {
-      const locale = decoder.uint8();
-      const length = decoder.uint32();
-
-      let stbl = length === 0
-        ? new StringTableResource()
-        : StringTableResource.from(decompressBuffer(
-          decoder.slice(length),
-          CompressionType.ZLIB
-        ));
-
-      stblMap.set(locale, stbl);
+      });
     }
 
-    return new Project(data);
-  }
+    this.numLocales = data.numLocales
+      ?? stblMap?.size
+      ?? 1;
 
-  //#endregion Initialization
-
-  //#region Getters/Setters
-
-  /**
-   * List of all locales in this project.
-   */
-  get allLocales(): StblLocaleType[] {
-    return Array.from(this.stblMap.keys());
+    this.numStrings = data.numStrings
+      ?? stblMap?.get(this.primaryLocale).size
+      ?? 0;
   }
 
   /**
-   * The string table of the primary locale. 
-   */
-  get primaryStbl(): StblResourceType {
-    return this.stblMap.get(this.primaryLocale);
-  }
-
-  //#endregion Getters/Setters
-
-  //#region Methods
-
-  /**
-   * Adds a STBL for the specified locale.
+   * Adds a STBL for the specified locale and returns it. If a STBL already
+   * exists for the given locale, it is not changed and it is returned.
    * 
    * @param locale Locale to add STBL for
    */
-  addLocale(locale: StblLocaleType) {
-    this.stblMap.set(locale, new StringTableResource());
+  addLocale(locale: StblLocaleType): StblResourceType {
+    if (!this.stblMap.has(locale)) {
+      const stbl = new StringTableResource();
+      this.stblMap.set(locale, stbl);
+      this.numLocales = this.stblMap.size;
+      return stbl;
+    } else {
+      return this.stblMap.get(locale);
+    }
   }
 
   /**
-   * Saves this project into localStorage.
+   * Removes the STBL for the specified locale.
+   * 
+   * @param locale Locale to remove STBL for
    */
-  save() {
-    StorageService.saveProjectData(this);
+  removeLocale(locale: StblLocaleType) {
+    this.stblMap.delete(locale);
+    this.numLocales = this.stblMap.size;
   }
 
   /**
-   * Serializes this project into a buffer.
+   * Updates the display-only properties.
    */
-  serialize(): Buffer {
-
+  refreshDisplayProps() {
+    this.numLocales = this.stblMap.size;
+    this.numStrings = this.primaryStbl.size;
   }
-
-  //#endregion Methods
 }

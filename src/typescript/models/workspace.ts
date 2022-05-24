@@ -1,5 +1,5 @@
 import type { ProjectData, StoredProject, StoredWorkspace } from "../../global";
-import StorageService from "../storage-service";
+import StorageService from "../storage";
 import { activeWorkspace } from "../stores";
 import Project from "./project";
 
