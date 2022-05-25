@@ -1,15 +1,16 @@
 <script lang="ts">
-  import Checkbox from "../../../elements/Checkbox.svelte";
   import GradientHeader from "../../../elements/GradientHeader.svelte";
   import ContentArea from "../../../layout/ContentArea.svelte";
-  import PronounToolFileParser from "./PronounToolFileParser.svelte";
+  import FileUploadParser from "./FileUploadParser.svelte";
   import PronounToolHeader from "./PronounToolHeader.svelte";
-  import possibleReplacements from "../../../../data/pronoun-replacements.json";
+  import pronounReplacements from "../../../../data/pronoun-replacements.json";
+  import ReplacementChoices from "./ReplacementChoices.svelte";
 
   const { formatResourceKey, formatStringKey } = window.S4TK.formatting;
 
   let isReadingFiles = false;
   let batchFixResult: BatchFixResult;
+  let possibleReplacements = pronounReplacements;
 
   function onFilesRead(result: BatchFixResult) {
     batchFixResult = result;
@@ -24,28 +25,11 @@
     <PronounToolHeader />
   </ContentArea>
   <ContentArea>
-    <GradientHeader title="1) Select Your Replacements" />
-    <div class="my-2">
-      <p class="small-title mt-0">Pronouns to Replace</p>
-      <div class="flex-center-v">
-        {#each possibleReplacements as checkable, key (key)}
-          <div class="mr-1">
-            <Checkbox
-              label={checkable.male + "/" + checkable.female}
-              bind:checkable
-            />
-          </div>
-        {/each}
-      </div>
-      <p class="subtle-text mb-0">
-        It's only necessary to replace pronouns that contain "his" or "her".
-      </p>
-    </div>
-    <PronounToolFileParser
-      {isReadingFiles}
-      {onFilesRead}
-      {possibleReplacements}
-    />
+    <GradientHeader title="1) Select your replacements" />
+    <ReplacementChoices bind:possibleReplacements />
+    <GradientHeader title="2) Upload your string tables" />
+    <FileUploadParser {isReadingFiles} {onFilesRead} {possibleReplacements} />
+    <GradientHeader title="3) Wait while I work some magic..." />
     <div class="py-2">
       {#if batchFixResult}
         {#each batchFixResult as stblSummary, key (key)}

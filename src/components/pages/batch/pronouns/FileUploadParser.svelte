@@ -205,8 +205,7 @@
   //#endregion Functions
 </script>
 
-<GradientHeader title="2) Upload Your String Tables" />
-<div class="my-2">
+<div class="mt-2 mb-3">
   <FileInput
     bind:files
     multiple={true}
