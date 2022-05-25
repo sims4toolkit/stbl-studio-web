@@ -34,6 +34,7 @@ interface UserSettings {
   disableBlur: boolean;
   isLightTheme: boolean;
   projectUuids: string[]
+  reduceMotion: boolean;
 }
 
 interface WorkspaceJson {

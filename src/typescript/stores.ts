@@ -2,29 +2,40 @@ import { Writable, writable } from "svelte/store";
 import type Workspace from "./models/workspace";
 import { Settings } from "./storage";
 
-export const activeWorkspace: Writable<Workspace> =
-  writable(null);
+export const activeWorkspace: Writable<Workspace> = writable(null);
 
-export const isLightThemeStore: Writable<boolean> =
-  writable(Settings.isLightTheme);
+function createSettingStore<T>(
+  name: string,
+  onChange?: (value: T) => void
+): Writable<boolean> {
+  const store = writable(Settings[name]);
 
-isLightThemeStore.subscribe(isLightTheme => {
-  Settings.isLightTheme = isLightTheme;
+  store.subscribe(value => {
+    Settings[name] = value;
+    onChange?.(value);
+  });
 
-  document.documentElement.setAttribute(
-    "data-theme",
-    isLightTheme ? "light" : "dark"
-  );
-});
+  return store;
+}
 
-export const disableBlurStore: Writable<boolean> =
-  writable(Settings.disableBlur);
+export const isLightThemeStore = createSettingStore<boolean>(
+  "isLightTheme",
+  (value) => {
+    document.documentElement.setAttribute(
+      "data-theme",
+      value ? "light" : "dark"
+    );
+  }
+);
 
-disableBlurStore.subscribe(disableBlur => {
-  Settings.disableBlur = disableBlur;
+export const disableBlurStore = createSettingStore<boolean>(
+  "disableBlur",
+  (value) => {
+    document.documentElement.setAttribute(
+      "data-allow-blur",
+      value ? "false" : "true"
+    );
+  }
+);
 
-  document.documentElement.setAttribute(
-    "data-allow-blur",
-    disableBlur ? "false" : "true"
-  );
-});
+export const reduceMotionStore = createSettingStore<boolean>("reduceMotion");

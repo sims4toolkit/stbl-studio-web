@@ -4,7 +4,7 @@
   import StickyCloseButton from "../elements/StickyCloseButton.svelte";
 
   export let large = false;
-  export let fill = false;
+  export let fill = true;
   export let onClose: () => void = undefined;
 
   let modal: HTMLDivElement;

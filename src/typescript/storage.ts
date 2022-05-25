@@ -114,6 +114,7 @@ export const Settings = getSettingsProxy({
   disableBlur: StoredBoolean,
   isLightTheme: StoredBoolean,
   projectUuids: StoredStringList,
+  reduceMotion: StoredBoolean,
 });
 
 //#endregion Settings
@@ -309,7 +310,8 @@ export function getWorkspaceJson(): WorkspaceJson {
     settings: {
       disableBlur: Settings.disableBlur,
       defaultLocale: Settings.defaultLocale,
-      isLightTheme: Settings.isLightTheme
+      isLightTheme: Settings.isLightTheme,
+      reduceMotion: Settings.reduceMotion,
     },
     projects: Settings.projectUuids.map(uuid => {
       return {
