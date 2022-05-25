@@ -22,7 +22,7 @@
         alt="Home"
       />
     </a>
-    <!-- <a href="/help" class:active={$location === "/help"} use:link title="Help">
+    <a href="/help" class:active={$location === "/help"} use:link title="Help">
       <img class="is-svg" src="./assets/{helpIcon}.svg" alt="Help" />
     </a>
     <a
@@ -36,7 +36,7 @@
         src="./assets/{settingsIcon}.svg"
         alt="Settings"
       />
-    </a> -->
+    </a>
     <ThemeToggler />
   </div>
 </nav>
