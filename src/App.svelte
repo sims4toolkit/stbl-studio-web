@@ -3,12 +3,12 @@
   import Navbar from "./components/app/Navbar.svelte";
   import Footer from "./components/app/Footer.svelte";
   import NotFoundPage from "./components/pages/NotFoundPage.svelte";
-  import PronounBatchFix from "./components/pages/batch/PronounBatchFix.svelte";
-  import TemporaryHomePage from "./components/pages/batch/TemporaryHomePage.svelte";
+  import PronounToolPage from "./components/pages/batch/pronouns/PronounToolPage.svelte";
+  import TemporaryHomePage from "./components/pages/TemporaryHomePage.svelte";
 
   const routes = {
     "/": TemporaryHomePage,
-    "/batch-fix/pronouns": PronounBatchFix,
+    "/batch-fix/pronouns": PronounToolPage,
     "*": NotFoundPage,
   };
 </script>
