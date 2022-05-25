@@ -17,7 +17,7 @@
     {name}
     id={name}
     bind:value={selected}
-    class="mt-half"
+    class:mt-half={Boolean(label)}
     class:w-100={fillWidth}
   >
     {#each options as option, key (key)}

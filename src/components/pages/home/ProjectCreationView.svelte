@@ -5,7 +5,6 @@
   import Project from "../../../typescript/models/project";
   import {
     allLocales,
-    getDisplayName,
     getLocaleData,
   } from "../../../typescript/helpers/localization";
   import {
@@ -21,6 +20,7 @@
   import LocaleCheckboxesView from "./LocaleCheckboxesView.svelte";
   import type { LocaleData } from "../../../global";
   import { Settings } from "../../../typescript/storage";
+  import LocaleSelect from "../../elements/LocaleSelect.svelte";
 
   const { formatAsHexString } = window.S4TK.formatting;
 
@@ -31,13 +31,6 @@
   let workspace: Workspace;
   activeWorkspace.subscribe((value) => {
     workspace = value;
-  });
-
-  const localeOptions = allLocales.map((data) => {
-    return {
-      value: data.enumValue,
-      text: getDisplayName(data),
-    };
   });
 
   let page: "tgi" | "locales" = "tgi";
@@ -185,12 +178,11 @@
             },
           ]}
         />
-        <Select
+        <LocaleSelect
           name="primary-locale-select"
           label="primary locale"
           fillWidth={true}
-          bind:selected={primaryLocale}
-          options={localeOptions}
+          bind:selectedLocale={primaryLocale}
         />
       </div>
     </form>

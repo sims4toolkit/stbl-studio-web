@@ -82,7 +82,7 @@
 </main>
 {#if restoreError}
   <BlurOverlay>
-    <div slot="content">
+    <div>
       <h2>Well, this is awkward...</h2>
       <p>
         An error occurred and your workspace could not be restored. Do not worry
@@ -105,10 +105,7 @@
   </BlurOverlay>
 {:else if onboardUser}
   <BlurOverlay>
-    <OnboardingView
-      slot="content"
-      exitOnboarding={() => (onboardUser = false)}
-    />
+    <OnboardingView exitOnboarding={() => (onboardUser = false)} />
   </BlurOverlay>
 {/if}
 

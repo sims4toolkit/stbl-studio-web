@@ -2,14 +2,16 @@
 
 //#region Flexbox
 
-.flex-center {
+.flex {
   display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .flex-gap {
   gap: 1em;
+}
+
+.flex-gap-large {
+  gap: 2em;
 }
 
 .flex-center-v {
@@ -22,7 +24,14 @@
   justify-content: center;
 }
 
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .flex-col {
+  display: flex;
   flex-direction: column;
 }
 
@@ -37,11 +46,12 @@
 }
 
 .flex-wrap {
+  display: flex;
   flex-wrap: wrap;
 }
 
-
 .flex-end {
+  display: flex;
   justify-content: flex-end;
 }
 
@@ -63,17 +73,21 @@
 
 //#endregion Shadows
 
-//#region Widths
+//#region Height/Width
 
 .w-100 {
   width: 100%;
+}
+
+.h-100 {
+  height: 100%;
 }
 
 .mw-100 {
   max-width: 100%;
 }
 
-//#endregion Widths
+//#endregion WidHeight/Widthths
 
 //#region Margins
 

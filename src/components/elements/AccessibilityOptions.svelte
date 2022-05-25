@@ -3,6 +3,8 @@
   import { disableBlurStore, reduceMotionStore } from "../../typescript/stores";
   import Checkbox from "../elements/Checkbox.svelte";
 
+  export let matchInputHeight = false;
+
   let disableBlur = Settings.disableBlur;
   $: {
     disableBlur;
@@ -16,12 +18,19 @@
   }
 </script>
 
-<p class="small-title mt-2">Accessibility Options</p>
-<div class="flex-center-v flex-gap">
-  <Checkbox label="Disable Blur Effect" bind:checked={disableBlur} />
-  <Checkbox label="Reduce Motion" bind:checked={reduceMotion} />
+<div>
+  <p class="small-title my-0">Accessibility Options</p>
+  <div
+    class="flex-center-v flex-gap mt-half"
+    class:input-height={matchInputHeight}
+  >
+    <Checkbox label="Reduce Transparency" bind:checked={disableBlur} />
+    <Checkbox label="Reduce Motion" bind:checked={reduceMotion} />
+  </div>
 </div>
 
 <style lang="scss">
-  // intentionally blank
+  .input-height {
+    height: 40px;
+  }
 </style>

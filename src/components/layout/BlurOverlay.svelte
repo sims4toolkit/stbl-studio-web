@@ -57,9 +57,8 @@
 >
   <div class="popup" class:large class:fill>
     <div class="overlay-content-wrapper">
-      <slot name="content" />
+      <slot />
     </div>
-    <slot name="actions" />
   </div>
   {#if onClose != undefined}
     <StickyCloseButton onClick={onClose} />

@@ -79,7 +79,7 @@
 
 {#if viewChanges}
   <BlurOverlay onClose={() => (viewChanges = false)} large={true} fill={true}>
-    <PronounBatchResults slot="content" bind:batchFixResult />
+    <PronounBatchResults bind:batchFixResult />
   </BlurOverlay>
 {/if}
 

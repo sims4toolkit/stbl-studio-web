@@ -9,6 +9,7 @@
   import GradientHeader from "../elements/GradientHeader.svelte";
   import IconTextButton from "../elements/IconTextButton.svelte";
   import AccessibilityOptions from "../elements/AccessibilityOptions.svelte";
+  import LocaleSelect from "../elements/LocaleSelect.svelte";
 
   export let exitOnboarding: () => void;
 
@@ -63,33 +64,37 @@
 
 <div class="onboarding-view">
   {#if page !== "upload"}
-    <div class="mb-2" in:fly={{ y: -20, duration: animationDuration }}>
-      <p class="my-0">Welcome to</p>
-      <h2>
-        <span class="default-gradient-text text-shadow"
-          >String Table Studio</span
-        >
-      </h2>
-      <p class="subtle-text my-0">
+    <div in:fly={{ y: -20, duration: animationDuration }}>
+      <p class="mt-0 mb-half">Welcome to</p>
+      <GradientHeader title="String Table Studio" />
+      <p class="subtle-text mt-1 mb-0">
         Powered by <a href="https://sims4toolkit.com" target="_blank"
           >Sims 4 Toolkit</a
         >
       </p>
     </div>
-    <div class="mb-2" in:fly={{ y: 20, duration: animationDuration }}>
+    <div class="my-2" in:fly={{ y: 20, duration: animationDuration }}>
       {#if page === "name"}
-        <p>
+        <p class="mt-0">
           String Table Studio is a web app that makes it easy to create, edit,
           and translate string tables for Sims 4 mods. View the <a
             href="https://github.com/sims4toolkit/stbl-studio-web/README.md"
             target="_blank">feature list</a
           > to learn more about what it can do.
         </p>
-        <AccessibilityOptions />
-        <p class="subtle-text">You can configure these later in settings.</p>
+        <div class="mt-2">
+          <div class="flex-wrap flex-gap-large">
+            <LocaleSelect
+              label="Default Locale"
+              name="default-locale-select"
+              selectedLocale={0}
+            />
+            <AccessibilityOptions matchInputHeight={true} />
+          </div>
+        </div>
       {:else}
         <div in:fade={{ duration: animationDuration }}>
-          <p>Thanks! Before proceeding, please keep in mind:</p>
+          <p class="my-0">Thanks! Before proceeding, please keep in mind:</p>
           <ul>
             <li>
               All data that you create or upload on this website is stored
@@ -148,11 +153,6 @@
 
 <style lang="scss">
   .onboarding-view {
-    h2 {
-      margin-top: 0.2em;
-      margin-bottom: 0.6em;
-    }
-
     .upload-workspace {
       font-size: 0.8em;
       position: fixed;
@@ -162,7 +162,7 @@
     }
 
     li {
-      margin-bottom: 0.35em;
+      margin-bottom: 0.5em;
     }
   }
 </style>

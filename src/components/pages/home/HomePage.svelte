@@ -179,7 +179,7 @@
       creatingProject = false;
     }}
   >
-    <ProjectCreationView slot="content" onComplete={onProjectCreatorExit} />
+    <ProjectCreationView onComplete={onProjectCreatorExit} />
   </BlurOverlay>
 {/if}
 
@@ -189,7 +189,7 @@
       uploadingProject = false;
     }}
   >
-    <ProjectUploadView slot="content" onComplete={onProjectUploaderExit} />
+    <ProjectUploadView onComplete={onProjectUploaderExit} />
   </BlurOverlay>
 {/if}
 
@@ -199,11 +199,7 @@
       confirmingDeletion = false;
     }}
   >
-    <ProjectDeletionView
-      slot="content"
-      {selectedProjects}
-      onComplete={onDeletionComplete}
-    />
+    <ProjectDeletionView {selectedProjects} onComplete={onDeletionComplete} />
   </BlurOverlay>
 {/if}
 
