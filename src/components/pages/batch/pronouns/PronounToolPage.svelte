@@ -9,18 +9,31 @@
   import IconTextButton from "../../../elements/IconTextButton.svelte";
   import BlurOverlay from "../../../layout/BlurOverlay.svelte";
   import PronounBatchResults from "./PronounBatchResults.svelte";
+  import Downloader from "../../../elements/Downloader.svelte";
+
+  const { Package } = window.S4TK.models;
 
   let isReadingFiles = false;
   let numStblsToRead: number = null;
   let batchFixResult: BatchFixResult;
   let possibleReplacements = pronounReplacements;
   let viewChanges = false;
+  let downloadingPackage = false;
 
   function onFilesRead(result: BatchFixResult) {
     setTimeout(() => {
       batchFixResult = result;
       isReadingFiles = false;
     }, 500);
+  }
+
+  function packageGenerator(): Blob {
+    const pkg = new Package();
+    batchFixResult.forEach(({ stbl }) => {
+      pkg.add(stbl.key, stbl.value);
+    });
+    const buffer = pkg.getBuffer();
+    return new Blob([buffer]);
   }
 </script>
 
@@ -53,20 +66,30 @@
           />
           <IconTextButton
             icon="download"
-            text="Download Files"
-            onClick={() => (viewChanges = true)}
+            text="Download"
+            onClick={() => (downloadingPackage = true)}
             large={true}
+            active={!downloadingPackage}
           />
         </div>
       </div>
     {/if}
-    {#if viewChanges}
-      <BlurOverlay onClose={() => (viewChanges = false)} large={true}>
-        <PronounBatchResults slot="content" bind:batchFixResult />
-      </BlurOverlay>
-    {/if}
   </ContentArea>
 </section>
+
+{#if viewChanges}
+  <BlurOverlay onClose={() => (viewChanges = false)} large={true}>
+    <PronounBatchResults slot="content" bind:batchFixResult />
+  </BlurOverlay>
+{/if}
+
+{#if downloadingPackage}
+  <Downloader
+    filename="PronounBatchFix.package"
+    onDownload={() => (downloadingPackage = false)}
+    contentGenerator={packageGenerator}
+  />
+{/if}
 
 <style lang="scss">
   // intentionally blank
