@@ -71,3 +71,28 @@ button.button-wrapper {
     cursor: pointer;
   }
 }
+
+:root {
+  &[data-allow-blur="true"] {
+    .blur-bg-if-allowed {
+      background-color: var(--color-blur-fallback);
+    }
+  }
+
+  &:not([data-allow-blur="true"]) {
+    .blur-bg-if-allowed {
+      background-color: var(--color-bg);
+    }
+  }
+}
+
+/* if backdrop support: very transparent and blurred */
+@supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+  :root[data-allow-blur="true"] {
+    .blur-bg-if-allowed {
+      background-color: transparent;
+      backdrop-filter: var(--filter-bg-blur);
+      -webkit-backdrop-filter: var(--filter-bg-blur);
+    }
+  }
+}

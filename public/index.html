@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="dark" data-allow-blur="true">
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
@@ -25,22 +25,5 @@
 </head>
 
 <body>
-	<script>
-		// FIXME: remove
-		function checkLocalStorageUsage() {
-			let total = 0;
-
-			const Buffer = window.S4TK.Node.Buffer;
-
-			for (const prop in localStorage) {
-				if (typeof localStorage[prop] !== "string") continue;
-				const amount = Buffer.byteLength(prop) + Buffer.byteLength(localStorage[prop]);
-				console.log(`${prop} = ${amount} bytes`);
-				total += amount;
-			}
-
-			console.log(`${total} bytes (${((total / 5000000) * 100).toFixed(2)}%)`);
-		}
-	</script>
 </body>
 </html>

@@ -29,9 +29,9 @@ interface ProjectMetaData {
 }
 
 interface UserSettings {
-  creatorName: string;
   defaultLocale: StringTableLocale;
   hasWorkspace: boolean;
+  disableBlur: boolean;
   isLightTheme: boolean;
   projectUuids: string[]
 }

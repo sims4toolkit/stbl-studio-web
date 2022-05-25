@@ -2,27 +2,35 @@
   import { fade, fly } from "svelte/transition";
   import Workspace from "../../typescript/models/workspace";
   import { Settings } from "../../typescript/storage";
-  import { activeWorkspace } from "../../typescript/stores";
+  import { activeWorkspace, disableBlurStore } from "../../typescript/stores";
   import NavigationButton from "../elements/NavigationButton.svelte";
   import ProgressCircles from "../elements/ProgressCircles.svelte";
   import FileInput from "../elements/FileInput.svelte";
   import GradientHeader from "../elements/GradientHeader.svelte";
   import IconTextButton from "../elements/IconTextButton.svelte";
+  import Checkbox from "../elements/Checkbox.svelte";
 
   export let exitOnboarding: () => void;
 
   const animationDuration = 1000;
   let page: "name" | "disclaimers" | "upload" = "name";
-  let creatorName: string = "";
-  $: nameFilledIn = Boolean(creatorName);
-  $: filledInCircles =
-    (nameFilledIn ? 1 : 0) + (page === "disclaimers" ? 1 : 0);
+  // let creatorName: string = "";
+  // $: nameFilledIn = Boolean(creatorName);
+  $: filledInCircles = page === "disclaimers" ? 1 : 0;
+  // (nameFilledIn ? 1 : 0) + (page === "disclaimers" ? 1 : 0);
+
+  let disableBlur = Settings.disableBlur;
+
+  $: {
+    disableBlur;
+    disableBlurStore.set(disableBlur);
+  }
 
   function nextButtonClicked() {
     if (page === "name") {
       page = "disclaimers";
     } else if (page === "disclaimers") {
-      Settings.creatorName = creatorName;
+      // Settings.highContrast = highContrastCheckable.checked;
       Settings.hasWorkspace = true;
       activeWorkspace.set(new Workspace());
       exitOnboarding();
@@ -83,16 +91,19 @@
             target="_blank">feature list</a
           > to learn more about what it can do.
         </p>
-        <p class="mb-2">Please provide your name to get started.</p>
+        <!-- <p class="mb-2">Please provide your name to get started.</p>
         <input
           class="w-100"
           type="text"
           placeholder="Name..."
           bind:value={creatorName}
-        />
+        /> -->
+        <p class="small-title mt-2">Accessability Options</p>
+        <Checkbox label="Disable Blur Effect" bind:checked={disableBlur} />
+        <p class="subtle-text">You can configure these later in settings.</p>
       {:else}
         <div in:fade={{ duration: animationDuration }}>
-          <p>Thanks, {creatorName}! Before proceeding, please keep in mind:</p>
+          <p>Thanks! Before proceeding, please keep in mind:</p>
           <ul>
             <li>
               All data that you create or upload on this website is stored
@@ -120,7 +131,6 @@
       <NavigationButton
         text={page === "name" ? "Next" : "Get Started"}
         direction="right"
-        bind:active={nameFilledIn}
         onClick={nextButtonClicked}
       />
     </div>

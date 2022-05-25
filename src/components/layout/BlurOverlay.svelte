@@ -49,7 +49,7 @@
   }
 </script>
 
-<div bind:this={modal} class="overlay" transition:fade>
+<div bind:this={modal} class="overlay blur-bg-if-allowed" transition:fade>
   <div class="popup" class:large class:fill>
     <div class="overlay-content-wrapper">
       <slot name="content" />
@@ -72,7 +72,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--color-blur-fallback);
 
     .popup {
       max-width: 768px;
@@ -89,15 +88,6 @@
       .overlay-content-wrapper {
         margin-bottom: 2.8em;
       }
-    }
-  }
-
-  /* if backdrop support: very transparent and blurred */
-  @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
-    .overlay {
-      background-color: transparent;
-      backdrop-filter: var(--filter-bg-blur);
-      -webkit-backdrop-filter: var(--filter-bg-blur);
     }
   }
 </style>

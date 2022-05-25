@@ -16,3 +16,15 @@ isLightThemeStore.subscribe(isLightTheme => {
     isLightTheme ? "light" : "dark"
   );
 });
+
+export const disableBlurStore: Writable<boolean> =
+  writable(Settings.disableBlur);
+
+disableBlurStore.subscribe(disableBlur => {
+  Settings.disableBlur = disableBlur;
+
+  document.documentElement.setAttribute(
+    "data-allow-blur",
+    disableBlur ? "false" : "true"
+  );
+});

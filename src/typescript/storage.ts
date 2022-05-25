@@ -109,9 +109,9 @@ export async function overwriteSettings(settings: Partial<UserSettings>) {
  * Interface for all user settings and single values.
  */
 export const Settings = getSettingsProxy({
-  creatorName: StoredString,
   defaultLocale: StoredInteger,
   hasWorkspace: StoredBoolean,
+  disableBlur: StoredBoolean,
   isLightTheme: StoredBoolean,
   projectUuids: StoredStringList,
 });
@@ -307,7 +307,7 @@ export function getWorkspaceJson(): WorkspaceJson {
   return {
     version: 0,
     settings: {
-      creatorName: Settings.creatorName,
+      disableBlur: Settings.disableBlur,
       defaultLocale: Settings.defaultLocale,
       isLightTheme: Settings.isLightTheme
     },
