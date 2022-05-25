@@ -2,36 +2,24 @@
   import { fade, fly } from "svelte/transition";
   import Workspace from "../../typescript/models/workspace";
   import { Settings } from "../../typescript/storage";
-  import {
-    activeWorkspace,
-    disableBlurStore,
-    reduceMotionStore,
-  } from "../../typescript/stores";
+  import { activeWorkspace, reduceMotionStore } from "../../typescript/stores";
   import NavigationButton from "../elements/NavigationButton.svelte";
   import ProgressCircles from "../elements/ProgressCircles.svelte";
   import FileInput from "../elements/FileInput.svelte";
   import GradientHeader from "../elements/GradientHeader.svelte";
   import IconTextButton from "../elements/IconTextButton.svelte";
-  import Checkbox from "../elements/Checkbox.svelte";
+  import AccessibilityOptionsView from "../views/AccessibilityOptionsView.svelte";
 
   export let exitOnboarding: () => void;
 
   let page: "name" | "disclaimers" | "upload" = "name";
   $: filledInCircles = page === "disclaimers" ? 2 : 1;
 
-  let disableBlur = Settings.disableBlur;
-  $: {
-    disableBlur;
-    disableBlurStore.set(disableBlur);
-  }
+  let animationDuration = Settings.reduceMotion ? 0 : 1000;
 
-  let reduceMotion = Settings.reduceMotion;
-  $: {
-    reduceMotion;
-    reduceMotionStore.set(reduceMotion);
-  }
-
-  $: animationDuration = reduceMotion ? 0 : 1000;
+  reduceMotionStore.subscribe((value) => {
+    animationDuration = value ? 0 : 1000;
+  });
 
   function nextButtonClicked() {
     if (page === "name") {
@@ -97,11 +85,7 @@
             target="_blank">feature list</a
           > to learn more about what it can do.
         </p>
-        <p class="small-title mt-2">Accessibility Options</p>
-        <div class="flex-center-v flex-gap">
-          <Checkbox label="Disable Blur Effect" bind:checked={disableBlur} />
-          <Checkbox label="Reduce Motion" bind:checked={reduceMotion} />
-        </div>
+        <AccessibilityOptionsView />
         <p class="subtle-text">You can configure these later in settings.</p>
       {:else}
         <div in:fade={{ duration: animationDuration }}>
