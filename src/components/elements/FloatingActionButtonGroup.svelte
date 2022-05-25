@@ -1,5 +1,6 @@
 <script lang="ts">
   import { fly } from "svelte/transition";
+  import { Settings } from "../../typescript/storage";
   import FloatingActionButton from "./FloatingActionButton.svelte";
 
   export let disabled = false;
@@ -35,7 +36,7 @@
     <div
       class="title-container"
       style="background-color: {titleColor};"
-      in:fly={{ y: 12, duration: 350 }}
+      in:fly={{ y: 12, duration: Settings.reduceMotion ? 0 : 350 }}
     >
       {titleText}
     </div>

@@ -16,7 +16,6 @@
 
   export let exitOnboarding: () => void;
 
-  const animationDuration = 1000;
   let page: "name" | "disclaimers" | "upload" = "name";
   $: filledInCircles = page === "disclaimers" ? 2 : 1;
 
@@ -31,6 +30,8 @@
     reduceMotion;
     reduceMotionStore.set(reduceMotion);
   }
+
+  $: animationDuration = reduceMotion ? 0 : 1000;
 
   function nextButtonClicked() {
     if (page === "name") {
@@ -99,7 +100,7 @@
         <p class="small-title mt-2">Accessibility Options</p>
         <div class="flex-center-v flex-gap">
           <Checkbox label="Disable Blur Effect" bind:checked={disableBlur} />
-          <Checkbox label="Reduce Motion" bind:checked={disableBlur} />
+          <Checkbox label="Reduce Motion" bind:checked={reduceMotion} />
         </div>
         <p class="subtle-text">You can configure these later in settings.</p>
       {:else}

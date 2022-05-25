@@ -13,6 +13,7 @@
   import type { StringTableLocale as StblLocaleType } from "@s4tk/models/enums";
   import type { StblMap } from "../../../global";
   import { getInstanceBase } from "../../../typescript/helpers/tgi";
+  import { Settings } from "../../../typescript/storage";
 
   const { BinaryResourceType, StringTableLocale } = window.S4TK.enums;
   const { Package, StringTableResource } = window.S4TK.models;
@@ -20,7 +21,7 @@
 
   export let onComplete: () => void;
 
-  const animationDuration = 1000;
+  const animationDuration = Settings.reduceMotion ? 0 : 1000;
 
   const uuid: string = uuidv4();
   let uploadedFiles: FileList;

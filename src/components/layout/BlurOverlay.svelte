@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount, onDestroy } from "svelte";
   import { fade } from "svelte/transition";
+  import { Settings } from "../../typescript/storage";
   import StickyCloseButton from "../elements/StickyCloseButton.svelte";
 
   export let large = false;
@@ -49,7 +50,11 @@
   }
 </script>
 
-<div bind:this={modal} class="overlay blur-bg-if-allowed" transition:fade>
+<div
+  bind:this={modal}
+  class="overlay blur-bg-if-allowed"
+  transition:fade={{ duration: Settings.reduceMotion ? 0 : 500 }}
+>
   <div class="popup" class:large class:fill>
     <div class="overlay-content-wrapper">
       <slot name="content" />

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
+  import { Settings } from "../../typescript/storage";
 
   interface InputValidator {
     test: (value: string) => boolean;
@@ -39,7 +40,10 @@
     <div class="flex-center-v">
       <label class="small-title" for={name}>{label}</label>
       {#if !isValid}
-        <p in:fade class="subtle-text error-color my-0 ml-half">
+        <p
+          in:fade={{ duration: Settings.reduceMotion ? 0 : 500 }}
+          class="subtle-text error-color my-0 ml-half"
+        >
           • {errorMessage}
         </p>
       {/if}

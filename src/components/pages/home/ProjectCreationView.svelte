@@ -24,7 +24,7 @@
 
   const { formatAsHexString } = window.S4TK.formatting;
 
-  const animationDuration = 1000;
+  const animationDuration = Settings.reduceMotion ? 0 : 1000;
 
   export let onComplete: () => void;
 
@@ -204,7 +204,7 @@
       </p>
     </div>
   {:else if page === "locales"}
-    <div in:fade class="mb-1">
+    <div in:fade={{ duration: Settings.reduceMotion ? 0 : 500 }} class="mb-1">
       <p class="my-2">
         Select additional locales to include in this project. Strings added to
         your primary locale ({getLocaleData(primaryLocale).englishName}) will
