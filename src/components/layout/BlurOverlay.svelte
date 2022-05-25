@@ -3,7 +3,7 @@
   import { fade } from "svelte/transition";
   import StickyCloseButton from "../elements/StickyCloseButton.svelte";
 
-  export let fill: boolean = true;
+  export let large = false;
   export let onClose: () => void = undefined;
 
   let modal: HTMLDivElement;
@@ -49,7 +49,7 @@
 </script>
 
 <div bind:this={modal} class="overlay" transition:fade>
-  <div class="popup" class:fill>
+  <div class="popup" class:large>
     <div class="overlay-content-wrapper">
       <slot name="content" />
     </div>
@@ -74,13 +74,11 @@
     background-color: var(--color-blur-fallback);
 
     .popup {
-      $max-width: 768px;
-
-      max-width: $max-width;
+      max-width: 768px;
       padding: 1em;
 
-      &.fill {
-        width: $max-width;
+      &.large {
+        max-width: 1280px;
       }
 
       .overlay-content-wrapper {

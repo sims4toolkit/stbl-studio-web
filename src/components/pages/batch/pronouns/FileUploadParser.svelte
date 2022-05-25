@@ -90,7 +90,7 @@
     if (stbls.length === 0) {
       filesInvalid = true;
       isReadingFiles = false;
-      numStblsToRead = undefined;
+      numStblsToRead = null;
     } else {
       batchFixResult = [];
 

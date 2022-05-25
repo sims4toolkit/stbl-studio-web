@@ -38,7 +38,7 @@
     }
 
     &.large {
-      font-size: 1.5em;
+      font-size: 1.2em;
 
       img {
         height: 32px;
