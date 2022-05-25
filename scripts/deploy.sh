@@ -15,7 +15,7 @@ git add -A
 git commit -m 'Deploy.'
 
 # overwrite the gh-pages branch
-git push -f git@github.com:sims4toolkit/stbl-studio-web.git pronoun-patch-prerelease:gh-pages
+git push -f git@github.com:sims4toolkit/stbl-studio-web.git HEAD:gh-pages
 
 # navigate back
 cd -
