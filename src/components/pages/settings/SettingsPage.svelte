@@ -20,7 +20,8 @@
   <ContentArea>
     <IconTextButton
       icon="trash"
-      text="Clear Storage"
+      text="Reset Workspace"
+      danger={true}
       onClick={() => (clearingStorage = true)}
     />
   </ContentArea>
@@ -31,14 +32,16 @@
     <div slot="content">
       <GradientHeader title="Confirm Workspace Reset" />
       <p class="my-2">
-        This will clear all of your storage. All of it. There will be nothing
-        left, at all, and it cannot be recovered. Are you sure you want to
-        continue?
+        This will clear all of your data. All of it. Every last byte. There will
+        be nothing left, at all, and it cannot be recovered. This action can not
+        be undone. In case I wasn't clear, you will lose ALL of your data if you
+        proceed. Are you sure you want to continue?
       </p>
       <!-- TODO: replace with text box -->
       <IconTextButton
         icon="trash"
-        text="Delete Everything Forever"
+        text="Yes, Delete Everything Forever"
+        danger={true}
         onClick={clearStorage}
       />
     </div>

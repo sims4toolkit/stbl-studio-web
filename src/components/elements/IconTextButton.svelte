@@ -4,6 +4,7 @@
   export let onClick: () => void;
   export let active = true;
   export let large = false;
+  export let danger = false;
 
   let button: HTMLButtonElement;
 
@@ -18,6 +19,7 @@
   class="flex-center-v py-half px-1"
   class:active
   class:large
+  class:danger
   on:click={onButtonClick}
 >
   <img class="is-svg" src="./assets/{icon}.svg" alt={icon} />
@@ -52,8 +54,20 @@
       border-color: var(--color-accent-secondary);
       color: var(--color-bg);
 
-      img.is-svg {
-        filter: var(--filter-svg-invert);
+      &.danger {
+        background-color: var(--color-error);
+        border-color: var(--color-error);
+        color: var(--color-light);
+
+        img.is-svg {
+          filter: var(--filter-light);
+        }
+      }
+
+      &:not(.danger) {
+        img.is-svg {
+          filter: var(--filter-svg-invert);
+        }
       }
     }
 
