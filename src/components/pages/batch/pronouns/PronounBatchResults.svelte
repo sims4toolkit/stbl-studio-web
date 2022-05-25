@@ -50,8 +50,8 @@
   }
 </script>
 
-<div class="pronoun-batch-results flex-center-v">
-  <div>
+<div class="pronoun-batch-results flex-center-v w-100">
+  <div class="w-100">
     <div class="flex-space-between">
       <NavigationButton
         direction="left"
@@ -75,25 +75,37 @@
       />
     </div>
     <div class="batch-results-content my-2">
-      {#each currentSlice as change, key (key)}
-        <div class="change-container mx-1">
-          <h4 class="my-0">{formatStringKey(change.key)}</h4>
-          <div class="comparison flex-space-between flex-gap">
-            <div>
-              <p class="small-title mb-0">Before</p>
-              <p class="subtle-text text-color mt-half mb-0">
-                {@html change.from}
-              </p>
-            </div>
-            <div>
-              <p class="small-title mb-0">After</p>
-              <p class="subtle-text text-color mt-half mb-0">
-                {@html change.to}
-              </p>
-            </div>
+      {#if currentSlice.length === 0}
+        <div class="no-changes flex-center text-center">
+          <div>
+            <h3>No Changes!</h3>
+            <p>
+              This string table does not contain any pronouns that need to be
+              batch fixed.
+            </p>
           </div>
         </div>
-      {/each}
+      {:else}
+        {#each currentSlice as change, key (key)}
+          <div class="change-container mx-1">
+            <h4 class="my-0">{formatStringKey(change.key)}</h4>
+            <div class="comparison flex-space-between flex-gap">
+              <div>
+                <p class="small-title mb-0">Before</p>
+                <p class="subtle-text text-color mt-half mb-0">
+                  {@html change.from}
+                </p>
+              </div>
+              <div>
+                <p class="small-title mb-0">After</p>
+                <p class="subtle-text text-color mt-half mb-0">
+                  {@html change.to}
+                </p>
+              </div>
+            </div>
+          </div>
+        {/each}
+      {/if}
     </div>
     <div class="flex-space-between">
       <NavigationButton
@@ -123,6 +135,10 @@
     .batch-results-content {
       overflow-y: auto;
       height: 65vh;
+
+      .no-changes {
+        height: 100%;
+      }
     }
 
     .change-container {

@@ -4,6 +4,7 @@
   import StickyCloseButton from "../elements/StickyCloseButton.svelte";
 
   export let large = false;
+  export let fill = false;
   export let onClose: () => void = undefined;
 
   let modal: HTMLDivElement;
@@ -49,7 +50,7 @@
 </script>
 
 <div bind:this={modal} class="overlay" transition:fade>
-  <div class="popup" class:large>
+  <div class="popup" class:large class:fill>
     <div class="overlay-content-wrapper">
       <slot name="content" />
     </div>
@@ -79,6 +80,10 @@
 
       &.large {
         max-width: 1280px;
+      }
+
+      &.fill {
+        width: 100%;
       }
 
       .overlay-content-wrapper {

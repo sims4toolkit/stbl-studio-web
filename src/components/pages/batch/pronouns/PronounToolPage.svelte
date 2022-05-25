@@ -78,7 +78,7 @@
 </section>
 
 {#if viewChanges}
-  <BlurOverlay onClose={() => (viewChanges = false)} large={true}>
+  <BlurOverlay onClose={() => (viewChanges = false)} large={true} fill={true}>
     <PronounBatchResults slot="content" bind:batchFixResult />
   </BlurOverlay>
 {/if}

@@ -6,7 +6,7 @@
 
 <div class="mt-2 mb-3">
   <p class="small-title mt-0">Pronouns to Replace</p>
-  <div class="flex-center-v">
+  <div class="flex-center-v wrap">
     {#each possibleReplacements as checkable, key (key)}
       <div class="mr-1">
         <Checkbox
@@ -22,5 +22,7 @@
 </div>
 
 <style lang="scss">
-  // intentionally blank
+  .wrap {
+    flex-wrap: wrap;
+  }
 </style>
