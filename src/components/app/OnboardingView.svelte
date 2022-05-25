@@ -2,7 +2,11 @@
   import { fade, fly } from "svelte/transition";
   import Workspace from "../../typescript/models/workspace";
   import { Settings } from "../../typescript/storage";
-  import { activeWorkspace, disableBlurStore } from "../../typescript/stores";
+  import {
+    activeWorkspace,
+    disableBlurStore,
+    reduceMotionStore,
+  } from "../../typescript/stores";
   import NavigationButton from "../elements/NavigationButton.svelte";
   import ProgressCircles from "../elements/ProgressCircles.svelte";
   import FileInput from "../elements/FileInput.svelte";
@@ -14,23 +18,24 @@
 
   const animationDuration = 1000;
   let page: "name" | "disclaimers" | "upload" = "name";
-  // let creatorName: string = "";
-  // $: nameFilledIn = Boolean(creatorName);
-  $: filledInCircles = page === "disclaimers" ? 1 : 0;
-  // (nameFilledIn ? 1 : 0) + (page === "disclaimers" ? 1 : 0);
+  $: filledInCircles = page === "disclaimers" ? 2 : 1;
 
   let disableBlur = Settings.disableBlur;
-
   $: {
     disableBlur;
     disableBlurStore.set(disableBlur);
+  }
+
+  let reduceMotion = Settings.reduceMotion;
+  $: {
+    reduceMotion;
+    reduceMotionStore.set(reduceMotion);
   }
 
   function nextButtonClicked() {
     if (page === "name") {
       page = "disclaimers";
     } else if (page === "disclaimers") {
-      // Settings.highContrast = highContrastCheckable.checked;
       Settings.hasWorkspace = true;
       activeWorkspace.set(new Workspace());
       exitOnboarding();
@@ -91,15 +96,11 @@
             target="_blank">feature list</a
           > to learn more about what it can do.
         </p>
-        <!-- <p class="mb-2">Please provide your name to get started.</p>
-        <input
-          class="w-100"
-          type="text"
-          placeholder="Name..."
-          bind:value={creatorName}
-        /> -->
-        <p class="small-title mt-2">Accessability Options</p>
-        <Checkbox label="Disable Blur Effect" bind:checked={disableBlur} />
+        <p class="small-title mt-2">Accessibility Options</p>
+        <div class="flex-center-v flex-gap">
+          <Checkbox label="Disable Blur Effect" bind:checked={disableBlur} />
+          <Checkbox label="Reduce Motion" bind:checked={disableBlur} />
+        </div>
         <p class="subtle-text">You can configure these later in settings.</p>
       {:else}
         <div in:fade={{ duration: animationDuration }}>
