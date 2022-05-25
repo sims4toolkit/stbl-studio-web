@@ -1,8 +1,8 @@
 <script lang="ts">
+  import { fly } from "svelte/transition";
   import type { StringTableResource as StblResourceType } from "@s4tk/models";
   import type { ResourceKey } from "@s4tk/models/types";
   import FileInput from "../../../elements/FileInput.svelte";
-  import GradientHeader from "../../../elements/GradientHeader.svelte";
 
   const { StringTableResource, Package } = window.S4TK.models;
   const { BinaryResourceType, StringTableLocale } = window.S4TK.enums;
@@ -13,6 +13,7 @@
   let batchFixResult: BatchFixResult;
   let replacements: Replacement[];
 
+  export let numStblsToRead: number;
   export let isReadingFiles: boolean;
   export let onFilesRead: (result: BatchFixResult) => void;
   export let possibleReplacements: {
@@ -84,9 +85,12 @@
       }
     }
 
+    numStblsToRead = stbls.length;
+
     if (stbls.length === 0) {
       filesInvalid = true;
       isReadingFiles = false;
+      numStblsToRead = undefined;
     } else {
       batchFixResult = [];
 
@@ -214,6 +218,11 @@
     {filesInvalid}
     errorMessage="No English STBLs found"
   />
+  {#if isReadingFiles}
+    <p class="mt-2 mb-0" in:fly={{ y: -20, duration: 250 }}>
+      Reading your files...
+    </p>
+  {/if}
 </div>
 
 <style lang="scss">

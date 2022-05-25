@@ -1,19 +1,26 @@
 <script lang="ts">
+  import { fly } from "svelte/transition";
   import GradientHeader from "../../../elements/GradientHeader.svelte";
   import ContentArea from "../../../layout/ContentArea.svelte";
   import FileUploadParser from "./FileUploadParser.svelte";
   import PronounToolHeader from "./PronounToolHeader.svelte";
   import pronounReplacements from "../../../../data/pronoun-replacements.json";
   import ReplacementChoices from "./ReplacementChoices.svelte";
+  import IconTextButton from "../../../elements/IconTextButton.svelte";
 
   const { formatResourceKey, formatStringKey } = window.S4TK.formatting;
 
   let isReadingFiles = false;
+  let numStblsToRead: number;
   let batchFixResult: BatchFixResult;
   let possibleReplacements = pronounReplacements;
+  let viewChanges = false;
 
   function onFilesRead(result: BatchFixResult) {
-    batchFixResult = result;
+    setTimeout(() => {
+      batchFixResult = result;
+      isReadingFiles = false;
+    }, 500);
   }
 </script>
 
@@ -28,10 +35,33 @@
     <GradientHeader title="1) Select your replacements" />
     <ReplacementChoices bind:possibleReplacements />
     <GradientHeader title="2) Upload your string tables" />
-    <FileUploadParser {isReadingFiles} {onFilesRead} {possibleReplacements} />
-    <GradientHeader title="3) Wait while I work some magic..." />
+    <FileUploadParser
+      bind:isReadingFiles
+      bind:numStblsToRead
+      bind:possibleReplacements
+      {onFilesRead}
+    />
+    {#if !isReadingFiles && numStblsToRead !== undefined}
+      <div in:fly={{ y: 20, duration: 250 }}>
+        <GradientHeader title="3) All set!" />
+        <div class="flex-space-around mt-3">
+          <IconTextButton
+            icon="eye-outline"
+            text="View Changes"
+            onClick={() => (viewChanges = true)}
+            large={true}
+          />
+          <IconTextButton
+            icon="download"
+            text="Download Files"
+            onClick={() => (viewChanges = true)}
+            large={true}
+          />
+        </div>
+      </div>
+    {/if}
     <div class="py-2">
-      {#if batchFixResult}
+      {#if batchFixResult && false}
         {#each batchFixResult as stblSummary, key (key)}
           <div class="mb-1">
             <GradientHeader

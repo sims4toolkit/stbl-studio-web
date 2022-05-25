@@ -17,7 +17,7 @@
   />
 </SplitView>
 {#if showInstructions}
-  <div transition:fade>
+  <div in:fade>
     <div class="mt-2">
       <p class="small-title mt-0">The Problem</p>
       <p>
@@ -39,22 +39,19 @@
           Upload your strings to this website, either in string table binaries
           or packages.
         </li>
-        <li class="mb-half">
-          All English string tables will be extracted from your uploaded files,
-          and their strings will be replaced as needed.
-        </li>
         <li>
           When the batch fix is done, you can review the changes that were made
           and download your updated string tables.
         </li>
       </ol>
     </div>
-    <p class="subtle-text my-0">
-      Note that this tool will <strong>not</strong> correct verb conjugation (i.e.
-      "they is" &rarr; "they are"), as there is currently no way to do so.
-    </p>
   </div>
 {/if}
+<p class="subtle-text mt-2 mb-0">
+  Note that this tool only works for English, and will <strong>not</strong> correct
+  verb conjugation (i.e. "they is" &rarr; "they are"), as there is currently no way
+  to do so.
+</p>
 
 <style lang="scss">
   // intentionally blank

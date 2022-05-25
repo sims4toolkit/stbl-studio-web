@@ -3,6 +3,7 @@
   export let text: string;
   export let onClick: () => void;
   export let active = true;
+  export let large = false;
 
   let button: HTMLButtonElement;
 
@@ -16,6 +17,7 @@
   bind:this={button}
   class="flex-center-v py-half px-1"
   class:active
+  class:large
   on:click={onButtonClick}
 >
   <img class="is-svg" src="./assets/{icon}.svg" alt={icon} />
@@ -33,6 +35,14 @@
       height: 18px;
       width: auto;
       margin-right: 10px;
+    }
+
+    &.large {
+      font-size: 1.5em;
+
+      img {
+        height: 32px;
+      }
     }
 
     &.active:hover,
