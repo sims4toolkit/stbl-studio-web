@@ -8,7 +8,7 @@
   import FileInput from "../elements/FileInput.svelte";
   import GradientHeader from "../elements/GradientHeader.svelte";
   import IconTextButton from "../elements/IconTextButton.svelte";
-  import AccessibilityOptionsView from "../views/AccessibilityOptionsView.svelte";
+  import AccessibilityOptions from "../elements/AccessibilityOptions.svelte";
 
   export let exitOnboarding: () => void;
 
@@ -85,7 +85,7 @@
             target="_blank">feature list</a
           > to learn more about what it can do.
         </p>
-        <AccessibilityOptionsView />
+        <AccessibilityOptions />
         <p class="subtle-text">You can configure these later in settings.</p>
       {:else}
         <div in:fade={{ duration: animationDuration }}>

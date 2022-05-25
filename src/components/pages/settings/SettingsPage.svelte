@@ -1,11 +1,16 @@
 <script lang="ts">
   import { replace } from "svelte-spa-router";
+  import AccessibilityOptions from "../../elements/AccessibilityOptions.svelte";
   import GradientHeader from "../../elements/GradientHeader.svelte";
   import IconTextButton from "../../elements/IconTextButton.svelte";
+  import NavigationButton from "../../elements/NavigationButton.svelte";
+  import TextInput from "../../elements/TextInput.svelte";
   import BlurOverlay from "../../layout/BlurOverlay.svelte";
   import ContentArea from "../../layout/ContentArea.svelte";
 
   let clearingStorage = false;
+  let clearingStorageConfirmationText = "";
+  let clearingStorageConfirmed = false;
 
   function clearStorage() {
     localStorage.clear();
@@ -18,12 +23,17 @@
 
 <section id="settings-page">
   <ContentArea>
-    <IconTextButton
-      icon="trash"
-      text="Reset Workspace"
-      danger={true}
-      onClick={() => (clearingStorage = true)}
-    />
+    <div>
+      <AccessibilityOptions />
+      <div class="mt-2">
+        <IconTextButton
+          icon="trash"
+          text="Reset Workspace"
+          danger={true}
+          onClick={() => (clearingStorage = true)}
+        />
+      </div>
+    </div>
   </ContentArea>
 </section>
 
@@ -34,16 +44,32 @@
       <p class="my-2">
         This will clear all of your data. All of it. Every last byte. There will
         be nothing left, at all, and it cannot be recovered. This action can not
-        be undone. In case I wasn't clear, you will lose ALL of your data if you
-        proceed. Are you sure you want to continue?
+        be undone. Are you sure you want to continue?
       </p>
-      <!-- TODO: replace with text box -->
-      <IconTextButton
-        icon="trash"
-        text="Yes, Delete Everything Forever"
-        danger={true}
-        onClick={clearStorage}
+      <TextInput
+        label={'Type "Yes" to confirm'}
+        placeholder="Yes"
+        name="delete-everything-confirmation-input"
+        fillWidth={true}
+        bind:value={clearingStorageConfirmationText}
+        bind:isValid={clearingStorageConfirmed}
+        validators={[
+          {
+            error: 'Value must be "yes"',
+            test(value) {
+              return value.toLowerCase() === "yes";
+            },
+          },
+        ]}
       />
+      <div class="flex-center-v flex-end w-100 mt-2">
+        <NavigationButton
+          text="Delete Everything Forever"
+          direction="right"
+          active={clearingStorageConfirmed}
+          onClick={clearStorage}
+        />
+      </div>
     </div>
   </BlurOverlay>
 {/if}
