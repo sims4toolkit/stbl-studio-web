@@ -32,6 +32,15 @@
     unsubscribe();
   });
 
+  let creatingProject = false;
+  const stopCreatingProject = () => (creatingProject = false);
+
+  let uploadingProject = false;
+  const stopUploadingProject = () => (uploadingProject = false);
+
+  let confirmingDeletion = false;
+  const stopConfirmingDeletion = () => (confirmingDeletion = false);
+
   let showDownload = false;
   let downloadFilename: string;
   let downloadContentGenerator: () => Blob;
@@ -39,21 +48,6 @@
     downloadFilename = filename;
     downloadContentGenerator = contentGenerator;
     showDownload = true;
-  }
-
-  let creatingProject = false;
-  function onProjectCreatorExit() {
-    creatingProject = false;
-  }
-
-  let uploadingProject = false;
-  function onProjectUploaderExit() {
-    uploadingProject = false;
-  }
-
-  let confirmingDeletion = false;
-  function onDeletionComplete() {
-    confirmingDeletion = false;
   }
 
   $: workspaceEmpty = Boolean(!workspace?.projects.length);
@@ -171,32 +165,23 @@
 {/if}
 
 {#if creatingProject}
-  <BlurOverlay
-    onClose={() => {
-      creatingProject = false;
-    }}
-  >
-    <ProjectCreationView onComplete={onProjectCreatorExit} />
+  <BlurOverlay onClose={stopCreatingProject}>
+    <ProjectCreationView onComplete={stopCreatingProject} />
   </BlurOverlay>
 {/if}
 
 {#if uploadingProject}
-  <BlurOverlay
-    onClose={() => {
-      uploadingProject = false;
-    }}
-  >
-    <ProjectUploadView onComplete={onProjectUploaderExit} />
+  <BlurOverlay onClose={stopUploadingProject}>
+    <ProjectUploadView onComplete={stopUploadingProject} />
   </BlurOverlay>
 {/if}
 
 {#if confirmingDeletion}
-  <BlurOverlay
-    onClose={() => {
-      confirmingDeletion = false;
-    }}
-  >
-    <ProjectDeletionView {selectedProjects} onComplete={onDeletionComplete} />
+  <BlurOverlay onClose={stopConfirmingDeletion}>
+    <ProjectDeletionView
+      {selectedProjects}
+      onComplete={stopConfirmingDeletion}
+    />
   </BlurOverlay>
 {/if}
 
