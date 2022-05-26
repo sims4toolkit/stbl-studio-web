@@ -212,7 +212,7 @@
     class="flex-space-between"
     in:fly={{ y: 25, duration: animationDuration }}
   >
-    <ProgressCircles circles={2} filled={circlesFilled} />
+    <ProgressCircles circles={2} currentPage={1} filled={circlesFilled} />
     <NavigationButton
       text="Next"
       direction="right"
