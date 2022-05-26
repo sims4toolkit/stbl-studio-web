@@ -41,7 +41,7 @@
   <title>STBL Studio | Pronoun Batch Fix</title>
 </svelte:head>
 <section id="pronoun-batch-fix">
-  <ContentArea banded={true}>
+  <ContentArea banded={true} bottomShadow={true}>
     <PronounToolHeader />
   </ContentArea>
   <ContentArea>

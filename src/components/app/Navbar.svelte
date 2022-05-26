@@ -5,6 +5,7 @@
   $: helpIcon = $location === "/help" ? "help-circle" : "help-circle-outline";
   $: settingsIcon = $location === "/settings" ? "settings" : "settings-outline";
   $: homeIcon = $location === "/" ? "home" : "home-outline";
+  $: toolsIcon = $location === "/tools" ? "hammer" : "hammer-outline";
 </script>
 
 <nav class="flex-center-v flex-space-between bottom-shadow">
@@ -20,6 +21,18 @@
         class="is-svg ionicon-img"
         src="./assets/{homeIcon}.svg"
         alt="Home"
+      />
+    </a>
+    <a
+      href="/tools"
+      class:active={$location === "/tools"}
+      use:link
+      title="Tools"
+    >
+      <img
+        class="is-svg ionicon-img"
+        src="./assets/{toolsIcon}.svg"
+        alt="Tools"
       />
     </a>
     <a href="/help" class:active={$location === "/help"} use:link title="Help">
