@@ -10,11 +10,14 @@
 
   export let title: string = null;
   export let subtitle: string = null;
+
   export let minimumContentHeight: string = null;
+
   export let showProgress = true;
   export let numPages = 1;
   export let completePages = 1;
   export let currentPage = 1;
+
   export let showNextButton = true;
   export let nextButtonText = "Next";
   export let finalPageNextButtonText = "Next";
