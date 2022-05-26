@@ -22,13 +22,13 @@
 </script>
 
 <button
-  class="button-wrapper text-color project-view floating-card  drop-shadow hoverable w-100"
+  class="button-wrapper"
   class:selected={projectSelected}
   class:move-on-hover={!isInSelectMode}
   class:unselectable-text={isInSelectMode}
   on:click={handleClick}
 >
-  <div class="w-100">
+  <div class="w-100 floating-card project-view drop-shadow move-on-hover">
     <div class="flex-center-v">
       {#if isInSelectMode}
         <div
@@ -69,8 +69,6 @@
 
 <style lang="scss">
   .project-view {
-    font-size: 1em;
-
     .selected-indicator {
       background: none;
       min-width: 16px !important;

@@ -12,9 +12,9 @@
 
 <button class="button-wrapper" on:click={goToLink}>
   <div class="floating-card drop-shadow move-on-hover text-left">
-    <h2 class="nowrap-truncate mt-0 mb-1">
+    <h3 class="nowrap-truncate mt-0 mb-1">
       {name}
-    </h2>
+    </h3>
     <p class="my-0">
       {description}
     </p>
