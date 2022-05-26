@@ -11,7 +11,7 @@
   import HelpPage from "./components/pages/help/HelpPage.svelte";
   import ProjectPage from "./components/pages/project/ProjectPage.svelte";
   import BlurOverlay from "./components/layout/BlurOverlay.svelte";
-  import OnboardingView from "./components/app/OnboardingView.svelte";
+  import OnboardingView from "./components/views/OnboardingView.svelte";
   import SettingsPage from "./components/pages/settings/SettingsPage.svelte";
   import PronounToolPage from "./components/pages/batch/pronouns/PronounToolPage.svelte";
 

@@ -17,7 +17,6 @@
 
 <MultipageModalContent
   title="Confirm Workspace Reset"
-  numPages={1}
   completePages={confirmed ? 1 : 0}
   finalPageNextButtonText="Delete Everything Forever"
   onNextButtonClick={clearStorage}
