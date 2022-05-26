@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { fade, fly } from "svelte/transition";
+  import { fade } from "svelte/transition";
   import { v4 as uuidv4 } from "uuid";
   import type Workspace from "../../../typescript/models/workspace";
   import Project from "../../../typescript/models/project";
@@ -7,57 +7,63 @@
     allLocales,
     getLocaleData,
   } from "../../../typescript/helpers/localization";
-  import {
-    hashInstanceBase,
-    validateHexString,
-  } from "../../../typescript/helpers/tgi";
+  import { hashInstanceBase } from "../../../typescript/helpers/tgi";
   import { activeWorkspace } from "../../../typescript/stores";
-  import GradientHeader from "../../elements/GradientHeader.svelte";
-  import Select from "../../elements/Select.svelte";
   import TextInput from "../../elements/TextInput.svelte";
-  import ProgressCircles from "../../elements/ProgressCircles.svelte";
-  import NavigationButton from "../../elements/NavigationButton.svelte";
   import LocaleCheckboxesView from "./LocaleCheckboxesView.svelte";
   import type { LocaleData } from "../../../global";
   import { Settings } from "../../../typescript/storage";
-  import LocaleSelect from "../../elements/LocaleSelect.svelte";
+  import MultipageModalContent from "../../layout/MultipageModalContent.svelte";
+  import GroupInstanceLocale from "../../elements/GroupInstanceLocale.svelte";
 
   const { formatAsHexString } = window.S4TK.formatting;
 
-  const animationDuration = Settings.reduceMotion ? 0 : 1000;
+  //#region General
 
   export let onComplete: () => void;
 
+  const uuid = uuidv4();
+  let currentPage = 1;
+  let completePages = 1;
   let workspace: Workspace;
+
   activeWorkspace.subscribe((value) => {
     workspace = value;
   });
 
-  let page: "tgi" | "locales" = "tgi";
-  const uuid: string = uuidv4();
-  let name = "";
-  let primaryLocale = Settings.defaultLocale;
-  let groupString = "80000000";
-  let instanceBaseString = formatAsHexString(
-    hashInstanceBase(uuid, false), // UUID is already unique
-    14,
-    false
-  );
+  //#endregion General
 
+  //#region Page 1
+
+  let name = "";
   let isNameValid = false;
+  let groupHexString = "80000000";
   let isGroupValid = false;
+  let instanceHexString = formatAsHexString(hashInstanceBase(uuid), 14, false);
   let isInstanceValid = false;
+  let primaryLocale = Settings.defaultLocale;
+
+  $: isPage1Valid = isNameValid && isGroupValid && isInstanceValid;
+
+  $: {
+    completePages = currentPage + (isPage1Valid ? 0 : -1);
+  }
+
+  //#endregion Page 1
+
+  //#region Page 2
+
   let otherLocaleOptions: {
     data: LocaleData;
     checked: boolean;
   }[];
 
-  $: isEverythingValid = isNameValid && isGroupValid && isInstanceValid;
-  $: circlesFilled = (isEverythingValid ? 1 : 0) + (page === "locales" ? 1 : 0);
-  $: nextButtonText = page === "tgi" ? "Next" : "Create";
+  //#endregion Page 2
+
+  //#region Functions
 
   function nextButtonClicked() {
-    if (page === "tgi") {
+    if (currentPage === 1) {
       otherLocaleOptions = allLocales
         .filter((data) => data.enumValue !== primaryLocale)
         .map((data) => {
@@ -67,7 +73,7 @@
           };
         });
 
-      page = "locales";
+      currentPage++;
     } else {
       createProjectAndClose();
     }
@@ -80,8 +86,8 @@
           uuid,
           name: name.trim(),
           primaryLocale,
-          group: parseInt(groupString, 16),
-          instanceBase: BigInt("0x" + instanceBaseString),
+          group: parseInt(groupHexString, 16),
+          instanceBase: BigInt("0x" + instanceHexString),
         },
         new Map(),
         otherLocaleOptions
@@ -92,146 +98,91 @@
 
     onComplete();
   }
+
+  //#endregion Functions
 </script>
 
-<div class="project-creation-view">
-  <div in:fly={{ y: -15, duration: animationDuration }}>
-    <GradientHeader title="New Project" />
-    <p class="mt-1 subtle-text">UUID: {uuid}</p>
-  </div>
-  {#if page === "tgi"}
-    <form class="w-100 my-2" in:fly={{ y: 15, duration: animationDuration }}>
-      <TextInput
-        name="project-name-text-input"
-        fillWidth={true}
-        label="project name"
-        placeholder="Project name..."
-        bind:value={name}
-        bind:isValid={isNameValid}
-        validators={[
-          {
-            error: "Must be non-empty",
-            test(value) {
-              return Boolean(value.trim());
-            },
-          },
-          {
-            error: "Must be <= 30 characters",
-            test(value) {
-              return value.length <= 30;
-            },
-          },
-          {
-            error: "Already in use",
-            test(value) {
-              if (!workspace) return true;
-              const formattedName = value.trim().toLowerCase();
-              return !workspace.projects.some((p) => {
-                if (p.uuid === uuid) return false;
-                return p.name.trim().toLowerCase() === formattedName;
-              });
-            },
-          },
-        ]}
-      />
-      <div class="mt-1 tgi-inputs flex-space-between">
-        <TextInput
-          name="group-text-input"
-          fillWidth={true}
-          label="group"
-          placeholder="Group..."
-          bind:value={groupString}
-          bind:isValid={isGroupValid}
-          validators={[
-            {
-              error: "Must be 8-digit hex",
-              test(value) {
-                return validateHexString(value, 8);
+<MultipageModalContent
+  title="New Project"
+  subtitle="UUID: {uuid}"
+  numPages={2}
+  minimumContentHeight="230"
+  bind:currentPage
+  bind:completePages
+  finalPageNextButtonText="Create"
+  onNextButtonClick={nextButtonClicked}
+>
+  <div slot="content">
+    {#if currentPage === 1}
+      <div>
+        <form class="w-100 mb-2">
+          <TextInput
+            name="project-name-text-input"
+            fillWidth={true}
+            label="project name"
+            placeholder="Project name..."
+            bind:value={name}
+            bind:isValid={isNameValid}
+            validators={[
+              {
+                error: "Must be non-empty",
+                test(value) {
+                  return Boolean(value.trim());
+                },
               },
-            },
-          ]}
-        />
-        <TextInput
-          name="instance-text-input"
-          fillWidth={true}
-          label="instance"
-          placeholder="Instances..."
-          bind:value={instanceBaseString}
-          bind:isValid={isInstanceValid}
-          validators={[
-            {
-              error: "Must be 14-digit hex",
-              test(value) {
-                return validateHexString(value, 14);
+              {
+                error: "Must be <= 30 characters",
+                test(value) {
+                  return value.length <= 30;
+                },
               },
-            },
-            {
-              error: "Already in use",
-              test(value) {
-                if (!workspace) return true;
-                const instanceBaseNumber = BigInt("0x" + value);
-                return !workspace.projects.some(
-                  (p) =>
-                    p.uuid !== uuid && p.instanceBase === instanceBaseNumber
-                );
+              {
+                error: "Already in use",
+                test(value) {
+                  if (!workspace) return true;
+                  const formattedName = value.trim().toLowerCase();
+                  return !workspace.projects.some((p) => {
+                    if (p.uuid === uuid) return false;
+                    return p.name.trim().toLowerCase() === formattedName;
+                  });
+                },
               },
-            },
-          ]}
-        />
-        <LocaleSelect
-          name="primary-locale-select"
-          label="primary locale"
-          fillWidth={true}
-          bind:selectedLocale={primaryLocale}
-        />
+            ]}
+          />
+          <div class="mt-1">
+            <GroupInstanceLocale
+              bind:groupHexString
+              bind:isGroupValid
+              bind:instanceHexString
+              bind:isInstanceValid
+              bind:selectedLocale={primaryLocale}
+            />
+          </div>
+        </form>
+        <div>
+          <p class="subtle-text mt-0 mb-half">
+            The instance is a hash of the UUID by default, but it can be changed
+            manually.
+          </p>
+          <p class="subtle-text my-0">
+            The 2-digit locale code will automatically be prepended to the
+            instance.
+          </p>
+        </div>
       </div>
-    </form>
-    <div in:fly={{ y: 25, duration: animationDuration }}>
-      <p class="subtle-text mt-0 mb-half">
-        The instance is a hash of the UUID by default, but it can be changed
-        manually.
-      </p>
-      <p class="subtle-text my-0">
-        The 2-digit locale code will automatically be prepended to the instance.
-      </p>
-    </div>
-  {:else if page === "locales"}
-    <div in:fade={{ duration: Settings.reduceMotion ? 0 : 500 }} class="mb-1">
-      <p class="my-2">
-        Select additional locales to include in this project. Strings added to
-        your primary locale ({getLocaleData(primaryLocale).englishName}) will
-        automatically be added to these ones as well.
-      </p>
-      <LocaleCheckboxesView bind:localeChoices={otherLocaleOptions} />
-    </div>
-  {/if}
-  <div
-    class="flex-space-between mt-2"
-    in:fly={{ y: 35, duration: animationDuration }}
-  >
-    <ProgressCircles circles={2} bind:filled={circlesFilled} />
-    <NavigationButton
-      text={nextButtonText}
-      direction="right"
-      onClick={nextButtonClicked}
-      active={isEverythingValid}
-    />
+    {:else}
+      <div in:fade={{ duration: Settings.reduceMotion ? 0 : 500 }}>
+        <p class="mb-2">
+          Select additional locales to include in this project. Strings added to
+          your primary locale ({getLocaleData(primaryLocale).englishName}) will
+          automatically be added to these ones as well.
+        </p>
+        <LocaleCheckboxesView bind:localeChoices={otherLocaleOptions} />
+      </div>
+    {/if}
   </div>
-</div>
+</MultipageModalContent>
 
 <style lang="scss">
-  .project-creation-view {
-    .tgi-inputs {
-      gap: 1em;
-    }
-  }
-
-  @media only screen and (max-width: 768px) {
-    .project-creation-view {
-      .tgi-inputs {
-        flex-direction: column;
-        width: 100%;
-      }
-    }
-  }
+  // intentionally blank
 </style>
