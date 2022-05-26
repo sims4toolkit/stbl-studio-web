@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import Router from "svelte-spa-router";
+  import Router, { replace } from "svelte-spa-router";
   import { activeWorkspace, isLightThemeStore } from "./typescript/stores";
   import { Settings } from "./typescript/storage";
   import Workspace from "./typescript/models/workspace";
@@ -13,7 +13,8 @@
   import BlurOverlay from "./components/layout/BlurOverlay.svelte";
   import OnboardingView from "./components/views/OnboardingView.svelte";
   import SettingsPage from "./components/pages/settings/SettingsPage.svelte";
-  import PronounToolPage from "./components/pages/batch/pronouns/PronounToolPage.svelte";
+  import PronounToolPage from "./components/pages/tools/pronouns/PronounToolPage.svelte";
+  import ToolsPage from "./components/pages/tools/ToolsPage.svelte";
 
   let onboardUser = false;
   let restoreError = false;
@@ -38,15 +39,17 @@
     "/help": HelpPage,
     "/settings": SettingsPage,
     "/project/:uuid": ProjectPage,
-    "/batch-fix/pronouns": PronounToolPage,
+    "/tools": ToolsPage,
+    "/tools/pronouns": PronounToolPage,
     "*": NotFoundPage,
   };
 
-  window.addEventListener("hashchange", function (event) {
-    if (event.oldURL || event.newURL) {
-      window.scrollTo(0, 0);
+  function routeLoaded(event: any) {
+    // redirects
+    if (event.detail.location === "/batch-fix/pronouns") {
+      replace("/tools/pronouns");
     }
-  });
+  }
 
   let storageSyncTimeout: any;
 
@@ -76,7 +79,7 @@
 <Navbar />
 <main>
   <div class="main-content-wrapper">
-    <Router {routes} />
+    <Router {routes} restoreScrollState={true} on:routeLoaded={routeLoaded} />
   </div>
   <Footer />
 </main>
