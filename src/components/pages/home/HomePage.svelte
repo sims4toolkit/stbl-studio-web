@@ -16,8 +16,6 @@
   import GradientHeader from "../../elements/GradientHeader.svelte";
   import ProjectDeletionView from "./ProjectDeletionView.svelte";
   import ProjectUploadView from "./ProjectUploadView.svelte";
-  import StorageUsageView from "../../views/StorageUsageView.svelte";
-  import QuickActions from "./QuickActions.svelte";
 
   let workspace: Workspace;
   let selectionGroup: SelectionGroup<Project>;
@@ -127,16 +125,9 @@
 <svelte:head>
   <title>STBL Studio</title>
 </svelte:head>
-<section id="home-section">
+
+<section id="home-section" class:flex-center-v={workspaceEmpty}>
   {#if workspace}
-    <ContentArea banded={true} bottomShadow={true}>
-      <SplitView>
-        <StorageUsageView slot="left" />
-        <div class="flex-center-v" slot="right">
-          <QuickActions />
-        </div>
-      </SplitView>
-    </ContentArea>
     {#if workspaceEmpty}
       <ContentArea>
         <div>
@@ -164,6 +155,7 @@
     {/if}
   {/if}
 </section>
+
 <FloatingActionButtonGroup
   buttonData={toolbarData}
   disabled={toolbarDisabled}
