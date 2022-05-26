@@ -1,5 +1,5 @@
 import type { ProjectMetaData, StblMap, UserSettings, WorkspaceJson } from "../global";
-import { toggleBlurEffect, toggleLightTheme } from "./document-attrs";
+import { toggleBlurEffect, toggleLightTheme } from "./helpers/document-attrs";
 import type Project from "./models/project";
 
 const { StringTableResource } = window.S4TK.models;
