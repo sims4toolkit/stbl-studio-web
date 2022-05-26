@@ -2,6 +2,7 @@
   import { link } from "svelte-spa-router";
   import ContentArea from "../../layout/ContentArea.svelte";
   import SectionHeader from "../../elements/SectionHeader.svelte";
+  import StorageUsageView from "../../views/StorageUsageView.svelte";
 
   const discordLink = "https://discord.gg/qNhD3Jh";
 </script>
@@ -13,6 +14,7 @@
   <ContentArea>
     <SectionHeader title="Placeholder" />
     <p>Placeholder</p>
+    <StorageUsageView />
   </ContentArea>
 </section>
 

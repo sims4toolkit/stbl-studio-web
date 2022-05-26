@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onDestroy } from "svelte";
   import { fade } from "svelte/transition";
   import { v4 as uuidv4 } from "uuid";
   import type Workspace from "../../../typescript/models/workspace";
@@ -25,10 +26,14 @@
   const uuid = uuidv4();
   let currentPage = 1;
   let completePages = 1;
-  let workspace: Workspace;
 
-  activeWorkspace.subscribe((value) => {
+  let workspace: Workspace;
+  const unsubscribe = activeWorkspace.subscribe((value) => {
     workspace = value;
+  });
+
+  onDestroy(() => {
+    unsubscribe();
   });
 
   //#endregion General

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onDestroy } from "svelte";
   import type { StringTableLocale } from "@s4tk/models/enums";
   import LocaleSelect from "./LocaleSelect.svelte";
   import TextInput from "./TextInput.svelte";
@@ -14,8 +15,12 @@
   export let canValidate = true;
 
   let workspace: Workspace;
-  activeWorkspace.subscribe((value) => {
+  const unsubscribe = activeWorkspace.subscribe((value) => {
     workspace = value;
+  });
+
+  onDestroy(() => {
+    unsubscribe();
   });
 </script>
 

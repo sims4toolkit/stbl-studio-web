@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onDestroy } from "svelte";
   import type { StringTableResource as StblType } from "@s4tk/models";
   import type { ResourceKey } from "@s4tk/models/types";
   import { fly } from "svelte/transition";
@@ -29,8 +30,12 @@
   let circlesFilled = 0;
 
   let workspace: Workspace;
-  activeWorkspace.subscribe((value) => {
+  const unsubscribe = activeWorkspace.subscribe((value) => {
     workspace = value;
+  });
+
+  onDestroy(() => {
+    unsubscribe();
   });
 
   interface StblWithKey {

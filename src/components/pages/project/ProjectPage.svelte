@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onDestroy } from "svelte";
   import { onMount } from "svelte";
   import { replace } from "svelte-spa-router";
   import type Project from "../../../typescript/models/project";
@@ -10,14 +11,18 @@
 
   export let params: { uuid: string };
 
-  let workspace: Workspace;
   let project: Project;
 
-  activeWorkspace.subscribe((value) => {
+  let workspace: Workspace;
+  const unsubscribe = activeWorkspace.subscribe((value) => {
     if (value) {
       workspace = value;
       project = workspace.projects.find(({ uuid }) => uuid === params.uuid);
     }
+  });
+
+  onDestroy(() => {
+    unsubscribe();
   });
 
   function onBackClicked() {

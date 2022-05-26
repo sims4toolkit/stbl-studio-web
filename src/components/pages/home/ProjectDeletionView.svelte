@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onDestroy } from "svelte";
   import type Project from "../../../typescript/models/project";
   import type Workspace from "../../../typescript/models/workspace";
   import { activeWorkspace } from "../../../typescript/stores";
@@ -13,8 +14,12 @@
   let deletionConfirmed = false;
 
   let workspace: Workspace;
-  activeWorkspace.subscribe((value) => {
+  const unsubscribe = activeWorkspace.subscribe((value) => {
     workspace = value;
+  });
+
+  onDestroy(() => {
+    unsubscribe();
   });
 
   function deleteSelectedProjects() {
@@ -57,7 +62,11 @@
   Deleted projects cannot be recovered. Once they're gone, they're gone.
 </p>
 <div class="flex-space-between">
-  <ProgressCircles circles={1} filled={deletionConfirmed ? 1 : 0} />
+  <ProgressCircles
+    circles={1}
+    currentPage={1}
+    filled={deletionConfirmed ? 1 : 0}
+  />
   <NavigationButton
     text="Confirm"
     onClick={deleteSelectedProjects}

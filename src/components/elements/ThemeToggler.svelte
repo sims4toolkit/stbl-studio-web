@@ -1,10 +1,15 @@
 <script lang="ts">
+  import { onDestroy } from "svelte";
   import { Settings } from "../../typescript/storage";
   import { isLightThemeStore } from "../../typescript/stores";
 
   let isLightTheme = Settings.isLightTheme;
-  isLightThemeStore.subscribe((value) => {
+  const unsubscribe = isLightThemeStore.subscribe((value) => {
     isLightTheme = value;
+  });
+
+  onDestroy(() => {
+    unsubscribe();
   });
 
   $: themeImgSrc = `../assets/${isLightTheme ? "sunny" : "moon"}-outline.svg`;

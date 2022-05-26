@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onDestroy } from "svelte";
   import type Project from "../../../typescript/models/project";
   import type Workspace from "../../../typescript/models/workspace";
   import SelectionGroup from "../../../typescript/models/selection-group";
@@ -15,18 +16,22 @@
   import GradientHeader from "../../elements/GradientHeader.svelte";
   import ProjectDeletionView from "./ProjectDeletionView.svelte";
   import ProjectUploadView from "./ProjectUploadView.svelte";
-  import StorageUsageView from "../help/StorageUsageView.svelte";
+  import StorageUsageView from "../../views/StorageUsageView.svelte";
   import QuickActions from "./QuickActions.svelte";
 
   let workspace: Workspace;
   let selectionGroup: SelectionGroup<Project>;
-  activeWorkspace.subscribe((value) => {
+  const unsubscribe = activeWorkspace.subscribe((value) => {
     if (value) {
       workspace = value;
       selectionGroup = new SelectionGroup(value.projects, "uuid", () => {
         selectionGroup = selectionGroup;
       });
     }
+  });
+
+  onDestroy(() => {
+    unsubscribe();
   });
 
   let showDownload = false;

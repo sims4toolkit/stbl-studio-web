@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import { getTotalBytesUsed } from "../../../typescript/storage";
-  import { activeWorkspace } from "../../../typescript/stores";
+  import { onDestroy, onMount } from "svelte";
+  import { getTotalBytesUsed } from "../../typescript/storage";
+  import { activeWorkspace } from "../../typescript/stores";
 
   const availableBytes = 5242880;
   let usedStorageBar: HTMLDivElement;
@@ -22,12 +22,16 @@
     }, 10);
   }
 
+  const unsubscribe = activeWorkspace.subscribe((value) => {
+    if (value) refresh();
+  });
+
   onMount(() => {
     usedStorageBar.style.width = usedStorageBarWidth;
+  });
 
-    activeWorkspace.subscribe((value) => {
-      if (value) refresh();
-    });
+  onDestroy(() => {
+    unsubscribe();
   });
 </script>
 
