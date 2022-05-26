@@ -40,8 +40,21 @@
     firstFocusableChild?.focus();
   }
 
+  function focusOnLastChild() {
+    if (!document.contains(lastFocusableChild)) resetChildrenRefs();
+    //@ts-ignore I do know why it's being annoying about this one...
+    lastFocusableChild?.focus();
+  }
+
   function onFocusOut(e: FocusEvent) {
-    if (lastFocusableChild === e.target) focusOnFirstChild();
+    //@ts-ignore Idk why TS is being annoying about this...
+    if (!modal.contains(e.relatedTarget)) {
+      if (lastFocusableChild === e.target) {
+        focusOnFirstChild();
+      } else if (firstFocusableChild === e.target) {
+        focusOnLastChild();
+      }
+    }
   }
 
   function onFocusIn(e: FocusEvent) {
