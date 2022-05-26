@@ -39,11 +39,11 @@
 
 .move-on-hover {
   position: relative;
-  transition: top 250ms;
+  transition: top 350ms;
   top: 0;
 
   &:hover {
-    top: -4px;
+    top: -2px;
     cursor: pointer;
   }
 }
