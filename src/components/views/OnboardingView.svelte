@@ -38,7 +38,7 @@
   <MultipageModalContent
     numPages={2}
     completePages={currentPage}
-    {currentPage}
+    bind:currentPage
     minimumContentHeight="160"
     finalPageNextButtonText="Get Started"
     onNextButtonClick={nextButtonClicked}

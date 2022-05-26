@@ -27,6 +27,11 @@
       contentContainer.style.minHeight = minimumContentHeight + "px";
     }
   });
+
+  function onProgressCircleClick(index: number) {
+    currentPage = index + 1;
+    // TODO: complete pages??
+  }
 </script>
 
 <div>
@@ -54,7 +59,13 @@
       in:fly={{ y: 35, duration: animationDuration }}
     >
       {#if showProgress}
-        <ProgressCircles circles={numPages} filled={completePages} />
+        <ProgressCircles
+          circles={numPages}
+          filled={completePages}
+          {currentPage}
+          clickable={completePages - 1}
+          onClick={onProgressCircleClick}
+        />
       {/if}
       {#if showNextButton}
         <NavigationButton
