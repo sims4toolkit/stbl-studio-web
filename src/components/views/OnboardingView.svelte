@@ -9,6 +9,7 @@
   import LocaleSelect from "../elements/LocaleSelect.svelte";
   import MultipageModalContent from "../layout/MultipageModalContent.svelte";
   import UploadWorkspaceView from "./UploadWorkspaceView.svelte";
+  import ThemeToggler from "../elements/ThemeToggler.svelte";
 
   export let exitOnboarding: () => void;
 
@@ -39,7 +40,7 @@
     numPages={2}
     completePages={currentPage}
     bind:currentPage
-    minimumContentHeight="160"
+    minimumContentHeight="175"
     finalPageNextButtonText="Get Started"
     onNextButtonClick={nextButtonClicked}
   >
@@ -69,7 +70,16 @@
               bind:selectedLocale={defaultLocale}
             />
             <AccessibilityOptions matchInputHeight={true} />
+            <div>
+              <p class="small-title mt-0 mb-half">Theme</p>
+              <div class="input-height flex-center-v">
+                <ThemeToggler />
+              </div>
+            </div>
           </div>
+          <p class="mt-1 mb-0 subtle-text">
+            You can configure these later in settings.
+          </p>
         </div>
       {:else}
         <div in:fade={{ duration: Settings.reduceMotion ? 0 : 500 }}>

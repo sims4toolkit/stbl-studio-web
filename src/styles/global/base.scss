@@ -3,6 +3,22 @@
 html {
   background-color: var(--color-bg);
   color: var(--color-text);
+
+  &.theme-transition,
+  &.theme-transition *,
+  &.theme-transition *:before,
+  &.theme-transition *:after {
+    // keep in sync with timeout in ThemeToggler.sveltes
+    $time: 500ms;
+
+    transition: all $time;
+    transition-delay: 0ms;
+  }
+
+  h1, h2, h3, h4, h5, h6, p, strong, em, label, span {
+    // required for theme transition animation
+    color: var(--color-text);
+  }
 }
 
 body {

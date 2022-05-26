@@ -7,6 +7,7 @@
 
 .monospace,
 .monospace::placeholder {
+  font-size: 1em; // for theme transition
   font-family: monospace;
 }
 

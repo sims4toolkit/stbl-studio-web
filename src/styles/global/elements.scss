@@ -23,6 +23,10 @@ select {
   color: var(--color-text);
 }
 
+.input-height {
+  height: 40px;
+}
+
 input::placeholder {
   color: var(--color-divider);
 }

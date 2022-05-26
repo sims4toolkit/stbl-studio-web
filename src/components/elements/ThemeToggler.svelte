@@ -12,6 +12,14 @@
 
   function toggleTheme() {
     isLightTheme = !isLightTheme;
+
+    if (!Settings.reduceMotion) {
+      document.documentElement.classList.add("theme-transition");
+      window.setTimeout(() => {
+        document.documentElement.classList.remove("theme-transition");
+      }, 500); // keep in sync with theme-transition class in base.scss
+    }
+
     isLightThemeStore.set(isLightTheme);
   }
 </script>

@@ -9,8 +9,11 @@
   let button: HTMLButtonElement;
 
   function onButtonClick() {
-    button.blur();
     onClick();
+
+    setTimeout(() => {
+      button.blur();
+    }, 100);
   }
 </script>
 
@@ -23,7 +26,7 @@
   on:click={onButtonClick}
 >
   <img class="is-svg" src="./assets/{icon}.svg" alt={icon} />
-  <p class="my-0">{text}</p>
+  {text}
 </button>
 
 <style lang="scss">

@@ -30,7 +30,5 @@
 </div>
 
 <style lang="scss">
-  .input-height {
-    height: 40px;
-  }
+  // intentionally blank
 </style>
