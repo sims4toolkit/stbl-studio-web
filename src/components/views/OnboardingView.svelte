@@ -62,7 +62,8 @@
             target="_blank">feature list</a
           > to learn more about what it can do.
         </p>
-        <div class="mt-2">
+        <p class="mb-0">Get started by personalizing your workspace.</p>
+        <div class="mt-1">
           <div class="flex-wrap flex-gap-large">
             <LocaleSelect
               label="Default Locale"
@@ -77,9 +78,6 @@
               </div>
             </div>
           </div>
-          <p class="mt-1 mb-0 subtle-text">
-            You can configure these later in settings.
-          </p>
         </div>
       {:else}
         <div in:fade={{ duration: Settings.reduceMotion ? 0 : 500 }}>
