@@ -73,7 +73,7 @@
         </div>
       {:else}
         <div in:fade={{ duration: Settings.reduceMotion ? 0 : 500 }}>
-          <p class="my-0">Thanks! Before proceeding, please keep in mind:</p>
+          <p class="my-0">Before proceeding, please keep in mind:</p>
           <ul>
             <li class="mb-half">
               All data that you create or upload on this website is stored

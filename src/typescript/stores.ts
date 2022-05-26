@@ -5,40 +5,17 @@ import { Settings } from "./storage";
 
 export const activeWorkspace: Writable<Workspace> = writable(null);
 
-function createSettingStore<T>(
-  name: string,
-  onChange?: (value: T) => void
-): Writable<T> {
+function createSettingStore<T>(name: string): Writable<T> {
   const store = writable(Settings[name]);
 
   store.subscribe(value => {
     Settings[name] = value;
-    onChange?.(value);
   });
 
   return store;
 }
 
-export const isLightThemeStore = createSettingStore<boolean>(
-  "isLightTheme",
-  (value) => {
-    document.documentElement.setAttribute(
-      "data-theme",
-      value ? "light" : "dark"
-    );
-  }
-);
-
-export const disableBlurStore = createSettingStore<boolean>(
-  "disableBlur",
-  (value) => {
-    document.documentElement.setAttribute(
-      "data-allow-blur",
-      value ? "false" : "true"
-    );
-  }
-);
-
+export const isLightThemeStore = createSettingStore<boolean>("isLightTheme");
+export const disableBlurStore = createSettingStore<boolean>("disableBlur");
 export const reduceMotionStore = createSettingStore<boolean>("reduceMotion");
-
 export const defaultLocaleStore = createSettingStore<StringTableLocale>("defaultLocale");

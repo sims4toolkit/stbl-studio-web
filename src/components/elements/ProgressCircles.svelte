@@ -31,7 +31,7 @@
     button {
       width: 20px;
       height: 20px;
-      border: 1px solid var(--color-text);
+      border: 1px solid var(--color-divider);
       border-radius: 50%;
 
       &.current-page {

@@ -1,4 +1,5 @@
 import type { ProjectMetaData, StblMap, UserSettings, WorkspaceJson } from "../global";
+import { toggleBlurEffect, toggleLightTheme } from "./document-attrs";
 import type Project from "./models/project";
 
 const { StringTableResource } = window.S4TK.models;
@@ -43,42 +44,51 @@ interface StoredSetting<T> {
   set: (setting: string, value: T) => void;
 }
 
-const StoredString: StoredSetting<string> = {
-  get(prop: string, defaultValue: string = "") {
-    return localStorage.getItem(settingKey(prop)) ?? defaultValue;
-  },
-  set(prop: string, value: string) {
-    localStorage.setItem(settingKey(prop), value);
+// function StoredString(): StoredSetting<string> {
+//   return {
+//     get(prop: string, defaultValue: string = "") {
+//       return localStorage.getItem(settingKey(prop)) ?? defaultValue;
+//     },
+//     set(prop: string, value: string) {
+//       localStorage.setItem(settingKey(prop), value);
+//     }
+//   }
+// };
+
+function StoredBoolean(uiUpdateFn?: (value: boolean) => void): StoredSetting<boolean> {
+  return {
+    get(prop: string, defaultValue: boolean = false) {
+      const value = localStorage.getItem(settingKey(prop));
+      return value ? value === "true" : defaultValue;
+    },
+    set(prop: string, value: boolean) {
+      localStorage.setItem(settingKey(prop), value ? "true" : "false");
+      uiUpdateFn?.(value);
+    }
   }
 };
 
-const StoredBoolean: StoredSetting<boolean> = {
-  get(prop: string, defaultValue: boolean = false) {
-    const value = localStorage.getItem(settingKey(prop));
-    return value ? value === "true" : defaultValue;
-  },
-  set(prop: string, value: boolean) {
-    localStorage.setItem(settingKey(prop), value ? "true" : "false");
+function StoredInteger(): StoredSetting<number> {
+  return {
+    get(prop: string, defaultValue: number = 0) {
+      const value = localStorage.getItem(settingKey(prop));
+      return value ? parseInt(value) : defaultValue;
+    },
+    set(prop: string, value: number) {
+      localStorage.setItem(settingKey(prop), value.toString());
+    }
   }
 };
 
-const StoredInteger: StoredSetting<number> = {
-  get(prop: string, defaultValue: number = 0) {
-    const value = localStorage.getItem(settingKey(prop));
-    return value ? parseInt(value) : defaultValue;
-  },
-  set(prop: string, value: number) {
-    localStorage.setItem(settingKey(prop), value.toString());
-  }
-};
-
-const StoredStringList: StoredSetting<string[]> = {
-  get(prop: string, defaultValue: string[] = []) {
-    const value = localStorage.getItem(settingKey(prop));
-    return value ? JSON.parse(value) as string[] : defaultValue;
-  },
-  set(prop: string, value: string[]) {
-    localStorage.setItem(settingKey(prop), JSON.stringify(value));
+function StoredStringList(): StoredSetting<string[]> {
+  return {
+    get(prop: string, defaultValue: string[] = []) {
+      const value = localStorage.getItem(settingKey(prop));
+      return value ? JSON.parse(value) as string[] : defaultValue;
+    },
+    set(prop: string, value: string[]) {
+      localStorage.setItem(settingKey(prop), JSON.stringify(value));
+    }
   }
 };
 
@@ -109,12 +119,12 @@ export async function overwriteSettings(settings: Partial<UserSettings>) {
  * Interface for all user settings and single values.
  */
 export const Settings = getSettingsProxy({
-  defaultLocale: StoredInteger,
-  hasWorkspace: StoredBoolean,
-  disableBlur: StoredBoolean,
-  isLightTheme: StoredBoolean,
-  projectUuids: StoredStringList,
-  reduceMotion: StoredBoolean,
+  defaultLocale: StoredInteger(),
+  hasWorkspace: StoredBoolean(),
+  disableBlur: StoredBoolean(toggleBlurEffect),
+  isLightTheme: StoredBoolean(toggleLightTheme),
+  projectUuids: StoredStringList(),
+  reduceMotion: StoredBoolean(),
 });
 
 //#endregion Settings
