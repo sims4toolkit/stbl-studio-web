@@ -15,7 +15,10 @@ html {
     transition-delay: 0ms;
   }
 
-  h1, h2, h3, h4, h5, h6, p, strong, em, label, span {
+  *,
+  *:before,
+  *:after,
+  *::placeholder {
     // required for theme transition animation
     color: var(--color-text);
   }
