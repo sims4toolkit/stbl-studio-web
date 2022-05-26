@@ -48,6 +48,20 @@
   }
 }
 
+.floating-card {
+  background-color: var(--color-card);
+  padding: 16px;
+  border-radius: 8px;
+  min-width: 300px;
+  max-width: 100%;
+}
+
+.floating-card-group {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
 .unselectable-text {
   -webkit-touch-callout: none;
   -webkit-user-select: none;

@@ -1,9 +1,20 @@
 <script lang="ts">
-  // intentionally blank
+  import GradientHeader from "../../elements/GradientHeader.svelte";
+  import ContentArea from "../../layout/ContentArea.svelte";
+  import ToolView from "./ToolView.svelte";
 </script>
 
 <section id="tools-page">
-  <p>hi</p>
+  <ContentArea>
+    <GradientHeader title="Miscellaneous Tools" />
+    <div class="floating-card-group mt-2">
+      <ToolView
+        name="Pronoun Batch Fixer"
+        description="The pronoun update changed how some text tokens work, and this online tool will help convert your strings to the new format."
+        link="pronouns"
+      />
+    </div>
+  </ContentArea>
 </section>
 
 <style lang="scss">

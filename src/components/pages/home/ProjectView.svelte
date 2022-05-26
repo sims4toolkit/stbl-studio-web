@@ -22,7 +22,7 @@
 </script>
 
 <button
-  class="button-wrapper text-color project-view drop-shadow hoverable w-100"
+  class="button-wrapper text-color project-view floating-card  drop-shadow hoverable w-100"
   class:selected={projectSelected}
   class:move-on-hover={!isInSelectMode}
   class:unselectable-text={isInSelectMode}
@@ -69,11 +69,6 @@
 
 <style lang="scss">
   .project-view {
-    background-color: var(--color-card);
-    padding: 16px;
-    border-radius: 8px;
-    min-width: 300px;
-    max-width: 100%;
     font-size: 1em;
 
     .selected-indicator {
