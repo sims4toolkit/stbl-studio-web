@@ -25,7 +25,7 @@
     class:input-height={matchInputHeight}
   >
     <Checkbox label="Reduce Transparency" bind:checked={disableBlur} />
-    <Checkbox label="Reduce Motion" bind:checked={reduceMotion} />
+    <Checkbox label="Reduce Animations" bind:checked={reduceMotion} />
   </div>
 </div>
 

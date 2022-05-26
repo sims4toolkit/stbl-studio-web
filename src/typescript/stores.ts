@@ -1,3 +1,4 @@
+import type { StringTableLocale } from "@s4tk/models/enums";
 import { Writable, writable } from "svelte/store";
 import type Workspace from "./models/workspace";
 import { Settings } from "./storage";
@@ -7,7 +8,7 @@ export const activeWorkspace: Writable<Workspace> = writable(null);
 function createSettingStore<T>(
   name: string,
   onChange?: (value: T) => void
-): Writable<boolean> {
+): Writable<T> {
   const store = writable(Settings[name]);
 
   store.subscribe(value => {
@@ -39,3 +40,5 @@ export const disableBlurStore = createSettingStore<boolean>(
 );
 
 export const reduceMotionStore = createSettingStore<boolean>("reduceMotion");
+
+export const defaultLocaleStore = createSettingStore<StringTableLocale>("defaultLocale");

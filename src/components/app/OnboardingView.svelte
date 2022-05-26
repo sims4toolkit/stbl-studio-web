@@ -2,7 +2,11 @@
   import { fade, fly } from "svelte/transition";
   import Workspace from "../../typescript/models/workspace";
   import { Settings } from "../../typescript/storage";
-  import { activeWorkspace, reduceMotionStore } from "../../typescript/stores";
+  import {
+    activeWorkspace,
+    defaultLocaleStore,
+    reduceMotionStore,
+  } from "../../typescript/stores";
   import NavigationButton from "../elements/NavigationButton.svelte";
   import ProgressCircles from "../elements/ProgressCircles.svelte";
   import FileInput from "../elements/FileInput.svelte";
@@ -17,10 +21,16 @@
   $: filledInCircles = page === "disclaimers" ? 2 : 1;
 
   let animationDuration = Settings.reduceMotion ? 0 : 1000;
+  let defaultLocale = Settings.defaultLocale;
 
   reduceMotionStore.subscribe((value) => {
     animationDuration = value ? 0 : 1000;
   });
+
+  $: {
+    defaultLocale;
+    defaultLocaleStore.set(defaultLocale);
+  }
 
   function nextButtonClicked() {
     if (page === "name") {
@@ -87,7 +97,7 @@
             <LocaleSelect
               label="Default Locale"
               name="default-locale-select"
-              selectedLocale={0}
+              bind:selectedLocale={defaultLocale}
             />
             <AccessibilityOptions matchInputHeight={true} />
           </div>
@@ -162,7 +172,7 @@
     }
 
     li {
-      margin-bottom: 0.5em;
+      margin-bottom: 0.35em;
     }
   }
 </style>
