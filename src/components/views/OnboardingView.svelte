@@ -40,7 +40,7 @@
     numPages={2}
     completePages={currentPage}
     bind:currentPage
-    minimumContentHeight="175"
+    minimumContentHeight="180"
     finalPageNextButtonText="Get Started"
     onNextButtonClick={nextButtonClicked}
   >
@@ -63,7 +63,7 @@
           > to learn more about what it can do.
         </p>
         <p class="mb-0">Get started by personalizing your workspace.</p>
-        <div class="mt-1">
+        <div class="mt-2">
           <div class="flex-wrap flex-gap-large">
             <LocaleSelect
               label="Default Locale"
