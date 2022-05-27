@@ -5,10 +5,8 @@
   font-family: $font-noto-sans, sans-serif;
 }
 
-.monospace,
-.monospace::placeholder {
-  font-size: 1em; // for theme transition
-  font-family: monospace;
+.monospace {
+  font-family: $font-roboto-mono, monospace;
 }
 
 .nowrap {

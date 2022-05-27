@@ -32,6 +32,7 @@
     placeholder="Group..."
     bind:value={groupHexString}
     bind:isValid={isGroupValid}
+    monospace={true}
     validators={[
       {
         error: "Must be 8-digit hex",
@@ -48,6 +49,7 @@
     placeholder="Instance..."
     bind:value={instanceHexString}
     bind:isValid={isInstanceValid}
+    monospace={true}
     validators={[
       {
         error: "Must be 14-digit hex",
