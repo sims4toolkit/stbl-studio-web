@@ -1,17 +1,27 @@
 <script lang="ts">
   import { onDestroy } from "svelte";
-  import { onMount } from "svelte";
   import { replace } from "svelte-spa-router";
   import type Project from "../../../typescript/models/project";
   import type Workspace from "../../../typescript/models/workspace";
   import { activeWorkspace } from "../../../typescript/stores";
   import ContentArea from "../../shared/layout/ContentArea.svelte";
   import GradientHeader from "../../shared/elements/GradientHeader.svelte";
-  import NavigationButton from "../../shared/elements/NavigationButton.svelte";
+  import StringEntryCell from "./StringEntryCell.svelte";
+  import SelectModeToggle from "../../shared/controls/SelectModeToggle.svelte";
+  import SelectionGroup from "../../../typescript/models/selection-group";
+  import ProjectActionButtons from "./ProjectActionButtons.svelte";
 
   export let params: { uuid: string };
 
   let project: Project;
+
+  let selectionGroup = new SelectionGroup<{ key: number; value: string }>(
+    [],
+    "key",
+    () => {
+      selectionGroup = selectionGroup;
+    }
+  ); // FIXME:
 
   let workspace: Workspace;
   const unsubscribe = activeWorkspace.subscribe((value) => {
@@ -28,6 +38,11 @@
   function onBackClicked() {
     replace("/");
   }
+
+  let isEditing = false;
+
+  $: toolbarDisabledText = workspace ? "none selected" : "no workspace";
+  $: toolbarDisabled = !workspace || selectionGroup?.noneSelected;
 </script>
 
 <svelte:head>
@@ -35,15 +50,34 @@
 </svelte:head>
 <section id="project-section">
   {#if Boolean(project)}
-    <ContentArea banded={true}>
+    <ContentArea banded={true} bottomShadow={true}>
       <GradientHeader title={project.name} />
-      {params.uuid}
+      {#if isEditing}
+        <StringEntryCell stringEntry={{ key: 123, value: "Hello" }} />
+      {:else}
+        <p
+          on:click={() => console.log("click")}
+          on:dblclick={() => console.log("dbl click")}
+        >
+          Double click me
+        </p>
+      {/if}
     </ContentArea>
     <ContentArea banded={false}>
-      {params.uuid}
+      <div class="flex-end">
+        <SelectModeToggle {selectionGroup} />
+      </div>
+      <StringEntryCell stringEntry={{ key: 123, value: "Hello" }} />
     </ContentArea>
   {/if}
 </section>
+
+<!-- TODO: bind to actual values -->
+<ProjectActionButtons
+  disabled={false}
+  disabledText="disabled"
+  isSelecting={false}
+/>
 
 <style lang="scss">
   // intentionally blank

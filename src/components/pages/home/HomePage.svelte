@@ -67,7 +67,7 @@
       },
     },
     {
-      title: "upload",
+      title: "upload project",
       icon: "upload",
       color: ToolbarColor.Upload,
       async onClick() {
@@ -75,7 +75,7 @@
       },
     },
     {
-      title: "create",
+      title: "new project",
       icon: "plus",
       color: ToolbarColor.Create,
       async onClick() {

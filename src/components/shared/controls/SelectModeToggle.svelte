@@ -1,9 +1,8 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
-  import type SelectionGroup from "../../typescript/models/selection-group";
-  import type Project from "../../typescript/models/project";
+  import type SelectionGroup from "../../../typescript/models/selection-group";
 
-  export let selectionGroup: SelectionGroup<Project>;
+  export let selectionGroup: SelectionGroup<any>;
 
   $: isInSelectMode = selectionGroup.selectMode;
 </script>
