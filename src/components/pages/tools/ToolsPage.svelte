@@ -6,12 +6,33 @@
 
 <section id="tools-page">
   <ContentArea>
-    <GradientHeader title="Miscellaneous Tools" />
+    <div class="mb-2">
+      <GradientHeader title="Quick Tools" />
+      <p>
+        Tools that don't require projects to be used, and
+        <strong class="error-color">do not autosave your data</strong>.
+      </p>
+    </div>
     <div class="floating-card-group mt-2">
       <ToolView
-        name="Pronoun Batch Fixer"
-        description="The pronoun update changed how some text tokens work, and this online tool will help convert your strings to the new format."
+        name="Editor"
+        description="View, search, and edit individual string tables of any size."
+        link="edit"
+      />
+      <ToolView
+        name="Merger"
+        description="Merge any number of string tables together, including different locales."
+        link="merge"
+      />
+      <ToolView
+        name="Pronoun Batch Fix"
+        description="Convert all M/F pronouns to their new, gender-neutral tokens."
         link="pronouns"
+      />
+      <ToolView
+        name="Translator"
+        description="Translate a string table from one language to another."
+        link="translate"
       />
     </div>
   </ContentArea>
