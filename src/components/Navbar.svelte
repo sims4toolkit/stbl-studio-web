@@ -5,7 +5,7 @@
   $: helpIcon = $location === "/help" ? "help-circle" : "help-circle-outline";
   $: settingsIcon = $location === "/settings" ? "settings" : "settings-outline";
   $: homeIcon = $location === "/" ? "home" : "home-outline";
-  $: toolsIcon = $location === "/tools" ? "hammer" : "hammer-outline";
+  $: toolsIcon = $location === "/tools" ? "construct" : "construct-outline";
 </script>
 
 <nav class="flex-center-v flex-space-between bottom-shadow">
