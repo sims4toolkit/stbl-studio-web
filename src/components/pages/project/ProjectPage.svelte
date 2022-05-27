@@ -10,6 +10,7 @@
   import SelectModeToggle from "../../shared/controls/SelectModeToggle.svelte";
   import SelectionGroup from "../../../typescript/models/selection-group";
   import ProjectActionButtons from "./ProjectActionButtons.svelte";
+  import IconTextButton from "../../shared/elements/IconTextButton.svelte";
 
   export let params: { uuid: string };
 
@@ -64,10 +65,27 @@
       {/if}
     </ContentArea>
     <ContentArea banded={false}>
-      <div class="flex-end">
+      <div class="flex-space-between flex-center-v my-1">
+        <div class="mb-2">
+          <p class="small-title">other views</p>
+          <div class="flex-center-v flex-gap">
+            <IconTextButton
+              icon="curly-braces"
+              text="JSON"
+              onClick={() => {}}
+            />
+            <IconTextButton
+              icon="language-outline"
+              text="Translate"
+              onClick={() => {}}
+            />
+          </div>
+        </div>
         <SelectModeToggle {selectionGroup} />
       </div>
-      <StringEntryCell stringEntry={{ key: 123, value: "Hello" }} />
+      <div>
+        <StringEntryCell stringEntry={{ key: 123, value: "Hello" }} />
+      </div>
     </ContentArea>
   {/if}
 </section>
