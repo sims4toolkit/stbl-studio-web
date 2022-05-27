@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onDestroy } from "svelte";
-  import { Settings } from "../../typescript/storage";
-  import { isLightThemeStore } from "../../typescript/stores";
+  import { Settings } from "../../../typescript/storage";
+  import { isLightThemeStore } from "../../../typescript/stores";
 
   let isLightTheme = Settings.isLightTheme;
   const unsubscribe = isLightThemeStore.subscribe((value) => {

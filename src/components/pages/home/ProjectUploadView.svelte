@@ -5,10 +5,10 @@
   import { fly } from "svelte/transition";
   import { v4 as uuidv4 } from "uuid";
   import Project from "../../../typescript/models/project";
-  import FileInput from "../../elements/FileInput.svelte";
-  import GradientHeader from "../../elements/GradientHeader.svelte";
-  import NavigationButton from "../../elements/NavigationButton.svelte";
-  import ProgressCircles from "../../elements/ProgressCircles.svelte";
+  import FileInput from "../../shared/elements/FileInput.svelte";
+  import GradientHeader from "../../shared/elements/GradientHeader.svelte";
+  import NavigationButton from "../../shared/elements/NavigationButton.svelte";
+  import ProgressCircles from "../../shared/controls/ProgressCircles.svelte";
   import type Workspace from "../../../typescript/models/workspace";
   import { activeWorkspace } from "../../../typescript/stores";
   import type { StringTableLocale as StblLocaleType } from "@s4tk/models/enums";

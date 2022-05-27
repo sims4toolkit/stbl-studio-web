@@ -1,15 +1,15 @@
 <script lang="ts">
   import { fly } from "svelte/transition";
-  import GradientHeader from "../../../elements/GradientHeader.svelte";
-  import ContentArea from "../../../layout/ContentArea.svelte";
+  import GradientHeader from "../../../shared/elements/GradientHeader.svelte";
+  import ContentArea from "../../../shared/layout/ContentArea.svelte";
   import FileUploadParser from "./FileUploadParser.svelte";
   import PronounToolHeader from "./PronounToolHeader.svelte";
   import pronounReplacements from "../../../../data/pronoun-replacements.json";
   import ReplacementChoices from "./ReplacementChoices.svelte";
-  import IconTextButton from "../../../elements/IconTextButton.svelte";
-  import BlurOverlay from "../../../layout/BlurOverlay.svelte";
+  import IconTextButton from "../../../shared/elements/IconTextButton.svelte";
+  import BlurOverlay from "../../../shared/layout/BlurOverlay.svelte";
   import PronounBatchResults from "./PronounBatchResults.svelte";
-  import Downloader from "../../../elements/Downloader.svelte";
+  import Downloader from "../../../shared/controls/Downloader.svelte";
 
   const { Package } = window.S4TK.models;
 

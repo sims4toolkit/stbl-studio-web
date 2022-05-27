@@ -1,8 +1,8 @@
 <script lang="ts">
   import Workspace from "../../typescript/models/workspace";
   import { activeWorkspace } from "../../typescript/stores";
-  import FileInput from "../elements/FileInput.svelte";
-  import MultipageModalContent from "../layout/MultipageModalContent.svelte";
+  import FileInput from "../shared/elements/FileInput.svelte";
+  import MultipageModalContent from "../shared/layout/MultipageModalContent.svelte";
 
   export let onSuccessfulUpload: () => void;
 

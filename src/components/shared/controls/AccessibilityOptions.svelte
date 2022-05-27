@@ -1,6 +1,9 @@
 <script lang="ts">
-  import { Settings } from "../../typescript/storage";
-  import { disableBlurStore, reduceMotionStore } from "../../typescript/stores";
+  import { Settings } from "../../../typescript/storage";
+  import {
+    disableBlurStore,
+    reduceMotionStore,
+  } from "../../../typescript/stores";
   import Checkbox from "../elements/Checkbox.svelte";
 
   export let matchInputHeight = false;

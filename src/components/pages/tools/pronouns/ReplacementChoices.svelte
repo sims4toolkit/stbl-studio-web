@@ -1,6 +1,6 @@
 <script lang="ts">
   import type PossibleReplacements from "../../../../data/pronoun-replacements.json";
-  import Checkbox from "../../../elements/Checkbox.svelte";
+  import Checkbox from "../../../shared/elements/Checkbox.svelte";
   export let possibleReplacements: typeof PossibleReplacements;
 </script>
 

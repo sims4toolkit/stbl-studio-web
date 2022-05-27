@@ -1,6 +1,6 @@
 <script lang="ts">
   import { fly } from "svelte/transition";
-  import { Settings } from "../../typescript/storage";
+  import { Settings } from "../../../typescript/storage";
   import FloatingActionButton from "./FloatingActionButton.svelte";
 
   export let disabled = false;

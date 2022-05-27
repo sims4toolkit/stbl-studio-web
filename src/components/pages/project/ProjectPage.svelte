@@ -5,9 +5,9 @@
   import type Project from "../../../typescript/models/project";
   import type Workspace from "../../../typescript/models/workspace";
   import { activeWorkspace } from "../../../typescript/stores";
-  import ContentArea from "../../layout/ContentArea.svelte";
-  import GradientHeader from "../../elements/GradientHeader.svelte";
-  import NavigationButton from "../../elements/NavigationButton.svelte";
+  import ContentArea from "../../shared/layout/ContentArea.svelte";
+  import GradientHeader from "../../shared/elements/GradientHeader.svelte";
+  import NavigationButton from "../../shared/elements/NavigationButton.svelte";
 
   export let params: { uuid: string };
 

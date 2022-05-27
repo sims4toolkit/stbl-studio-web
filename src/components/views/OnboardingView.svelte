@@ -3,13 +3,13 @@
   import Workspace from "../../typescript/models/workspace";
   import { Settings } from "../../typescript/storage";
   import { activeWorkspace, defaultLocaleStore } from "../../typescript/stores";
-  import GradientHeader from "../elements/GradientHeader.svelte";
-  import IconTextButton from "../elements/IconTextButton.svelte";
-  import AccessibilityOptions from "../elements/AccessibilityOptions.svelte";
-  import LocaleSelect from "../elements/LocaleSelect.svelte";
-  import MultipageModalContent from "../layout/MultipageModalContent.svelte";
+  import GradientHeader from "../shared/elements/GradientHeader.svelte";
+  import IconTextButton from "../shared/elements/IconTextButton.svelte";
+  import AccessibilityOptions from "../shared/controls/AccessibilityOptions.svelte";
+  import LocaleSelect from "../shared/controls/LocaleSelect.svelte";
+  import MultipageModalContent from "../shared/layout/MultipageModalContent.svelte";
   import UploadWorkspaceView from "./UploadWorkspaceView.svelte";
-  import ThemeToggler from "../elements/ThemeToggler.svelte";
+  import ThemeToggler from "../shared/controls/ThemeToggler.svelte";
 
   export let exitOnboarding: () => void;
 

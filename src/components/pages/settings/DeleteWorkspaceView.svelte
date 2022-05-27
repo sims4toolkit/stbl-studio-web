@@ -1,7 +1,7 @@
 <script lang="ts">
   import { replace } from "svelte-spa-router";
-  import TextInput from "../../elements/TextInput.svelte";
-  import MultipageModalContent from "../../layout/MultipageModalContent.svelte";
+  import TextInput from "../../shared/elements/TextInput.svelte";
+  import MultipageModalContent from "../../shared/layout/MultipageModalContent.svelte";
 
   let confirmationText = "";
   let confirmed = false;

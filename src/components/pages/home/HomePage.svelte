@@ -4,16 +4,16 @@
   import type Workspace from "../../../typescript/models/workspace";
   import SelectionGroup from "../../../typescript/models/selection-group";
   import ToolbarColor from "../../../typescript/enums/toolbar-colors";
-  import ContentArea from "../../layout/ContentArea.svelte";
-  import SplitView from "../../layout/SplitView.svelte";
-  import FloatingActionButtonGroup from "../../elements/FloatingActionButtonGroup.svelte";
-  import SelectModeToggle from "../../elements/SelectModeToggle.svelte";
+  import ContentArea from "../../shared/layout/ContentArea.svelte";
+  import SplitView from "../../shared/layout/SplitView.svelte";
+  import FloatingActionButtonGroup from "../../shared/controls/FloatingActionButtonGroup.svelte";
+  import SelectModeToggle from "../../shared/controls/SelectModeToggle.svelte";
   import ProjectViewGroup from "./ProjectViewGroup.svelte";
-  import Downloader from "../../elements/Downloader.svelte";
+  import Downloader from "../../shared/controls/Downloader.svelte";
   import { activeWorkspace } from "../../../typescript/stores";
-  import BlurOverlay from "../../layout/BlurOverlay.svelte";
+  import BlurOverlay from "../../shared/layout/BlurOverlay.svelte";
   import ProjectCreationView from "./ProjectCreationView.svelte";
-  import GradientHeader from "../../elements/GradientHeader.svelte";
+  import GradientHeader from "../../shared/elements/GradientHeader.svelte";
   import ProjectDeletionView from "./ProjectDeletionView.svelte";
   import ProjectUploadView from "./ProjectUploadView.svelte";
 

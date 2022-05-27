@@ -2,10 +2,10 @@
   import { onDestroy } from "svelte";
   import type { StringTableLocale } from "@s4tk/models/enums";
   import LocaleSelect from "./LocaleSelect.svelte";
-  import TextInput from "./TextInput.svelte";
-  import { validateHexString } from "../../typescript/helpers/tgi";
-  import type Workspace from "../../typescript/models/workspace";
-  import { activeWorkspace } from "../../typescript/stores";
+  import TextInput from "../elements/TextInput.svelte";
+  import { validateHexString } from "../../../typescript/helpers/tgi";
+  import type Workspace from "../../../typescript/models/workspace";
+  import { activeWorkspace } from "../../../typescript/stores";
 
   export let groupHexString: string;
   export let isGroupValid = true;

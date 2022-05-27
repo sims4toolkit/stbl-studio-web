@@ -1,5 +1,5 @@
 <script lang="ts">
-  import ContentArea from "../layout/ContentArea.svelte";
+  import ContentArea from "./shared/layout/ContentArea.svelte";
 </script>
 
 <div id="footer" class="flex-center text-center">

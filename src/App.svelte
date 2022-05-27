@@ -4,14 +4,14 @@
   import { activeWorkspace, isLightThemeStore } from "./typescript/stores";
   import { Settings } from "./typescript/storage";
   import Workspace from "./typescript/models/workspace";
-  import Navbar from "./components/app/Navbar.svelte";
-  import Footer from "./components/app/Footer.svelte";
+  import Navbar from "./components/Navbar.svelte";
+  import Footer from "./components/Footer.svelte";
+  import BlurOverlay from "./components/shared/layout/BlurOverlay.svelte";
+  import OnboardingView from "./components/views/OnboardingView.svelte";
   import NotFoundPage from "./components/pages/NotFoundPage.svelte";
   import HomePage from "./components/pages/home/HomePage.svelte";
   import HelpPage from "./components/pages/help/HelpPage.svelte";
   import ProjectPage from "./components/pages/project/ProjectPage.svelte";
-  import BlurOverlay from "./components/layout/BlurOverlay.svelte";
-  import OnboardingView from "./components/views/OnboardingView.svelte";
   import SettingsPage from "./components/pages/settings/SettingsPage.svelte";
   import PronounToolPage from "./components/pages/tools/pronouns/PronounToolPage.svelte";
   import ToolsPage from "./components/pages/tools/ToolsPage.svelte";

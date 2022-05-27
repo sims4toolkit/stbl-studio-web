@@ -2,7 +2,7 @@
   import { fly } from "svelte/transition";
   import type { StringTableResource as StblResourceType } from "@s4tk/models";
   import type { ResourceKey } from "@s4tk/models/types";
-  import FileInput from "../../../elements/FileInput.svelte";
+  import FileInput from "../../../shared/elements/FileInput.svelte";
 
   const { StringTableResource, Package } = window.S4TK.models;
   const { BinaryResourceType, StringTableLocale } = window.S4TK.enums;

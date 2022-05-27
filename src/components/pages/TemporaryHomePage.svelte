@@ -1,7 +1,7 @@
 <script lang="ts">
   import { link } from "svelte-spa-router";
-  import ContentArea from "../layout/ContentArea.svelte";
-  import GradientHeader from "../elements/GradientHeader.svelte";
+  import ContentArea from "../shared/layout/ContentArea.svelte";
+  import GradientHeader from "../shared/elements/GradientHeader.svelte";
 </script>
 
 <svelte:head>

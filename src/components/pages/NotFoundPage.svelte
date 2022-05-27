@@ -1,6 +1,6 @@
 <script lang="ts">
-  import ContentArea from "../layout/ContentArea.svelte";
-  import GradientHeader from "../elements/GradientHeader.svelte";
+  import ContentArea from "../shared/layout/ContentArea.svelte";
+  import GradientHeader from "../shared/elements/GradientHeader.svelte";
 
   // just silencing warnings in a hacky way, don't mind me
   export let params: any;

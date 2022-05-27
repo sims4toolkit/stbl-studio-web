@@ -10,12 +10,12 @@
   } from "../../../typescript/helpers/localization";
   import { hashInstanceBase } from "../../../typescript/helpers/tgi";
   import { activeWorkspace } from "../../../typescript/stores";
-  import TextInput from "../../elements/TextInput.svelte";
+  import TextInput from "../../shared/elements/TextInput.svelte";
   import LocaleCheckboxesView from "./LocaleCheckboxesView.svelte";
   import type { LocaleData } from "../../../global";
   import { Settings } from "../../../typescript/storage";
-  import MultipageModalContent from "../../layout/MultipageModalContent.svelte";
-  import GroupInstanceLocale from "../../elements/GroupInstanceLocale.svelte";
+  import MultipageModalContent from "../../shared/layout/MultipageModalContent.svelte";
+  import GroupInstanceLocale from "../../shared/controls/GroupInstanceLocale.svelte";
 
   const { formatAsHexString } = window.S4TK.formatting;
 

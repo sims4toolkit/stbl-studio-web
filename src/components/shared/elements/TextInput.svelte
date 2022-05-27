@@ -1,6 +1,6 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
-  import { Settings } from "../../typescript/storage";
+  import { Settings } from "../../../typescript/storage";
 
   interface InputValidator {
     test: (value: string) => boolean;

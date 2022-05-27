@@ -1,5 +1,5 @@
 <script lang="ts">
-  import IconTextButton from "../../elements/IconTextButton.svelte";
+  import IconTextButton from "../../shared/elements/IconTextButton.svelte";
 </script>
 
 <div class="quick-actions-container">

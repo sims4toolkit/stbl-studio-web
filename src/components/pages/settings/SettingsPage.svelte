@@ -1,8 +1,8 @@
 <script lang="ts">
-  import AccessibilityOptions from "../../elements/AccessibilityOptions.svelte";
-  import IconTextButton from "../../elements/IconTextButton.svelte";
-  import BlurOverlay from "../../layout/BlurOverlay.svelte";
-  import ContentArea from "../../layout/ContentArea.svelte";
+  import AccessibilityOptions from "../../shared/controls/AccessibilityOptions.svelte";
+  import IconTextButton from "../../shared/elements/IconTextButton.svelte";
+  import BlurOverlay from "../../shared/layout/BlurOverlay.svelte";
+  import ContentArea from "../../shared/layout/ContentArea.svelte";
   import DeleteWorkspaceView from "./DeleteWorkspaceView.svelte";
 
   let clearingStorage = false;

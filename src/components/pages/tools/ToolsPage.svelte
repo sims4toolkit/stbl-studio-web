@@ -1,6 +1,6 @@
 <script lang="ts">
-  import GradientHeader from "../../elements/GradientHeader.svelte";
-  import ContentArea from "../../layout/ContentArea.svelte";
+  import GradientHeader from "../../shared/elements/GradientHeader.svelte";
+  import ContentArea from "../../shared/layout/ContentArea.svelte";
   import ToolView from "./ToolView.svelte";
 </script>
 

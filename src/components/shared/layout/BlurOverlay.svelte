@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount, onDestroy } from "svelte";
   import { fade } from "svelte/transition";
-  import { Settings } from "../../typescript/storage";
+  import { Settings } from "../../../typescript/storage";
   import StickyCloseButton from "../elements/StickyCloseButton.svelte";
 
   export let large = false;
