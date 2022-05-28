@@ -37,17 +37,25 @@
     <div>hi</div>
   {/if}
 
-  <input
-    type="text"
-    class="input-height monospace key-input"
-    readonly={mode !== "edit"}
-    tabindex={mode === "edit" ? 0 : -1}
-    placeholder={"0x12345678"}
-    value={formatStringKey(stringEntry.key)}
-    on:dblclick={handleDoubleClick}
-    on:click={focusIfEditing}
-    on:blur={enableViewMode}
-  />
+  <div class="input-wrapper">
+    <button
+      class="button-wrapper input-copy-button"
+      class:hidden={stringCopyDisabled}
+    >
+      <img class="is-svg" src="./assets/copy.svg" alt="Copy" />
+    </button>
+    <input
+      type="text"
+      class="input-height monospace key-input"
+      readonly={mode !== "edit"}
+      tabindex={mode === "edit" ? 0 : -1}
+      placeholder={"0x12345678"}
+      value={formatStringKey(stringEntry.key)}
+      on:dblclick={handleDoubleClick}
+      on:click={focusIfEditing}
+      on:blur={enableViewMode}
+    />
+  </div>
 
   <div class="input-wrapper w-100">
     <button
@@ -72,10 +80,6 @@
 
   <button class="button-wrapper">
     <img src="./assets/copy.svg" alt="Copy" class="is-svg" />
-  </button>
-
-  <button class="button-wrapper" on:click={pencilClicked}>
-    <img src="./assets/pencil.svg" alt="Edit" class="is-svg" />
   </button>
 </div>
 
@@ -124,12 +128,11 @@
       }
 
       .input-copy-button {
-        opacity: 0.65;
         display: none;
-        background-color: var(--color-card);
+        background-color: var(--color-divider);
         border-radius: 4px;
         position: absolute;
-        top: 6px;
+        top: 8px;
         left: -20px;
         width: 24px;
         height: 24px;
@@ -139,11 +142,12 @@
         }
 
         &:hover {
-          opacity: 1;
+          opacity: 0.65;
         }
 
         img {
           height: 12px;
+          filter: var(--filter-svg-invert);
         }
       }
     }
