@@ -43,6 +43,10 @@
       cursor: pointer;
       background-color: var(--color-accent-secondary);
       border-color: var(--color-accent-secondary);
+
+      img {
+        filter: var(--filter-svg-invert);
+      }
     }
 
     &:not(.active) {
