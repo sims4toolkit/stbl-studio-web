@@ -83,7 +83,10 @@
         </div>
         <SelectModeToggle {selectionGroup} />
       </div>
-      <div>
+      <div class="drop-shadow">
+        <StringEntryCell stringEntry={{ key: 123, value: "Hello" }} />
+        <StringEntryCell stringEntry={{ key: 123, value: "Hello" }} />
+        <StringEntryCell stringEntry={{ key: 123, value: "Hello" }} />
         <StringEntryCell stringEntry={{ key: 123, value: "Hello" }} />
       </div>
     </ContentArea>
