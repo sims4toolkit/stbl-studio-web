@@ -10,7 +10,9 @@
 
   function focusIfEditing(e: MouseEvent) {
     setTimeout(() => {
-      if (mode === "edit") (e.target as HTMLInputElement).focus();
+      if (mode === "edit") {
+        (e.target as HTMLInputElement).focus();
+      }
     }, 50);
   }
 
@@ -26,6 +28,8 @@
     mode = mode === "edit" ? "view" : "edit";
     if (mode === "edit") stringInput.focus();
   }
+
+  $: stringCopyDisabled = mode === "edit";
 </script>
 
 <div class="string-entry-cell w-100 flex-center-v flex-gap px-1 py-half">
@@ -45,18 +49,26 @@
     on:blur={enableViewMode}
   />
 
-  <input
-    bind:this={stringInput}
-    type="text"
-    class="input-height w-100"
-    readonly={mode !== "edit"}
-    tabindex={mode === "edit" ? 0 : -1}
-    placeholder={"{0.SimFirstName} is reticulating {0.SimPronounPossessiveDependent} splines!"}
-    value={stringEntry.value}
-    on:dblclick={handleDoubleClick}
-    on:click={focusIfEditing}
-    on:blur={enableViewMode}
-  />
+  <div class="input-wrapper w-100">
+    <button
+      class="button-wrapper input-copy-button"
+      class:hidden={stringCopyDisabled}
+    >
+      <img class="is-svg" src="./assets/copy.svg" alt="Copy" />
+    </button>
+    <input
+      bind:this={stringInput}
+      type="text"
+      class="input-height w-100"
+      readonly={mode !== "edit"}
+      tabindex={mode === "edit" ? 0 : -1}
+      placeholder={"{0.SimFirstName} is reticulating {0.SimPronounPossessiveDependent} splines!"}
+      value={stringEntry.value}
+      on:dblclick={handleDoubleClick}
+      on:click={focusIfEditing}
+      on:blur={enableViewMode}
+    />
+  </div>
 
   <button class="button-wrapper">
     <img src="./assets/copy.svg" alt="Copy" class="is-svg" />
@@ -102,8 +114,42 @@
       }
     }
 
+    .input-wrapper {
+      position: relative;
+
+      &:hover {
+        .input-copy-button {
+          display: inline-block;
+        }
+      }
+
+      .input-copy-button {
+        opacity: 0.65;
+        display: none;
+        background-color: var(--color-card);
+        border-radius: 4px;
+        position: absolute;
+        top: 6px;
+        left: -20px;
+        width: 24px;
+        height: 24px;
+
+        &.hidden {
+          display: none;
+        }
+
+        &:hover {
+          opacity: 1;
+        }
+
+        img {
+          height: 12px;
+        }
+      }
+    }
+
     img {
-      height: 18px;
+      height: 16px;
       width: auto;
     }
   }
