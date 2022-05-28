@@ -23,18 +23,28 @@
         alt="Home"
       />
     </a>
-    <a
-      href="/tools"
-      class:active={$location === "/tools"}
-      use:link
-      title="Tools"
-    >
-      <img
-        class="is-svg ionicon-img"
-        src="./assets/{toolsIcon}.svg"
-        alt="Tools"
-      />
-    </a>
+    <div class="tools-button">
+      <a
+        href="/tools"
+        class:active={$location === "/tools"}
+        use:link
+        title="Tools"
+      >
+        <img
+          class="is-svg ionicon-img"
+          src="./assets/{toolsIcon}.svg"
+          alt="Tools"
+        />
+      </a>
+      <div class="tools-context-menu drop-shadow">
+        <div class="p-half">
+          <p class="my-0">Hasher</p>
+        </div>
+        <div class="p-half">
+          <p class="my-0">Hasher</p>
+        </div>
+      </div>
+    </div>
     <a href="/help" class:active={$location === "/help"} use:link title="Help">
       <img class="is-svg" src="./assets/{helpIcon}.svg" alt="Help" />
     </a>
@@ -62,14 +72,30 @@
     padding: 0 1em;
     position: fixed;
     top: 0;
-    left: 0;
-    right: 0;
+    width: 100%;
     height: $navbar-height;
-    overflow-x: auto;
     z-index: 1024;
     white-space: nowrap;
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
+
+    .tools-button {
+      position: relative;
+    }
+
+    .tools-context-menu {
+      display: none; // TODO: temporary
+      position: absolute;
+      top: 35px;
+      left: -35px;
+      width: 180px;
+      border-radius: 4px;
+      background-color: var(--color-card);
+
+      & > div:not(:last-child) {
+        border-bottom: 1px solid var(--color-divider);
+      }
+    }
 
     div.left {
       margin-right: 2em;
