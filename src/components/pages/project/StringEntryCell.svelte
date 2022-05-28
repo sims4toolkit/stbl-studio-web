@@ -42,11 +42,11 @@
       class="button-wrapper input-copy-button"
       class:hidden={stringCopyDisabled}
     >
-      <img class="is-svg" src="./assets/copy.svg" alt="Copy" />
+      <img class="is-svg light-svg" src="./assets/copy.svg" alt="Copy" />
     </button>
     <input
       type="text"
-      class="input-height monospace key-input"
+      class="input-height monospace key-input accent-color"
       readonly={mode !== "edit"}
       tabindex={mode === "edit" ? 0 : -1}
       placeholder={"0x12345678"}
@@ -62,7 +62,7 @@
       class="button-wrapper input-copy-button"
       class:hidden={stringCopyDisabled}
     >
-      <img class="is-svg" src="./assets/copy.svg" alt="Copy" />
+      <img class="is-svg light-svg" src="./assets/copy.svg" alt="Copy" />
     </button>
     <input
       bind:this={stringInput}
@@ -147,7 +147,7 @@
 
         img {
           height: 12px;
-          filter: var(--filter-svg-invert);
+          // filter: var(--filter-svg-invert);
         }
       }
     }

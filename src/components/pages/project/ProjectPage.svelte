@@ -12,6 +12,8 @@
   import ProjectActionButtons from "./ProjectActionButtons.svelte";
   import IconTextButton from "../../shared/elements/IconTextButton.svelte";
 
+  const { formatAsHexString } = window.S4TK.formatting;
+
   export let params: { uuid: string };
 
   let project: Project;
@@ -52,22 +54,18 @@
 <section id="project-section">
   {#if Boolean(project)}
     <ContentArea banded={true} bottomShadow={true}>
-      <GradientHeader title={project.name} />
-      {#if isEditing}
-        <StringEntryCell stringEntry={{ key: 123, value: "Hello" }} />
-      {:else}
-        <p
-          on:click={() => console.log("click")}
-          on:dblclick={() => console.log("dbl click")}
-        >
-          Double click me
-        </p>
-      {/if}
-    </ContentArea>
-    <ContentArea banded={false}>
-      <div class="flex-space-between flex-center-v my-1">
-        <div class="mb-2">
-          <p class="small-title">other views</p>
+      <div class="flex-space-between">
+        <div>
+          <GradientHeader title={project.name} />
+          <p class="mb-0 monospace subtle-text">
+            {formatAsHexString(project.group, 8)}-{formatAsHexString(
+              project.instanceBase,
+              14
+            )}
+          </p>
+        </div>
+        <div>
+          <p class="small-title mt-0">other views</p>
           <div class="flex-center-v flex-gap">
             <IconTextButton
               icon="curly-braces"
@@ -81,6 +79,11 @@
             />
           </div>
         </div>
+      </div>
+    </ContentArea>
+    <ContentArea banded={false}>
+      <div class="flex-space-between flex-center-v mb-1">
+        <p class="subtle-text my-0">Showing X of X strings</p>
         <SelectModeToggle {selectionGroup} />
       </div>
       <div class="drop-shadow">
