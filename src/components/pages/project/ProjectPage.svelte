@@ -55,8 +55,8 @@
 <section id="project-section">
   {#if Boolean(project)}
     <ContentArea banded={true} bottomShadow={true}>
-      <SplitView>
-        <div slot="left">
+      <div class="flex-space-between flex-wrap flex-gap-large">
+        <div class="mw-100">
           <GradientHeader title={project.name} />
           <p class="mb-0 monospace subtle-text">
             {formatAsHexString(project.group, 8)}-{formatAsHexString(
@@ -65,27 +65,30 @@
             )}
           </p>
         </div>
-        <div slot="right">
+        <div>
           <p class="small-title mt-0">other views</p>
-          <div class="flex-center-v flex-gap">
+          <div class="flex-center-v flex-gap flex-wrap">
             <IconTextButton
               icon="list-outline"
               text="List"
               onClick={() => {}}
+              fixedWidth="115"
             />
             <IconTextButton
               icon="curly-braces"
               text="JSON"
               onClick={() => {}}
+              fixedWidth="115"
             />
             <IconTextButton
               icon="language-outline"
               text="Translate"
               onClick={() => {}}
+              fixedWidth="115"
             />
           </div>
         </div>
-      </SplitView>
+      </div>
     </ContentArea>
     <ContentArea banded={false}>
       <div class="flex-space-between flex-center-v mb-1">

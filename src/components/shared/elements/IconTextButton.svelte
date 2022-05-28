@@ -1,10 +1,13 @@
 <script lang="ts">
+  import { onMount } from "svelte";
+
   export let icon: string;
   export let text: string;
   export let onClick: () => void;
   export let active = true;
   export let large = false;
   export let danger = false;
+  export let fixedWidth: string = "";
 
   let button: HTMLButtonElement;
 
@@ -15,6 +18,12 @@
       button.blur();
     }, 100);
   }
+
+  onMount(() => {
+    if (fixedWidth) {
+      button.style.width = fixedWidth + "px";
+    }
+  });
 </script>
 
 <button
