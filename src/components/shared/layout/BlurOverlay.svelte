@@ -69,7 +69,7 @@
   transition:fade={{ duration: Settings.reduceMotion ? 0 : 500 }}
 >
   <div class="popup" class:large class:fill>
-    <div class="overlay-content-wrapper">
+    <div>
       <slot />
     </div>
   </div>
@@ -100,10 +100,6 @@
 
       &.fill {
         width: 100%;
-      }
-
-      .overlay-content-wrapper {
-        margin-bottom: 2.8em;
       }
     }
   }
