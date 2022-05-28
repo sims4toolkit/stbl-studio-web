@@ -23,6 +23,7 @@
   class:active
   on:click={onButtonClick}
   {title}
+  tabindex={active ? 0 : -1}
 >
   <img class="is-svg" src="./assets/{icon}.svg" alt={icon} />
 </button>
