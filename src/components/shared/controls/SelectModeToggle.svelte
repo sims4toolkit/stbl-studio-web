@@ -47,7 +47,8 @@
         font-size: 1.65em;
       }
 
-      &:hover {
+      &:hover,
+      &:hover span {
         color: var(--color-text-subtle);
         cursor: pointer;
       }
