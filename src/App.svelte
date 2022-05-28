@@ -15,6 +15,7 @@
   import SettingsPage from "./components/pages/settings/SettingsPage.svelte";
   import PronounToolPage from "./components/pages/tools/pronouns/PronounToolPage.svelte";
   import ToolsPage from "./components/pages/tools/ToolsPage.svelte";
+  import HasherToolPage from "./components/pages/tools/hasher/HasherToolPage.svelte";
 
   let onboardUser = false;
   let restoreError = false;
@@ -41,6 +42,7 @@
     "/project/:uuid": ProjectPage,
     "/tools": ToolsPage,
     "/tools/pronouns": PronounToolPage,
+    "/tools/hasher": HasherToolPage,
     "*": NotFoundPage,
   };
 

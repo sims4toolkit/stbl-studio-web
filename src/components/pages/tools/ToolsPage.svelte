@@ -17,12 +17,17 @@
       <ToolView
         name="Editor"
         description="View, search, and edit individual string tables of any size."
-        link="edit"
+        link="editor"
+      />
+      <ToolView
+        name="Hasher"
+        description="Use the FNV algorithm to produce 32 and 64-bit hashes."
+        link="hasher"
       />
       <ToolView
         name="Merger"
         description="Merge any number of string tables together, including different locales."
-        link="merge"
+        link="merger"
       />
       <ToolView
         name="Pronoun Batch Fix"
@@ -32,7 +37,7 @@
       <ToolView
         name="Translator"
         description="Translate a string table from one language to another."
-        link="translate"
+        link="translator"
       />
     </div>
   </ContentArea>
