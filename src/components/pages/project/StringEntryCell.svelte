@@ -52,7 +52,7 @@
     readonly={mode !== "edit"}
     tabindex={mode === "edit" ? 0 : -1}
     placeholder={"{0.SimFirstName} is reticulating {0.SimPronounPossessiveDependent} splines!"}
-    value="Hello"
+    value={stringEntry.value}
     on:dblclick={handleDoubleClick}
     on:click={focusIfEditing}
     on:blur={enableViewMode}

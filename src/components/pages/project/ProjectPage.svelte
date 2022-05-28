@@ -84,10 +84,18 @@
         <SelectModeToggle {selectionGroup} />
       </div>
       <div class="drop-shadow">
-        <StringEntryCell stringEntry={{ key: 123, value: "Hello" }} />
-        <StringEntryCell stringEntry={{ key: 123, value: "Hello" }} />
-        <StringEntryCell stringEntry={{ key: 123, value: "Hello" }} />
-        <StringEntryCell stringEntry={{ key: 123, value: "Hello" }} />
+        <StringEntryCell
+          stringEntry={{ key: 0x12345678, value: "This is a string." }}
+        />
+        <StringEntryCell
+          stringEntry={{ key: 0x12345678, value: "This is a string." }}
+        />
+        <StringEntryCell
+          stringEntry={{ key: 0x12345678, value: "This is a string." }}
+        />
+        <StringEntryCell
+          stringEntry={{ key: 0x12345678, value: "This is a string." }}
+        />
       </div>
     </ContentArea>
   {/if}
