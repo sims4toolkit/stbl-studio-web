@@ -77,6 +77,9 @@
     <button class="button-wrapper">
       <img src="./assets/copy.svg" alt="Copy" class="is-svg" />
     </button>
+    <button class="button-wrapper">
+      <img src="./assets/pencil.svg" alt="Edit" class="is-svg" />
+    </button>
   {:else if mode === "edit"}
     <button class="button-wrapper">
       <img src="./assets/save-outline.svg" alt="Copy" class="is-svg" />

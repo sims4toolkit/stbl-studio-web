@@ -11,12 +11,13 @@
   import SelectionGroup from "../../../typescript/models/selection-group";
   import ProjectActionButtons from "./ProjectActionButtons.svelte";
   import IconTextButton from "../../shared/elements/IconTextButton.svelte";
-  import SplitView from "../../shared/layout/SplitView.svelte";
+  import IconButton from "../../shared/elements/IconButton.svelte";
 
   const { formatAsHexString } = window.S4TK.formatting;
 
   export let params: { uuid: string };
 
+  export let view: "list" | "json" | "translate" = "list";
   let project: Project;
 
   let selectionGroup = new SelectionGroup<{ key: number; value: string }>(
@@ -65,34 +66,34 @@
             )}
           </p>
         </div>
-        <div>
-          <p class="small-title mt-0">other views</p>
-          <div class="flex-center-v flex-gap flex-wrap">
-            <IconTextButton
-              icon="list-outline"
-              text="List"
-              onClick={() => {}}
-              fixedWidth="115"
-            />
-            <IconTextButton
-              icon="curly-braces"
-              text="JSON"
-              onClick={() => {}}
-              fixedWidth="115"
-            />
-            <IconTextButton
-              icon="language-outline"
-              text="Translate"
-              onClick={() => {}}
-              fixedWidth="115"
-            />
-          </div>
-        </div>
       </div>
     </ContentArea>
     <ContentArea banded={false}>
-      <div class="flex-space-between flex-center-v mb-1">
-        <p class="subtle-text my-0">Showing X of X strings</p>
+      <div class="flex-space-between flex-center-v mb-2">
+        <!-- <p class="subtle-text my-0">Showing X of X strings</p> -->
+        <div>
+          <p class="mt-0 small-title">{view} view</p>
+          <div class="flex-center-v flex-gap flex-wrap">
+            <IconButton
+              title="List View"
+              icon="list-outline"
+              onClick={() => (view = "list")}
+              active={view !== "list"}
+            />
+            <IconButton
+              title="JSON View"
+              icon="curly-braces"
+              onClick={() => (view = "json")}
+              active={view !== "json"}
+            />
+            <IconButton
+              title="Translate View"
+              icon="language-outline"
+              onClick={() => (view = "translate")}
+              active={view !== "translate"}
+            />
+          </div>
+        </div>
         <SelectModeToggle {selectionGroup} />
       </div>
       <div class="drop-shadow">
