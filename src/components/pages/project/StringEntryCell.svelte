@@ -24,11 +24,6 @@
     }
   }
 
-  function pencilClicked() {
-    mode = mode === "edit" ? "view" : "edit";
-    if (mode === "edit") stringInput.focus();
-  }
-
   $: stringCopyDisabled = mode === "edit";
 </script>
 
@@ -49,7 +44,7 @@
       class="input-height monospace key-input accent-color"
       readonly={mode !== "edit"}
       tabindex={mode === "edit" ? 0 : -1}
-      placeholder={"0x12345678"}
+      placeholder="Key..."
       value={formatStringKey(stringEntry.key)}
       on:dblclick={handleDoubleClick}
       on:click={focusIfEditing}
@@ -78,9 +73,15 @@
     />
   </div>
 
-  <button class="button-wrapper">
-    <img src="./assets/copy.svg" alt="Copy" class="is-svg" />
-  </button>
+  {#if mode === "view"}
+    <button class="button-wrapper">
+      <img src="./assets/copy.svg" alt="Copy" class="is-svg" />
+    </button>
+  {:else if mode === "edit"}
+    <button class="button-wrapper">
+      <img src="./assets/save-outline.svg" alt="Copy" class="is-svg" />
+    </button>
+  {/if}
 </div>
 
 <style lang="scss">

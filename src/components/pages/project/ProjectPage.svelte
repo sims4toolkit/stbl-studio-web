@@ -11,6 +11,7 @@
   import SelectionGroup from "../../../typescript/models/selection-group";
   import ProjectActionButtons from "./ProjectActionButtons.svelte";
   import IconTextButton from "../../shared/elements/IconTextButton.svelte";
+  import SplitView from "../../shared/layout/SplitView.svelte";
 
   const { formatAsHexString } = window.S4TK.formatting;
 
@@ -54,8 +55,8 @@
 <section id="project-section">
   {#if Boolean(project)}
     <ContentArea banded={true} bottomShadow={true}>
-      <div class="flex-space-between">
-        <div>
+      <SplitView>
+        <div slot="left">
           <GradientHeader title={project.name} />
           <p class="mb-0 monospace subtle-text">
             {formatAsHexString(project.group, 8)}-{formatAsHexString(
@@ -64,9 +65,14 @@
             )}
           </p>
         </div>
-        <div>
+        <div slot="right">
           <p class="small-title mt-0">other views</p>
           <div class="flex-center-v flex-gap">
+            <IconTextButton
+              icon="list-outline"
+              text="List"
+              onClick={() => {}}
+            />
             <IconTextButton
               icon="curly-braces"
               text="JSON"
@@ -79,7 +85,7 @@
             />
           </div>
         </div>
-      </div>
+      </SplitView>
     </ContentArea>
     <ContentArea banded={false}>
       <div class="flex-space-between flex-center-v mb-1">
