@@ -97,18 +97,9 @@
         <SelectModeToggle {selectionGroup} />
       </div>
       <div class="drop-shadow">
-        <StringEntryCell
-          stringEntry={{ key: 0x12345678, value: "This is a string." }}
-        />
-        <StringEntryCell
-          stringEntry={{ key: 0x12345678, value: "This is a string." }}
-        />
-        <StringEntryCell
-          stringEntry={{ key: 0x12345678, value: "This is a string." }}
-        />
-        <StringEntryCell
-          stringEntry={{ key: 0x12345678, value: "This is a string." }}
-        />
+        {#each project.primaryStbl.entries as entry, key (key)}
+          <StringEntryCell stringEntry={entry} />
+        {/each}
       </div>
     </ContentArea>
   {/if}
