@@ -93,7 +93,7 @@
       cursor: text;
 
       &:read-only {
-        border: none;
+        border-color: var(--color-bg-secondary);
         outline: none;
       }
 
