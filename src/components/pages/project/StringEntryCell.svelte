@@ -10,7 +10,7 @@
 
   // to prevent it from saving on every keystroke
   let keyValue = formatStringKey(stringEntry.key);
-  let stringValue = stringEntry.string;
+  let stringValue = stringEntry.string.replaceAll("\\n", "\n");
   let stringInput: HTMLTextAreaElement;
   let numRowsOnExpand = 1;
 
@@ -26,7 +26,10 @@
   });
 
   function refreshTextAreaRows() {
-    numRowsOnExpand = Math.min(Math.ceil(stringInput.scrollHeight / 22), 5);
+    numRowsOnExpand = Math.min(
+      Math.ceil((stringInput.scrollHeight - 4) / stringInput.clientHeight),
+      5
+    );
   }
 
   function handleInputDoubleClick(e: MouseEvent) {
@@ -46,7 +49,7 @@
   function handleInputBlur(e: FocusEvent) {
     mode = "view";
     stringEntry.key = parseInt(keyValue);
-    stringEntry.value = stringValue;
+    stringEntry.value = stringValue.replace(/(?:\r\n|\r|\n)/g, "\\n");
     onEdit();
   }
 
@@ -56,7 +59,7 @@
   }
 </script>
 
-<div class="string-entry-cell w-100 flex-center-v flex-gap px-1 py-half">
+<div class="string-entry-cell w-100 flex-center-v flex-gap px-1 py-1">
   {#if mode === "select"}
     <div>hi</div>
   {/if}
@@ -145,6 +148,7 @@
     textarea,
     textarea:focus {
       border: 1px solid var(--color-divider);
+      overflow-x: hidden; // firefox bug
       border-radius: 4px;
       padding: 2px;
       background-color: transparent;
