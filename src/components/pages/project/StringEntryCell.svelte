@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { fade } from "svelte/transition";
+  import Popover from "svelte-popover";
   import type { StringEntry } from "@s4tk/models/types";
   const { formatStringKey } = window.S4TK.formatting;
 
@@ -10,6 +12,7 @@
   let keyValue = formatStringKey(stringEntry.key);
   let stringValue = stringEntry.string;
   let stringInput: HTMLInputElement;
+  let copiedPopoverVisible = false;
 
   $: copyDisabled = mode === "edit";
 
@@ -92,12 +95,33 @@
   </div>
 
   {#if mode === "view"}
-    <button
-      class="button-wrapper"
-      on:click={() => copyToClipboard(`${keyValue}<!--${stringValue}-->`)}
+    <Popover
+      arrow={false}
+      overlayColor={null}
+      open={copiedPopoverVisible}
+      on:open={() => {
+        copiedPopoverVisible = true;
+        setTimeout(() => {
+          copiedPopoverVisible = false;
+        }, 500);
+      }}
     >
-      <img src="./assets/copy.svg" alt="Copy" class="is-svg" />
-    </button>
+      <button
+        slot="target"
+        class="button-wrapper"
+        title="Copy key and string"
+        on:click={() => copyToClipboard(`${keyValue}<!--${stringValue}-->`)}
+      >
+        <img src="./assets/copy.svg" alt="Copy" class="is-svg" />
+      </button>
+      <div
+        slot="content"
+        transition:fade={{ duration: 200 }}
+        class="copied-bg p-half"
+      >
+        <p class="my-0 subtle-text">Copied!</p>
+      </div>
+    </Popover>
     <button class="button-wrapper" on:click={handleEditButtonClick}>
       <img src="./assets/pencil.svg" alt="Edit" class="is-svg" />
     </button>
@@ -182,5 +206,10 @@
       height: 16px;
       width: auto;
     }
+  }
+
+  .copied-bg {
+    background-color: var(--color-card);
+    border-radius: 4px;
   }
 </style>
