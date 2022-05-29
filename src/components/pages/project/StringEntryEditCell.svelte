@@ -63,10 +63,17 @@
       </div>
     </div>
     <div>
-      <CopyButton
-        title="Copy key and comment"
-        textGenerator={() => `${keyValue}<!--${stringValue}-->`}
-      />
+      {#if mode === "edit"}
+        <!-- No click event needed, just unfocus -->
+        <button class="button-wrapper">
+          <img class="is-svg" src="./assets/save-outline.svg" alt="Save" />
+        </button>
+      {:else}
+        <CopyButton
+          title="Copy key and comment"
+          textGenerator={() => `${keyValue}<!--${stringValue}-->`}
+        />
+      {/if}
     </div>
   </div>
   <div class="input-wrapper mt-half">
@@ -109,6 +116,11 @@
 
     div[contenteditable="true"] {
       padding: 4px;
+    }
+
+    img {
+      height: 16px;
+      width: auto;
     }
 
     .input-wrapper {
