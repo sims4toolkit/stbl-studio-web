@@ -1,6 +1,9 @@
 <script lang="ts">
+  import { fade } from "svelte/transition";
   import type { StringEntry } from "@s4tk/models/types";
   import CopyButton from "./CopyButton.svelte";
+  import { validateHexString } from "../../../typescript/helpers/tgi";
+
   const { formatStringKey } = window.S4TK.formatting;
 
   export let mode: "view" | "edit" | "select" = "view";
@@ -9,23 +12,40 @@
 
   let keyValue = formatStringKey(stringEntry.key);
   let stringValue = stringEntry.value.replaceAll("\\n", "\n");
+  let isKeyInvalid = false;
 
-  function handleInputBlur() {
-    mode = "view";
-    stringEntry.key = parseInt(keyValue);
-    stringEntry.value = stringValue.replace(/(?:\r\n|\r|\n)/g, "\\n");
-    onEdit();
+  $: {
+    isKeyInvalid = !validateHexString(keyValue, 8);
+  }
+
+  function handleInputBlur(e: FocusEvent) {
+    if (isKeyInvalid) {
+      (e.target as HTMLInputElement).focus();
+    } else {
+      mode = "view";
+      stringEntry.key = parseInt(keyValue, 16);
+      keyValue = formatStringKey(stringEntry.key);
+      stringEntry.value = stringValue.replace(/(?:\r\n|\r|\n)/g, "\\n");
+      onEdit();
+    }
   }
 </script>
 
 <div class="string-entry-edit-cell p-1">
   <div class="flex-space-between">
-    <div
-      class="key-input accent-color monospace"
-      contenteditable="true"
-      bind:innerHTML={keyValue}
-      on:blur={handleInputBlur}
-    />
+    <div class="flex-center-v">
+      <div
+        class="key-input accent-color monospace"
+        contenteditable="true"
+        bind:innerHTML={keyValue}
+        on:blur={handleInputBlur}
+      />
+      {#if isKeyInvalid}
+        <p transition:fade class="subtle-text error-color my-0">
+          &nbsp;• Must be 32-bit hex
+        </p>
+      {/if}
+    </div>
     <div>
       <CopyButton
         title="Copy key and comment"
@@ -53,7 +73,7 @@
     }
 
     &:not(:first-child) {
-      border-top: 1px solid var(--color-bg);
+      border-top: 2px solid var(--color-bg);
     }
 
     &:last-child {

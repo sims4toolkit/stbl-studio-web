@@ -7,7 +7,7 @@ const { fnv64 } = window.S4TK.hashing;
  * @param digits Digits to check for
  */
 export function validateHexString(hexString: string, digits: number): boolean {
-  const regex = new RegExp(`^([0-9A-F]{${digits}})$`, "i");
+  const regex = new RegExp(`^(0x|0X)?([0-9A-F]{${digits}})$`, "i");
   return regex.test(hexString);
 }
 
