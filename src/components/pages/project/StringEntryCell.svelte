@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { fade } from "svelte/transition";
-  import Popover from "svelte-popover";
   import type { StringEntry } from "@s4tk/models/types";
   import CopyButton from "./CopyButton.svelte";
   const { formatStringKey } = window.S4TK.formatting;
@@ -13,7 +11,6 @@
   let keyValue = formatStringKey(stringEntry.key);
   let stringValue = stringEntry.string;
   let stringInput: HTMLInputElement;
-  let copiedPopoverVisible = false;
 
   $: copyDisabled = mode === "edit";
 
@@ -40,10 +37,6 @@
   function handleEditButtonClick(e: MouseEvent) {
     mode = "edit";
     stringInput.focus();
-  }
-
-  function copyToClipboard(value: string) {
-    navigator.clipboard.writeText(value);
   }
 </script>
 
