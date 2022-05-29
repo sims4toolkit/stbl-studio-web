@@ -14,8 +14,14 @@
   let stringValue = stringEntry.value.replaceAll("\\n", "\n");
   let isKeyInvalid = false;
 
+  $: copyDisabled = mode === "edit";
+
   $: {
     isKeyInvalid = !validateHexString(keyValue, 8);
+  }
+
+  function handleInputFocus(e: FocusEvent) {
+    mode = "edit";
   }
 
   function handleInputBlur(e: FocusEvent) {
@@ -33,18 +39,28 @@
 
 <div class="string-entry-edit-cell p-1">
   <div class="flex-space-between">
-    <div class="flex-center-v">
-      <div
-        class="key-input accent-color monospace"
-        contenteditable="true"
-        bind:innerHTML={keyValue}
-        on:blur={handleInputBlur}
-      />
-      {#if isKeyInvalid}
-        <p transition:fade class="subtle-text error-color my-0">
-          &nbsp;• Must be 32-bit hex
-        </p>
-      {/if}
+    <div class="input-wrapper">
+      <div class="input-copy-position" class:hidden={copyDisabled}>
+        <CopyButton
+          title="Copy key"
+          textGenerator={() => keyValue}
+          smallIcon={true}
+        />
+      </div>
+      <div class="flex-center-v">
+        <div
+          class="key-input accent-color monospace"
+          contenteditable="true"
+          bind:innerHTML={keyValue}
+          on:focus={handleInputFocus}
+          on:blur={handleInputBlur}
+        />
+        {#if isKeyInvalid}
+          <p transition:fade class="subtle-text error-color my-0">
+            &nbsp;• Must be 32-bit hex
+          </p>
+        {/if}
+      </div>
     </div>
     <div>
       <CopyButton
@@ -53,12 +69,22 @@
       />
     </div>
   </div>
-  <div
-    class="string-input mt-1 pre-wrap word-wrap"
-    contenteditable="true"
-    bind:innerHTML={stringValue}
-    on:blur={handleInputBlur}
-  />
+  <div class="input-wrapper mt-half">
+    <div class="input-copy-position" class:hidden={copyDisabled}>
+      <CopyButton
+        title="Copy string"
+        textGenerator={() => stringValue}
+        smallIcon={true}
+      />
+    </div>
+    <div
+      class="string-input pre-wrap word-wrap"
+      contenteditable="true"
+      bind:innerHTML={stringValue}
+      on:focus={handleInputFocus}
+      on:blur={handleInputBlur}
+    />
+  </div>
 </div>
 
 <style lang="scss">
@@ -79,6 +105,38 @@
     &:last-child {
       border-bottom-left-radius: $border-radius;
       border-bottom-right-radius: $border-radius;
+    }
+
+    div[contenteditable="true"] {
+      padding: 4px;
+    }
+
+    .input-wrapper {
+      position: relative;
+
+      &:hover .input-copy-position {
+        display: inline-block;
+      }
+
+      .input-copy-position {
+        display: none;
+        background-color: var(--color-divider);
+        border-radius: 4px;
+        position: absolute;
+        top: 2px;
+        left: -24px;
+        width: 24px;
+        height: 24px;
+
+        &:hover {
+          opacity: 0.65;
+          cursor: pointer;
+        }
+
+        &.hidden {
+          display: none;
+        }
+      }
     }
   }
 </style>
