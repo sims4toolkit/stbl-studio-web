@@ -68,17 +68,10 @@
       </div>
     </div>
     <div>
-      {#if mode === "edit"}
-        <!-- No click event needed, just unfocus -->
-        <button class="button-wrapper">
-          <img class="is-svg" src="./assets/save-outline.svg" alt="Save" />
-        </button>
-      {:else}
-        <CopyButton
-          title="Copy key and comment"
-          textGenerator={() => `${keyValue}<!--${stringValue}-->`}
-        />
-      {/if}
+      <CopyButton
+        title="Copy key and comment"
+        textGenerator={() => `${keyValue}<!--${stringValue}-->`}
+      />
     </div>
   </div>
   <div class="input-wrapper mt-half" class:h-100={isGrid}>
@@ -140,11 +133,6 @@
       &[placeholder]:empty:focus::before {
         content: "";
       }
-    }
-
-    img {
-      height: 16px;
-      width: auto;
     }
 
     .input-wrapper {

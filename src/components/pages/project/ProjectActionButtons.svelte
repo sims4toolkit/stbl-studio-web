@@ -9,7 +9,7 @@
   export let disabledText: string;
   export let disabled: boolean;
   export let isSelecting: boolean;
-  export let project: Project;
+  export let project: Project = null;
 
   const normalModeToolbar = [
     {
