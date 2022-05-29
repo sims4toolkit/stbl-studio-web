@@ -12,6 +12,7 @@
   import ProjectActionButtons from "./ProjectActionButtons.svelte";
   import IconButton from "../../shared/elements/IconButton.svelte";
   import Pagination from "../../shared/controls/Pagination.svelte";
+  import StringEntryEditCell from "./StringEntryEditCell.svelte";
 
   const { formatAsHexString } = window.S4TK.formatting;
 
@@ -98,7 +99,10 @@
       </div>
       <div class="drop-shadow">
         {#each project.primaryStbl.entries.slice(0, 10) as entry, key (key)}
-          <StringEntryCell stringEntry={entry} onEdit={() => project.save()} />
+          <StringEntryEditCell
+            stringEntry={entry}
+            onEdit={() => project.save()}
+          />
         {/each}
       </div>
     </ContentArea>

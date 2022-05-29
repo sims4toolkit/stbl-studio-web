@@ -11,30 +11,33 @@
   // to prevent it from saving on every keystroke
   let keyValue = formatStringKey(stringEntry.key);
   let stringValue = stringEntry.string.replaceAll("\\n", "\n");
-  let stringInput: HTMLTextAreaElement;
-  let numRowsOnExpand = 1;
+  // let stringInput: HTMLTextAreaElement;
+  // let numRowsOnExpand = 1;
+  // let textAreaHeight = 24;
 
   $: copyDisabled = mode === "edit";
 
-  $: {
-    stringValue;
-    if (stringInput) refreshTextAreaRows();
-  }
+  // $: {
+  //   stringValue;
+  //   if (stringInput) refreshTextAreaRows();
+  // }
 
-  onMount(() => {
-    refreshTextAreaRows();
-  });
+  // onMount(() => {
+  //   refreshTextAreaRows();
+  // });
 
-  function refreshTextAreaRows() {
-    numRowsOnExpand = Math.min(
-      Math.ceil((stringInput.scrollHeight - 4) / stringInput.clientHeight),
-      5
-    );
-  }
+  // function refreshTextAreaRows() {
+  //   numRowsOnExpand = Math.min(
+  //     Math.ceil((stringInput.scrollHeight - 4) / stringInput.clientHeight),
+  //     5
+  //   );
+
+  //   textAreaHeight = numRowsOnExpand * 22;
+  // }
 
   function handleInputDoubleClick(e: MouseEvent) {
     e.preventDefault();
-    refreshTextAreaRows();
+    // refreshTextAreaRows();
     if (mode === "view") mode = "edit";
   }
 
@@ -55,7 +58,7 @@
 
   function handleEditButtonClick(e: MouseEvent) {
     mode = "edit";
-    stringInput.focus();
+    // stringInput.focus();
   }
 </script>
 
@@ -86,7 +89,7 @@
     />
   </div>
 
-  <div class="input-wrapper w-100 flex-center-v">
+  <div class="input-wrapper flex-grow">
     <div class="input-copy-position" class:hidden={copyDisabled}>
       <CopyButton
         title="Copy string"
@@ -94,19 +97,13 @@
         smallIcon={true}
       />
     </div>
-    <textarea
-      bind:this={stringInput}
-      type="text"
-      rows={mode === "edit" ? numRowsOnExpand : 1}
-      class="w-100"
-      readonly={mode !== "edit"}
-      tabindex={mode === "edit" ? 0 : -1}
-      placeholder={"{0.SimFirstName} is reticulating {0.SimPronounPossessiveDependent} splines!"}
-      bind:value={stringValue}
-      on:dblclick={handleInputDoubleClick}
-      on:click={handleInputSingleClick}
-      on:blur={handleInputBlur}
-    />
+    <div
+      class="pre-wrap word-wrap"
+      contenteditable="true"
+      on:blur={() => console.log("blurred")}
+    >
+      {stringValue}
+    </div>
   </div>
 
   {#if mode === "view"}
@@ -154,6 +151,7 @@
       background-color: transparent;
       cursor: text;
       resize: none;
+      transition: height 500ms;
 
       &.key-input {
         width: 105px;

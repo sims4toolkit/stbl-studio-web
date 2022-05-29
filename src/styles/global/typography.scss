@@ -19,6 +19,14 @@
   text-overflow: ellipsis;
 }
 
+.pre-wrap {
+  white-space: pre-wrap;
+}
+
+.word-wrap {
+  overflow-wrap: break-word;
+}
+
 .bold {
   font-weight: bold;
 }
