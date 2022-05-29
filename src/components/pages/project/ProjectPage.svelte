@@ -6,19 +6,19 @@
   import { activeWorkspace } from "../../../typescript/stores";
   import ContentArea from "../../shared/layout/ContentArea.svelte";
   import GradientHeader from "../../shared/elements/GradientHeader.svelte";
-  import StringEntryCell from "./StringEntryCell.svelte";
   import SelectModeToggle from "../../shared/controls/SelectModeToggle.svelte";
   import SelectionGroup from "../../../typescript/models/selection-group";
   import ProjectActionButtons from "./ProjectActionButtons.svelte";
   import IconButton from "../../shared/elements/IconButton.svelte";
   import Pagination from "../../shared/controls/Pagination.svelte";
   import StringEntryEditCell from "./StringEntryEditCell.svelte";
+  import SplitView from "../../shared/layout/SplitView.svelte";
 
   const { formatAsHexString } = window.S4TK.formatting;
 
   export let params: { uuid: string };
 
-  export let view: "list" | "json" | "translate" = "list";
+  export let view: "list" | "grid" | "json" | "translate" = "list";
   let project: Project;
 
   let selectionGroup = new SelectionGroup<{ key: number; value: string }>(
@@ -70,32 +70,41 @@
       </div>
     </ContentArea>
     <ContentArea banded={false}>
-      <div class="flex-space-between flex-center-v mb-2">
-        <!-- <p class="subtle-text my-0">Showing X of X strings</p> -->
-        <div>
-          <p class="mt-0 small-title">{view} view</p>
-          <div class="flex-center-v flex-gap flex-wrap">
-            <IconButton
-              title="List View"
-              icon="list-outline"
-              onClick={() => (view = "list")}
-              active={view !== "list"}
-            />
-            <IconButton
-              title="JSON View"
-              icon="curly-braces"
-              onClick={() => (view = "json")}
-              active={view !== "json"}
-            />
-            <IconButton
-              title="Translate View"
-              icon="language-outline"
-              onClick={() => (view = "translate")}
-              active={view !== "translate"}
-            />
+      <div class="mb-2">
+        <SplitView>
+          <div slot="left">
+            <p class="mt-0 small-title">{view} view</p>
+            <div class="flex-center-v flex-gap flex-wrap">
+              <IconButton
+                title="List View"
+                icon="list-outline"
+                onClick={() => (view = "list")}
+                active={view !== "list"}
+              />
+              <IconButton
+                title="Grid View"
+                icon="grid-outline"
+                onClick={() => (view = "grid")}
+                active={view !== "grid"}
+              />
+              <IconButton
+                title="JSON View"
+                icon="curly-braces"
+                onClick={() => (view = "json")}
+                active={view !== "json"}
+              />
+              <IconButton
+                title="Translate View"
+                icon="language-outline"
+                onClick={() => (view = "translate")}
+                active={view !== "translate"}
+              />
+            </div>
           </div>
-        </div>
-        <SelectModeToggle {selectionGroup} />
+          <div slot="right">
+            <SelectModeToggle {selectionGroup} />
+          </div>
+        </SplitView>
       </div>
       <div class="drop-shadow">
         {#each project.primaryStbl.entries.slice(0, 10) as entry, key (key)}
