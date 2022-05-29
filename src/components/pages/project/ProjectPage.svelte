@@ -109,18 +109,32 @@
           </div>
         </SplitView>
       </div>
-      <div
-        class:drop-shadow={project.view !== ProjectView.Grid}
-        class:grid-view={project.view === ProjectView.Grid}
-      >
-        {#each project.primaryStbl.entries.slice(0, 10) as entry, key (key)}
-          <StringEntryEditCell
-            stringEntry={entry}
-            isGrid={project.view === ProjectView.Grid}
-            onEdit={updateStblMap}
-          />
-        {/each}
-      </div>
+      {#if project.primaryStbl.size}
+        <div
+          class:drop-shadow={project.view !== ProjectView.Grid}
+          class:grid-view={project.view === ProjectView.Grid}
+        >
+          {#each project.primaryStbl.entries.slice(0, 10) as entry, key (key)}
+            <StringEntryEditCell
+              stringEntry={entry}
+              isGrid={project.view === ProjectView.Grid}
+              onEdit={updateStblMap}
+            />
+          {/each}
+        </div>
+      {:else}
+        <div class="flex-center flex-col empty-stbl py-3 px-1 text-center">
+          <h3>This Project is Empty</h3>
+          <p>
+            Create or import strings with the toolbar in the bottom-right
+            corner.
+          </p>
+          <p>
+            Visit the <a href="#/help" target="_blank">help page</a> to learn about
+            key bindings and shortcuts.
+          </p>
+        </div>
+      {/if}
     </ContentArea>
   {/if}
 </section>
@@ -139,5 +153,16 @@
     display: grid;
     gap: 16px;
     grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+  }
+
+  .empty-stbl {
+    width: 100%;
+    border: 4px dashed var(--color-divider);
+    border-radius: 12px;
+
+    h3,
+    p {
+      color: var(--color-text-subtle) !important;
+    }
   }
 </style>
