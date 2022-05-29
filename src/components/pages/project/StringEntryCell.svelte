@@ -2,6 +2,7 @@
   import { fade } from "svelte/transition";
   import Popover from "svelte-popover";
   import type { StringEntry } from "@s4tk/models/types";
+  import CopyButton from "./CopyButton.svelte";
   const { formatStringKey } = window.S4TK.formatting;
 
   export let mode: "view" | "edit" | "select" = "view";
@@ -52,13 +53,13 @@
   {/if}
 
   <div class="input-wrapper">
-    <button
-      class="button-wrapper input-copy-button"
-      class:hidden={copyDisabled}
-      on:click={() => copyToClipboard(keyValue)}
-    >
-      <img class="is-svg light-svg" src="./assets/copy.svg" alt="Copy" />
-    </button>
+    <div class="input-copy-position" class:hidden={copyDisabled}>
+      <CopyButton
+        title="Copy key"
+        textGenerator={() => keyValue}
+        smallIcon={true}
+      />
+    </div>
     <input
       type="text"
       class="input-height monospace key-input accent-color"
@@ -73,13 +74,13 @@
   </div>
 
   <div class="input-wrapper w-100">
-    <button
-      class="button-wrapper input-copy-button"
-      class:hidden={copyDisabled}
-      on:click={() => copyToClipboard(stringValue)}
-    >
-      <img class="is-svg light-svg" src="./assets/copy.svg" alt="Copy" />
-    </button>
+    <div class="input-copy-position" class:hidden={copyDisabled}>
+      <CopyButton
+        title="Copy string"
+        textGenerator={() => stringValue}
+        smallIcon={true}
+      />
+    </div>
     <input
       bind:this={stringInput}
       type="text"
@@ -95,33 +96,10 @@
   </div>
 
   {#if mode === "view"}
-    <Popover
-      arrow={false}
-      overlayColor={null}
-      open={copiedPopoverVisible}
-      on:open={() => {
-        copiedPopoverVisible = true;
-        setTimeout(() => {
-          copiedPopoverVisible = false;
-        }, 500);
-      }}
-    >
-      <button
-        slot="target"
-        class="button-wrapper"
-        title="Copy key and string"
-        on:click={() => copyToClipboard(`${keyValue}<!--${stringValue}-->`)}
-      >
-        <img src="./assets/copy.svg" alt="Copy" class="is-svg" />
-      </button>
-      <div
-        slot="content"
-        transition:fade={{ duration: 200 }}
-        class="copied-bg p-half"
-      >
-        <p class="my-0 subtle-text">Copied!</p>
-      </div>
-    </Popover>
+    <CopyButton
+      title="Copy key and string"
+      textGenerator={() => `${keyValue}<!--${stringValue}-->`}
+    />
     <button class="button-wrapper" on:click={handleEditButtonClick}>
       <img src="./assets/pencil.svg" alt="Edit" class="is-svg" />
     </button>
@@ -171,33 +149,27 @@
     .input-wrapper {
       position: relative;
 
-      &:hover {
-        .input-copy-button {
-          display: inline-block;
-        }
+      &:hover .input-copy-position {
+        display: inline-block;
       }
 
-      .input-copy-button {
+      .input-copy-position {
         display: none;
         background-color: var(--color-divider);
         border-radius: 4px;
         position: absolute;
         top: 8px;
-        left: -20px;
+        left: -18px;
         width: 24px;
         height: 24px;
 
-        &.hidden {
-          display: none;
-        }
-
         &:hover {
           opacity: 0.65;
+          cursor: pointer;
         }
 
-        img {
-          height: 12px;
-          // filter: var(--filter-svg-invert);
+        &.hidden {
+          display: none;
         }
       }
     }
@@ -206,10 +178,5 @@
       height: 16px;
       width: auto;
     }
-  }
-
-  .copied-bg {
-    background-color: var(--color-card);
-    border-radius: 4px;
   }
 </style>
