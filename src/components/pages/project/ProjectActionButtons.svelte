@@ -10,6 +10,7 @@
   export let disabled: boolean;
   export let isSelecting: boolean;
   export let project: Project = null;
+  export let createNewStringEntry: () => void;
 
   const normalModeToolbar = [
     {
@@ -33,6 +34,8 @@
       icon: "plus",
       color: ToolbarColor.Create,
       async onClick() {
+        createNewStringEntry();
+        return;
         const key = fnv32(uuidv4());
         project.addEntry(key, "");
         project = project;

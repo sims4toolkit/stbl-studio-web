@@ -36,3 +36,16 @@ section {
   padding-top: 50px; // for navbar
   min-height: 100vh;
 }
+
+div[contenteditable="true"] {
+  padding: 4px;
+
+  &[placeholder]:empty::before {
+    content: attr(placeholder);
+    color: var(--color-divider);
+  }
+
+  &[placeholder]:empty:focus::before {
+    content: "";
+  }
+}

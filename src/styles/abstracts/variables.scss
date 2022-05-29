@@ -48,6 +48,7 @@ $azure-blue: #0095eb;
     --color-error: #dc6060;
     --color-error-contrast: #3c1f1f;
     --color-success: rgb(79, 192, 79);
+    --color-dimmer: rgba(0, 0, 0, 0.65);
 
     // filters
     --filter-svg: var(--filter-light);
@@ -77,6 +78,7 @@ $azure-blue: #0095eb;
     --color-error: #db4444;
     --color-error-contrast: #e09292;
     --color-success: rgb(79, 192, 79);
+    --color-dimmer: rgba(0, 0, 0, 0.4);
 
     // filters
     --filter-svg: var(--filter-dark);

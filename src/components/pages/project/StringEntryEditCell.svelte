@@ -122,19 +122,6 @@
       }
     }
 
-    div[contenteditable="true"] {
-      padding: 4px;
-
-      &[placeholder]:empty::before {
-        content: attr(placeholder);
-        color: var(--color-divider);
-      }
-
-      &[placeholder]:empty:focus::before {
-        content: "";
-      }
-    }
-
     .input-wrapper {
       position: relative;
 

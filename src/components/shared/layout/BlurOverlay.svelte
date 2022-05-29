@@ -12,7 +12,7 @@
   let firstFocusableChild: Element;
   let lastFocusableChild: Element;
 
-  const bodyClassName = "blur-effect-active";
+  const bodyClassName = "overlay-active";
   const focusQuery = "a, button, input, textarea, select";
 
   onMount(() => {
