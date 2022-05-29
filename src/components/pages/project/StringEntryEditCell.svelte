@@ -7,6 +7,7 @@
   const { formatStringKey } = window.S4TK.formatting;
 
   export let mode: "view" | "edit" | "select" = "view";
+  export let isGrid = false;
   export let stringEntry: StringEntry;
   export let onEdit: () => void;
 
@@ -37,7 +38,11 @@
   }
 </script>
 
-<div class="string-entry-edit-cell p-1">
+<div
+  class="string-entry-edit-cell p-1 flex-col"
+  class:drop-shadow={isGrid}
+  class:grid-item={isGrid}
+>
   <div class="flex-space-between">
     <div class="input-wrapper">
       <div class="input-copy-position" class:hidden={copyDisabled}>
@@ -76,7 +81,7 @@
       {/if}
     </div>
   </div>
-  <div class="input-wrapper mt-half">
+  <div class="input-wrapper mt-half" class:h-100={isGrid}>
     <div class="input-copy-position" class:hidden={copyDisabled}>
       <CopyButton
         title="Copy string"
@@ -87,6 +92,7 @@
     <div
       class="string-input pre-wrap word-wrap"
       contenteditable="true"
+      class:h-100={isGrid}
       bind:innerHTML={stringValue}
       on:focus={handleInputFocus}
       on:blur={handleInputBlur}
@@ -100,18 +106,26 @@
     background-color: var(--color-bg-secondary);
     user-select: none;
 
-    &:first-child {
-      border-top-left-radius: $border-radius;
-      border-top-right-radius: $border-radius;
+    &.grid-item {
+      min-width: 616px;
+      max-width: 100%;
+      border-radius: $border-radius;
     }
 
-    &:not(:first-child) {
-      border-top: 2px solid var(--color-bg);
-    }
+    &:not(.grid-item) {
+      &:first-child {
+        border-top-left-radius: $border-radius;
+        border-top-right-radius: $border-radius;
+      }
 
-    &:last-child {
-      border-bottom-left-radius: $border-radius;
-      border-bottom-right-radius: $border-radius;
+      &:not(:first-child) {
+        border-top: 2px solid var(--color-bg);
+      }
+
+      &:last-child {
+        border-bottom-left-radius: $border-radius;
+        border-bottom-right-radius: $border-radius;
+      }
     }
 
     div[contenteditable="true"] {

@@ -106,10 +106,14 @@
           </div>
         </SplitView>
       </div>
-      <div class="drop-shadow">
+      <div
+        class:drop-shadow={view !== "grid"}
+        class:grid-view={view === "grid"}
+      >
         {#each project.primaryStbl.entries.slice(0, 10) as entry, key (key)}
           <StringEntryEditCell
             stringEntry={entry}
+            isGrid={view === "grid"}
             onEdit={() => project.save()}
           />
         {/each}
@@ -128,5 +132,9 @@
 />
 
 <style lang="scss">
-  // intentionally blank
+  .grid-view {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(616px, 1fr));
+  }
 </style>
