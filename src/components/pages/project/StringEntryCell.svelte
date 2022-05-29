@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { StringEntry } from "@s4tk/models/types";
+  import { onMount } from "svelte";
   import CopyButton from "./CopyButton.svelte";
   const { formatStringKey } = window.S4TK.formatting;
 
@@ -10,12 +11,27 @@
   // to prevent it from saving on every keystroke
   let keyValue = formatStringKey(stringEntry.key);
   let stringValue = stringEntry.string;
-  let stringInput: HTMLInputElement;
+  let stringInput: HTMLTextAreaElement;
+  let numRowsOnExpand = 1;
 
   $: copyDisabled = mode === "edit";
 
+  $: {
+    stringValue;
+    if (stringInput) refreshTextAreaRows();
+  }
+
+  onMount(() => {
+    refreshTextAreaRows();
+  });
+
+  function refreshTextAreaRows() {
+    numRowsOnExpand = Math.min(Math.ceil(stringInput.scrollHeight / 22), 5);
+  }
+
   function handleInputDoubleClick(e: MouseEvent) {
     e.preventDefault();
+    refreshTextAreaRows();
     if (mode === "view") mode = "edit";
   }
 
@@ -45,7 +61,7 @@
     <div>hi</div>
   {/if}
 
-  <div class="input-wrapper">
+  <div class="input-wrapper flex-center-v">
     <div class="input-copy-position" class:hidden={copyDisabled}>
       <CopyButton
         title="Copy key"
@@ -53,9 +69,10 @@
         smallIcon={true}
       />
     </div>
-    <input
+    <textarea
       type="text"
-      class="input-height monospace key-input accent-color"
+      rows="1"
+      class="monospace key-input accent-color"
       readonly={mode !== "edit"}
       tabindex={mode === "edit" ? 0 : -1}
       placeholder="Key..."
@@ -66,7 +83,7 @@
     />
   </div>
 
-  <div class="input-wrapper w-100">
+  <div class="input-wrapper w-100 flex-center-v">
     <div class="input-copy-position" class:hidden={copyDisabled}>
       <CopyButton
         title="Copy string"
@@ -74,10 +91,11 @@
         smallIcon={true}
       />
     </div>
-    <input
+    <textarea
       bind:this={stringInput}
       type="text"
-      class="input-height w-100"
+      rows={mode === "edit" ? numRowsOnExpand : 1}
+      class="w-100"
       readonly={mode !== "edit"}
       tabindex={mode === "edit" ? 0 : -1}
       placeholder={"{0.SimFirstName} is reticulating {0.SimPronounPossessiveDependent} splines!"}
@@ -124,18 +142,22 @@
       border-bottom-right-radius: $border-radius;
     }
 
-    input,
-    input:focus {
+    textarea,
+    textarea:focus {
       border: 1px solid var(--color-divider);
+      border-radius: 4px;
+      padding: 2px;
+      background-color: transparent;
       cursor: text;
+      resize: none;
+
+      &.key-input {
+        width: 105px;
+      }
 
       &:read-only {
         border-color: var(--color-bg-secondary);
         outline: none;
-      }
-
-      &.key-input {
-        width: 105px;
       }
     }
 
@@ -151,8 +173,8 @@
         background-color: var(--color-divider);
         border-radius: 4px;
         position: absolute;
-        top: 8px;
-        left: -18px;
+        top: 0;
+        left: -24px;
         width: 24px;
         height: 24px;
 

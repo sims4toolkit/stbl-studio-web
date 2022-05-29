@@ -11,6 +11,7 @@
   import SelectionGroup from "../../../typescript/models/selection-group";
   import ProjectActionButtons from "./ProjectActionButtons.svelte";
   import IconButton from "../../shared/elements/IconButton.svelte";
+  import Pagination from "../../shared/controls/Pagination.svelte";
 
   const { formatAsHexString } = window.S4TK.formatting;
 
@@ -96,13 +97,15 @@
         <SelectModeToggle {selectionGroup} />
       </div>
       <div class="drop-shadow">
-        {#each project.primaryStbl.entries as entry, key (key)}
+        {#each project.primaryStbl.entries.slice(0, 10) as entry, key (key)}
           <StringEntryCell stringEntry={entry} onEdit={() => project.save()} />
         {/each}
       </div>
     </ContentArea>
   {/if}
 </section>
+
+<Pagination />
 
 <!-- TODO: bind to actual values -->
 <ProjectActionButtons

@@ -27,7 +27,8 @@ select {
   height: 40px;
 }
 
-input::placeholder {
+input::placeholder,
+textarea::placeholder {
   color: var(--color-divider);
 }
 
