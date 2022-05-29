@@ -33,21 +33,13 @@
     onEdit();
   }
 
-  function handleCopyKeyButtonClick(e: MouseEvent) {
-    // TODO:
-  }
-
-  function handleCopyStringButtonClick(e: MouseEvent) {
-    // TODO:
-  }
-
-  function handleCopyBothButtonClick(e: MouseEvent) {
-    // TODO:
-  }
-
   function handleEditButtonClick(e: MouseEvent) {
     mode = "edit";
     stringInput.focus();
+  }
+
+  function copyToClipboard(value: string) {
+    navigator.clipboard.writeText(value);
   }
 </script>
 
@@ -60,7 +52,7 @@
     <button
       class="button-wrapper input-copy-button"
       class:hidden={copyDisabled}
-      on:click={handleCopyKeyButtonClick}
+      on:click={() => copyToClipboard(keyValue)}
     >
       <img class="is-svg light-svg" src="./assets/copy.svg" alt="Copy" />
     </button>
@@ -81,7 +73,7 @@
     <button
       class="button-wrapper input-copy-button"
       class:hidden={copyDisabled}
-      on:click={handleCopyStringButtonClick}
+      on:click={() => copyToClipboard(stringValue)}
     >
       <img class="is-svg light-svg" src="./assets/copy.svg" alt="Copy" />
     </button>
@@ -100,7 +92,10 @@
   </div>
 
   {#if mode === "view"}
-    <button class="button-wrapper" on:click={handleCopyBothButtonClick}>
+    <button
+      class="button-wrapper"
+      on:click={() => copyToClipboard(`${keyValue}<!--${stringValue}-->`)}
+    >
       <img src="./assets/copy.svg" alt="Copy" class="is-svg" />
     </button>
     <button class="button-wrapper" on:click={handleEditButtonClick}>
