@@ -146,6 +146,7 @@
   disabled={false}
   disabledText="disabled"
   isSelecting={false}
+  bind:project
 />
 
 <style lang="scss">

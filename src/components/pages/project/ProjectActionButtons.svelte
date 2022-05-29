@@ -1,10 +1,15 @@
 <script lang="ts">
+  import { v4 as uuidv4 } from "uuid";
+  import type Project from "../../../typescript/models/project";
   import ToolbarColor from "../../../typescript/enums/toolbar-colors";
   import FloatingActionButtonGroup from "../../shared/controls/FloatingActionButtonGroup.svelte";
+
+  const { fnv32 } = window.S4TK.hashing;
 
   export let disabledText: string;
   export let disabled: boolean;
   export let isSelecting: boolean;
+  export let project: Project;
 
   const normalModeToolbar = [
     {
@@ -28,7 +33,9 @@
       icon: "plus",
       color: ToolbarColor.Create,
       async onClick() {
-        alert("button clicked");
+        const key = fnv32(uuidv4());
+        project.addEntry(key, "");
+        project = project;
       },
     },
   ];

@@ -93,6 +93,7 @@
       class="string-input pre-wrap word-wrap"
       contenteditable="true"
       class:h-100={isGrid}
+      placeholder={"{0.SimFirstName} is reticulating {0.SimPronounPossessiveDependent} splines!"}
       bind:innerHTML={stringValue}
       on:focus={handleInputFocus}
       on:blur={handleInputBlur}
@@ -130,6 +131,15 @@
 
     div[contenteditable="true"] {
       padding: 4px;
+
+      &[placeholder]:empty::before {
+        content: attr(placeholder);
+        color: var(--color-divider);
+      }
+
+      &[placeholder]:empty:focus::before {
+        content: "";
+      }
     }
 
     img {
