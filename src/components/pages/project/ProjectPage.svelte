@@ -138,6 +138,6 @@
   .grid-view {
     display: grid;
     gap: 16px;
-    grid-template-columns: repeat(auto-fill, minmax(405px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
   }
 </style>
