@@ -249,6 +249,7 @@
 
     .creating-string-input {
       min-height: 100px;
+      border-radius: 8px;
       padding: 0.5em !important;
       width: 100%;
       background-color: var(--color-bg-secondary);
