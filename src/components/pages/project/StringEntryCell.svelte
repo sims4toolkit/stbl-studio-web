@@ -1,14 +1,24 @@
 <script lang="ts">
-  import { formatStringKey } from "@s4tk/hashing/formatting";
+  import type { StringEntry } from "@s4tk/models/types";
+  const { formatStringKey } = window.S4TK.formatting;
 
   export let mode: "view" | "edit" | "select" = "view";
-  export let stringEntry: { key: number; value: string };
+  export let stringEntry: StringEntry;
+  export let onEdit: () => void;
 
+  // to prevent it from saving on every keystroke
+  let keyValue = formatStringKey(stringEntry.key);
+  let stringValue = stringEntry.string;
   let stringInput: HTMLInputElement;
 
-  const enableViewMode = () => (mode = "view");
+  $: copyDisabled = mode === "edit";
 
-  function focusIfEditing(e: MouseEvent) {
+  function handleInputDoubleClick(e: MouseEvent) {
+    e.preventDefault();
+    if (mode === "view") mode = "edit";
+  }
+
+  function handleInputSingleClick(e: MouseEvent) {
     setTimeout(() => {
       if (mode === "edit") {
         (e.target as HTMLInputElement).focus();
@@ -16,15 +26,29 @@
     }, 50);
   }
 
-  function handleDoubleClick(e: MouseEvent) {
-    e.preventDefault();
-
-    if (mode === "view") {
-      mode = "edit";
-    }
+  function handleInputBlur(e: FocusEvent) {
+    mode = "view";
+    stringEntry.key = parseInt(keyValue);
+    stringEntry.value = stringValue;
+    onEdit();
   }
 
-  $: stringCopyDisabled = mode === "edit";
+  function handleCopyKeyButtonClick(e: MouseEvent) {
+    // TODO:
+  }
+
+  function handleCopyStringButtonClick(e: MouseEvent) {
+    // TODO:
+  }
+
+  function handleCopyBothButtonClick(e: MouseEvent) {
+    // TODO:
+  }
+
+  function handleEditButtonClick(e: MouseEvent) {
+    mode = "edit";
+    stringInput.focus();
+  }
 </script>
 
 <div class="string-entry-cell w-100 flex-center-v flex-gap px-1 py-half">
@@ -35,7 +59,8 @@
   <div class="input-wrapper">
     <button
       class="button-wrapper input-copy-button"
-      class:hidden={stringCopyDisabled}
+      class:hidden={copyDisabled}
+      on:click={handleCopyKeyButtonClick}
     >
       <img class="is-svg light-svg" src="./assets/copy.svg" alt="Copy" />
     </button>
@@ -45,17 +70,18 @@
       readonly={mode !== "edit"}
       tabindex={mode === "edit" ? 0 : -1}
       placeholder="Key..."
-      value={formatStringKey(stringEntry.key)}
-      on:dblclick={handleDoubleClick}
-      on:click={focusIfEditing}
-      on:blur={enableViewMode}
+      bind:value={keyValue}
+      on:dblclick={handleInputDoubleClick}
+      on:click={handleInputSingleClick}
+      on:blur={handleInputBlur}
     />
   </div>
 
   <div class="input-wrapper w-100">
     <button
       class="button-wrapper input-copy-button"
-      class:hidden={stringCopyDisabled}
+      class:hidden={copyDisabled}
+      on:click={handleCopyStringButtonClick}
     >
       <img class="is-svg light-svg" src="./assets/copy.svg" alt="Copy" />
     </button>
@@ -66,21 +92,22 @@
       readonly={mode !== "edit"}
       tabindex={mode === "edit" ? 0 : -1}
       placeholder={"{0.SimFirstName} is reticulating {0.SimPronounPossessiveDependent} splines!"}
-      value={stringEntry.value}
-      on:dblclick={handleDoubleClick}
-      on:click={focusIfEditing}
-      on:blur={enableViewMode}
+      bind:value={stringValue}
+      on:dblclick={handleInputDoubleClick}
+      on:click={handleInputSingleClick}
+      on:blur={handleInputBlur}
     />
   </div>
 
   {#if mode === "view"}
-    <button class="button-wrapper">
+    <button class="button-wrapper" on:click={handleCopyBothButtonClick}>
       <img src="./assets/copy.svg" alt="Copy" class="is-svg" />
     </button>
-    <button class="button-wrapper">
+    <button class="button-wrapper" on:click={handleEditButtonClick}>
       <img src="./assets/pencil.svg" alt="Edit" class="is-svg" />
     </button>
   {:else if mode === "edit"}
+    <!-- Doesn't need an event, bluring the input will save automatically -->
     <button class="button-wrapper">
       <img src="./assets/save-outline.svg" alt="Copy" class="is-svg" />
     </button>

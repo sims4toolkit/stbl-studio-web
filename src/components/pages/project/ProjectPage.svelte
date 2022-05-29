@@ -10,7 +10,6 @@
   import SelectModeToggle from "../../shared/controls/SelectModeToggle.svelte";
   import SelectionGroup from "../../../typescript/models/selection-group";
   import ProjectActionButtons from "./ProjectActionButtons.svelte";
-  import IconTextButton from "../../shared/elements/IconTextButton.svelte";
   import IconButton from "../../shared/elements/IconButton.svelte";
 
   const { formatAsHexString } = window.S4TK.formatting;
@@ -98,7 +97,7 @@
       </div>
       <div class="drop-shadow">
         {#each project.primaryStbl.entries as entry, key (key)}
-          <StringEntryCell stringEntry={entry} />
+          <StringEntryCell stringEntry={entry} onEdit={() => project.save()} />
         {/each}
       </div>
     </ContentArea>

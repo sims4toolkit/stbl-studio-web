@@ -3,7 +3,7 @@ import type { StringTableLocale as StblLocaleType } from "@s4tk/models/enums";
 import type { ProjectMetaData, StblMap } from "../../global";
 import { v4 as uuidv4 } from "uuid";
 import { getInstanceBase } from "../helpers/tgi";
-import { loadStblMap, Settings } from "../storage";
+import { loadStblMap, Settings, saveProjectMetaData, saveStblMap } from "../storage";
 
 const { StringTableResource } = window.S4TK.models;
 const { fnv64 } = window.S4TK.hashing;
@@ -85,6 +85,17 @@ export default class Project implements ProjectMetaData {
   }
 
   /**
+   * Adds a new entry and save the project to storage.
+   * 
+   * @param key Key of entry to create
+   * @param value Value of entry to create
+   */
+  addEntry(key: number, value: string) {
+    this.primaryStbl.add(key, value);
+    this.save();
+  }
+
+  /**
    * Removes the STBL for the specified locale.
    * 
    * @param locale Locale to remove STBL for
@@ -100,5 +111,13 @@ export default class Project implements ProjectMetaData {
   refreshDisplayProps() {
     this.numLocales = this.stblMap.size;
     this.numStrings = this.primaryStbl.size;
+  }
+
+  /**
+   * Saves this project to localStorage.
+   */
+  save() {
+    saveProjectMetaData(this);
+    saveStblMap(this.uuid, this.stblMap);
   }
 }
