@@ -107,7 +107,7 @@
     user-select: none;
 
     &.grid-item {
-      min-width: 616px;
+      min-width: 405px;
       max-width: 100%;
       border-radius: $border-radius;
     }

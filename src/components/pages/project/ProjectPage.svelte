@@ -1,6 +1,5 @@
 <script lang="ts">
   import { onDestroy } from "svelte";
-  import { replace } from "svelte-spa-router";
   import type Project from "../../../typescript/models/project";
   import type Workspace from "../../../typescript/models/workspace";
   import { activeWorkspace } from "../../../typescript/stores";
@@ -13,12 +12,11 @@
   import Pagination from "../../shared/controls/Pagination.svelte";
   import StringEntryEditCell from "./StringEntryEditCell.svelte";
   import SplitView from "../../shared/layout/SplitView.svelte";
+  import ProjectView from "../../../typescript/enums/project-view";
 
   const { formatAsHexString } = window.S4TK.formatting;
 
   export let params: { uuid: string };
-
-  export let view: "list" | "grid" | "json" | "translate" = "list";
   let project: Project;
 
   let selectionGroup = new SelectionGroup<{ key: number; value: string }>(
@@ -41,8 +39,13 @@
     unsubscribe();
   });
 
-  function onBackClicked() {
-    replace("/");
+  function updateView(view: ProjectView) {
+    project.view = view;
+    project.saveMetaData();
+  }
+
+  function updateStblMap() {
+    project.saveStblMap();
   }
 
   let isEditing = false;
@@ -73,31 +76,31 @@
       <div class="mb-2">
         <SplitView>
           <div slot="left">
-            <p class="mt-0 small-title">{view} view</p>
+            <p class="mt-0 small-title">{ProjectView[project.view]} view</p>
             <div class="flex-center-v flex-gap flex-wrap">
               <IconButton
                 title="List View"
                 icon="list-outline"
-                onClick={() => (view = "list")}
-                active={view !== "list"}
+                onClick={() => updateView(ProjectView.List)}
+                active={project.view !== ProjectView.List}
               />
               <IconButton
                 title="Grid View"
                 icon="grid-outline"
-                onClick={() => (view = "grid")}
-                active={view !== "grid"}
+                onClick={() => updateView(ProjectView.Grid)}
+                active={project.view !== ProjectView.Grid}
               />
               <IconButton
                 title="JSON View"
                 icon="curly-braces"
-                onClick={() => (view = "json")}
-                active={view !== "json"}
+                onClick={() => updateView(ProjectView.Json)}
+                active={project.view !== ProjectView.Json}
               />
               <IconButton
                 title="Translate View"
                 icon="language-outline"
-                onClick={() => (view = "translate")}
-                active={view !== "translate"}
+                onClick={() => updateView(ProjectView.Translate)}
+                active={project.view !== ProjectView.Translate}
               />
             </div>
           </div>
@@ -107,14 +110,14 @@
         </SplitView>
       </div>
       <div
-        class:drop-shadow={view !== "grid"}
-        class:grid-view={view === "grid"}
+        class:drop-shadow={project.view !== ProjectView.Grid}
+        class:grid-view={project.view === ProjectView.Grid}
       >
         {#each project.primaryStbl.entries.slice(0, 10) as entry, key (key)}
           <StringEntryEditCell
             stringEntry={entry}
-            isGrid={view === "grid"}
-            onEdit={() => project.save()}
+            isGrid={project.view === ProjectView.Grid}
+            onEdit={updateStblMap}
           />
         {/each}
       </div>
@@ -135,6 +138,6 @@
   .grid-view {
     display: grid;
     gap: 16px;
-    grid-template-columns: repeat(auto-fill, minmax(616px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(405px, 1fr));
   }
 </style>

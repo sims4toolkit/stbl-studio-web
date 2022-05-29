@@ -4,6 +4,7 @@ import type { ProjectMetaData, StblMap } from "../../global";
 import { v4 as uuidv4 } from "uuid";
 import { getInstanceBase } from "../helpers/tgi";
 import { loadStblMap, Settings, saveProjectMetaData, saveStblMap } from "../storage";
+import ProjectView from "../enums/project-view";
 
 const { StringTableResource } = window.S4TK.models;
 const { fnv64 } = window.S4TK.hashing;
@@ -19,6 +20,7 @@ export default class Project implements ProjectMetaData {
   numStrings: number; // display only, use primaryStbl.size for logic
   primaryLocale: StblLocaleType;
   readonly uuid: string;
+  view: ProjectView;
 
   private _stblMap: StblMap;
   get stblMap() {
@@ -50,6 +52,7 @@ export default class Project implements ProjectMetaData {
     this.instanceBase = data.instanceBase ?? getInstanceBase(fnv64(this.uuid));
     this.primaryLocale = data.primaryLocale ?? Settings.defaultLocale;
     this._stblMap = stblMap;
+    this.view = data.view ?? ProjectView.List;
 
     if (stblMap) {
       this.addLocale(this.primaryLocale);
@@ -85,17 +88,6 @@ export default class Project implements ProjectMetaData {
   }
 
   /**
-   * Adds a new entry and save the project to storage.
-   * 
-   * @param key Key of entry to create
-   * @param value Value of entry to create
-   */
-  addEntry(key: number, value: string) {
-    this.primaryStbl.add(key, value);
-    this.save();
-  }
-
-  /**
    * Removes the STBL for the specified locale.
    * 
    * @param locale Locale to remove STBL for
@@ -103,21 +95,42 @@ export default class Project implements ProjectMetaData {
   removeLocale(locale: StblLocaleType) {
     this.stblMap.delete(locale);
     this.numLocales = this.stblMap.size;
+    this.save();
   }
 
   /**
-   * Updates the display-only properties.
+   * Adds a new entry and saves the project to storage.
+   * 
+   * @param key Key of entry to create
+   * @param value Value of entry to create
    */
-  refreshDisplayProps() {
-    this.numLocales = this.stblMap.size;
+  addEntry(key: number, value: string) {
+    this.primaryStbl.add(key, value);
     this.numStrings = this.primaryStbl.size;
+    this.save();
+  }
+
+  // TODO: remove entries
+
+  /**
+   * Saves this project's meta data to localStorage.
+   */
+  async saveMetaData() {
+    saveProjectMetaData(this);
   }
 
   /**
-   * Saves this project to localStorage.
+   * Saves this project's contents to localStorage.
    */
-  save() {
-    saveProjectMetaData(this);
+  async saveStblMap() {
     saveStblMap(this.uuid, this.stblMap);
+  }
+
+  /**
+   * Saves this project's meta data and contents to localStorage.
+   */
+  async save() {
+    this.saveMetaData();
+    this.saveStblMap();
   }
 }
