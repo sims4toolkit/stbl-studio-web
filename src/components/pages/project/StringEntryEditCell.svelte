@@ -5,6 +5,7 @@
   import { validateHexString } from "../../../typescript/helpers/tgi";
   import type SelectionGroup from "../../../typescript/models/selection-group";
   import SelectedIndicator from "../../shared/controls/SelectedIndicator.svelte";
+  import ResizableTextArea from "../../shared/elements/ResizableTextArea.svelte";
 
   const { formatStringKey } = window.S4TK.formatting;
 
@@ -93,15 +94,12 @@
           smallIcon={true}
         />
       </div>
-      <div
-        class="string-input pre-wrap word-wrap"
-        contenteditable="true"
-        class:h-100={isGrid}
+      <ResizableTextArea
+        bind:refresher={isGrid}
+        bind:value={stringValue}
         placeholder={"{0.SimFirstName} is reticulating {0.SimPronounPossessiveDependent} splines!"}
-        disabled={selectionGroup.selectMode}
-        bind:innerHTML={stringValue}
-        on:focus={handleInputFocus}
-        on:blur={handleInputBlur}
+        onFocus={handleInputFocus}
+        onBlur={handleInputBlur}
       />
     </div>
   </div>
