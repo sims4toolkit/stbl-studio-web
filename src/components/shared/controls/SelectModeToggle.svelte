@@ -2,7 +2,7 @@
   import { fade } from "svelte/transition";
   import type SelectionGroup from "../../../typescript/models/selection-group";
 
-  export let selectionGroup: SelectionGroup<any>;
+  export let selectionGroup: SelectionGroup<any, string | number>;
 
   $: isInSelectMode = selectionGroup.selectMode;
 </script>

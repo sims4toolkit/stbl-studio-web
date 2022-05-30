@@ -1,13 +1,17 @@
-export default class SelectionGroup<T> {
-  private _selections: Set<string>;
+export default class SelectionGroup<Selectable, KeyType extends string | number = string> {
+  private _selections: Set<KeyType>;
 
   private _selectMode: boolean;
   get selectMode(): boolean {
     return this._selectMode;
   }
 
-  get allSelections(): string[] {
+  get allSelectedKeys(): KeyType[] {
     return Array.from(this._selections);
+  }
+
+  get allSelectedItems(): Selectable[] {
+    return this.selectables.filter(s => this._selections.has(s[this.key]));
   }
 
   get noneSelected(): boolean {
@@ -15,7 +19,7 @@ export default class SelectionGroup<T> {
   }
 
   constructor(
-    readonly selectables: T[],
+    readonly selectables: Selectable[],
     readonly key: string,
     private _refreshCallback: () => void
   ) {
@@ -28,7 +32,7 @@ export default class SelectionGroup<T> {
     this._refreshCallback();
   }
 
-  isSelected(value: T): boolean {
+  isSelected(value: Selectable): boolean {
     return this._selections.has(value[this.key]);
   }
 
@@ -47,7 +51,7 @@ export default class SelectionGroup<T> {
     }
   }
 
-  toggleValue(value: T) {
+  toggleValue(value: Selectable) {
     const key = value[this.key];
     const fn = this._selections.has(key) ? "delete" : "add";
     this._selections[fn](key);

@@ -9,7 +9,7 @@
 
   const { formatStringKey } = window.S4TK.formatting;
 
-  export let selectionGroup: SelectionGroup<StringEntry>;
+  export let selectionGroup: SelectionGroup<StringEntry, number>;
   export let mode: "view" | "edit" = "view";
   export let isGrid = false;
   export let stringEntry: StringEntry;

@@ -16,9 +16,11 @@
   import SplitView from "../../shared/layout/SplitView.svelte";
   import ProjectView from "../../../typescript/enums/project-view";
   import ScreenDimmer from "../../shared/layout/ScreenDimmer.svelte";
-  import { Settings } from "../../../typescript/storage";
+  import { deleteProject, Settings } from "../../../typescript/storage";
   import StringTableJsonView from "./StringTableJsonView.svelte";
   import type { StringEntry } from "@s4tk/models/types";
+  import StringDeletionView from "./StringDeletionView.svelte";
+  import BlurOverlay from "../../shared/layout/BlurOverlay.svelte";
 
   const { formatAsHexString } = window.S4TK.formatting;
   const { fnv32 } = window.S4TK.hashing;
@@ -26,7 +28,8 @@
   export let params: { uuid: string };
   let project: Project;
   let newStringInput: HTMLDivElement;
-  let selectionGroup: SelectionGroup<StringEntry>;
+  let selectionGroup: SelectionGroup<StringEntry, number>;
+  let isDeletingStrings = false;
 
   let workspace: Workspace;
   const unsubscribe = activeWorkspace.subscribe((value) => {
@@ -179,6 +182,7 @@
   bind:project
   bind:selectionGroup
   createNewStringEntry={startCreatingString}
+  deleteStringEntry={() => (isDeletingStrings = true)}
 />
 
 {#if isCreatingString}
@@ -217,6 +221,19 @@
       </div>
     </div>
   </ScreenDimmer>
+{/if}
+
+{#if isDeletingStrings}
+  <BlurOverlay onClose={() => (isDeletingStrings = false)}>
+    <StringDeletionView
+      bind:project
+      selectedEntries={selectionGroup.allSelectedItems}
+      onComplete={() => {
+        selectionGroup.toggleSelectMode(false);
+        isDeletingStrings = false;
+      }}
+    />
+  </BlurOverlay>
 {/if}
 
 <style lang="scss">

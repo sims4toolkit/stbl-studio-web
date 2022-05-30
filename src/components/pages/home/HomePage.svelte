@@ -53,7 +53,7 @@
   $: workspaceEmpty = Boolean(!workspace?.projects.length);
   $: toolbarDisabledText = workspace ? "none selected" : "no workspace";
   $: toolbarDisabled = !workspace || selectionGroup?.noneSelected;
-  $: selectedProjects = selectionGroup?.allSelections.map((uuid) =>
+  $: selectedProjects = selectionGroup?.allSelectedKeys.map((uuid) =>
     workspace.getProject(uuid)
   );
 

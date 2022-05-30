@@ -3,7 +3,7 @@
   import { fly } from "svelte/transition";
   import { Settings } from "../../../typescript/storage";
 
-  export let selectionGroup: SelectionGroup<any>;
+  export let selectionGroup: SelectionGroup<any, string | number>;
   export let item: any;
 
   $: itemSelected = selectionGroup.isSelected(item);

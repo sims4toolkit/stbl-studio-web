@@ -110,7 +110,19 @@ export default class Project implements ProjectMetaData {
     this.save();
   }
 
-  // TODO: remove entries
+  /**
+   * Deletes entries from the primary STBL and saves the project to storage.
+   * 
+   * @param ids IDs of entries to delete
+   */
+  deleteEntries(ids: number[]) {
+    ids.forEach(id => {
+      this.primaryStbl.delete(id);
+    });
+
+    this.numStrings = this.primaryStbl.size;
+    this.save();
+  }
 
   /**
    * Saves this project's meta data to localStorage.

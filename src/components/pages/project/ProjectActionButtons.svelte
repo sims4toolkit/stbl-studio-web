@@ -10,8 +10,9 @@
 
   // = null to silence warning
   export let project: Project = null;
-  export let selectionGroup: SelectionGroup<StringEntry> = null;
+  export let selectionGroup: SelectionGroup<StringEntry, number> = null;
   export let createNewStringEntry: () => void;
+  export let deleteStringEntry: () => void;
 
   $: disabledText = project ? "none selected" : "no project";
   $: disabled = selectionGroup?.noneSelected;
@@ -49,7 +50,7 @@
       icon: "trash",
       color: ToolbarColor.Delete,
       async onClick() {
-        alert("button clicked");
+        deleteStringEntry();
       },
     },
     {
