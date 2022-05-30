@@ -31,7 +31,7 @@
 
   function handleInputBlur(e: FocusEvent) {
     if (isKeyInvalid) {
-      (e.target as HTMLInputElement).focus();
+      (e.target as HTMLTextAreaElement).focus();
     } else {
       mode = "view";
       stringEntry.key = parseInt(keyValue, 16);
@@ -62,11 +62,11 @@
           />
         </div>
         <div class="flex-center-v">
-          <div
-            class="key-input accent-color monospace"
-            contenteditable="true"
+          <textarea
+            class="key-textarea accent-color monospace"
             disabled={selectionGroup.selectMode}
-            bind:innerHTML={keyValue}
+            rows="1"
+            bind:value={keyValue}
             on:focus={handleInputFocus}
             on:blur={handleInputBlur}
           />
@@ -130,6 +130,21 @@
       &:last-child {
         border-bottom-left-radius: $border-radius;
         border-bottom-right-radius: $border-radius;
+      }
+    }
+
+    textarea.key-textarea {
+      resize: none;
+      background-color: var(--color-bg-secondary);
+      border-radius: 4px;
+      padding: 8px;
+      width: 100px;
+      height: auto;
+      overflow-x: hidden;
+      overflow-y: hidden;
+
+      &:not(:focus) {
+        border: 1px solid var(--color-bg-secondary);
       }
     }
 
