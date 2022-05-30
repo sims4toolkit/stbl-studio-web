@@ -5,18 +5,18 @@
   import type SelectionGroup from "../../../typescript/models/selection-group";
   import SelectedIndicator from "../../shared/controls/SelectedIndicator.svelte";
   import ResizableTextArea from "../../shared/elements/ResizableTextArea.svelte";
-  import type { UniqueStringEntry } from "../../../global";
+  import type { StringEntry } from "@s4tk/models/types";
 
   const { formatStringKey } = window.S4TK.formatting;
 
-  export let selectionGroup: SelectionGroup<UniqueStringEntry>;
+  export let selectionGroup: SelectionGroup<StringEntry>;
   export let mode: "view" | "edit" = "view";
   export let isGrid = false;
-  export let stringEntry: UniqueStringEntry;
+  export let stringEntry: StringEntry;
   export let onEdit: () => void;
 
-  let keyValue = formatStringKey(stringEntry.entry.key);
-  let stringValue = stringEntry.entry.value.replaceAll("\\n", "\n");
+  let keyValue = formatStringKey(stringEntry.key);
+  let stringValue = stringEntry.value.replaceAll("\\n", "\n");
   let isKeyInvalid = false;
 
   $: isSelected = selectionGroup.isSelected(stringEntry);
@@ -36,9 +36,9 @@
       (e.target as HTMLTextAreaElement).focus();
     } else {
       mode = "view";
-      stringEntry.entry.key = parseInt(keyValue, 16);
-      keyValue = formatStringKey(stringEntry.entry.key);
-      stringEntry.entry.value = stringValue.replace(/(?:\r\n|\r|\n)/g, "\\n");
+      stringEntry.key = parseInt(keyValue, 16);
+      keyValue = formatStringKey(stringEntry.key);
+      stringEntry.value = stringValue.replace(/(?:\r\n|\r|\n)/g, "\\n");
       onEdit();
     }
   }

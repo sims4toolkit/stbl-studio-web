@@ -11,11 +11,6 @@ import type ProjectView from "./typescript/enums/project-view";
 
 type StblMap = Map<StringTableLocale, StringTableResource>;
 
-interface UniqueStringEntry {
-  id: number;
-  entry: StringEntry;
-}
-
 interface LocaleData {
   enumName: string;
   enumValue: number;

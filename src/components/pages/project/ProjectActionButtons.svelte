@@ -4,13 +4,13 @@
   import type SelectionGroup from "../../../typescript/models/selection-group";
   import ToolbarColor from "../../../typescript/enums/toolbar-colors";
   import FloatingActionButtonGroup from "../../shared/controls/FloatingActionButtonGroup.svelte";
-  import type { UniqueStringEntry } from "../../../global";
+  import type { StringEntry } from "@s4tk/models/types";
 
   const { fnv32 } = window.S4TK.hashing;
 
   // = null to silence warning
   export let project: Project = null;
-  export let selectionGroup: SelectionGroup<UniqueStringEntry> = null;
+  export let selectionGroup: SelectionGroup<StringEntry> = null;
   export let createNewStringEntry: () => void;
 
   $: disabledText = project ? "none selected" : "no project";
