@@ -18,7 +18,7 @@
   import ScreenDimmer from "../../shared/layout/ScreenDimmer.svelte";
   import { Settings } from "../../../typescript/storage";
   import StringTableJsonView from "./StringTableJsonView.svelte";
-  import type { StringEntry } from "@s4tk/models/types";
+  import type { UniqueStringEntry } from "../../../global";
 
   const { formatAsHexString } = window.S4TK.formatting;
   const { fnv32 } = window.S4TK.hashing;
@@ -26,20 +26,22 @@
   export let params: { uuid: string };
   let project: Project;
   let newStringInput: HTMLDivElement;
-  let selectionGroup: SelectionGroup<StringEntry>;
+  let entries: UniqueStringEntry[];
+  let selectionGroup: SelectionGroup<UniqueStringEntry>;
 
   let workspace: Workspace;
   const unsubscribe = activeWorkspace.subscribe((value) => {
     if (value) {
       workspace = value;
       project = workspace.projects.find(({ uuid }) => uuid === params.uuid);
-      selectionGroup = new SelectionGroup<StringEntry>(
-        project.primaryStbl.entries,
-        "key",
-        () => {
-          selectionGroup = selectionGroup;
-        }
-      ); // FIXME: key is not unique
+
+      entries = project.primaryStbl.entries.map(({ key, value }, id) => {
+        return { id, key, value };
+      });
+
+      selectionGroup = new SelectionGroup(entries, "id", () => {
+        selectionGroup = selectionGroup;
+      }); // FIXME: key is not unique
     }
   });
 
@@ -145,7 +147,7 @@
           class:drop-shadow={project.view !== ProjectView.Grid}
           class:grid-view={project.view === ProjectView.Grid}
         >
-          {#each project.primaryStbl.entries.slice(0, 10) as entry, key (key)}
+          {#each entries.slice(0, 10) as entry, key (key)}
             <StringEntryEditCell
               {selectionGroup}
               stringEntry={entry}

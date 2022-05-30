@@ -1,18 +1,18 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
-  import type { StringEntry } from "@s4tk/models/types";
   import CopyButton from "./CopyButton.svelte";
   import { validateHexString } from "../../../typescript/helpers/tgi";
   import type SelectionGroup from "../../../typescript/models/selection-group";
   import SelectedIndicator from "../../shared/controls/SelectedIndicator.svelte";
   import ResizableTextArea from "../../shared/elements/ResizableTextArea.svelte";
+  import type { UniqueStringEntry } from "../../../global";
 
   const { formatStringKey } = window.S4TK.formatting;
 
-  export let selectionGroup: SelectionGroup<StringEntry>;
+  export let selectionGroup: SelectionGroup<UniqueStringEntry>;
   export let mode: "view" | "edit" = "view";
   export let isGrid = false;
-  export let stringEntry: StringEntry;
+  export let stringEntry: UniqueStringEntry;
   export let onEdit: () => void;
 
   let keyValue = formatStringKey(stringEntry.key);
@@ -147,6 +147,10 @@
 
       &:not(:first-child) {
         border-top: 2px solid var(--color-bg);
+
+        &.is-selected {
+          border-top: 2px solid var(--color-accent-secondary);
+        }
       }
 
       &:last-child {
