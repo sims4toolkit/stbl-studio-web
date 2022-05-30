@@ -12,12 +12,12 @@
   import ProjectActionButtons from "./ProjectActionButtons.svelte";
   import IconButton from "../../shared/elements/IconButton.svelte";
   import Pagination from "../../shared/controls/Pagination.svelte";
-  import StringEntryEditCell from "./StringEntryEditCell.svelte";
+  import StringEditCell from "./StringEditCell.svelte";
   import SplitView from "../../shared/layout/SplitView.svelte";
   import ProjectView from "../../../typescript/enums/project-view";
   import ScreenDimmer from "../../shared/layout/ScreenDimmer.svelte";
-  import { deleteProject, Settings } from "../../../typescript/storage";
-  import StringTableJsonView from "./StringTableJsonView.svelte";
+  import { Settings } from "../../../typescript/storage";
+  import StblJsonView from "./StblJsonView.svelte";
   import type { StringEntry } from "@s4tk/models/types";
   import StringDeletionView from "./StringDeletionView.svelte";
   import BlurOverlay from "../../shared/layout/BlurOverlay.svelte";
@@ -145,7 +145,7 @@
         </SplitView>
       </div>
       {#if project.view === ProjectView.Json}
-        <StringTableJsonView stbl={project?.primaryStbl} />
+        <StblJsonView stbl={project?.primaryStbl} />
       {:else if project.view === ProjectView.Translate}
         Translate
       {:else if project.primaryStbl.size}
@@ -154,7 +154,7 @@
           class:grid-view={project.view === ProjectView.Grid}
         >
           {#each entries.slice(0, 10) as entry, key (key)}
-            <StringEntryEditCell
+            <StringEditCell
               {selectionGroup}
               stringEntry={entry}
               isGrid={project.view === ProjectView.Grid}
