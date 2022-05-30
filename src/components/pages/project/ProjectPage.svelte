@@ -17,6 +17,7 @@
   import ProjectView from "../../../typescript/enums/project-view";
   import ScreenDimmer from "../../shared/layout/ScreenDimmer.svelte";
   import { Settings } from "../../../typescript/storage";
+  import StringTableJsonView from "./StringTableJsonView.svelte";
 
   const { formatAsHexString } = window.S4TK.formatting;
   const { fnv32 } = window.S4TK.hashing;
@@ -66,8 +67,12 @@
   function createString() {
     setTimeout(() => {
       if (newStringInput.innerHTML) {
-        const key = fnv32(uuidv4() + newStringInput.innerHTML);
-        project.addEntry(key, newStringInput.innerHTML);
+        const value = newStringInput.innerHTML.replace(
+          /(?:\r\n|\r|\n)/g,
+          "\\n"
+        );
+        const key = fnv32(uuidv4() + value);
+        project.addEntry(key, value);
         project = project;
         isCreatingString = false;
       }
@@ -135,7 +140,11 @@
           </div>
         </SplitView>
       </div>
-      {#if project.primaryStbl.size}
+      {#if project.view === ProjectView.Json}
+        <StringTableJsonView stbl={project?.primaryStbl} />
+      {:else if project.view === ProjectView.Translate}
+        Translate
+      {:else if project.primaryStbl.size}
         <div
           class:drop-shadow={project.view !== ProjectView.Grid}
           class:grid-view={project.view === ProjectView.Grid}
@@ -165,7 +174,7 @@
   {/if}
 </section>
 
-<Pagination />
+<!-- <Pagination /> -->
 
 <!-- TODO: bind to actual values -->
 <ProjectActionButtons
