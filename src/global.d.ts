@@ -6,14 +6,14 @@ import type { fnv64 } from "@s4tk/hashing";
 import type { formatAsHexString, formatResourceKey, formatStringKey, formatResourceInstance } from "@s4tk/hashing/formatting";
 import type { Package, StringTableResource } from "@s4tk/models";
 import type { StringTableLocale, BinaryResourceType } from "@s4tk/models/enums";
+import type StringEntry from "@s4tk/models/lib/resources/stbl/string-entry";
 import type ProjectView from "./typescript/enums/project-view";
 
 type StblMap = Map<StringTableLocale, StringTableResource>;
 
 interface UniqueStringEntry {
   id: number;
-  key: number;
-  value: string;
+  entry: StringEntry;
 }
 
 interface LocaleData {

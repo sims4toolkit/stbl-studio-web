@@ -15,8 +15,8 @@
   export let stringEntry: UniqueStringEntry;
   export let onEdit: () => void;
 
-  let keyValue = formatStringKey(stringEntry.key);
-  let stringValue = stringEntry.value.replaceAll("\\n", "\n");
+  let keyValue = formatStringKey(stringEntry.entry.key);
+  let stringValue = stringEntry.entry.value.replaceAll("\\n", "\n");
   let isKeyInvalid = false;
 
   $: isSelected = selectionGroup.isSelected(stringEntry);
@@ -36,9 +36,9 @@
       (e.target as HTMLTextAreaElement).focus();
     } else {
       mode = "view";
-      stringEntry.key = parseInt(keyValue, 16);
-      keyValue = formatStringKey(stringEntry.key);
-      stringEntry.value = stringValue.replace(/(?:\r\n|\r|\n)/g, "\\n");
+      stringEntry.entry.key = parseInt(keyValue, 16);
+      keyValue = formatStringKey(stringEntry.entry.key);
+      stringEntry.entry.value = stringValue.replace(/(?:\r\n|\r|\n)/g, "\\n");
       onEdit();
     }
   }

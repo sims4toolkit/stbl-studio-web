@@ -35,8 +35,8 @@
       workspace = value;
       project = workspace.projects.find(({ uuid }) => uuid === params.uuid);
 
-      entries = project.primaryStbl.entries.map(({ key, value }, id) => {
-        return { id, key, value };
+      entries = project.primaryStbl.entries.map((entry, id) => {
+        return { id, entry };
       });
 
       selectionGroup = new SelectionGroup(entries, "id", () => {
