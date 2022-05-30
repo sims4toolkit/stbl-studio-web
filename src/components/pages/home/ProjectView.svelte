@@ -23,12 +23,14 @@
 
 <button
   class="button-wrapper"
-  class:selected={projectSelected}
   class:move-on-hover={!isInSelectMode}
   class:unselectable-text={isInSelectMode}
   on:click={handleClick}
 >
-  <div class="w-100 floating-card project-view drop-shadow move-on-hover">
+  <div
+    class="w-100 floating-card project-view drop-shadow move-on-hover"
+    class:selected={projectSelected}
+  >
     <div class="flex-center-v">
       {#if isInSelectMode}
         <div
@@ -68,7 +70,17 @@
 </button>
 
 <style lang="scss">
+  button {
+    border-radius: 8px;
+  }
+
   .project-view {
+    border: 1px solid var(--color-bg-secondary);
+
+    &.selected {
+      border-color: var(--color-accent-secondary);
+    }
+
     .selected-indicator {
       background: none;
       min-width: 16px !important;
