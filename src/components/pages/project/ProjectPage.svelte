@@ -18,6 +18,7 @@
   import ScreenDimmer from "../../shared/layout/ScreenDimmer.svelte";
   import { Settings } from "../../../typescript/storage";
   import StringTableJsonView from "./StringTableJsonView.svelte";
+  import type { StringEntry } from "@s4tk/models/types";
 
   const { formatAsHexString } = window.S4TK.formatting;
   const { fnv32 } = window.S4TK.hashing;
@@ -25,20 +26,20 @@
   export let params: { uuid: string };
   let project: Project;
   let newStringInput: HTMLDivElement;
-
-  let selectionGroup = new SelectionGroup<{ key: number; value: string }>(
-    [],
-    "key",
-    () => {
-      selectionGroup = selectionGroup;
-    }
-  ); // FIXME:
+  let selectionGroup: SelectionGroup<StringEntry>;
 
   let workspace: Workspace;
   const unsubscribe = activeWorkspace.subscribe((value) => {
     if (value) {
       workspace = value;
       project = workspace.projects.find(({ uuid }) => uuid === params.uuid);
+      selectionGroup = new SelectionGroup<StringEntry>(
+        project.primaryStbl.entries,
+        "key",
+        () => {
+          selectionGroup = selectionGroup;
+        }
+      ); // FIXME: key is not unique
     }
   });
 
@@ -151,6 +152,7 @@
         >
           {#each project.primaryStbl.entries.slice(0, 10) as entry, key (key)}
             <StringEntryEditCell
+              {selectionGroup}
               stringEntry={entry}
               isGrid={project.view === ProjectView.Grid}
               onEdit={updateStblMap}

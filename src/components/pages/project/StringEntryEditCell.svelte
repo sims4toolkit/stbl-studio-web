@@ -3,10 +3,13 @@
   import type { StringEntry } from "@s4tk/models/types";
   import CopyButton from "./CopyButton.svelte";
   import { validateHexString } from "../../../typescript/helpers/tgi";
+  import type SelectionGroup from "../../../typescript/models/selection-group";
+  import SelectedIndicator from "../../shared/controls/SelectedIndicator.svelte";
 
   const { formatStringKey } = window.S4TK.formatting;
 
-  export let mode: "view" | "edit" | "select" = "view";
+  export let selectionGroup: SelectionGroup<StringEntry>;
+  export let mode: "view" | "edit" = "view";
   export let isGrid = false;
   export let stringEntry: StringEntry;
   export let onEdit: () => void;
@@ -15,7 +18,7 @@
   let stringValue = stringEntry.value.replaceAll("\\n", "\n");
   let isKeyInvalid = false;
 
-  $: copyDisabled = mode === "edit";
+  $: copyDisabled = mode === "edit" || selectionGroup.selectMode;
 
   $: {
     isKeyInvalid = !validateHexString(keyValue, 8);
@@ -40,58 +43,67 @@
 </script>
 
 <div
-  class="string-entry-edit-cell p-1 flex-col"
+  class="string-entry-edit-cell p-1 flex"
   class:drop-shadow={isGrid}
   class:grid-item={isGrid}
 >
-  <div class="flex-space-between">
-    <div class="input-wrapper">
-      <div class="input-copy-position" class:hidden={copyDisabled}>
-        <CopyButton
-          title="Copy key"
-          textGenerator={() => keyValue}
-          smallIcon={true}
-        />
+  {#if selectionGroup.selectMode}
+    <SelectedIndicator {selectionGroup} item={stringEntry} />
+  {/if}
+  <div class="flex-col w-100">
+    <div class="flex-space-between">
+      <div class="input-wrapper">
+        <div class="input-copy-position" class:hidden={copyDisabled}>
+          <CopyButton
+            title="Copy key"
+            textGenerator={() => keyValue}
+            smallIcon={true}
+          />
+        </div>
+        <div class="flex-center-v">
+          <div
+            class="key-input accent-color monospace"
+            contenteditable="true"
+            disabled={selectionGroup.selectMode}
+            bind:innerHTML={keyValue}
+            on:focus={handleInputFocus}
+            on:blur={handleInputBlur}
+          />
+          {#if isKeyInvalid}
+            <p transition:fade class="subtle-text error-color my-0">
+              &nbsp;• Must be 32-bit hex
+            </p>
+          {/if}
+        </div>
       </div>
-      <div class="flex-center-v">
-        <div
-          class="key-input accent-color monospace"
-          contenteditable="true"
-          bind:innerHTML={keyValue}
-          on:focus={handleInputFocus}
-          on:blur={handleInputBlur}
-        />
-        {#if isKeyInvalid}
-          <p transition:fade class="subtle-text error-color my-0">
-            &nbsp;• Must be 32-bit hex
-          </p>
+      <div>
+        {#if !selectionGroup.selectMode}
+          <CopyButton
+            title="Copy key and comment"
+            textGenerator={() => `${keyValue}<!--${stringValue}-->`}
+          />
         {/if}
       </div>
     </div>
-    <div>
-      <CopyButton
-        title="Copy key and comment"
-        textGenerator={() => `${keyValue}<!--${stringValue}-->`}
+    <div class="input-wrapper mt-half" class:h-100={isGrid}>
+      <div class="input-copy-position" class:hidden={copyDisabled}>
+        <CopyButton
+          title="Copy string"
+          textGenerator={() => stringValue}
+          smallIcon={true}
+        />
+      </div>
+      <div
+        class="string-input pre-wrap word-wrap"
+        contenteditable="true"
+        class:h-100={isGrid}
+        placeholder={"{0.SimFirstName} is reticulating {0.SimPronounPossessiveDependent} splines!"}
+        disabled={selectionGroup.selectMode}
+        bind:innerHTML={stringValue}
+        on:focus={handleInputFocus}
+        on:blur={handleInputBlur}
       />
     </div>
-  </div>
-  <div class="input-wrapper mt-half" class:h-100={isGrid}>
-    <div class="input-copy-position" class:hidden={copyDisabled}>
-      <CopyButton
-        title="Copy string"
-        textGenerator={() => stringValue}
-        smallIcon={true}
-      />
-    </div>
-    <div
-      class="string-input pre-wrap word-wrap"
-      contenteditable="true"
-      class:h-100={isGrid}
-      placeholder={"{0.SimFirstName} is reticulating {0.SimPronounPossessiveDependent} splines!"}
-      bind:innerHTML={stringValue}
-      on:focus={handleInputFocus}
-      on:blur={handleInputBlur}
-    />
   </div>
 </div>
 
