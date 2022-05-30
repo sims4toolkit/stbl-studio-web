@@ -52,6 +52,7 @@
 
       stbl.clear();
       stbl.addAll(entries);
+      // FIXME: project num strings is out of sync
     } catch (err) {
       console.error(err);
       errorMsg = err;

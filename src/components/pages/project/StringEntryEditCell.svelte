@@ -38,7 +38,6 @@
       mode = "view";
       stringEntry.key = parseInt(keyValue, 16);
       keyValue = formatStringKey(stringEntry.key);
-      console.log(stringValue);
       stringEntry.value = stringValue.replace(/(?:\r\n|\r|\n)/g, "\\n");
       onEdit();
     }
@@ -127,7 +126,7 @@
     user-select: none;
 
     &.is-selecting:hover {
-      cursor: pointer;
+      cursor: pointer !important;
     }
 
     &.is-selected {
