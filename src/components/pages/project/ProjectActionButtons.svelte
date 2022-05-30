@@ -1,21 +1,25 @@
 <script lang="ts">
   import { v4 as uuidv4 } from "uuid";
+  import type { StringEntry } from "@s4tk/models/types";
   import type Project from "../../../typescript/models/project";
+  import type SelectionGroup from "../../../typescript/models/selection-group";
   import ToolbarColor from "../../../typescript/enums/toolbar-colors";
   import FloatingActionButtonGroup from "../../shared/controls/FloatingActionButtonGroup.svelte";
 
   const { fnv32 } = window.S4TK.hashing;
 
-  export let disabledText: string;
-  export let disabled: boolean;
-  export let isSelecting: boolean;
+  // = null to silence warning
   export let project: Project = null;
+  export let selectionGroup: SelectionGroup<StringEntry> = null;
   export let createNewStringEntry: () => void;
+
+  $: disabledText = project ? "none selected" : "no project";
+  $: disabled = selectionGroup?.noneSelected;
 
   const normalModeToolbar = [
     {
-      title: "save stbl",
-      icon: "desktop-download",
+      title: "download",
+      icon: "download",
       color: ToolbarColor.Download,
       async onClick() {
         alert("button clicked");
@@ -23,7 +27,7 @@
     },
     {
       title: "import strings",
-      icon: "upload",
+      icon: "import",
       color: ToolbarColor.Upload,
       async onClick() {
         alert("button clicked");
@@ -35,17 +39,13 @@
       color: ToolbarColor.Create,
       async onClick() {
         createNewStringEntry();
-        return;
-        const key = fnv32(uuidv4());
-        project.addEntry(key, "");
-        project = project;
       },
     },
   ];
 
   const selectModeToolbar = [
     {
-      title: "delete",
+      title: "delete strings",
       icon: "trash",
       color: ToolbarColor.Delete,
       async onClick() {
@@ -53,11 +53,11 @@
       },
     },
     {
-      title: "merge",
-      icon: "git-merge",
+      title: "export strings",
+      icon: "export",
       color: ToolbarColor.Merge,
       async onClick() {
-        alert("Merge Clicked");
+        alert("Export Clicked");
       },
     },
     {
@@ -70,7 +70,9 @@
     },
   ];
 
-  $: buttonData = isSelecting ? selectModeToolbar : normalModeToolbar;
+  $: buttonData = selectionGroup?.selectMode
+    ? selectModeToolbar
+    : normalModeToolbar;
 </script>
 
 <FloatingActionButtonGroup {buttonData} {disabled} {disabledText} />

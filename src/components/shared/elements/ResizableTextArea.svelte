@@ -6,6 +6,7 @@
   export let placeholder = "";
   export let onFocus: (e: FocusEvent) => void = () => {};
   export let onBlur: (e: FocusEvent) => void = () => {};
+  export let disabled = false;
 
   let textarea: HTMLTextAreaElement;
 
@@ -32,6 +33,7 @@
   bind:this={textarea}
   bind:value
   {placeholder}
+  {disabled}
   rows="1"
   class="pre-wrap word-wrap"
   on:focus={onFocus}

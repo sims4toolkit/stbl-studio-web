@@ -79,11 +79,6 @@
       }
     }, 200);
   }
-
-  let isEditing = false;
-
-  $: toolbarDisabledText = workspace ? "none selected" : "no workspace";
-  $: toolbarDisabled = !workspace || selectionGroup?.noneSelected;
 </script>
 
 <svelte:head>
@@ -180,10 +175,8 @@
 
 <!-- TODO: bind to actual values -->
 <ProjectActionButtons
-  disabled={false}
-  disabledText="disabled"
-  isSelecting={false}
   bind:project
+  bind:selectionGroup
   createNewStringEntry={startCreatingString}
 />
 

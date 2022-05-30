@@ -19,6 +19,8 @@
   let stringValue = stringEntry.value.replaceAll("\\n", "\n");
   let isKeyInvalid = false;
 
+  $: isSelected = selectionGroup.isSelected(stringEntry);
+
   $: copyDisabled = mode === "edit" || selectionGroup.selectMode;
 
   $: {
@@ -41,15 +43,26 @@
       onEdit();
     }
   }
+
+  function handleBodyClick(e: MouseEvent) {
+    if (selectionGroup.selectMode) {
+      selectionGroup.toggleValue(stringEntry);
+    }
+  }
 </script>
 
 <div
   class="string-entry-edit-cell p-1 flex"
   class:drop-shadow={isGrid}
   class:grid-item={isGrid}
+  class:is-selecting={selectionGroup.selectMode}
+  class:is-selected={isSelected}
+  on:click={handleBodyClick}
 >
   {#if selectionGroup.selectMode}
-    <SelectedIndicator {selectionGroup} item={stringEntry} />
+    <div class="flex-center-v h-100">
+      <SelectedIndicator {selectionGroup} item={stringEntry} />
+    </div>
   {/if}
   <div class="flex-col w-100">
     <div class="flex-space-between">
@@ -97,6 +110,7 @@
       <ResizableTextArea
         bind:refresher={isGrid}
         bind:value={stringValue}
+        disabled={selectionGroup.selectMode}
         placeholder={"{0.SimFirstName} is reticulating {0.SimPronounPossessiveDependent} splines!"}
         onFocus={handleInputFocus}
         onBlur={handleInputBlur}
@@ -109,7 +123,16 @@
   .string-entry-edit-cell {
     $border-radius: 8px;
     background-color: var(--color-bg-secondary);
+    border: 1px solid var(--color-bg-secondary);
     user-select: none;
+
+    &.is-selecting:hover {
+      cursor: pointer;
+    }
+
+    &.is-selected {
+      border-color: var(--color-accent-secondary);
+    }
 
     &.grid-item {
       min-width: 420px;
