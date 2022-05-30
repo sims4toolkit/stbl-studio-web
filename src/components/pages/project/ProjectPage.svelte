@@ -29,21 +29,25 @@
   let project: Project;
   let newStringInput: HTMLDivElement;
   let selectionGroup: SelectionGroup<StringEntry, number>;
+  let entries: StringEntry[];
   let isDeletingStrings = false;
+
+  $: {
+    if (project) {
+      entries = project?.primaryStbl.entries;
+      selectionGroup.selectables = entries;
+    }
+  }
 
   let workspace: Workspace;
   const unsubscribe = activeWorkspace.subscribe((value) => {
     if (value) {
       workspace = value;
       project = workspace.projects.find(({ uuid }) => uuid === params.uuid);
-
-      selectionGroup = new SelectionGroup(
-        project.primaryStbl.entries,
-        "id",
-        () => {
-          selectionGroup = selectionGroup;
-        }
-      ); // FIXME: key is not unique
+      entries = project?.primaryStbl.entries;
+      selectionGroup = new SelectionGroup(entries, "id", () => {
+        selectionGroup = selectionGroup;
+      });
     }
   });
 
@@ -149,7 +153,7 @@
           class:drop-shadow={project.view !== ProjectView.Grid}
           class:grid-view={project.view === ProjectView.Grid}
         >
-          {#each project.primaryStbl.entries.slice(0, 10) as entry, key (key)}
+          {#each entries.slice(0, 10) as entry, key (key)}
             <StringEntryEditCell
               {selectionGroup}
               stringEntry={entry}

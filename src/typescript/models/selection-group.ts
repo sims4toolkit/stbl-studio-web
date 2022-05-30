@@ -19,7 +19,7 @@ export default class SelectionGroup<Selectable, KeyType extends string | number 
   }
 
   constructor(
-    readonly selectables: Selectable[],
+    public selectables: Selectable[],
     readonly key: string,
     private _refreshCallback: () => void
   ) {
