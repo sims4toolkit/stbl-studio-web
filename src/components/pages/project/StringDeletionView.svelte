@@ -7,6 +7,8 @@
   import TextInput from "../../shared/elements/TextInput.svelte";
   import MultipageModalContent from "../../shared/layout/MultipageModalContent.svelte";
 
+  const { formatStringKey } = window.S4TK.formatting;
+
   export let project: Project;
   export let selectionGroup: SelectionGroup<StringEntry, number>;
   export let onComplete: () => void;
@@ -42,9 +44,15 @@
     <p class="mt-2">
       Are you sure you want to permanently delete the following strings?
     </p>
-    <ul class="mb-2">
+    <ul class="mb-2 deletion-summary">
       {#each selectionGroup.allSelectedItems as entry, key (key)}
-        <li>{entry.key} = {entry.string}</li>
+        <li>
+          <div class="flex-center-v">
+            <span class="monospace">{formatStringKey(entry.key)}</span>
+            &nbsp;=&nbsp;
+            <span class="string-value nowrap-truncate">{entry.string}</span>
+          </div>
+        </li>
       {/each}
     </ul>
     <TextInput
@@ -70,11 +78,20 @@
       ]}
     />
     <p class="subtle-text my-2">
-      Deleted projects cannot be recovered. Once they're gone, they're gone.
+      Deleted strings cannot be recovered. Once they're gone, they're gone.
     </p>
   </div>
 </MultipageModalContent>
 
 <style lang="scss">
-  // intentionally blank
+  ul.deletion-summary {
+    max-height: 100px;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    span.string-value {
+      display: inline-block;
+      max-width: 550px;
+    }
+  }
 </style>

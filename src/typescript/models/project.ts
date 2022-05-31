@@ -118,6 +118,7 @@ export default class Project implements ProjectMetaData {
   deleteEntries(ids: number[]) {
     ids.forEach(id => {
       this.primaryStbl.delete(id);
+      // TODO: also delete from other locales
     });
 
     this.numStrings = this.primaryStbl.size;
