@@ -123,6 +123,7 @@
         <form class="w-100 mb-2">
           <TextInput
             name="project-name-text-input"
+            focusOnMount={true}
             fillWidth={true}
             label="project name"
             placeholder="Project name..."

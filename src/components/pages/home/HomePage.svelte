@@ -16,10 +16,11 @@
   import GradientHeader from "../../shared/elements/GradientHeader.svelte";
   import ProjectDeletionView from "./ProjectDeletionView.svelte";
   import ProjectUploadView from "./ProjectUploadView.svelte";
+  import { subscribeToKey } from "../../../typescript/keybindings";
 
   let workspace: Workspace;
   let selectionGroup: SelectionGroup<Project>;
-  const unsubscribe = activeWorkspace.subscribe((value) => {
+  const unsubscribeWorkspace = activeWorkspace.subscribe((value) => {
     if (value) {
       workspace = value;
       selectionGroup = new SelectionGroup(value.projects, "uuid", () => {
@@ -28,8 +29,22 @@
     }
   });
 
+  const unsubscribeKeyN = subscribeToKey("n", () => (creatingProject = true), {
+    ctrlOrMeta: true,
+  });
+
+  const unsubscribeKeyEsc = subscribeToKey("Escape", () => {
+    if (selectionGroup.selectMode) {
+      selectionGroup.toggleSelectMode(false);
+    } else if (creatingProject) {
+      creatingProject = false;
+    }
+  });
+
   onDestroy(() => {
-    unsubscribe();
+    unsubscribeWorkspace();
+    unsubscribeKeyN();
+    unsubscribeKeyEsc();
   });
 
   let creatingProject = false;

@@ -61,9 +61,14 @@
     }
   );
 
+  const unsubscribeToKeyEsc = subscribeToKey("Escape", () => {
+    if (selectionGroup.selectMode) selectionGroup.toggleSelectMode(false);
+  });
+
   onDestroy(() => {
     unsubscribeToWorkspace();
     unsubscribeToKeyN();
+    unsubscribeToKeyEsc();
   });
 
   function updateView(view: ProjectView) {
