@@ -116,8 +116,6 @@ export default class Project implements ProjectMetaData {
    * @param ids IDs of entries to delete
    */
   deleteEntries(ids: number[]) {
-    console.log(ids);
-
     ids.forEach(id => {
       this.primaryStbl.delete(id);
     });
