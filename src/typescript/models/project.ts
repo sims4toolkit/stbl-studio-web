@@ -111,7 +111,7 @@ export default class Project implements ProjectMetaData {
   }
 
   /**
-   * Deletes entries from the primary STBL and saves the project to storage.
+   * Deletes entries from all STBLs and saves the project to storage.
    * 
    * @param ids IDs of entries to delete
    */
@@ -124,6 +124,15 @@ export default class Project implements ProjectMetaData {
 
     this.numStrings = this.primaryStbl.size;
     this.save();
+  }
+
+  /**
+   * Replaces all entries in the primary STBL, and deletes/updates 
+   * 
+   * @param entries Entries to replace in primary STBL
+   */
+  replaceEntries(entries: { key: number; value: string }[]) {
+    // TODO:
   }
 
   /**

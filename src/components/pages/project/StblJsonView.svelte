@@ -45,13 +45,14 @@
           );
 
         return {
-          key: parseInt(key, 16), // FIXME: verify it's a uint32
+          key: parseInt(key, 16),
           value,
         };
       });
 
       stbl.clear();
       stbl.addAll(entries);
+      // FIXME: keep other locales in sync
       // FIXME: project num strings is out of sync
     } catch (err) {
       console.error(err);
@@ -68,9 +69,21 @@
   <IconTextButton icon="save-outline" text="Save" onClick={saveJson} />
 </div>
 
+<p class="subtle-text">
+  <u class="error-color bold">WARNING</u>: You should not be editing in JSON
+  mode unless you know what you are doing. (1) You will not be asked to confirm
+  whether you really want to delete entries, and
+  <strong>changes are irreversible</strong>. (2) Changing keys in this mode will
+  <strong>delete any and all translations</strong>
+  for the entries whose keys you changed. (3)
+  <strong>This mode does not autosave</strong>, and must be saved manually by
+  clicking the button.
+</p>
 <p class="subtle-text mb-2">
-  <u class="error-color bold">WARNING</u>: JSON view does not autosave. You must
-  click the save button when you are finished with your edits.
+  Confused about the syntax? Read about it <a
+    href="#/help?title=json"
+    target="_blank">here</a
+  >.
 </p>
 
 <textarea
@@ -91,6 +104,11 @@
 {/if}
 
 <style lang="scss">
+  strong {
+    color: inherit;
+    text-decoration: underline;
+  }
+
   textarea {
     resize: none;
     background-color: var(--color-bg-secondary);

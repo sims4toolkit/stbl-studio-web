@@ -36,6 +36,7 @@
       (e.target as HTMLTextAreaElement).focus();
     } else {
       mode = "view";
+      // FIXME: key needs to be updated in other locales, too
       stringEntry.key = parseInt(keyValue, 16);
       keyValue = formatStringKey(stringEntry.key);
       stringEntry.value = stringValue.replace(/(?:\r\n|\r|\n)/g, "\\n");
