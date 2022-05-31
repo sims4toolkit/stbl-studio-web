@@ -15,12 +15,14 @@ export function subscribeToKey(
   options?: Partial<{
     ctrlOrMeta: boolean;
     preventDefault: boolean;
+    shift: boolean;
   }>
 ): () => void {
   const id = nextSubscriptionId++;
 
   const fn = (e: KeyboardEvent) => {
     if (options?.ctrlOrMeta && !(e.ctrlKey || e.metaKey)) return;
+    if (options?.shift && !e.shiftKey) return;
     if (e.key === key) {
       if (options?.preventDefault) e.preventDefault();
       callback(e);

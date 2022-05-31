@@ -12,14 +12,20 @@
 
   let newStringTextarea: HTMLTextAreaElement;
 
-  const unsubscribeToKeyEsc = subscribeToKey("Escape", close);
+  const unsubscribeToEsc = subscribeToKey("Escape", close);
+
+  const unsubscribeToEnter = subscribeToKey("Enter", onComplete, {
+    ctrlOrMeta: true,
+    preventDefault: true,
+  });
 
   onMount(() => {
     newStringTextarea.focus();
   });
 
   onDestroy(() => {
-    unsubscribeToKeyEsc();
+    unsubscribeToEsc();
+    unsubscribeToEnter();
   });
 
   function close() {
