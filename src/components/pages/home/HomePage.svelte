@@ -31,6 +31,7 @@
 
   const unsubscribeKeyN = subscribeToKey("n", () => (creatingProject = true), {
     ctrlOrMeta: true,
+    preventDefault: true,
   });
 
   const unsubscribeKeyEsc = subscribeToKey("Escape", () => {

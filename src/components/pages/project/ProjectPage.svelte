@@ -51,24 +51,41 @@
     }
   });
 
-  const unsubscribeToKeyN = subscribeToKey(
+  const unsubscribeToN = subscribeToKey(
     "n",
     () => {
-      isCreatingString = true;
+      if (!selectionGroup.selectMode) isCreatingString = true;
     },
     {
       ctrlOrMeta: true,
+      preventDefault: true,
     }
   );
 
-  const unsubscribeToKeyEsc = subscribeToKey("Escape", () => {
-    if (selectionGroup.selectMode) selectionGroup.toggleSelectMode(false);
+  const unsubscribeToD = subscribeToKey(
+    "d",
+    () => {
+      if (selectionGroup.selectMode && !selectionGroup.noneSelected)
+        isDeletingStrings = true;
+    },
+    {
+      ctrlOrMeta: true,
+      preventDefault: true,
+    }
+  );
+
+  const unsubscribeToEsc = subscribeToKey("Escape", () => {
+    if (selectionGroup.selectMode) {
+      isDeletingStrings = false;
+      selectionGroup.toggleSelectMode(false);
+    }
   });
 
   onDestroy(() => {
     unsubscribeToWorkspace();
-    unsubscribeToKeyN();
-    unsubscribeToKeyEsc();
+    unsubscribeToN();
+    unsubscribeToD();
+    unsubscribeToEsc();
   });
 
   function updateView(view: ProjectView) {
