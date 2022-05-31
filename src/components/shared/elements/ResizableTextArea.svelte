@@ -2,13 +2,12 @@
   import { onMount } from "svelte";
 
   export let refresher: any = null; // for refreshing
-  export let value: string;
+  export let value: string = "";
   export let placeholder = "";
   export let onFocus: (e: FocusEvent) => void = () => {};
   export let onBlur: (e: FocusEvent) => void = () => {};
   export let disabled = false;
-
-  let textarea: HTMLTextAreaElement;
+  export let textarea: HTMLTextAreaElement = null;
 
   function onInput() {
     this.style.height = "auto";
