@@ -49,6 +49,7 @@
       label="type &quot;yes&quot; to confirm"
       fillWidth={true}
       bind:isValid={deletionConfirmed}
+      focusOnMount={true}
       validators={[
         {
           error: "Click the X in the top-right corner",

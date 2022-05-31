@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import { fade } from "svelte/transition";
   import { Settings } from "../../../typescript/storage";
 
@@ -15,8 +16,14 @@
   export let validators: InputValidator[] = [];
   export let isValid: boolean = true;
   export let fillWidth = false;
+  export let focusOnMount = false;
 
+  let input: HTMLInputElement;
   let errorMessage: string;
+
+  onMount(() => {
+    if (focusOnMount) input.focus();
+  });
 
   $: {
     let i = 0;
@@ -50,6 +57,7 @@
     </div>
   {/if}
   <input
+    bind:this={input}
     id={name}
     {name}
     type="text"
