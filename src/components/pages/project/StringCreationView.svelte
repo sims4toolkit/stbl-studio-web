@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { fly } from "svelte/transition";
-  import { v4 as uuidv4 } from "uuid";
   import type Project from "../../../typescript/models/project";
   import { Settings } from "../../../typescript/storage";
   import ResizableTextArea from "../../shared/elements/ResizableTextArea.svelte";
@@ -16,15 +15,24 @@
     newStringTextarea.focus();
   });
 
-  function createStringEntry() {
-    if (newStringTextarea.value) {
-      const value = newStringTextarea.value.replace(/(?:\r\n|\r|\n)/g, "\\n");
-      const key = fnv32(uuidv4() + value);
-      project.addEntry(key, value);
-      project = project;
-    }
-
+  function close() {
+    newStringTextarea.value = "";
     onComplete();
+  }
+
+  function createStringEntry() {
+    // timeout needed so that textarea can be cleared if X clicked
+    setTimeout(() => {
+      if (newStringTextarea.value) {
+        const value = newStringTextarea.value.replace(/(?:\r\n|\r|\n)/g, "\\n");
+        // TODO: should I generate new UUID instead?
+        const key = fnv32(project.uuid + value);
+        project.addEntry(key, value);
+        project = project;
+      }
+
+      onComplete();
+    }, 200);
   }
 </script>
 
@@ -35,7 +43,7 @@
   <div class="creating-string-dialog flex-col p-1">
     <div class="flex-space-between flex-center-v">
       <p class="small-title mt-0">enter new string</p>
-      <button class="button-wrapper" on:click={onComplete}>
+      <button class="button-wrapper" on:click={close}>
         <img class="is-svg" src="./assets/x.svg" alt="X" />
       </button>
     </div>
