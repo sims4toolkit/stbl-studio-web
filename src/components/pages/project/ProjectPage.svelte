@@ -9,7 +9,6 @@
   import SelectionGroup from "../../../typescript/models/selection-group";
   import ProjectActionButtons from "./ProjectActionButtons.svelte";
   import IconButton from "../../shared/elements/IconButton.svelte";
-  import Pagination from "../../shared/controls/Pagination.svelte";
   import StringEditCell from "./StringEditCell.svelte";
   import SplitView from "../../shared/layout/SplitView.svelte";
   import ProjectView from "../../../typescript/enums/project-view";
@@ -21,6 +20,7 @@
   import StringCreationView from "./StringCreationView.svelte";
   import StblTranslateView from "./StblTranslateView.svelte";
   import { subscribeToKey } from "../../../typescript/keybindings";
+  import PaginationController from "../../shared/controls/PaginationController.svelte";
 
   const { formatAsHexString } = window.S4TK.formatting;
 
@@ -29,6 +29,7 @@
   let selectionGroup: SelectionGroup<StringEntry, number>;
   let project: Project;
   let entries: StringEntry[];
+  let currentSlice: StringEntry[];
   let isDeletingStrings = false;
   let isCreatingString = false;
 
@@ -114,6 +115,10 @@
   function updateStblMap() {
     project.saveStblMap();
   }
+
+  function updateSlice(slice: StringEntry[]) {
+    currentSlice = slice;
+  }
 </script>
 
 <svelte:head>
@@ -180,12 +185,12 @@
         <StblJsonView stbl={project?.primaryStbl} />
       {:else if project.view === ProjectView.Translate}
         <StblTranslateView />
-      {:else if project.primaryStbl.size}
+      {:else if currentSlice && currentSlice.length}
         <div
           class:drop-shadow={project.view !== ProjectView.Grid}
           class:grid-view={project.view === ProjectView.Grid}
         >
-          {#each entries.slice(0, 10) as entry, key (key)}
+          {#each currentSlice as entry (entry.id)}
             <StringEditCell
               {selectionGroup}
               stringEntry={entry}
@@ -211,7 +216,13 @@
   {/if}
 </section>
 
-<!-- <Pagination /> -->
+{#if Boolean(entries?.length)}
+  <PaginationController
+    items={entries}
+    itemsPerPage={10}
+    onSliceUpdate={updateSlice}
+  />
+{/if}
 
 <ProjectActionButtons
   bind:project
