@@ -216,7 +216,7 @@
   {/if}
 </section>
 
-{#if Boolean(entries?.length) && project.view !== ProjectView.Json}
+{#if Boolean(entries) && project.view !== ProjectView.Json}
   <PaginationController
     items={entries}
     {inModal}

@@ -73,6 +73,17 @@
   }
 
   async function update() {
+    if (items.length === 0) {
+      firstButtonValue = null;
+      previousButtonValue = null;
+      nextButtonValue = null;
+      lastButtonValue = null;
+      showFirstDots = false;
+      showSecondDots = false;
+      onSliceUpdate(items);
+      return;
+    }
+
     if (currentPage > numPages) {
       inputValue = numPages;
       currentPage = numPages;
@@ -132,7 +143,7 @@
     placeholder="#"
     bind:value={inputValue}
     on:change={handleInputChange}
-    hidden={numPages === 1}
+    hidden={numPages <= 1}
   />
   <PaginationButton value={nextButtonValue} onClick={handleButtonClick} />
   {#if showSecondDots}
