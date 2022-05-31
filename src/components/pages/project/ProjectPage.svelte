@@ -20,6 +20,7 @@
   import BlurOverlay from "../../shared/layout/BlurOverlay.svelte";
   import StringCreationView from "./StringCreationView.svelte";
   import StblTranslateView from "./StblTranslateView.svelte";
+  import { subscribeToKey } from "../../../typescript/keybindings";
 
   const { formatAsHexString } = window.S4TK.formatting;
 
@@ -39,7 +40,7 @@
   }
 
   let workspace: Workspace;
-  const unsubscribe = activeWorkspace.subscribe((value) => {
+  const unsubscribeToWorkspace = activeWorkspace.subscribe((value) => {
     if (value) {
       workspace = value;
       project = workspace.projects.find(({ uuid }) => uuid === params.uuid);
@@ -50,8 +51,19 @@
     }
   });
 
+  const unsubscribeToKeyN = subscribeToKey(
+    "n",
+    () => {
+      isCreatingString = true;
+    },
+    {
+      ctrlOrMeta: true,
+    }
+  );
+
   onDestroy(() => {
-    unsubscribe();
+    unsubscribeToWorkspace();
+    unsubscribeToKeyN();
   });
 
   function updateView(view: ProjectView) {

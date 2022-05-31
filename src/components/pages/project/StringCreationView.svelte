@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   import { fly } from "svelte/transition";
+  import { subscribeToKey } from "../../../typescript/keybindings";
   import type Project from "../../../typescript/models/project";
   import { Settings } from "../../../typescript/storage";
   import ResizableTextArea from "../../shared/elements/ResizableTextArea.svelte";
@@ -11,8 +12,14 @@
 
   let newStringTextarea: HTMLTextAreaElement;
 
+  const unsubscribeToKeyEsc = subscribeToKey("Escape", close);
+
   onMount(() => {
     newStringTextarea.focus();
+  });
+
+  onDestroy(() => {
+    unsubscribeToKeyEsc();
   });
 
   function close() {
