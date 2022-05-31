@@ -132,7 +132,24 @@ export default class Project implements ProjectMetaData {
    * @param entries Entries to replace in primary STBL
    */
   replaceEntries(entries: { key: number; value: string }[]) {
-    // TODO:
+    this.primaryStbl.replaceEntries(entries);
+
+    this.stblMap.forEach(stbl => {
+      const keysToDelete = new Set<number>();
+
+      stbl.entries.forEach(entry => {
+        if (!this.primaryStbl.hasKey(entry.key)) {
+          keysToDelete.add(entry.key);
+        }
+      });
+
+      keysToDelete.forEach(key => {
+        stbl.deleteByKey(key);
+      });
+    });
+
+    this.numStrings = this.primaryStbl.size;
+    this.save();
   }
 
   /**

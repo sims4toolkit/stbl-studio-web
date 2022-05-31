@@ -182,7 +182,7 @@
         </SplitView>
       </div>
       {#if project.view === ProjectView.Json}
-        <StblJsonView stbl={project?.primaryStbl} />
+        <StblJsonView {project} />
       {:else if project.view === ProjectView.Translate}
         <StblTranslateView />
       {:else if currentSlice && currentSlice.length}

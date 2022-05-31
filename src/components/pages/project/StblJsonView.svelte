@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { StringTableResource } from "@s4tk/models";
   import { onMount } from "svelte";
+  import type Project from "../../../typescript/models/project";
   import { validateHexString } from "../../../typescript/helpers/tgi";
   import Checkbox from "../../shared/elements/Checkbox.svelte";
   import IconTextButton from "../../shared/elements/IconTextButton.svelte";
@@ -8,7 +8,7 @@
 
   const { formatStringKey } = window.S4TK.formatting;
 
-  export let stbl: StringTableResource;
+  export let project: Project;
 
   let textarea: HTMLTextAreaElement;
   let wrapText = true;
@@ -16,7 +16,7 @@
   let errorMsg = "";
 
   let jsonContent = JSON.stringify(
-    stbl?.entries.map((entry) => {
+    project?.primaryStbl?.entries.map((entry) => {
       return {
         key: formatStringKey(entry.key),
         value: entry.value,
@@ -50,10 +50,7 @@
         };
       });
 
-      stbl.clear();
-      stbl.addAll(entries);
-      // FIXME: keep other locales in sync
-      // FIXME: project num strings is out of sync
+      project.replaceEntries(entries);
     } catch (err) {
       console.error(err);
       errorMsg = err;
