@@ -29,25 +29,6 @@
     }
   });
 
-  const unsubscribeKeyN = subscribeToKey("n", () => (creatingProject = true), {
-    ctrlOrMeta: true,
-    preventDefault: true,
-  });
-
-  const unsubscribeKeyEsc = subscribeToKey("Escape", () => {
-    if (selectionGroup.selectMode) {
-      selectionGroup.toggleSelectMode(false);
-    } else if (creatingProject) {
-      creatingProject = false;
-    }
-  });
-
-  onDestroy(() => {
-    unsubscribeWorkspace();
-    unsubscribeKeyN();
-    unsubscribeKeyEsc();
-  });
-
   let creatingProject = false;
   const stopCreatingProject = () => (creatingProject = false);
 
@@ -66,6 +47,7 @@
     showDownload = true;
   }
 
+  $: inModal = creatingProject || uploadingProject || confirmingDeletion;
   $: workspaceEmpty = Boolean(!workspace?.projects.length);
   $: toolbarDisabledText = workspace ? "none selected" : "no workspace";
   $: toolbarDisabled = !workspace || selectionGroup?.noneSelected;
@@ -73,13 +55,68 @@
     workspace.getProject(uuid)
   );
 
+  const keySubscriptions = [
+    subscribeToKey(
+      "n",
+      () => {
+        if (!selectionGroup.selectMode && !inModal) {
+          creatingProject = true;
+        }
+      },
+      {
+        ctrlOrMeta: true,
+        preventDefault: true,
+      }
+    ),
+    subscribeToKey(
+      "u",
+      () => {
+        if (!selectionGroup.selectMode && !inModal) {
+          uploadingProject = true;
+        }
+      },
+      {
+        ctrlOrMeta: true,
+        preventDefault: true,
+      }
+    ),
+    subscribeToKey(
+      "s",
+      () => {
+        if (selectionGroup.selectMode) {
+          // TODO:
+        } else if (!inModal) {
+          downloadWorkspace();
+        }
+      },
+      {
+        ctrlOrMeta: true,
+        preventDefault: true,
+      }
+    ),
+    subscribeToKey("Escape", () => {
+      if (selectionGroup.selectMode && !inModal) {
+        selectionGroup.toggleSelectMode(false);
+      }
+    }),
+  ];
+
+  onDestroy(() => {
+    unsubscribeWorkspace();
+    keySubscriptions.forEach((unsubscribe) => unsubscribe());
+  });
+
+  function downloadWorkspace() {
+    download("StblStudioWorkspace.json", () => workspace.toBlob());
+  }
+
   const normalModeToolbar = [
     {
       title: "save workspace",
       icon: "desktop-download",
       color: ToolbarColor.Download,
       async onClick() {
-        download("StblStudioWorkspace.json", () => workspace.toBlob());
+        downloadWorkspace();
       },
     },
     {

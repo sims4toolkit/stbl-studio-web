@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onDestroy } from "svelte";
+  import { subscribeToKey } from "../../../typescript/keybindings";
   import type Project from "../../../typescript/models/project";
   import type Workspace from "../../../typescript/models/workspace";
   import { activeWorkspace } from "../../../typescript/stores";
@@ -16,8 +17,11 @@
     workspace = value;
   });
 
+  const unsubscribeKeyEsc = subscribeToKey("Escape", onComplete);
+
   onDestroy(() => {
     unsubscribe();
+    unsubscribeKeyEsc();
   });
 
   function deleteSelectedProjects() {

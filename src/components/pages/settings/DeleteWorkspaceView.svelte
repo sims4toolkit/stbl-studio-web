@@ -34,6 +34,7 @@
       fillWidth={true}
       bind:value={confirmationText}
       bind:isValid={confirmed}
+      focusOnMount={true}
       validators={[
         {
           error: 'Value must be "yes"',

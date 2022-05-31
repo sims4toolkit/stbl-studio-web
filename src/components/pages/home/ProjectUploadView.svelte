@@ -15,6 +15,7 @@
   import type { StblMap } from "../../../global";
   import { getInstanceBase } from "../../../typescript/helpers/tgi";
   import { Settings } from "../../../typescript/storage";
+  import { subscribeToKey } from "../../../typescript/keybindings";
 
   const { BinaryResourceType, StringTableLocale } = window.S4TK.enums;
   const { Package, StringTableResource } = window.S4TK.models;
@@ -34,8 +35,11 @@
     workspace = value;
   });
 
+  const unsubscribeKeyEsc = subscribeToKey("Escape", onComplete);
+
   onDestroy(() => {
     unsubscribe();
+    unsubscribeKeyEsc();
   });
 
   interface StblWithKey {

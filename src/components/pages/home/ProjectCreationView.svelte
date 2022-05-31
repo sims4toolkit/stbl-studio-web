@@ -16,6 +16,7 @@
   import { Settings } from "../../../typescript/storage";
   import MultipageModalContent from "../../shared/layout/MultipageModalContent.svelte";
   import GroupInstanceLocale from "../../shared/controls/GroupInstanceLocale.svelte";
+  import { subscribeToKey } from "../../../typescript/keybindings";
 
   const { formatAsHexString } = window.S4TK.formatting;
 
@@ -32,8 +33,11 @@
     workspace = value;
   });
 
+  const unsubscribeKeyEsc = subscribeToKey("Escape", onComplete);
+
   onDestroy(() => {
     unsubscribe();
+    unsubscribeKeyEsc();
   });
 
   //#endregion General
