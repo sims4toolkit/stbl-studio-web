@@ -1,18 +1,20 @@
 <script lang="ts">
   import type { StringEntry } from "@s4tk/models/types";
   import type Project from "../../../typescript/models/project";
+  import type SelectionGroup from "../../../typescript/models/selection-group";
   import TextInput from "../../shared/elements/TextInput.svelte";
   import MultipageModalContent from "../../shared/layout/MultipageModalContent.svelte";
 
   export let project: Project;
-  export let selectedEntries: StringEntry[];
+  export let selectionGroup: SelectionGroup<StringEntry, number>;
   export let onComplete: () => void;
 
   let deletionConfirmed = false;
 
   function deleteSelectedEntries() {
     if (deletionConfirmed) {
-      project.deleteEntries(selectedEntries.map((e) => e.id));
+      project.deleteEntries(selectionGroup.allSelectedKeys);
+      selectionGroup.toggleSelectMode(false);
       project = project;
     }
 
@@ -33,7 +35,7 @@
       Are you sure you want to permanently delete the following strings?
     </p>
     <ul class="mb-2">
-      {#each selectedEntries as entry, key (key)}
+      {#each selectionGroup.allSelectedItems as entry, key (key)}
         <li>{entry.key} = {entry.string}</li>
       {/each}
     </ul>

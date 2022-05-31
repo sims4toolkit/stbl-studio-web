@@ -19,14 +19,17 @@
   import StringDeletionView from "./StringDeletionView.svelte";
   import BlurOverlay from "../../shared/layout/BlurOverlay.svelte";
   import StringCreationView from "./StringCreationView.svelte";
+  import StblTranslateView from "./StblTranslateView.svelte";
 
   const { formatAsHexString } = window.S4TK.formatting;
 
   export let params: { uuid: string };
-  let project: Project;
+
   let selectionGroup: SelectionGroup<StringEntry, number>;
+  let project: Project;
   let entries: StringEntry[];
   let isDeletingStrings = false;
+  let isCreatingString = false;
 
   $: {
     if (project) {
@@ -59,8 +62,6 @@
   function updateStblMap() {
     project.saveStblMap();
   }
-
-  let isCreatingString = false;
 </script>
 
 <svelte:head>
@@ -121,7 +122,7 @@
       {#if project.view === ProjectView.Json}
         <StblJsonView stbl={project?.primaryStbl} />
       {:else if project.view === ProjectView.Translate}
-        Translate
+        <StblTranslateView />
       {:else if project.primaryStbl.size}
         <div
           class:drop-shadow={project.view !== ProjectView.Grid}
@@ -175,11 +176,8 @@
   <BlurOverlay onClose={() => (isDeletingStrings = false)}>
     <StringDeletionView
       bind:project
-      selectedEntries={selectionGroup.allSelectedItems}
-      onComplete={() => {
-        selectionGroup.toggleSelectMode(false);
-        isDeletingStrings = false;
-      }}
+      bind:selectionGroup
+      onComplete={() => (isDeletingStrings = false)}
     />
   </BlurOverlay>
 {/if}
