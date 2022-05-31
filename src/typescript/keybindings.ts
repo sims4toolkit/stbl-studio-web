@@ -11,7 +11,7 @@ const subscriptions: Map<number, (e: KeyboardEvent) => void> = new Map();
  */
 export function subscribeToKey(
   key: string,
-  callback: () => void,
+  callback: (e?: KeyboardEvent) => void,
   options?: Partial<{
     ctrlOrMeta: boolean;
     preventDefault: boolean;
@@ -23,7 +23,7 @@ export function subscribeToKey(
     if (options?.ctrlOrMeta && !(e.ctrlKey || e.metaKey)) return;
     if (e.key === key) {
       if (options?.preventDefault) e.preventDefault();
-      callback();
+      callback(e);
     }
   };
 
