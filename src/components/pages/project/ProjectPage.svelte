@@ -216,7 +216,7 @@
   {/if}
 </section>
 
-{#if Boolean(entries?.length)}
+{#if Boolean(entries?.length) && project.view !== ProjectView.Json}
   <PaginationController
     items={entries}
     itemsPerPage={10}

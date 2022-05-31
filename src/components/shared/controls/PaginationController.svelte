@@ -24,6 +24,11 @@
   }
 
   async function update() {
+    if (currentPage > numPages) {
+      inputValue = numPages;
+      currentPage = numPages;
+    }
+
     // buttons/input
     firstButtonValue = currentPage > 1 ? 1 : null;
     previousButtonValue = currentPage > 2 ? currentPage - 1 : null;
@@ -77,6 +82,7 @@
     placeholder="#"
     bind:value={inputValue}
     on:change={handleInputChange}
+    hidden={numPages === 1}
   />
   <PaginationButton value={nextButtonValue} onClick={handleButtonClick} />
   {#if showSecondDots}
