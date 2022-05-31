@@ -1,10 +1,14 @@
 <script lang="ts">
+  import { onDestroy } from "svelte";
+  import { subscribeToKey } from "../../../typescript/keybindings";
   import PaginationButton from "./PaginationButton.svelte";
 
   export let items: any[];
+  export let inModal: boolean;
   export let itemsPerPage: number;
   export let onSliceUpdate: (slice: any[]) => void;
 
+  let pageInput: HTMLInputElement;
   let currentPage = 1;
   let firstButtonValue: number;
   let showFirstDots = false;
@@ -13,6 +17,51 @@
   let nextButtonValue: number;
   let showSecondDots = false;
   let lastButtonValue: number;
+
+  const keySubscriptions = [
+    subscribeToKey(
+      "ArrowRight",
+      () => {
+        if (!inModal && currentPage < numPages) {
+          currentPage++;
+          inputValue = currentPage;
+        }
+      },
+      {
+        ctrlOrMeta: true,
+        preventDefault: true,
+      }
+    ),
+    subscribeToKey(
+      "ArrowLeft",
+      () => {
+        if (!inModal && currentPage > 1) {
+          currentPage--;
+          inputValue = currentPage;
+        }
+      },
+      {
+        ctrlOrMeta: true,
+        preventDefault: true,
+      }
+    ),
+    subscribeToKey(
+      "p",
+      () => {
+        if (!inModal) {
+          pageInput.focus();
+        }
+      },
+      {
+        ctrlOrMeta: true,
+        preventDefault: true,
+      }
+    ),
+  ];
+
+  onDestroy(() => {
+    keySubscriptions.forEach((unsubscribe) => unsubscribe());
+  });
 
   $: numPages = Math.ceil(items.length / itemsPerPage);
 
@@ -78,6 +127,7 @@
   {/if}
   <PaginationButton value={previousButtonValue} onClick={handleButtonClick} />
   <input
+    bind:this={pageInput}
     type="number"
     placeholder="#"
     bind:value={inputValue}

@@ -219,6 +219,7 @@
 {#if Boolean(entries?.length) && project.view !== ProjectView.Json}
   <PaginationController
     items={entries}
+    {inModal}
     itemsPerPage={10}
     onSliceUpdate={updateSlice}
   />
