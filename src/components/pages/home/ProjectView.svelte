@@ -4,6 +4,7 @@
   import type Project from "../../../typescript/models/project";
   import type SelectionGroup from "../../../typescript/models/selection-group";
   import { getLocaleData } from "../../../typescript/helpers/localization";
+  import SelectedIndicator from "../../shared/controls/SelectedIndicator.svelte";
 
   export let project: Project;
   export let selectionGroup: SelectionGroup<Project>;
@@ -33,15 +34,11 @@
   >
     <div class="flex-center-v">
       {#if isInSelectMode}
-        <div
-          in:fly={{ x: -10, duration: 500 }}
-          class:selected={projectSelected}
-          class="selected-indicator flex-center"
-        >
-          {#if projectSelected}
-            &#10003;
-          {/if}
-        </div>
+        <SelectedIndicator
+          bind:selectionGroup
+          bind:item={project}
+          disallowTabbing={true}
+        />
       {/if}
       <div class="mw-100 text-left">
         <h3 class="mt-0 mb-half ml-0 nowrap-truncate mr-1">
@@ -79,24 +76,6 @@
 
     &.selected {
       border-color: var(--color-accent-secondary);
-    }
-
-    .selected-indicator {
-      background: none;
-      min-width: 16px !important;
-      width: 16px;
-      height: 16px;
-      font-size: 12px;
-      border-radius: 50%;
-      border: 1px solid var(--color-text);
-      padding: 2px;
-      margin-right: 1em;
-
-      &.selected {
-        background-color: var(--color-accent-secondary);
-        border-color: var(--color-accent-secondary);
-        color: var(--color-bg);
-      }
     }
 
     .stbl-features {

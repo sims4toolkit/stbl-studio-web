@@ -5,19 +5,21 @@
 
   export let selectionGroup: SelectionGroup<any, string | number>;
   export let item: any;
+  export let disallowTabbing = false;
 
   $: itemSelected = selectionGroup.isSelected(item);
 </script>
 
-<div
+<button
   in:fly={{ x: -10, duration: Settings.reduceMotion ? 0 : 500 }}
   class:selected={itemSelected}
+  tabindex={disallowTabbing ? -1 : 0}
   class="selected-indicator flex-center"
 >
   {#if itemSelected}
     &#10003;
   {/if}
-</div>
+</button>
 
 <style lang="scss">
   .selected-indicator {
