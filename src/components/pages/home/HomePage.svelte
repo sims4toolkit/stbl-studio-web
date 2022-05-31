@@ -83,9 +83,7 @@
     subscribeToKey(
       "s",
       () => {
-        if (selectionGroup.selectMode) {
-          // TODO:
-        } else if (!inModal) {
+        if (!selectionGroup.selectMode && !inModal) {
           downloadWorkspace();
         }
       },
@@ -94,11 +92,32 @@
         preventDefault: true,
       }
     ),
-    subscribeToKey("Escape", () => {
-      if (selectionGroup.selectMode && !inModal) {
-        selectionGroup.toggleSelectMode(false);
+    subscribeToKey(
+      "d",
+      () => {
+        if (
+          selectionGroup.selectMode &&
+          !selectionGroup.noneSelected &&
+          !inModal
+        ) {
+          confirmingDeletion = true;
+        }
+      },
+      {
+        ctrlOrMeta: true,
+        preventDefault: true,
       }
-    }),
+    ),
+    subscribeToKey(
+      "e",
+      () => {
+        if (!inModal) selectionGroup.toggleSelectMode();
+      },
+      {
+        ctrlOrMeta: true,
+        preventDefault: true,
+      }
+    ),
   ];
 
   onDestroy(() => {
