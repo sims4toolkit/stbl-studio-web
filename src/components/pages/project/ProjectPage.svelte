@@ -32,6 +32,7 @@
   let isDeletingStrings = false;
   let isCreatingString = false;
 
+  $: inModal = isDeletingStrings || isCreatingString;
   $: selectModeDisabled = !entries?.length;
 
   $: viewAllowsSelect =
@@ -57,41 +58,52 @@
     }
   });
 
-  const unsubscribeToN = subscribeToKey(
-    "n",
-    () => {
-      if (!selectionGroup.selectMode) isCreatingString = true;
-    },
-    {
-      ctrlOrMeta: true,
-      preventDefault: true,
-    }
-  );
-
-  const unsubscribeToD = subscribeToKey(
-    "d",
-    () => {
-      if (selectionGroup.selectMode && !selectionGroup.noneSelected)
-        isDeletingStrings = true;
-    },
-    {
-      ctrlOrMeta: true,
-      preventDefault: true,
-    }
-  );
-
-  const unsubscribeToEsc = subscribeToKey("Escape", () => {
-    if (selectionGroup.selectMode) {
-      isDeletingStrings = false;
-      selectionGroup.toggleSelectMode(false);
-    }
-  });
+  const keySubscriptions = [
+    subscribeToKey(
+      "n",
+      () => {
+        if (!selectionGroup.selectMode && !inModal) {
+          isCreatingString = true;
+        }
+      },
+      {
+        ctrlOrMeta: true,
+        preventDefault: true,
+      }
+    ),
+    subscribeToKey(
+      "d",
+      () => {
+        if (
+          selectionGroup.selectMode &&
+          !selectionGroup.noneSelected &&
+          !inModal
+        ) {
+          isDeletingStrings = true;
+        }
+      },
+      {
+        ctrlOrMeta: true,
+        preventDefault: true,
+      }
+    ),
+    subscribeToKey(
+      "e",
+      () => {
+        if (!inModal && entries?.length) {
+          selectionGroup.toggleSelectMode();
+        }
+      },
+      {
+        ctrlOrMeta: true,
+        preventDefault: true,
+      }
+    ),
+  ];
 
   onDestroy(() => {
     unsubscribeToWorkspace();
-    unsubscribeToN();
-    unsubscribeToD();
-    unsubscribeToEsc();
+    keySubscriptions.forEach((unsubscribe) => unsubscribe());
   });
 
   function updateView(view: ProjectView) {

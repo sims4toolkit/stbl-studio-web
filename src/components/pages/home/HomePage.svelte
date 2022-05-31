@@ -111,7 +111,9 @@
     subscribeToKey(
       "e",
       () => {
-        if (!inModal) selectionGroup.toggleSelectMode();
+        if (!inModal && workspace?.projects?.length) {
+          selectionGroup.toggleSelectMode();
+        }
       },
       {
         ctrlOrMeta: true,
