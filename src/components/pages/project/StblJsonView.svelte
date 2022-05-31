@@ -70,7 +70,7 @@
 
 <p class="subtle-text mb-2">
   <u class="error-color bold">WARNING</u>: JSON view does not autosave. You must
-  click the save button when you are finished.
+  click the save button when you are finished with your edits.
 </p>
 
 <textarea
