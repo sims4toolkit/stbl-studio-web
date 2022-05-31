@@ -202,4 +202,10 @@
       }
     }
   }
+
+  @media only screen and (max-width: 500px) {
+    .string-entry-edit-cell.grid-item {
+      min-width: 300px;
+    }
+  }
 </style>

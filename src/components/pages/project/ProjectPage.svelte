@@ -199,4 +199,10 @@
       color: var(--color-text-subtle) !important;
     }
   }
+
+  @media only screen and (max-width: 500px) {
+    .grid-view {
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+  }
 </style>
