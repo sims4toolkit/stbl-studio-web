@@ -3,6 +3,7 @@
   import type SelectionGroup from "../../../typescript/models/selection-group";
 
   export let selectionGroup: SelectionGroup<any, string | number>;
+  export let disabled = false;
 
   $: isInSelectMode = selectionGroup.selectMode;
 </script>
@@ -23,6 +24,7 @@
   <button
     class="select-toggle"
     class:large-font={isInSelectMode}
+    {disabled}
     on:click={() => selectionGroup.toggleSelectMode()}
   >
     {#if isInSelectMode}
@@ -47,10 +49,21 @@
         font-size: 1.65em;
       }
 
-      &:hover,
-      &:hover span {
-        color: var(--color-text-subtle);
-        cursor: pointer;
+      &[disabled] {
+        cursor: not-allowed;
+
+        &,
+        & span {
+          color: var(--color-text-subtle);
+        }
+      }
+
+      &:hover:not([disabled]) {
+        &,
+        & span {
+          color: var(--color-text-subtle);
+          cursor: pointer;
+        }
       }
     }
   }

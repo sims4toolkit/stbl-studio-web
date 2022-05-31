@@ -32,6 +32,12 @@
   let isDeletingStrings = false;
   let isCreatingString = false;
 
+  $: selectModeDisabled = !entries?.length;
+
+  $: viewAllowsSelect =
+    project &&
+    (project.view === ProjectView.List || project.view === ProjectView.Grid);
+
   $: {
     if (project) {
       entries = project?.primaryStbl.entries;
@@ -149,7 +155,12 @@
             </div>
           </div>
           <div slot="right">
-            <SelectModeToggle {selectionGroup} />
+            {#if viewAllowsSelect}
+              <SelectModeToggle
+                {selectionGroup}
+                disabled={selectModeDisabled}
+              />
+            {/if}
           </div>
         </SplitView>
       </div>
