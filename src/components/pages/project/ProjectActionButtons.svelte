@@ -1,82 +1,74 @@
 <script lang="ts">
-  import { v4 as uuidv4 } from "uuid";
-  import type Project from "../../../typescript/models/project";
-  import type SelectionGroup from "../../../typescript/models/selection-group";
+  import type { FloatingActionButtonData } from "../../../global";
   import ToolbarColor from "../../../typescript/enums/toolbar-colors";
   import FloatingActionButtonGroup from "../../shared/controls/FloatingActionButtonGroup.svelte";
-  import type { StringEntry } from "@s4tk/models/types";
 
-  const { fnv32 } = window.S4TK.hashing;
+  export let inModal: boolean;
+  export let inSelectMode: boolean;
+  export let numSelected: number;
+  export let onAction: (action: ProjectAction) => void;
 
-  // = null to silence warning
-  export let project: Project = null;
-  export let selectionGroup: SelectionGroup<StringEntry, number> = null;
-  export let createNewStringEntry: () => void;
-  export let deleteStringEntry: () => void;
+  $: disabled = inModal || (inSelectMode && numSelected < 1);
 
-  $: disabled = selectionGroup?.noneSelected;
-  $: disabledTitle = project ? "none selected" : "no project";
-
-  const normalModeToolbar = [
+  const normalButtonData: FloatingActionButtonData[] = [
     {
       title: "download",
       icon: "download",
       color: ToolbarColor.Download,
+      keybinding: "s",
       async onClick() {
-        alert("button clicked");
+        onAction("download");
       },
     },
     {
       title: "import strings",
       icon: "import",
       color: ToolbarColor.Upload,
+      keybinding: "i",
       async onClick() {
-        alert("button clicked");
+        onAction("import");
       },
     },
     {
       title: "new string",
       icon: "plus",
       color: ToolbarColor.Create,
+      keybinding: "n",
       async onClick() {
-        createNewStringEntry();
+        onAction("create");
       },
     },
   ];
 
-  const selectModeToolbar = [
+  const selectModeButtonData: FloatingActionButtonData[] = [
     {
-      title: "delete strings",
+      title: "delete",
       icon: "trash",
       color: ToolbarColor.Delete,
+      keybinding: "d",
       async onClick() {
-        deleteStringEntry();
+        onAction("delete");
       },
     },
     {
-      title: "export strings",
+      title: "export",
       icon: "export",
       color: ToolbarColor.Merge,
+      keybinding: "o",
       async onClick() {
-        alert("Export Clicked");
-      },
-    },
-    {
-      title: "download",
-      icon: "download",
-      color: ToolbarColor.Download,
-      async onClick() {
-        alert("Download Clicked");
+        onAction("export");
       },
     },
   ];
 
-  $: buttonData = selectionGroup?.selectMode
-    ? selectModeToolbar
-    : normalModeToolbar;
+  $: buttonData = inSelectMode ? selectModeButtonData : normalButtonData;
 </script>
 
-<FloatingActionButtonGroup {buttonData} {disabled} {disabledTitle} />
+<FloatingActionButtonGroup
+  {buttonData}
+  {disabled}
+  disabledTitle="none selected"
+/>
 
 <style lang="scss">
   // intentionally blank

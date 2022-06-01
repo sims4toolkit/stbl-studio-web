@@ -61,34 +61,6 @@
 
   const keySubscriptions = [
     subscribeToKey(
-      "n",
-      () => {
-        if (!selectionGroup.selectMode && !inModal) {
-          isCreatingString = true;
-        }
-      },
-      {
-        ctrlOrMeta: true,
-        preventDefault: true,
-      }
-    ),
-    subscribeToKey(
-      "d",
-      () => {
-        if (
-          selectionGroup.selectMode &&
-          !selectionGroup.noneSelected &&
-          !inModal
-        ) {
-          isDeletingStrings = true;
-        }
-      },
-      {
-        ctrlOrMeta: true,
-        preventDefault: true,
-      }
-    ),
-    subscribeToKey(
       "e",
       () => {
         if (!inModal && entries?.length) {
@@ -118,6 +90,29 @@
 
   function updateSlice(slice: StringEntry[]) {
     currentSlice = slice;
+  }
+
+  async function handleAction(action: ProjectAction) {
+    switch (action) {
+      case "download":
+        // TODO:
+        alert(action);
+        break;
+      case "import":
+        // TODO:
+        alert(action);
+        break;
+      case "create":
+        isCreatingString = true;
+        break;
+      case "delete":
+        isDeletingStrings = true;
+        break;
+      case "export":
+        // TODO:
+        alert(action);
+        break;
+    }
   }
 </script>
 
@@ -226,10 +221,10 @@
 {/if}
 
 <ProjectActionButtons
-  bind:project
-  bind:selectionGroup
-  createNewStringEntry={() => (isCreatingString = true)}
-  deleteStringEntry={() => (isDeletingStrings = true)}
+  {inModal}
+  inSelectMode={selectionGroup?.selectMode}
+  numSelected={selectionGroup?.allSelectedKeys?.length ?? 0}
+  onAction={handleAction}
 />
 
 {#if isCreatingString}

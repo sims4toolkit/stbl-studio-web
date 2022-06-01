@@ -83,11 +83,11 @@
         break;
       case "merge":
         // TODO:
-        alert("merge");
+        alert(action);
         break;
       case "download":
         // TODO:
-        alert("download");
+        alert(action);
         break;
     }
   }
