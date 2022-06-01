@@ -3,10 +3,8 @@
   import type Project from "../../../typescript/models/project";
   import type Workspace from "../../../typescript/models/workspace";
   import SelectionGroup from "../../../typescript/models/selection-group";
-  import ToolbarColor from "../../../typescript/enums/toolbar-colors";
   import ContentArea from "../../shared/layout/ContentArea.svelte";
   import SplitView from "../../shared/layout/SplitView.svelte";
-  import FloatingActionButtonGroup from "../../shared/controls/FloatingActionButtonGroup.svelte";
   import SelectModeToggle from "../../shared/controls/SelectModeToggle.svelte";
   import ProjectViewGroup from "./ProjectViewGroup.svelte";
   import Downloader from "../../shared/controls/Downloader.svelte";
@@ -17,6 +15,7 @@
   import ProjectDeletionView from "./ProjectDeletionView.svelte";
   import ProjectUploadView from "./ProjectUploadView.svelte";
   import { subscribeToKey } from "../../../typescript/keybindings";
+  import HomeActionButtons from "./HomeActionButtons.svelte";
 
   let workspace: Workspace;
   let selectionGroup: SelectionGroup<Project>;
@@ -30,13 +29,8 @@
   });
 
   let creatingProject = false;
-  const stopCreatingProject = () => (creatingProject = false);
-
   let uploadingProject = false;
-  const stopUploadingProject = () => (uploadingProject = false);
-
   let confirmingDeletion = false;
-  const stopConfirmingDeletion = () => (confirmingDeletion = false);
 
   let showDownload = false;
   let downloadFilename: string;
@@ -49,65 +43,11 @@
 
   $: inModal = creatingProject || uploadingProject || confirmingDeletion;
   $: workspaceEmpty = Boolean(!workspace?.projects.length);
-  $: toolbarDisabledText = workspace ? "none selected" : "no workspace";
-  $: toolbarDisabled = !workspace || selectionGroup?.noneSelected;
   $: selectedProjects = selectionGroup?.allSelectedKeys.map((uuid) =>
     workspace.getProject(uuid)
   );
 
   const keySubscriptions = [
-    subscribeToKey(
-      "n",
-      () => {
-        if (!selectionGroup.selectMode && !inModal) {
-          creatingProject = true;
-        }
-      },
-      {
-        ctrlOrMeta: true,
-        preventDefault: true,
-      }
-    ),
-    subscribeToKey(
-      "u",
-      () => {
-        if (!selectionGroup.selectMode && !inModal) {
-          uploadingProject = true;
-        }
-      },
-      {
-        ctrlOrMeta: true,
-        preventDefault: true,
-      }
-    ),
-    subscribeToKey(
-      "s",
-      () => {
-        if (!selectionGroup.selectMode && !inModal) {
-          downloadWorkspace();
-        }
-      },
-      {
-        ctrlOrMeta: true,
-        preventDefault: true,
-      }
-    ),
-    subscribeToKey(
-      "d",
-      () => {
-        if (
-          selectionGroup.selectMode &&
-          !selectionGroup.noneSelected &&
-          !inModal
-        ) {
-          confirmingDeletion = true;
-        }
-      },
-      {
-        ctrlOrMeta: true,
-        preventDefault: true,
-      }
-    ),
     subscribeToKey(
       "e",
       () => {
@@ -127,67 +67,30 @@
     keySubscriptions.forEach((unsubscribe) => unsubscribe());
   });
 
-  function downloadWorkspace() {
-    download("StblStudioWorkspace.json", () => workspace.toBlob());
-  }
-
-  const normalModeToolbar = [
-    {
-      title: "save workspace",
-      icon: "desktop-download",
-      color: ToolbarColor.Download,
-      async onClick() {
-        downloadWorkspace();
-      },
-    },
-    {
-      title: "upload project",
-      icon: "upload",
-      color: ToolbarColor.Upload,
-      async onClick() {
+  async function handleAction(action: HomeAction) {
+    switch (action) {
+      case "save-workspace":
+        download("StblStudioWorkspace.json", () => workspace.toBlob());
+        break;
+      case "upload":
         uploadingProject = true;
-      },
-    },
-    {
-      title: "new project",
-      icon: "plus",
-      color: ToolbarColor.Create,
-      async onClick() {
+        break;
+      case "create":
         creatingProject = true;
-      },
-    },
-  ];
-
-  const selectModeToolbar = [
-    {
-      title: "delete",
-      icon: "trash",
-      color: ToolbarColor.Delete,
-      async onClick() {
+        break;
+      case "delete":
         confirmingDeletion = true;
-      },
-    },
-    {
-      title: "merge",
-      icon: "git-merge",
-      color: ToolbarColor.Merge,
-      async onClick() {
-        alert("Merge Clicked");
-      },
-    },
-    {
-      title: "download",
-      icon: "download",
-      color: ToolbarColor.Download,
-      async onClick() {
-        alert("Download Clicked");
-      },
-    },
-  ];
-
-  $: toolbarData = selectionGroup?.selectMode
-    ? selectModeToolbar
-    : normalModeToolbar;
+        break;
+      case "merge":
+        // TODO:
+        alert("merge");
+        break;
+      case "download":
+        // TODO:
+        alert("download");
+        break;
+    }
+  }
 </script>
 
 <svelte:head>
@@ -224,10 +127,11 @@
   {/if}
 </section>
 
-<FloatingActionButtonGroup
-  buttonData={toolbarData}
-  disabled={toolbarDisabled}
-  disabledTitle={toolbarDisabledText}
+<HomeActionButtons
+  {inModal}
+  inSelectMode={selectionGroup?.selectMode}
+  numSelected={selectionGroup?.allSelectedKeys.length}
+  onAction={handleAction}
 />
 
 {#if showDownload}
@@ -239,22 +143,22 @@
 {/if}
 
 {#if creatingProject}
-  <BlurOverlay onClose={stopCreatingProject}>
-    <ProjectCreationView onComplete={stopCreatingProject} />
+  <BlurOverlay onClose={() => (creatingProject = false)}>
+    <ProjectCreationView onComplete={() => (creatingProject = false)} />
   </BlurOverlay>
 {/if}
 
 {#if uploadingProject}
-  <BlurOverlay onClose={stopUploadingProject}>
-    <ProjectUploadView onComplete={stopUploadingProject} />
+  <BlurOverlay onClose={() => (uploadingProject = false)}>
+    <ProjectUploadView onComplete={() => (uploadingProject = false)} />
   </BlurOverlay>
 {/if}
 
 {#if confirmingDeletion}
-  <BlurOverlay onClose={stopConfirmingDeletion}>
+  <BlurOverlay onClose={() => (confirmingDeletion = false)}>
     <ProjectDeletionView
       {selectedProjects}
-      onComplete={stopConfirmingDeletion}
+      onComplete={() => (confirmingDeletion = false)}
     />
   </BlurOverlay>
 {/if}
