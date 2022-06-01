@@ -36,13 +36,80 @@ interface LocaleStblPair {
 
 //#region Exported Functions
 
-// TODO:
+/**
+ * Reads the given files and extracts all of the STBLs that it can from them.
+ * 
+ * @param files Files to parse STBLs from
+ */
+export async function parseFiles(files: FileList): Promise<ParsedFilesResult> {
+  return new Promise(async (resolve, reject) => {
+    const errors: FileError[] = [];
+    const stbls: ResourceKeyPair<StblType>[] = [];
 
-//#endregion Exported Functions
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
 
-//#region Helpers
+      try {
+        const buffer = Buffer.from(await file.arrayBuffer());
+        const parsed = parseFile(file.name, buffer);
+        stbls.push(...parsed);
+      } catch (err) {
+        errors.push({
+          filename: file.name,
+          reason: err
+        });
+      }
+    }
 
-function mergeAndPruneLocales(primaryLocale: StblLocaleType, resources: ResourceKeyPair<StblType>[]): LocaleStblPair[] {
+    resolve({ errors, stbls });
+  });
+}
+
+/**
+ * Determines the default meta data to use for a project containing the given
+ * STBL resources.
+ * 
+ * @param resources List of STBL resources to get meta data for
+ */
+export function getDefaultMetaData(resources: ResourceKeyPair<StblType>[]): DefaultProjectMetaData {
+  const includedLocales = new Set<StblLocaleType>();
+  resources.forEach(({ key }) => {
+    const locale = StringTableLocale.getLocale(key.instance);
+    includedLocales.add(locale);
+  });
+
+  const primaryLocale = includedLocales.has(Settings.defaultLocale)
+    ? Settings.defaultLocale
+    : includedLocales[0];
+
+  const { group, instance } = resources.find(({ key }) => {
+    return StringTableLocale.getLocale(key.instance) === primaryLocale;
+  }).key;
+
+  const instanceBase = StringTableLocale.getInstanceBase(instance);
+
+  includedLocales.delete(primaryLocale);
+  const otherLocales = Array.from(includedLocales);
+
+  return {
+    primaryLocale,
+    group,
+    instanceBase,
+    otherLocales
+  };
+}
+
+/**
+ * Merges all STBLs of the same locale, and prunes entries from secondary
+ * locales if they are either not present in the primary STBL, or if their
+ * value is exactly the same in the primary STBL.
+ * 
+ * WARNING: Might not behave as expected if any STBLs have repeated keys.
+ * 
+ * @param primaryLocale Primary locale of project
+ * @param resources STBL resources to include in project
+ */
+export function mergeAndPruneLocales(primaryLocale: StblLocaleType, resources: ResourceKeyPair<StblType>[]): LocaleStblPair[] {
   const result: LocaleStblPair[] = [];
 
   // Index STBLs by locale
@@ -99,57 +166,9 @@ function mergeAndPruneLocales(primaryLocale: StblLocaleType, resources: Resource
   return result;
 }
 
-function getDefaultMetaData(resources: ResourceKeyPair<StblType>[]): DefaultProjectMetaData {
-  const includedLocales = new Set<StblLocaleType>();
-  resources.forEach(({ key }) => {
-    const locale = StringTableLocale.getLocale(key.instance);
-    includedLocales.add(locale);
-  });
+//#endregion Exported Functions
 
-  const primaryLocale = includedLocales.has(Settings.defaultLocale)
-    ? Settings.defaultLocale
-    : includedLocales[0];
-
-  const { group, instance } = resources.find(({ key }) => {
-    return StringTableLocale.getLocale(key.instance) === primaryLocale;
-  }).key;
-
-  const instanceBase = StringTableLocale.getInstanceBase(instance);
-
-  includedLocales.delete(primaryLocale);
-  const otherLocales = Array.from(includedLocales);
-
-  return {
-    primaryLocale,
-    group,
-    instanceBase,
-    otherLocales
-  };
-}
-
-async function parseFiles(files: FileList): Promise<ParsedFilesResult> {
-  return new Promise(async (resolve, reject) => {
-    const errors: FileError[] = [];
-    const stbls: ResourceKeyPair<StblType>[] = [];
-
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-
-      try {
-        const buffer = Buffer.from(await file.arrayBuffer());
-        const parsed = parseFile(file.name, buffer);
-        stbls.push(...parsed);
-      } catch (err) {
-        errors.push({
-          filename: file.name,
-          reason: err
-        });
-      }
-    }
-
-    resolve({ errors, stbls });
-  });
-}
+//#region Helpers
 
 function parseFile(filename: string, buffer: Buffer): ResourceKeyPair<StblType>[] {
   const ext = filename.split(".").at(-1);
