@@ -13,16 +13,31 @@
   export let handleClick: () => void;
 
   let floatingActionButton: HTMLButtonElement;
+  let currentKeybinding: string = null;
+  let unsubscribeKey: () => void = null;
 
-  if (keybinding) {
-    const unsubscribeKey = subscribeToKey(keybinding, onButtonClick, {
-      ctrlOrMeta: true,
-      preventDefault: true,
-    });
+  $: {
+    keybinding;
+    updateKeybinding();
+  }
 
-    onDestroy(() => {
-      unsubscribeKey();
-    });
+  onDestroy(() => {
+    unsubscribeKey?.();
+  });
+
+  function updateKeybinding() {
+    if (currentKeybinding !== keybinding) {
+      unsubscribeKey?.();
+
+      unsubscribeKey = keybinding
+        ? subscribeToKey(keybinding, onButtonClick, {
+            ctrlOrMeta: true,
+            preventDefault: true,
+          })
+        : null;
+
+      currentKeybinding = keybinding;
+    }
   }
 
   function handleEnterOrFocus(e: MouseEvent | FocusEvent) {

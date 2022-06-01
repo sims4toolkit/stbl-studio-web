@@ -1,18 +1,11 @@
 <script lang="ts">
+  import type { FloatingActionButtonData } from "../../../global";
   import FloatingActionButton from "./FloatingActionButton.svelte";
   import FloatingActionButtonTitle from "./FloatingActionButtonTitle.svelte";
 
   export let disabled = false;
   export let disabledTitle = "disabled";
-  export let buttonData: {
-    color: string;
-    title: string;
-    icon: string;
-    disabled?: boolean;
-    disabledTitle?: string;
-    keybinding?: string;
-    onClick(): void;
-  }[];
+  export let buttonData: FloatingActionButtonData[];
 
   let titleText: string;
   let titleColor: string;
@@ -37,7 +30,7 @@
         handleClick={data.onClick}
         keybinding={data.keybinding}
         disabled={disabled || data.disabled}
-        disabledTitle={data.disabledTitle ?? disabledTitle}
+        disabledTitle={disabled ? disabledTitle : data.disabledTitle}
         {toggleTitle}
       />
     {/each}

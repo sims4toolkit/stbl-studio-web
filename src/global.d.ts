@@ -20,6 +20,16 @@ interface LocaleData {
   code: string;
 }
 
+interface FloatingActionButtonData {
+  color: string;
+  title: string;
+  icon: string;
+  disabled?: boolean;
+  disabledTitle?: string;
+  keybinding?: string;
+  onClick(): void;
+}
+
 interface ProjectMetaData {
   group: number;
   instanceBase: bigint;
