@@ -23,7 +23,7 @@
       },
     },
     {
-      title: "upload project",
+      title: "upload files",
       icon: "upload",
       color: ToolbarColor.Upload,
       keybinding: "u",
@@ -80,7 +80,7 @@
 
     mergeButtonData.disabled = inSelectMode && numSelected < 2;
     mergeButtonData.disabledTitle = mergeButtonData.disabled
-      ? "must select 2"
+      ? "only 1 selected"
       : null;
 
     buttonData = inSelectMode ? selectModeButtonData : normalButtonData;
