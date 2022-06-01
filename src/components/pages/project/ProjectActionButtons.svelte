@@ -23,7 +23,7 @@
     {
       title: "import strings",
       icon: "import",
-      color: ToolbarColor.Upload,
+      color: ToolbarColor.Merge,
       keybinding: "i",
       async onClick() {
         onAction("import");
@@ -42,21 +42,30 @@
 
   const selectModeButtonData: FloatingActionButtonData[] = [
     {
+      title: "download",
+      icon: "download",
+      color: ToolbarColor.Download,
+      keybinding: "s",
+      async onClick() {
+        onAction("partial-download");
+      },
+    },
+    {
+      title: "export",
+      icon: "export",
+      color: ToolbarColor.Export,
+      keybinding: "o",
+      async onClick() {
+        onAction("export");
+      },
+    },
+    {
       title: "delete",
       icon: "trash",
       color: ToolbarColor.Delete,
       keybinding: "d",
       async onClick() {
         onAction("delete");
-      },
-    },
-    {
-      title: "export",
-      icon: "export",
-      color: ToolbarColor.Merge,
-      keybinding: "o",
-      async onClick() {
-        onAction("export");
       },
     },
   ];

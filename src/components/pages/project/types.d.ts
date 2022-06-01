@@ -1,1 +1,7 @@
-type ProjectAction = "download" | "import" | "create" | "delete" | "export";
+type ProjectAction =
+  | "download"
+  | "import"
+  | "create"
+  | "delete"
+  | "export"
+  | "partial-download";

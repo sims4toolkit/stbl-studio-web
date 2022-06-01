@@ -16,7 +16,7 @@
     {
       title: "save workspace",
       icon: "desktop-download",
-      color: ToolbarColor.Download,
+      color: ToolbarColor.Save,
       keybinding: "s",
       async onClick() {
         onAction("save-workspace");
@@ -44,12 +44,12 @@
 
   const selectModeButtonData: FloatingActionButtonData[] = [
     {
-      title: "delete",
-      icon: "trash",
-      color: ToolbarColor.Delete,
-      keybinding: "d",
+      title: "download",
+      icon: "download",
+      keybinding: "s",
+      color: ToolbarColor.Download,
       async onClick() {
-        onAction("delete");
+        onAction("download");
       },
     },
     {
@@ -62,12 +62,12 @@
       },
     },
     {
-      title: "download",
-      icon: "download",
-      keybinding: "s",
-      color: ToolbarColor.Download,
+      title: "delete",
+      icon: "trash",
+      color: ToolbarColor.Delete,
+      keybinding: "d",
       async onClick() {
-        onAction("download");
+        onAction("delete");
       },
     },
   ];
