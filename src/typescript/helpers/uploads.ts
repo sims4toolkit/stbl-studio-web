@@ -1,7 +1,6 @@
-import type { StringTableResource as StblType, Package as PackageType } from "@s4tk/models";
+import type { StringTableResource as StblType } from "@s4tk/models";
 import type { StringTableLocale as StblLocaleType } from "@s4tk/models/enums";
 import type { ResourceKey, ResourceKeyPair } from "@s4tk/models/types";
-import type { ProjectMetaData } from "../../global";
 import { Settings } from "../storage";
 
 const { BinaryResourceType, StringTableLocale } = window.S4TK.enums;
