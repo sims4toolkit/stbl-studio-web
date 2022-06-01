@@ -1,5 +1,5 @@
 import type { StringTableResource as StblType, Package as PackageType } from "@s4tk/models";
-import { StringTableLocale as StblLocaleType } from "@s4tk/models/enums";
+import type { StringTableLocale as StblLocaleType } from "@s4tk/models/enums";
 import type { ResourceKey, ResourceKeyPair } from "@s4tk/models/types";
 import type { ProjectMetaData } from "../../global";
 import { Settings } from "../storage";
@@ -27,6 +27,11 @@ interface DefaultProjectMetaData {
   otherLocales: StblLocaleType[];
 }
 
+interface LocaleStblPair {
+  locale: StblLocaleType;
+  stbl: StblType;
+}
+
 //#endregion Types
 
 //#region Exported Functions
@@ -37,9 +42,66 @@ interface DefaultProjectMetaData {
 
 //#region Helpers
 
-function getDefaultMetaData(result: ParsedFilesResult): DefaultProjectMetaData {
+function mergeAndPruneLocales(primaryLocale: StblLocaleType, resources: ResourceKeyPair<StblType>[]): LocaleStblPair[] {
+  const result: LocaleStblPair[] = [];
+
+  // Index STBLs by locale
+  const localeMap = new Map<StblLocaleType, StblType[]>();
+  resources.forEach(({ key, value }) => {
+    const locale = StringTableLocale.getLocale(key.instance);
+    if (!localeMap.has(locale)) localeMap.set(locale, []);
+    const localeStbls = localeMap.get(locale);
+    localeStbls.push(value);
+  });
+
+  // Ensure only one STBL per locale
+  let primaryStbl: StblType;
+  localeMap.forEach((stbls, locale) => {
+    let stbl: StblType;
+
+    if (stbls.length === 1) {
+      stbl = stbls[0];
+    } else {
+      const merged = new StringTableResource();
+
+      stbls.forEach(stbl => {
+        merged.addAll(stbl.entries);
+      });
+
+      stbl = merged;
+    }
+
+    if (locale === primaryLocale) primaryStbl = stbl;
+    result.push({ locale, stbl });
+  });
+
+  // Remove entries from other locales if...
+  // (1) They are not in the primary locale
+  // (2) They are exactly the same in the primary locale
+  result.forEach(({ locale, stbl }) => {
+    // FIXME: include warning if there are any repeated keys, cause this can cause some issues...
+    if (locale === primaryLocale) return;
+    const keysToDelete: number[] = [];
+
+    stbl.entries.forEach(({ key, value }) => {
+      if (!primaryStbl.hasKey(key)) {
+        keysToDelete.push(key);
+      } else if (primaryStbl.getByKey(key).value === value) {
+        keysToDelete.push(key)
+      }
+    });
+
+    keysToDelete.forEach(key => {
+      stbl.deleteByKey(key);
+    });
+  });
+
+  return result;
+}
+
+function getDefaultMetaData(resources: ResourceKeyPair<StblType>[]): DefaultProjectMetaData {
   const includedLocales = new Set<StblLocaleType>();
-  result.stbls.forEach(({ key }) => {
+  resources.forEach(({ key }) => {
     const locale = StringTableLocale.getLocale(key.instance);
     includedLocales.add(locale);
   });
@@ -48,7 +110,7 @@ function getDefaultMetaData(result: ParsedFilesResult): DefaultProjectMetaData {
     ? Settings.defaultLocale
     : includedLocales[0];
 
-  const { group, instance } = result.stbls.find(({ key }) => {
+  const { group, instance } = resources.find(({ key }) => {
     return StringTableLocale.getLocale(key.instance) === primaryLocale;
   }).key;
 
