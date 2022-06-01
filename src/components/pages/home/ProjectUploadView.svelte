@@ -13,7 +13,6 @@
   import { activeWorkspace } from "../../../typescript/stores";
   import type { StringTableLocale as StblLocaleType } from "@s4tk/models/enums";
   import type { StblMap } from "../../../global";
-  import { getInstanceBase } from "../../../typescript/helpers/tgi";
   import { Settings } from "../../../typescript/storage";
   import { subscribeToKey } from "../../../typescript/keybindings";
 
@@ -150,7 +149,9 @@
         uuid,
         name: filename,
         group: primaryEntry.key.group,
-        instanceBase: getInstanceBase(primaryEntry.key.instance),
+        instanceBase: StringTableLocale.getInstanceBase(
+          primaryEntry.key.instance
+        ),
         primaryLocale: StringTableLocale.English,
       },
       stblMap

@@ -2,11 +2,11 @@ import type { StringTableResource as StblResourceType } from "@s4tk/models";
 import type { StringTableLocale as StblLocaleType } from "@s4tk/models/enums";
 import type { ProjectMetaData, StblMap } from "../../global";
 import { v4 as uuidv4 } from "uuid";
-import { getInstanceBase } from "../helpers/tgi";
 import { loadStblMap, Settings, saveProjectMetaData, saveStblMap } from "../storage";
 import ProjectView from "../enums/project-view";
 
 const { StringTableResource } = window.S4TK.models;
+const { StringTableLocale } = window.S4TK.enums;
 const { fnv64 } = window.S4TK.hashing;
 
 /**
@@ -49,7 +49,7 @@ export default class Project implements ProjectMetaData {
     this.uuid = data.uuid ?? uuidv4();
     this.name = data.name ?? this.uuid;
     this.group = data.group ?? 0;
-    this.instanceBase = data.instanceBase ?? getInstanceBase(fnv64(this.uuid));
+    this.instanceBase = data.instanceBase ?? StringTableLocale.getInstanceBase(fnv64(this.uuid));
     this.primaryLocale = data.primaryLocale ?? Settings.defaultLocale;
     this._stblMap = stblMap;
     this.view = data.view ?? ProjectView.List;

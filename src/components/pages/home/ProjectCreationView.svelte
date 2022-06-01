@@ -8,7 +8,6 @@
     allLocales,
     getLocaleData,
   } from "../../../typescript/helpers/localization";
-  import { hashInstanceBase } from "../../../typescript/helpers/tgi";
   import { activeWorkspace } from "../../../typescript/stores";
   import TextInput from "../../shared/elements/TextInput.svelte";
   import LocaleCheckboxesView from "./LocaleCheckboxesView.svelte";
@@ -18,6 +17,8 @@
   import GroupInstanceLocale from "../../shared/controls/GroupInstanceLocale.svelte";
   import { subscribeToKey } from "../../../typescript/keybindings";
 
+  const { StringTableLocale } = window.S4TK.enums;
+  const { fnv64 } = window.S4TK.hashing;
   const { formatAsHexString } = window.S4TK.formatting;
 
   //#region General
@@ -48,7 +49,11 @@
   let isNameValid = false;
   let groupHexString = "80000000";
   let isGroupValid = false;
-  let instanceHexString = formatAsHexString(hashInstanceBase(uuid), 14, false);
+  let instanceHexString = formatAsHexString(
+    StringTableLocale.getInstanceBase(fnv64(uuid)),
+    14,
+    false
+  );
   let isInstanceValid = false;
   let primaryLocale = Settings.defaultLocale;
 
