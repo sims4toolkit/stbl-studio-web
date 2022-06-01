@@ -1,15 +1,29 @@
 <script lang="ts">
+  import { onDestroy } from "svelte";
   import ToolbarColor from "../../../typescript/enums/toolbar-colors";
+  import { subscribeToKey } from "../../../typescript/keybindings";
 
   export let color: string;
   export let title: string;
   export let icon: string;
   export let disabled = false;
   export let disabledTitle = "";
+  export let keybinding: string = null;
   export let toggleTitle: (text?: string, color?: string) => void;
   export let handleClick: () => void;
 
   let floatingActionButton: HTMLButtonElement;
+
+  if (keybinding) {
+    const unsubscribeKey = subscribeToKey(keybinding, onButtonClick, {
+      ctrlOrMeta: true,
+      preventDefault: true,
+    });
+
+    onDestroy(() => {
+      unsubscribeKey();
+    });
+  }
 
   function handleEnterOrFocus(e: MouseEvent | FocusEvent) {
     if (disabled) {
