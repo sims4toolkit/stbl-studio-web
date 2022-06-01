@@ -6,7 +6,6 @@ enum ToolbarColor {
   Create = "#48AD6F",
   Delete = "#D35454",
   Merge = "#BC47B7",
-  Export = "#d16a36",
 }
 
 export default ToolbarColor;

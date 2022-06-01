@@ -12,7 +12,7 @@
 
   const normalButtonData: FloatingActionButtonData[] = [
     {
-      title: "download (s)",
+      title: "download",
       icon: "download",
       color: ToolbarColor.Download,
       keybinding: "s",
@@ -21,16 +21,16 @@
       },
     },
     {
-      title: "import (i)",
+      title: "import",
       icon: "import",
-      color: ToolbarColor.Merge,
+      color: ToolbarColor.Upload,
       keybinding: "i",
       async onClick() {
         onAction("import");
       },
     },
     {
-      title: "new string (n)",
+      title: "new string",
       icon: "plus",
       color: ToolbarColor.Create,
       keybinding: "n",
@@ -42,7 +42,7 @@
 
   const selectModeButtonData: FloatingActionButtonData[] = [
     {
-      title: "download (s)",
+      title: "download",
       icon: "download",
       color: ToolbarColor.Download,
       keybinding: "s",
@@ -51,16 +51,16 @@
       },
     },
     {
-      title: "export (o)",
+      title: "export",
       icon: "export",
-      color: ToolbarColor.Export,
+      color: ToolbarColor.Merge,
       keybinding: "o",
       async onClick() {
         onAction("export");
       },
     },
     {
-      title: "delete (d)",
+      title: "delete",
       icon: "trash",
       color: ToolbarColor.Delete,
       keybinding: "d",

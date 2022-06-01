@@ -14,7 +14,7 @@
 
   const normalButtonData: FloatingActionButtonData[] = [
     {
-      title: "save workspace (s)",
+      title: "save workspace",
       icon: "desktop-download",
       color: ToolbarColor.Save,
       keybinding: "s",
@@ -23,7 +23,7 @@
       },
     },
     {
-      title: "upload files (u)",
+      title: "upload files",
       icon: "upload",
       color: ToolbarColor.Upload,
       keybinding: "u",
@@ -32,7 +32,7 @@
       },
     },
     {
-      title: "new project (n)",
+      title: "new project",
       icon: "plus",
       color: ToolbarColor.Create,
       keybinding: "n",
@@ -44,7 +44,7 @@
 
   const selectModeButtonData: FloatingActionButtonData[] = [
     {
-      title: "download (s)",
+      title: "download",
       icon: "download",
       keybinding: "s",
       color: ToolbarColor.Download,
@@ -53,7 +53,7 @@
       },
     },
     {
-      title: "merge (m)",
+      title: "merge",
       icon: "git-merge",
       keybinding: "m",
       color: ToolbarColor.Merge,
@@ -62,7 +62,7 @@
       },
     },
     {
-      title: "delete (d)",
+      title: "delete",
       icon: "trash",
       color: ToolbarColor.Delete,
       keybinding: "d",
