@@ -11,26 +11,25 @@
   export let label: string;
   export let selectedLocale: StringTableLocale;
   export let fillWidth: boolean = false;
-
-  // only one or the other
   export let include: number[] = undefined;
   export let exclude: number[] = undefined;
 
-  $: localeOptions = include
-    ? include.map((enumValue) => {
-        return {
-          value: enumValue,
-          text: getDisplayName(getLocaleData(enumValue)),
-        };
-      })
-    : allLocales
-        .filter(({ enumValue }) => !exclude || !exclude.includes(enumValue))
-        .map((data) => {
-          return {
-            value: data.enumValue,
-            text: getDisplayName(data),
-          };
-        });
+  let localeOptions: { value: number; text: string }[];
+
+  $: {
+    const base = include ?? allLocales.map(({ enumValue }) => enumValue);
+
+    const filtered = exclude
+      ? base.filter((locale) => !exclude.includes(locale))
+      : base;
+
+    localeOptions = filtered.map((locale) => {
+      return {
+        value: locale,
+        text: getDisplayName(getLocaleData(locale)),
+      };
+    });
+  }
 </script>
 
 <Select

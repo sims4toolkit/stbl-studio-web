@@ -32,6 +32,8 @@
   .select-with-label {
     select {
       height: 42px;
+      // TODO: Fixes appearance on safari
+      // -webkit-appearance: none;
 
       option {
         background-color: var(--color-bg);

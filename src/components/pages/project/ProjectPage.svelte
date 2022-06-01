@@ -41,7 +41,7 @@
     (project.view === ProjectView.List || project.view === ProjectView.Grid);
 
   $: {
-    if (project) {
+    if (project && project.view !== ProjectView.Translate) {
       entries = project?.primaryStbl.entries;
       selectionGroup.selectables = entries;
     }
@@ -184,7 +184,7 @@
       {#if project.view === ProjectView.Json}
         <StblJsonView {project} />
       {:else if project.view === ProjectView.Translate}
-        <StblTranslateView />
+        <StblTranslateView bind:project bind:entries {currentSlice} />
       {:else if currentSlice && currentSlice.length}
         <div
           class:drop-shadow={project.view !== ProjectView.Grid}
