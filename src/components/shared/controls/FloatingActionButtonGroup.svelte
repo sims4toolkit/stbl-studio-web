@@ -45,7 +45,7 @@
       class="title-container"
       class:disabled-color={useDisabledColor}
       style="background-color: {titleColor};"
-      in:fly={{ y: 12, duration: Settings.reduceMotion ? 0 : 350 }}
+      transition:fly={{ y: 12, duration: Settings.reduceMotion ? 0 : 350 }}
     >
       {titleText}
     </div>
