@@ -1,7 +1,8 @@
 import type { StringTableResource as StblType, Package as PackageType } from "@s4tk/models";
-import type { StringTableLocale as StblLocaleType } from "@s4tk/models/enums";
+import { StringTableLocale as StblLocaleType } from "@s4tk/models/enums";
 import type { ResourceKey, ResourceKeyPair } from "@s4tk/models/types";
-import Project from "../models/project";
+import type { ProjectMetaData } from "../../global";
+import { Settings } from "../storage";
 
 const { BinaryResourceType, StringTableLocale } = window.S4TK.enums;
 const { Package, StringTableResource } = window.S4TK.models;
@@ -19,6 +20,13 @@ interface ParsedFilesResult {
   stbls: ResourceKeyPair<StblType>[];
 }
 
+interface DefaultProjectMetaData {
+  primaryLocale: StblLocaleType;
+  group: number;
+  instanceBase: bigint;
+  otherLocales: StblLocaleType[];
+}
+
 //#endregion Types
 
 //#region Exported Functions
@@ -28,6 +36,34 @@ interface ParsedFilesResult {
 //#endregion Exported Functions
 
 //#region Helpers
+
+function getDefaultMetaData(result: ParsedFilesResult): DefaultProjectMetaData {
+  const includedLocales = new Set<StblLocaleType>();
+  result.stbls.forEach(({ key }) => {
+    const locale = StringTableLocale.getLocale(key.instance);
+    includedLocales.add(locale);
+  });
+
+  const primaryLocale = includedLocales.has(Settings.defaultLocale)
+    ? Settings.defaultLocale
+    : includedLocales[0];
+
+  const { group, instance } = result.stbls.find(({ key }) => {
+    return StringTableLocale.getLocale(key.instance) === primaryLocale;
+  }).key;
+
+  const instanceBase = StringTableLocale.getInstanceBase(instance);
+
+  includedLocales.delete(primaryLocale);
+  const otherLocales = Array.from(includedLocales);
+
+  return {
+    primaryLocale,
+    group,
+    instanceBase,
+    otherLocales
+  };
+}
 
 async function parseFiles(files: FileList): Promise<ParsedFilesResult> {
   return new Promise(async (resolve, reject) => {
