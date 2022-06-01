@@ -227,7 +227,7 @@
 <FloatingActionButtonGroup
   buttonData={toolbarData}
   disabled={toolbarDisabled}
-  disabledText={toolbarDisabledText}
+  disabledTitle={toolbarDisabledText}
 />
 
 {#if showDownload}

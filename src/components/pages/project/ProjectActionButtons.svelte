@@ -14,8 +14,8 @@
   export let createNewStringEntry: () => void;
   export let deleteStringEntry: () => void;
 
-  $: disabledText = project ? "none selected" : "no project";
   $: disabled = selectionGroup?.noneSelected;
+  $: disabledTitle = project ? "none selected" : "no project";
 
   const normalModeToolbar = [
     {
@@ -76,7 +76,7 @@
     : normalModeToolbar;
 </script>
 
-<FloatingActionButtonGroup {buttonData} {disabled} {disabledText} />
+<FloatingActionButtonGroup {buttonData} {disabled} {disabledTitle} />
 
 <style lang="scss">
   // intentionally blank

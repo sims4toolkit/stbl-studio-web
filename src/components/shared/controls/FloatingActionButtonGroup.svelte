@@ -1,29 +1,37 @@
 <script lang="ts">
   import { fly } from "svelte/transition";
+  import ToolbarColor from "../../../typescript/enums/toolbar-colors";
   import { Settings } from "../../../typescript/storage";
   import FloatingActionButton from "./FloatingActionButton.svelte";
 
   export let disabled = false;
-  export let disabledText = "disabled";
-
+  export let disabledTitle = "disabled";
   export let buttonData: {
     color: string;
     title: string;
     icon: string;
+    disabled?: boolean;
+    disabledTitle?: string;
     onClick(): void;
   }[];
 
   let titleText: string;
   let titleColor: string;
+  let useDisabledColor: boolean;
   $: showTitle = Boolean(titleText);
 
   function toggleTitle(text?: string, color?: string) {
     titleText = text;
     titleColor = color;
+    useDisabledColor = color === ToolbarColor.Disabled;
+  }
+
+  function childrenToggleTitle(text?: string, color?: string) {
+    if (!disabled) toggleTitle(text, color);
   }
 
   function handleEnterOrFocus(e: MouseEvent | FocusEvent) {
-    if (disabled) toggleTitle(disabledText, "var(--color-text)");
+    if (disabled) toggleTitle(disabledTitle, ToolbarColor.Disabled);
   }
 
   function handleLeaveOrBlur(e: MouseEvent | FocusEvent) {
@@ -31,10 +39,11 @@
   }
 </script>
 
-<div class="floating-action-buttons" class:disabled>
+<div class="floating-action-buttons">
   {#if showTitle}
     <div
       class="title-container"
+      class:disabled-color={useDisabledColor}
       style="background-color: {titleColor};"
       in:fly={{ y: 12, duration: Settings.reduceMotion ? 0 : 350 }}
     >
@@ -50,14 +59,13 @@
   >
     {#each buttonData as data, key (key)}
       <FloatingActionButton
-        first={key === 0}
-        last={key === buttonData.length - 1}
         color={data.color}
         title={data.title}
         icon={data.icon}
         handleClick={data.onClick}
-        {disabled}
-        {toggleTitle}
+        disabled={disabled || data.disabled}
+        disabledTitle={data.disabledTitle}
+        toggleTitle={childrenToggleTitle}
       />
     {/each}
   </div>
@@ -78,12 +86,8 @@
       padding-top: 0.2em;
       padding-bottom: 0.2em;
       color: var(--color-light);
-    }
 
-    &.disabled {
-      opacity: 0.55;
-
-      .title-container {
+      &.disabled-color {
         color: var(--color-bg);
       }
     }

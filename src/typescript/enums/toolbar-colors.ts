@@ -1,4 +1,5 @@
 enum ToolbarColor {
+  Disabled = "var(--color-divider)",
   Download = "#3DA8D0",
   Upload = "#6B5AC6",
   Create = "#48AD6F",

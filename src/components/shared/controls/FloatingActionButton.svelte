@@ -1,26 +1,27 @@
 <script lang="ts">
-  export let first = false;
-  export let last = false;
+  import ToolbarColor from "../../../typescript/enums/toolbar-colors";
+
   export let color: string;
   export let title: string;
   export let icon: string;
-  export let disabled: boolean;
+  export let disabled = false;
+  export let disabledTitle = "";
   export let toggleTitle: (text?: string, color?: string) => void;
   export let handleClick: () => void;
 
   let floatingActionButton: HTMLButtonElement;
 
-  $: imagePath = `./assets/${icon}.svg`;
-
   function handleEnterOrFocus(e: MouseEvent | FocusEvent) {
-    if (disabled) return;
-    floatingActionButton.style.backgroundColor = color;
-    floatingActionButton.style.borderColor = color;
-    toggleTitle(title, color);
+    if (disabled) {
+      toggleTitle(disabledTitle, ToolbarColor.Disabled);
+    } else {
+      floatingActionButton.style.backgroundColor = color;
+      floatingActionButton.style.borderColor = color;
+      toggleTitle(title, color);
+    }
   }
 
   function handleLeaveOrBlur(e: MouseEvent | FocusEvent) {
-    if (disabled) return;
     floatingActionButton.style.backgroundColor = "var(--color-bg)";
     floatingActionButton.style.borderColor = "var(--color-text)";
     toggleTitle();
@@ -37,8 +38,6 @@
 <button
   bind:this={floatingActionButton}
   class="floating-action-button flex-center"
-  class:first
-  class:last
   class:disabled
   on:mouseenter={handleEnterOrFocus}
   on:focus={handleEnterOrFocus}
@@ -46,7 +45,7 @@
   on:blur={handleLeaveOrBlur}
   on:click={onButtonClick}
 >
-  <img class="is-svg" src={imagePath} alt={title} />
+  <img class="is-svg" src="./assets/{icon}.svg" alt={title} />
 </button>
 
 <style lang="scss">
@@ -58,22 +57,26 @@
     background-color: var(--color-bg);
     border: 1px solid var(--color-text);
 
-    &.first {
+    &:first-child {
       border-top-left-radius: $border-radius;
       border-bottom-left-radius: $border-radius;
     }
 
-    &.last {
+    &:last-child {
       border-top-right-radius: $border-radius;
       border-bottom-right-radius: $border-radius;
     }
 
-    &:not(.last) {
+    &:not(:last-child) {
       border-right: none;
     }
 
-    &.disabled:hover {
-      cursor: not-allowed;
+    &.disabled {
+      opacity: 0.5;
+
+      &:hover {
+        cursor: not-allowed;
+      }
     }
 
     &:not(.disabled):hover,
