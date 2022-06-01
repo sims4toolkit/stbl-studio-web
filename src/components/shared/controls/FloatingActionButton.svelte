@@ -96,14 +96,6 @@
       border-bottom-right-radius: $border-radius;
     }
 
-    &:hover:not(:first-child) {
-      border-left-color: var(--color-text) !important;
-    }
-
-    &:not(:last-child) {
-      border-right: none;
-    }
-
     &.disabled {
       opacity: 0.5;
 
