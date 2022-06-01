@@ -7,7 +7,6 @@
   export let title: string;
   export let icon: string;
   export let disabled = false;
-  export let disabledTitle = "";
   export let keybinding: string = null;
   export let toggleTitle: (text?: string, color?: string) => void;
   export let handleClick: () => void;
@@ -42,7 +41,7 @@
 
   function handleEnterOrFocus(e: MouseEvent | FocusEvent) {
     if (disabled) {
-      toggleTitle(disabledTitle, ToolbarColor.Disabled);
+      toggleTitle(title, ToolbarColor.Disabled);
     } else {
       floatingActionButton.style.backgroundColor = color;
       floatingActionButton.style.borderColor = color;

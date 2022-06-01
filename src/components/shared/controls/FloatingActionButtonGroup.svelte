@@ -4,7 +4,6 @@
   import FloatingActionButtonTitle from "./FloatingActionButtonTitle.svelte";
 
   export let disabled = false;
-  export let disabledTitle = "disabled";
   export let buttonData: FloatingActionButtonData[];
 
   let titleText: string;
@@ -30,7 +29,6 @@
         handleClick={data.onClick}
         keybinding={data.keybinding}
         disabled={disabled || data.disabled}
-        disabledTitle={disabled ? disabledTitle : data.disabledTitle}
         {toggleTitle}
       />
     {/each}

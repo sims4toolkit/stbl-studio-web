@@ -12,7 +12,7 @@
 
   const normalButtonData: FloatingActionButtonData[] = [
     {
-      title: "download",
+      title: "download (s)",
       icon: "download",
       color: ToolbarColor.Download,
       keybinding: "s",
@@ -21,7 +21,7 @@
       },
     },
     {
-      title: "import strings",
+      title: "import (i)",
       icon: "import",
       color: ToolbarColor.Merge,
       keybinding: "i",
@@ -30,7 +30,7 @@
       },
     },
     {
-      title: "new string",
+      title: "new string (n)",
       icon: "plus",
       color: ToolbarColor.Create,
       keybinding: "n",
@@ -42,7 +42,7 @@
 
   const selectModeButtonData: FloatingActionButtonData[] = [
     {
-      title: "download",
+      title: "download (s)",
       icon: "download",
       color: ToolbarColor.Download,
       keybinding: "s",
@@ -51,7 +51,7 @@
       },
     },
     {
-      title: "export",
+      title: "export (o)",
       icon: "export",
       color: ToolbarColor.Export,
       keybinding: "o",
@@ -60,7 +60,7 @@
       },
     },
     {
-      title: "delete",
+      title: "delete (d)",
       icon: "trash",
       color: ToolbarColor.Delete,
       keybinding: "d",
@@ -73,11 +73,7 @@
   $: buttonData = inSelectMode ? selectModeButtonData : normalButtonData;
 </script>
 
-<FloatingActionButtonGroup
-  {buttonData}
-  {disabled}
-  disabledTitle="none selected"
-/>
+<FloatingActionButtonGroup {buttonData} {disabled} />
 
 <style lang="scss">
   // intentionally blank

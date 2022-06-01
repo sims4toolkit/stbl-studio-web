@@ -14,7 +14,7 @@
 
   const normalButtonData: FloatingActionButtonData[] = [
     {
-      title: "save workspace",
+      title: "save workspace (s)",
       icon: "desktop-download",
       color: ToolbarColor.Save,
       keybinding: "s",
@@ -23,7 +23,7 @@
       },
     },
     {
-      title: "upload files",
+      title: "upload files (u)",
       icon: "upload",
       color: ToolbarColor.Upload,
       keybinding: "u",
@@ -32,7 +32,7 @@
       },
     },
     {
-      title: "new project",
+      title: "new project (n)",
       icon: "plus",
       color: ToolbarColor.Create,
       keybinding: "n",
@@ -44,7 +44,7 @@
 
   const selectModeButtonData: FloatingActionButtonData[] = [
     {
-      title: "download",
+      title: "download (s)",
       icon: "download",
       keybinding: "s",
       color: ToolbarColor.Download,
@@ -53,7 +53,7 @@
       },
     },
     {
-      title: "merge",
+      title: "merge (m)",
       icon: "git-merge",
       keybinding: "m",
       color: ToolbarColor.Merge,
@@ -62,7 +62,7 @@
       },
     },
     {
-      title: "delete",
+      title: "delete (d)",
       icon: "trash",
       color: ToolbarColor.Delete,
       keybinding: "d",
@@ -79,19 +79,12 @@
     numSelected;
 
     mergeButtonData.disabled = inSelectMode && numSelected < 2;
-    mergeButtonData.disabledTitle = mergeButtonData.disabled
-      ? "only 1 selected"
-      : null;
 
     buttonData = inSelectMode ? selectModeButtonData : normalButtonData;
   }
 </script>
 
-<FloatingActionButtonGroup
-  {buttonData}
-  {disabled}
-  disabledTitle="none selected"
-/>
+<FloatingActionButtonGroup {buttonData} {disabled} />
 
 <style lang="scss">
   // intentionally blank
