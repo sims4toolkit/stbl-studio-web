@@ -186,11 +186,11 @@ function parseStblBinary(buffer: Buffer): StblType {
 }
 
 function parseStblJson(buffer: Buffer): StblType {
-  const json: { key: string | number; value: string }[] = JSON.parse(buffer.toString());
-  return new StringTableResource(json.map(({ key, value }) => {
+  const json: { key: string | number; value?: string, string?: string }[] = JSON.parse(buffer.toString());
+  return new StringTableResource(json.map((entry) => {
     return {
-      key: typeof key === "number" ? key : parseInt(key, 16),
-      value
+      key: typeof entry.key === "number" ? entry.key : parseInt(entry.key, 16),
+      value: entry.value ?? entry.string
     };
   }));
 }
