@@ -181,7 +181,7 @@
   numPages={4}
   {completePages}
   bind:currentPage
-  minimumContentHeight="220"
+  minimumContentHeight="250"
   centerVertically={true}
   finalPageNextButtonText="Add Project"
   onNextButtonClick={handleNextButtonClick}
@@ -196,6 +196,7 @@
             the packages for your mod, unneeded files will be ignored.
           </p>
           <FileInput
+            focusOnMount={true}
             label="binaries, jsons, and/or packages only"
             bind:files={uploadedFiles}
             accept=".json,.stbl,.bnry,.binary,.package"
@@ -205,8 +206,9 @@
           />
           <div class="mt-2">
             <p class="subtle-text mt-0">
-              If there are multiple tables with the same locale, they will be
-              merged.
+              If there are multiple tables for the same language, they will be
+              merged. The best way to ensure that multiple languages are handled
+              properly is by uploading them in packages.
             </p>
             <p class="subtle-text mb-0">
               Using JSON? Read about the expected structure <a
@@ -246,6 +248,8 @@
           <p>This might take a little bit.</p>
         </div>
       {:else}
+        <!-- FIXME: "The instance is a hash of the UUID by default, but it can be changed manually." is not accurate for this view -->
+        <!-- FIXME: Add warning that unchecking locales will delete those translations from the project -->
         <ProjectMetaDataPages
           {uuid}
           currentPage={metaDataPage}
