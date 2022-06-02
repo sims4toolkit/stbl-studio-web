@@ -12,6 +12,7 @@
   export let subtitle: string = null;
 
   export let minimumContentHeight: string = null;
+  export let centerVertically = false;
 
   export let showProgress = true;
   export let numPages = 1;
@@ -51,6 +52,7 @@
   <div
     bind:this={contentContainer}
     class="my-2"
+    class:flex-center-v={centerVertically}
     in:fly={{ y: 20, duration: animationDuration }}
   >
     <slot name="content" />

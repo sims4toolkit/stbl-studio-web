@@ -1,37 +1,12 @@
 import type { StringTableResource as StblType } from "@s4tk/models";
 import type { StringTableLocale as StblLocaleType } from "@s4tk/models/enums";
 import type { ResourceKey, ResourceKeyPair } from "@s4tk/models/types";
+import type { DefaultProjectMetaData, FileError, LocaleStblPair, ParsedFilesResult } from "../../global";
 import { Settings } from "../storage";
 
 const { BinaryResourceType, StringTableLocale } = window.S4TK.enums;
 const { Package, StringTableResource } = window.S4TK.models;
 const { Buffer } = window.S4TK.Node;
-
-//#region Types
-
-interface FileError {
-  filename: string;
-  reason: string;
-}
-
-interface ParsedFilesResult {
-  errors: FileError[];
-  stbls: ResourceKeyPair<StblType>[];
-}
-
-interface DefaultProjectMetaData {
-  primaryLocale: StblLocaleType;
-  group: number;
-  instanceBase: bigint;
-  otherLocales: StblLocaleType[];
-}
-
-interface LocaleStblPair {
-  locale: StblLocaleType;
-  stbl: StblType;
-}
-
-//#endregion Types
 
 //#region Exported Functions
 
@@ -51,8 +26,14 @@ export async function parseFiles(files: FileList): Promise<ParsedFilesResult> {
       try {
         const buffer = Buffer.from(await file.arrayBuffer());
         const parsed = parseFile(file.name, buffer);
-        stbls.push(...parsed);
+        if (parsed.length) {
+          stbls.push(...parsed);
+        } else {
+          throw new Error("No string tables found.");
+        }
       } catch (err) {
+        console.error(`Error while reading "${file.name}"\n${err}`);
+
         errors.push({
           filename: file.name,
           reason: err

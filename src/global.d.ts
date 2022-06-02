@@ -11,6 +11,28 @@ import type ProjectView from "./typescript/enums/project-view";
 
 type StblMap = Map<StringTableLocale, StringTableResource>;
 
+interface FileError {
+  filename: string;
+  reason: string;
+}
+
+interface ParsedFilesResult {
+  errors: FileError[];
+  stbls: ResourceKeyPair<StblType>[];
+}
+
+interface DefaultProjectMetaData {
+  primaryLocale: StblLocaleType;
+  group: number;
+  instanceBase: bigint;
+  otherLocales: StblLocaleType[];
+}
+
+interface LocaleStblPair {
+  locale: StblLocaleType;
+  stbl: StblType;
+}
+
 interface LocaleData {
   enumName: string;
   enumValue: number;
