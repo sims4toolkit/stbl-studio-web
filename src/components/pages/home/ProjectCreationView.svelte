@@ -1,27 +1,19 @@
 <script lang="ts">
   import { onDestroy } from "svelte";
-  import { fade } from "svelte/transition";
   import { v4 as uuidv4 } from "uuid";
   import type Workspace from "../../../typescript/models/workspace";
   import Project from "../../../typescript/models/project";
-  import {
-    allLocales,
-    getLocaleData,
-  } from "../../../typescript/helpers/localization";
+  import { allLocales } from "../../../typescript/helpers/localization";
   import { activeWorkspace } from "../../../typescript/stores";
-  import LocaleCheckboxesView from "./LocaleCheckboxesView.svelte";
-  import type { LocaleData } from "../../../global";
+  import type { LocaleOption } from "../../../global";
   import { Settings } from "../../../typescript/storage";
   import MultipageModalContent from "../../shared/layout/MultipageModalContent.svelte";
-  import GroupInstanceLocale from "../../shared/controls/GroupInstanceLocale.svelte";
   import { subscribeToKey } from "../../../typescript/keybindings";
-  import ProjectNameInput from "../../shared/controls/ProjectNameInput.svelte";
+  import ProjectMetaDataPages from "../../shared/controls/ProjectMetaDataPages.svelte";
 
   const { StringTableLocale } = window.S4TK.enums;
   const { fnv64 } = window.S4TK.hashing;
   const { formatAsHexString } = window.S4TK.formatting;
-
-  //#region General
 
   export let onComplete: () => void;
 
@@ -41,40 +33,20 @@
     unsubscribeKeyEsc();
   });
 
-  //#endregion General
-
-  //#region Page 1
-
+  let isPage1Valid = false;
   let name = "";
-  let isNameValid = false;
+  let primaryLocale = Settings.defaultLocale;
+  let otherLocaleOptions: LocaleOption[];
   let groupHexString = "80000000";
-  let isGroupValid = false;
   let instanceHexString = formatAsHexString(
     StringTableLocale.getInstanceBase(fnv64(uuid)),
     14,
     false
   );
-  let isInstanceValid = false;
-  let primaryLocale = Settings.defaultLocale;
-
-  $: isPage1Valid = isNameValid && isGroupValid && isInstanceValid;
 
   $: {
     completePages = currentPage + (isPage1Valid ? 0 : -1);
   }
-
-  //#endregion Page 1
-
-  //#region Page 2
-
-  let otherLocaleOptions: {
-    data: LocaleData;
-    checked: boolean;
-  }[];
-
-  //#endregion Page 2
-
-  //#region Functions
 
   function nextButtonClicked() {
     if (currentPage === 1) {
@@ -112,8 +84,6 @@
 
     onComplete();
   }
-
-  //#endregion Functions
 </script>
 
 <MultipageModalContent
@@ -127,41 +97,16 @@
   onNextButtonClick={nextButtonClicked}
 >
   <div slot="content">
-    {#if currentPage === 1}
-      <div>
-        <form class="w-100 mb-2">
-          <ProjectNameInput {uuid} bind:name bind:isNameValid />
-          <div class="mt-1">
-            <GroupInstanceLocale
-              bind:groupHexString
-              bind:isGroupValid
-              bind:instanceHexString
-              bind:isInstanceValid
-              bind:selectedLocale={primaryLocale}
-            />
-          </div>
-        </form>
-        <div>
-          <p class="subtle-text mt-0 mb-half">
-            The instance is a hash of the UUID by default, but it can be changed
-            manually.
-          </p>
-          <p class="subtle-text my-0">
-            The 2-digit locale code will automatically be prepended to the
-            instance.
-          </p>
-        </div>
-      </div>
-    {:else}
-      <div in:fade={{ duration: Settings.reduceMotion ? 0 : 500 }}>
-        <p class="mb-2">
-          Select additional locales to include in this project. Strings added to
-          your primary locale ({getLocaleData(primaryLocale).englishName}) will
-          automatically be added to these ones as well.
-        </p>
-        <LocaleCheckboxesView bind:localeChoices={otherLocaleOptions} />
-      </div>
-    {/if}
+    <ProjectMetaDataPages
+      {uuid}
+      {currentPage}
+      bind:isPage1Valid
+      bind:primaryLocale
+      bind:name
+      bind:otherLocaleOptions
+      bind:groupHexString
+      bind:instanceHexString
+    />
   </div>
 </MultipageModalContent>
 

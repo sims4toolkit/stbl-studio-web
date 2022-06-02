@@ -42,6 +42,11 @@ interface LocaleData {
   code: string;
 }
 
+interface LocaleOption {
+  data: LocaleData;
+  checked: boolean;
+}
+
 interface FloatingActionButtonData {
   color: string;
   title: string;
