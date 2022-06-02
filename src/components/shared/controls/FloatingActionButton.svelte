@@ -111,5 +111,9 @@
         filter: var(--filter-light);
       }
     }
+
+    img {
+      height: 24px;
+    }
   }
 </style>

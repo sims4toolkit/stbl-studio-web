@@ -108,7 +108,7 @@
       case "delete":
         isDeletingStrings = true;
         break;
-      case "export":
+      case "rehash":
         // TODO:
         alert(action);
         break;

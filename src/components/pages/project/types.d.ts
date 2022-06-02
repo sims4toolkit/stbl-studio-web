@@ -3,5 +3,5 @@ type ProjectAction =
   | "import"
   | "create"
   | "delete"
-  | "export"
+  | "rehash"
   | "partial-download";

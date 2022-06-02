@@ -21,10 +21,10 @@
       },
     },
     {
-      title: "import",
-      icon: "import",
+      title: "import strings",
+      icon: "upload",
       color: ToolbarColor.Upload,
-      keybinding: "i",
+      keybinding: "u",
       async onClick() {
         onAction("import");
       },
@@ -51,12 +51,12 @@
       },
     },
     {
-      title: "export",
-      icon: "export",
-      color: ToolbarColor.Merge,
-      keybinding: "o",
+      title: "rehash keys",
+      icon: "refresh",
+      color: ToolbarColor.Rehash,
+      keybinding: "r",
       async onClick() {
-        onAction("export");
+        onAction("rehash");
       },
     },
     {
