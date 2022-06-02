@@ -41,6 +41,14 @@
         },
       },
     ]}
+    warnings={[
+      {
+        error: "80000000 recommended",
+        test(value) {
+          return value === "80000000";
+        },
+      },
+    ]}
   />
   <TextInput
     name="instance-text-input"
