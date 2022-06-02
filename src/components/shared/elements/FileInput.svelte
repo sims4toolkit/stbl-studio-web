@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import { fade } from "svelte/transition";
 
   export let accept: string;
@@ -7,6 +8,15 @@
   export let multiple = false;
   export let filesInvalid = false;
   export let errorMessage = "";
+  export let focusOnMount = false;
+
+  let fileInput: HTMLInputElement;
+
+  onMount(() => {
+    if (focusOnMount) {
+      fileInput.focus();
+    }
+  });
 </script>
 
 <div>
@@ -21,6 +31,7 @@
     </div>
   {/if}
   <input
+    bind:this={fileInput}
     id="file-upload"
     name="file-upload"
     type="file"
