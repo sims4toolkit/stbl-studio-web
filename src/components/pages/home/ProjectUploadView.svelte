@@ -29,7 +29,9 @@
   let parseResult: ParsedFilesResult;
   let reviewingErredFiles = false;
   let findingMetaData = false;
+  let settingMetaData = false;
 
+  let metaDataPage = 1; // FIXME:
   let isMetaDataValid = false;
   let projectName = "";
   let primaryLocale: StblLocaleType;
@@ -37,7 +39,11 @@
   let groupHexString: string;
   let instanceHexString: string;
 
-  $: metaDataPage = currentPage - (isMetaDataValid ? 0 : 1); // FIXME:
+  $: {
+    if (settingMetaData) {
+      completePages = 1 + (isMetaDataValid ? 1 : 0);
+    }
+  }
 
   const unsubscribeKeyEsc = subscribeToKey("Escape", onComplete);
   let workspace: Workspace;
@@ -87,7 +93,7 @@
 
   async function findMetaData() {
     currentPage = 2;
-    completePages = 1; // FIXME: ?
+    completePages = 1;
     readingFiles = false;
     findingMetaData = true;
 
@@ -97,19 +103,27 @@
     if (!hasBeen800ms) await timeout();
 
     primaryLocale = defaultMetaData.primaryLocale;
-    otherLocaleOptions = defaultMetaData.otherLocaleOptions; // FIXME: add others, these are just checked
+    otherLocaleOptions = defaultMetaData.otherLocaleOptions;
     groupHexString = formatAsHexString(defaultMetaData.group, 8);
     instanceHexString = formatAsHexString(defaultMetaData.instanceBase, 14); // FIXME: ensure not 0
 
     findingMetaData = false;
+    settingMetaData = true;
   }
 
   function handleNextButtonClick() {
-    if (reviewingErredFiles) {
+    if (currentPage === 1) {
       reviewingErredFiles = false;
       findMetaData();
+    } else if (currentPage === 2) {
+      metaDataPage++;
+      currentPage++;
+      completePages++;
+    } else if (currentPage === 3) {
+      settingMetaData = false;
+      currentPage++;
     } else {
-      // TODO:
+      // TODO: create project
     }
   }
 </script>
@@ -118,7 +132,7 @@
   title="Upload Project"
   subtitle="UUID: {uuid}"
   canClickBack={false}
-  numPages={3}
+  numPages={4}
   {completePages}
   bind:currentPage
   minimumContentHeight="220"
@@ -179,10 +193,10 @@
           </ul>
         </div>
       {/if}
-    {:else if currentPage === 2}
+    {:else if currentPage <= 3}
       {#if findingMetaData}
         <div in:fade>
-          <h3>Success! Finding meta data...</h3>
+          <h3>Finding meta data...</h3>
           <p>This might take a little bit.</p>
         </div>
       {:else}
@@ -197,6 +211,11 @@
           bind:instanceHexString
         />
       {/if}
+    {:else}
+      <div in:fade>
+        <h3>Preparing your project...</h3>
+        <p>This might take a little bit.</p>
+      </div>
     {/if}
   </div>
 </MultipageModalContent>
