@@ -106,13 +106,14 @@
 
     let hasBeen800ms = false;
     setTimeout(() => (hasBeen800ms = true), 800);
-    const defaultMetaData = getDefaultMetaData(parseResult.stbls);
-    if (!hasBeen800ms) await timeout();
 
+    const defaultMetaData = getDefaultMetaData(parseResult.stbls);
     primaryLocale = defaultMetaData.primaryLocale;
     otherLocaleOptions = defaultMetaData.otherLocaleOptions;
     groupHexString = formatAsHexString(defaultMetaData.group, 8);
     instanceHexString = formatAsHexString(defaultMetaData.instanceBase, 14); // FIXME: ensure not 0
+
+    if (!hasBeen800ms) await timeout();
 
     findingMetaData = false;
     settingMetaData = true;
@@ -123,14 +124,21 @@
 
     let hasBeen800ms = false;
     setTimeout(() => (hasBeen800ms = true), 800);
-    const stblPairs = mergeAndPruneLocales(primaryLocale, parseResult.stbls);
-    if (!hasBeen800ms) await timeout();
 
-    // FIXME: deselected locales have no effect
+    const stblPairs = mergeAndPruneLocales(primaryLocale, parseResult.stbls);
+
+    const localesToInclude = new Set<number>();
+    localesToInclude.add(primaryLocale);
+    otherLocaleOptions.forEach((option) => {
+      if (option.checked) localesToInclude.add(option.data.enumValue);
+    });
+
     stblMap = new Map();
     stblPairs.forEach(({ locale, stbl }) => {
-      stblMap.set(locale, stbl);
+      if (localesToInclude.has(locale)) stblMap.set(locale, stbl);
     });
+
+    if (!hasBeen800ms) await timeout();
 
     preparingProject = false;
     completePages++;
