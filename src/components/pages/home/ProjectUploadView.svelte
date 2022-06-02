@@ -191,21 +191,22 @@
   </div>
   <div in:fly={{ y: 15, duration: animationDuration }}>
     <p class="my-2">
-      Upload the string table(s) you'd like to include in this project. A single
-      string table can be uploaded as binary or JSON, but multiple string tables
-      must be uploaded in a package.
+      Upload the string table(s) you'd like to include in this project. They can
+      be binary, JSON, or in packages. Feel free to upload all of the packages
+      for your mod, unneeded files will be ignored.
     </p>
     <FileInput
-      label="binary, json, or package only"
+      label="binaries, jsons, and/or packages only"
       bind:files={uploadedFiles}
       accept=".json,.stbl,.bnry,.binary,.package"
+      multiple={true}
       bind:filesInvalid
     />
     <div class="my-2">
-      <p class="subtle-text">
-        If multiple string tables have the same locale, they will be merged.
+      <p class="subtle-text mt-0">
+        If there are multiple tables with the same locale, they will be merged.
       </p>
-      <p class="subtle-text">
+      <p class="subtle-text mb-0">
         Using JSON? Read about the expected structure <a
           href="#/help?title=json"
           target="_blank">here</a
