@@ -1,10 +1,11 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   import { fly } from "svelte/transition";
   import { Settings } from "../../../typescript/storage";
   import GradientHeader from "../elements/GradientHeader.svelte";
   import NavigationButton from "../elements/NavigationButton.svelte";
   import ProgressCircles from "../controls/ProgressCircles.svelte";
+  import { subscribeToKey } from "../../../typescript/keybindings";
 
   const animationDuration = Settings.reduceMotion ? 0 : 850;
 
@@ -25,7 +26,32 @@
   export let finalPageNextButtonText = "Next";
   export let onNextButtonClick: () => void = () => {};
 
+  $: canClickNext = completePages >= currentPage;
+
   let contentContainer: HTMLDivElement;
+
+  const keySubscriptions = [
+    subscribeToKey(
+      "ArrowLeft",
+      () => {
+        if (canClickBack && currentPage > 1) currentPage--;
+      },
+      {
+        preventDefault: true,
+        ctrlOrMeta: true,
+      }
+    ),
+    subscribeToKey(
+      "ArrowRight",
+      () => {
+        if (canClickNext) onNextButtonClick();
+      },
+      {
+        preventDefault: true,
+        ctrlOrMeta: true,
+      }
+    ),
+  ];
 
   onMount(() => {
     if (minimumContentHeight) {
@@ -33,10 +59,13 @@
     }
   });
 
+  onDestroy(() => {
+    keySubscriptions.forEach((unsubscribe) => unsubscribe());
+  });
+
   function onProgressCircleClick(index: number) {
     if (canClickBack) {
       currentPage = index + 1;
-      // TODO: complete pages??
     }
   }
 </script>
@@ -78,7 +107,7 @@
       {#if showNextButton}
         <NavigationButton
           direction="right"
-          active={completePages >= currentPage}
+          active={canClickNext}
           text={currentPage === numPages
             ? finalPageNextButtonText
             : nextButtonText}
