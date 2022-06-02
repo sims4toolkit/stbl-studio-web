@@ -201,10 +201,12 @@ function getResourceKey(filename: string): ResourceKey {
       instance: BigInt("0x" + i),
     };
   } catch (e) {
+    const instance = StringTableLocale.setHighByte(Settings.defaultLocale, 0n);
+
     return {
       type: BinaryResourceType.StringTable,
       group: 0,
-      instance: 0n,
+      instance
     };
   }
 }

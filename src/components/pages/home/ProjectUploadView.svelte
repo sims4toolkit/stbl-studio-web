@@ -7,7 +7,10 @@
   import { activeWorkspace } from "../../../typescript/stores";
   import { subscribeToKey } from "../../../typescript/keybindings";
   import MultipageModalContent from "../../shared/layout/MultipageModalContent.svelte";
-  import { parseFiles } from "../../../typescript/helpers/uploads";
+  import {
+    getDefaultMetaData,
+    parseFiles,
+  } from "../../../typescript/helpers/uploads";
   import type { ParsedFilesResult } from "../../../global";
 
   export let onComplete: () => void;
@@ -36,12 +39,23 @@
     if (uploadedFiles?.length) readFiles();
   }
 
+  function timeout(ms = 800) {
+    // Wait times are being artifically inflated for visual reasons. The
+    // progress screens are usually instant for small STBLs, which looks like
+    // a glitch that the user doesn't have time to read. I think the pleasant
+    // viewing experience + information about each step is worth the < 1s wait.
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
   async function readFiles() {
     reviewingErredFiles = false;
     filesInvalid = false;
     readingFiles = true;
 
+    let hasBeen800ms = false;
+    setTimeout(() => (hasBeen800ms = true), 800);
     parseResult = await parseFiles(uploadedFiles);
+    if (!hasBeen800ms) await timeout();
 
     if (!parseResult.stbls.length) {
       uploadedFiles = null;
@@ -52,18 +66,27 @@
       reviewingErredFiles = true;
       completePages = 1;
     } else {
-      currentPage = 2;
-      completePages = 2;
-      readingFiles = false;
+      findMetaData();
     }
+  }
+
+  async function findMetaData() {
+    currentPage = 2;
+    completePages = 1; // FIXME: ?
+    readingFiles = false;
+
+    let hasBeen800ms = false;
+    setTimeout(() => (hasBeen800ms = true), 800);
+    const defaultMetaData = getDefaultMetaData(parseResult.stbls);
+    if (!hasBeen800ms) await timeout();
+
+    alert(defaultMetaData); // TODO:
   }
 
   function handleNextButtonClick() {
     if (reviewingErredFiles) {
       reviewingErredFiles = false;
-      readingFiles = false;
-      currentPage = 2;
-      completePages = 2;
+      findMetaData();
     } else {
       // TODO:
     }
@@ -136,7 +159,10 @@
         </div>
       {/if}
     {:else if currentPage === 2}
-      <p>success</p>
+      <div in:fade>
+        <h3>Success! Finding meta data...</h3>
+        <p>This might take a little bit.</p>
+      </div>
     {/if}
   </div>
 </MultipageModalContent>
