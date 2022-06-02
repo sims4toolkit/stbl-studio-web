@@ -9,13 +9,13 @@
     getLocaleData,
   } from "../../../typescript/helpers/localization";
   import { activeWorkspace } from "../../../typescript/stores";
-  import TextInput from "../../shared/elements/TextInput.svelte";
   import LocaleCheckboxesView from "./LocaleCheckboxesView.svelte";
   import type { LocaleData } from "../../../global";
   import { Settings } from "../../../typescript/storage";
   import MultipageModalContent from "../../shared/layout/MultipageModalContent.svelte";
   import GroupInstanceLocale from "../../shared/controls/GroupInstanceLocale.svelte";
   import { subscribeToKey } from "../../../typescript/keybindings";
+  import ProjectNameInput from "../../shared/controls/ProjectNameInput.svelte";
 
   const { StringTableLocale } = window.S4TK.enums;
   const { fnv64 } = window.S4TK.hashing;
@@ -130,40 +130,7 @@
     {#if currentPage === 1}
       <div>
         <form class="w-100 mb-2">
-          <TextInput
-            name="project-name-text-input"
-            focusOnMount={true}
-            fillWidth={true}
-            label="project name"
-            placeholder="Project name..."
-            bind:value={name}
-            bind:isValid={isNameValid}
-            validators={[
-              {
-                error: "Must be non-empty",
-                test(value) {
-                  return Boolean(value.trim());
-                },
-              },
-              {
-                error: "Must be <= 30 characters",
-                test(value) {
-                  return value.length <= 30;
-                },
-              },
-              {
-                error: "Already in use",
-                test(value) {
-                  if (!workspace) return true;
-                  const formattedName = value.trim().toLowerCase();
-                  return !workspace.projects.some((p) => {
-                    if (p.uuid === uuid) return false;
-                    return p.name.trim().toLowerCase() === formattedName;
-                  });
-                },
-              },
-            ]}
-          />
+          <ProjectNameInput {uuid} bind:name bind:isNameValid />
           <div class="mt-1">
             <GroupInstanceLocale
               bind:groupHexString

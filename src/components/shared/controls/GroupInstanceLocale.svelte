@@ -58,6 +58,12 @@
         },
       },
       {
+        error: "Must be non-zero",
+        test(value) {
+          return value !== "00000000000000";
+        },
+      },
+      {
         error: "Already in use",
         test(value) {
           if (!workspace) return true;
