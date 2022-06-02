@@ -1,19 +1,13 @@
 <script lang="ts">
   import { onDestroy } from "svelte";
-  import { fly } from "svelte/transition";
   import { v4 as uuidv4 } from "uuid";
   import FileInput from "../../shared/elements/FileInput.svelte";
-  import GradientHeader from "../../shared/elements/GradientHeader.svelte";
-  import NavigationButton from "../../shared/elements/NavigationButton.svelte";
-  import ProgressCircles from "../../shared/controls/ProgressCircles.svelte";
   import type Workspace from "../../../typescript/models/workspace";
   import { activeWorkspace } from "../../../typescript/stores";
-  import { Settings } from "../../../typescript/storage";
   import { subscribeToKey } from "../../../typescript/keybindings";
+  import MultipageModalContent from "../../shared/layout/MultipageModalContent.svelte";
 
   export let onComplete: () => void;
-
-  const animationDuration = Settings.reduceMotion ? 0 : 1000;
 
   const uuid = uuidv4();
 
@@ -38,19 +32,18 @@
       // TODO: read files
     }
   }
-
-  function nextClicked() {
-    // TODO:
-  }
 </script>
 
-<div>
-  <div in:fly={{ y: -15, duration: animationDuration }}>
-    <GradientHeader title="Upload Project" />
-    <p class="mt-1 subtle-text">UUID: {uuid}</p>
-  </div>
-  <div in:fly={{ y: 15, duration: animationDuration }}>
-    <p class="my-2">
+<MultipageModalContent
+  title="Upload Project"
+  subtitle="UUID: {uuid}"
+  numPages={3}
+  completePages={0}
+  currentPage={1}
+  finalPageNextButtonText="Create"
+>
+  <div slot="content">
+    <p class="mt-0 mb-2">
       Upload the string table(s) you'd like to include in this project. They can
       be binary, JSON, or in packages. Feel free to upload all of the packages
       for your mod, unneeded files will be ignored.
@@ -62,7 +55,7 @@
       multiple={true}
       bind:filesInvalid
     />
-    <div class="my-2">
+    <div class="mt-2">
       <p class="subtle-text mt-0">
         If there are multiple tables with the same locale, they will be merged.
       </p>
@@ -74,19 +67,7 @@
       </p>
     </div>
   </div>
-  <div
-    class="flex-space-between"
-    in:fly={{ y: 25, duration: animationDuration }}
-  >
-    <ProgressCircles circles={2} currentPage={1} filled={circlesFilled} />
-    <NavigationButton
-      text="Next"
-      direction="right"
-      onClick={nextClicked}
-      active={true}
-    />
-  </div>
-</div>
+</MultipageModalContent>
 
 <style lang="scss">
   // intentionally blank
