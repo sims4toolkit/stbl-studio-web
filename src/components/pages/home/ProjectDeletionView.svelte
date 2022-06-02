@@ -42,7 +42,7 @@
     <p class="mt-2">
       Are you sure you want to permanently delete the following projects?
     </p>
-    <ul class="mb-2">
+    <ul class="mb-2 deletion-summary">
       {#each selectedProjects as project, key (key)}
         <li>{project.name} ({project.numStrings} strings)</li>
       {/each}
@@ -76,5 +76,9 @@
 </MultipageModalContent>
 
 <style lang="scss">
-  // intentionally blank
+  ul.deletion-summary {
+    max-height: 100px;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
 </style>
