@@ -16,6 +16,7 @@
   let uploadedFiles: FileList;
   let filesInvalid = false;
   let currentPage = 1;
+  let completePages = 0;
   let readingFiles = false;
   let parseResult: ParsedFilesResult;
   let reviewingErredFiles = false;
@@ -31,10 +32,6 @@
     unsubscribeKeyEsc();
   });
 
-  // FIXME: bug when you upload files that lead to filesInvalid = true, and then you upload files that are valid
-  $: completePages =
-    uploadedFiles && !filesInvalid ? currentPage : currentPage - 1;
-
   $: {
     if (uploadedFiles?.length) readFiles();
   }
@@ -45,31 +42,45 @@
     readingFiles = true;
 
     parseResult = await parseFiles(uploadedFiles);
-    setTimeout(() => {
-      if (!parseResult.stbls.length) {
-        uploadedFiles = null;
-        readingFiles = false;
-        filesInvalid = true;
-      } else if (parseResult.errors.length) {
-        reviewingErredFiles = true;
-        // TODO:
-      } else {
-        // TODO:
-        alert("all success");
-      }
-    }, 500);
+
+    if (!parseResult.stbls.length) {
+      uploadedFiles = null;
+      parseResult = null;
+      filesInvalid = true;
+      readingFiles = false;
+    } else if (parseResult.errors.length) {
+      reviewingErredFiles = true;
+      completePages = 1;
+    } else {
+      currentPage = 2;
+      completePages = 2;
+      readingFiles = false;
+    }
+  }
+
+  function handleNextButtonClick() {
+    if (reviewingErredFiles) {
+      reviewingErredFiles = false;
+      readingFiles = false;
+      currentPage = 2;
+      completePages = 2;
+    } else {
+      // TODO:
+    }
   }
 </script>
 
 <MultipageModalContent
   title="Upload Project"
   subtitle="UUID: {uuid}"
+  canClickBack={false}
   numPages={3}
   {completePages}
   bind:currentPage
   minimumContentHeight="220"
   centerVertically={true}
   finalPageNextButtonText="Create"
+  onNextButtonClick={handleNextButtonClick}
 >
   <div slot="content">
     {#if currentPage === 1}
@@ -108,7 +119,7 @@
         </div>
       {:else}
         <div in:fade>
-          <h3>{parseResult.errors.length} Error(s) Encountered</h3>
+          <h3 class="mt-0">{parseResult.errors.length} Error(s) Encountered</h3>
           <p>
             Some of your files either could not be read or did not contain valid
             STBL data. Don't worry - you can still create a project from the
@@ -124,6 +135,8 @@
           </ul>
         </div>
       {/if}
+    {:else if currentPage === 2}
+      <p>success</p>
     {/if}
   </div>
 </MultipageModalContent>

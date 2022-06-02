@@ -14,6 +14,7 @@
   export let minimumContentHeight: string = null;
   export let centerVertically = false;
 
+  export let canClickBack = true;
   export let showProgress = true;
   export let numPages = 1;
   export let completePages = 1;
@@ -33,8 +34,10 @@
   });
 
   function onProgressCircleClick(index: number) {
-    currentPage = index + 1;
-    // TODO: complete pages??
+    if (canClickBack) {
+      currentPage = index + 1;
+      // TODO: complete pages??
+    }
   }
 </script>
 
@@ -68,7 +71,7 @@
           circles={numPages}
           filled={completePages}
           {currentPage}
-          clickable={completePages - 1}
+          clickable={canClickBack ? completePages - 1 : 0}
           onClick={onProgressCircleClick}
         />
       {/if}

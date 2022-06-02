@@ -19,7 +19,7 @@
       class:filled={key < filled}
       class:current-page={currentPage === key + 1}
       class:clickable={key < clickable}
-      tabindex={key < clickable ? "0" : "-1"}
+      tabindex={key < clickable ? 0 : -1}
       on:click={() => handleClick(key)}
     />
   {/each}
