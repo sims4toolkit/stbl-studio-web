@@ -25,7 +25,7 @@ interface DefaultProjectMetaData {
   primaryLocale: StblLocaleType;
   group: number;
   instanceBase: bigint;
-  otherLocales: StblLocaleType[];
+  otherLocaleOptions: LocaleOption[];
 }
 
 interface LocaleStblPair {

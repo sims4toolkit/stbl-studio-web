@@ -3,6 +3,7 @@ import type { StringTableLocale as StblLocaleType } from "@s4tk/models/enums";
 import type { ResourceKey, ResourceKeyPair } from "@s4tk/models/types";
 import type { DefaultProjectMetaData, FileError, LocaleStblPair, ParsedFilesResult } from "../../global";
 import { Settings } from "../storage";
+import { allLocales } from "./localization";
 
 const { BinaryResourceType, StringTableLocale } = window.S4TK.enums;
 const { Package, StringTableResource } = window.S4TK.models;
@@ -68,14 +69,20 @@ export function getDefaultMetaData(resources: ResourceKeyPair<StblType>[]): Defa
 
   const instanceBase = StringTableLocale.getInstanceBase(instance);
 
-  includedLocales.delete(primaryLocale);
-  const otherLocales = Array.from(includedLocales);
+  const otherLocaleOptions = allLocales
+    .filter((data) => data.enumValue !== primaryLocale)
+    .map((data) => {
+      return {
+        data,
+        checked: includedLocales.has(data.enumValue),
+      };
+    });
 
   return {
     primaryLocale,
     group,
     instanceBase,
-    otherLocales
+    otherLocaleOptions
   };
 }
 

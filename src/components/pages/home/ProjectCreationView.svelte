@@ -36,7 +36,7 @@
   let isPage1Valid = false;
   let name = "";
   let primaryLocale = Settings.defaultLocale;
-  let otherLocaleOptions: LocaleOption[];
+  let otherLocaleOptions: LocaleOption[] = null;
   let groupHexString = "80000000";
   let instanceHexString = formatAsHexString(
     StringTableLocale.getInstanceBase(fnv64(uuid)),
