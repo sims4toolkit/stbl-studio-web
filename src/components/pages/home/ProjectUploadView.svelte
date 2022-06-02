@@ -11,7 +11,12 @@
     getDefaultMetaData,
     parseFiles,
   } from "../../../typescript/helpers/uploads";
-  import type { ParsedFilesResult } from "../../../global";
+  import type { LocaleOption, ParsedFilesResult } from "../../../global";
+  import type { StringTableLocale as StblLocaleType } from "@s4tk/models/enums";
+  import ProjectMetaDataPages from "../../shared/controls/ProjectMetaDataPages.svelte";
+
+  const { StringTableLocale } = window.S4TK.enums;
+  const { formatAsHexString } = window.S4TK.formatting;
 
   export let onComplete: () => void;
 
@@ -23,6 +28,16 @@
   let readingFiles = false;
   let parseResult: ParsedFilesResult;
   let reviewingErredFiles = false;
+  let findingMetaData = false;
+
+  let isMetaDataValid = false;
+  let projectName = "";
+  let primaryLocale: StblLocaleType;
+  let otherLocaleOptions: LocaleOption[];
+  let groupHexString: string;
+  let instanceHexString: string;
+
+  $: metaDataPage = currentPage - (isMetaDataValid ? 0 : 1); // FIXME:
 
   const unsubscribeKeyEsc = subscribeToKey("Escape", onComplete);
   let workspace: Workspace;
@@ -74,13 +89,19 @@
     currentPage = 2;
     completePages = 1; // FIXME: ?
     readingFiles = false;
+    findingMetaData = true;
 
     let hasBeen800ms = false;
     setTimeout(() => (hasBeen800ms = true), 800);
     const defaultMetaData = getDefaultMetaData(parseResult.stbls);
     if (!hasBeen800ms) await timeout();
 
-    alert(defaultMetaData); // TODO:
+    primaryLocale = defaultMetaData.primaryLocale;
+    otherLocaleOptions = defaultMetaData.otherLocaleOptions; // FIXME: add others, these are just checked
+    groupHexString = formatAsHexString(defaultMetaData.group, 8);
+    instanceHexString = formatAsHexString(defaultMetaData.instanceBase, 14); // FIXME: ensure not 0
+
+    findingMetaData = false;
   }
 
   function handleNextButtonClick() {
@@ -105,7 +126,7 @@
   finalPageNextButtonText="Create"
   onNextButtonClick={handleNextButtonClick}
 >
-  <div slot="content">
+  <div slot="content" class="w-100">
     {#if currentPage === 1}
       {#if !readingFiles}
         <div in:fade>
@@ -159,10 +180,23 @@
         </div>
       {/if}
     {:else if currentPage === 2}
-      <div in:fade>
-        <h3>Success! Finding meta data...</h3>
-        <p>This might take a little bit.</p>
-      </div>
+      {#if findingMetaData}
+        <div in:fade>
+          <h3>Success! Finding meta data...</h3>
+          <p>This might take a little bit.</p>
+        </div>
+      {:else}
+        <ProjectMetaDataPages
+          {uuid}
+          currentPage={metaDataPage}
+          bind:isPage1Valid={isMetaDataValid}
+          bind:name={projectName}
+          bind:primaryLocale
+          bind:otherLocaleOptions
+          bind:groupHexString
+          bind:instanceHexString
+        />
+      {/if}
     {/if}
   </div>
 </MultipageModalContent>
