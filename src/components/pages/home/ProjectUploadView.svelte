@@ -30,8 +30,9 @@
   let reviewingErredFiles = false;
   let findingMetaData = false;
   let settingMetaData = false;
+  let creatingProject = false;
 
-  let metaDataPage = 1; // FIXME:
+  let metaDataPage = 1;
   let isMetaDataValid = false;
   let projectName = "";
   let primaryLocale: StblLocaleType;
@@ -111,6 +112,17 @@
     settingMetaData = true;
   }
 
+  async function createProject() {
+    creatingProject = true;
+
+    // TODO: create project
+
+    await timeout();
+
+    creatingProject = false;
+    completePages++;
+  }
+
   function handleNextButtonClick() {
     if (currentPage === 1) {
       reviewingErredFiles = false;
@@ -122,8 +134,10 @@
     } else if (currentPage === 3) {
       settingMetaData = false;
       currentPage++;
+      createProject();
     } else {
-      // TODO: create project
+      // TODO: final page
+      alert("create project");
     }
   }
 </script>
@@ -137,7 +151,7 @@
   bind:currentPage
   minimumContentHeight="220"
   centerVertically={true}
-  finalPageNextButtonText="Create"
+  finalPageNextButtonText="Add Project"
   onNextButtonClick={handleNextButtonClick}
 >
   <div slot="content" class="w-100">
@@ -211,10 +225,15 @@
           bind:instanceHexString
         />
       {/if}
+    {:else if creatingProject}
+      <div in:fade>
+        <h3>Creating your project...</h3>
+        <p>This might take a little bit.</p>
+      </div>
     {:else}
       <div in:fade>
-        <h3>Preparing your project...</h3>
-        <p>This might take a little bit.</p>
+        <h3>All set!</h3>
+        <p>A project with X strings in X locales has been created.</p>
       </div>
     {/if}
   </div>
