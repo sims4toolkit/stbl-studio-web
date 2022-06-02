@@ -9,13 +9,18 @@
   import MultipageModalContent from "../../shared/layout/MultipageModalContent.svelte";
   import {
     getDefaultMetaData,
+    mergeAndPruneLocales,
     parseFiles,
   } from "../../../typescript/helpers/uploads";
-  import type { LocaleOption, ParsedFilesResult } from "../../../global";
+  import type {
+    LocaleOption,
+    ParsedFilesResult,
+    StblMap,
+  } from "../../../global";
   import type { StringTableLocale as StblLocaleType } from "@s4tk/models/enums";
   import ProjectMetaDataPages from "../../shared/controls/ProjectMetaDataPages.svelte";
+  import Project from "../../../typescript/models/project";
 
-  const { StringTableLocale } = window.S4TK.enums;
   const { formatAsHexString } = window.S4TK.formatting;
 
   export let onComplete: () => void;
@@ -30,7 +35,8 @@
   let reviewingErredFiles = false;
   let findingMetaData = false;
   let settingMetaData = false;
-  let creatingProject = false;
+  let preparingProject = false;
+  let stblMap: StblMap;
 
   let metaDataPage = 1;
   let isMetaDataValid = false;
@@ -112,15 +118,42 @@
     settingMetaData = true;
   }
 
-  async function createProject() {
-    creatingProject = true;
+  async function prepareProject() {
+    preparingProject = true;
 
-    // TODO: create project
+    let hasBeen800ms = false;
+    setTimeout(() => (hasBeen800ms = true), 800);
+    const stblPairs = mergeAndPruneLocales(primaryLocale, parseResult.stbls);
+    if (!hasBeen800ms) await timeout();
 
-    await timeout();
+    // FIXME: deselected locales have no effect
+    stblMap = new Map();
+    stblPairs.forEach(({ locale, stbl }) => {
+      stblMap.set(locale, stbl);
+    });
 
-    creatingProject = false;
+    preparingProject = false;
     completePages++;
+  }
+
+  async function createProjectAndClose() {
+    workspace.addProject(
+      new Project(
+        {
+          uuid,
+          name: projectName.trim(),
+          primaryLocale,
+          group: parseInt(groupHexString, 16),
+          instanceBase: BigInt("0x" + instanceHexString),
+        },
+        stblMap,
+        otherLocaleOptions // FIXME: needed?
+          .filter((option) => option.checked)
+          .map((option) => option.data.enumValue)
+      )
+    );
+
+    onComplete();
   }
 
   function handleNextButtonClick() {
@@ -134,10 +167,9 @@
     } else if (currentPage === 3) {
       settingMetaData = false;
       currentPage++;
-      createProject();
+      prepareProject();
     } else {
-      // TODO: final page
-      alert("create project");
+      createProjectAndClose();
     }
   }
 </script>
@@ -225,9 +257,9 @@
           bind:instanceHexString
         />
       {/if}
-    {:else if creatingProject}
+    {:else if preparingProject}
       <div in:fade>
-        <h3>Creating your project...</h3>
+        <h3>Preparing your project...</h3>
         <p>This might take a little bit.</p>
       </div>
     {:else}
