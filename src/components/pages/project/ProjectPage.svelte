@@ -21,6 +21,7 @@
   import StblTranslateView from "./StblTranslateView.svelte";
   import { subscribeToKey } from "../../../typescript/keybindings";
   import PaginationController from "../../shared/controls/PaginationController.svelte";
+  import StringRehashView from "./StringRehashView.svelte";
 
   const { formatAsHexString } = window.S4TK.formatting;
 
@@ -32,6 +33,7 @@
   let currentSlice: StringEntry[];
   let isDeletingStrings = false;
   let isCreatingString = false;
+  let isRehashingKeys = false;
 
   $: inModal = isDeletingStrings || isCreatingString;
   $: selectModeDisabled = !entries?.length;
@@ -109,8 +111,7 @@
         isDeletingStrings = true;
         break;
       case "rehash":
-        // TODO:
-        alert(action);
+        isRehashingKeys = true;
         break;
     }
   }
@@ -234,6 +235,16 @@
       onComplete={() => (isCreatingString = false)}
     />
   </ScreenDimmer>
+{/if}
+
+{#if isRehashingKeys}
+  <BlurOverlay onClose={() => (isRehashingKeys = false)}>
+    <StringRehashView
+      bind:project
+      bind:selectionGroup
+      onComplete={() => (isRehashingKeys = false)}
+    />
+  </BlurOverlay>
 {/if}
 
 {#if isDeletingStrings}

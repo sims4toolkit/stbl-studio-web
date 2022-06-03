@@ -15,9 +15,18 @@
   export let stringEntry: StringEntry;
   export let onEdit: () => void;
 
-  let keyValue = formatStringKey(stringEntry.key);
+  let keyValue: string;
   let stringValue = stringEntry.value.replaceAll("\\n", "\n");
   let isKeyInvalid = false;
+
+  $: {
+    stringEntry.key;
+    updateKeyValue();
+  }
+
+  function updateKeyValue() {
+    keyValue = formatStringKey(stringEntry.key);
+  }
 
   $: isSelected = selectionGroup.isSelected(stringEntry);
 
@@ -38,7 +47,6 @@
       mode = "view";
       // FIXME: key needs to be updated in other locales, too
       stringEntry.key = parseInt(keyValue, 16);
-      keyValue = formatStringKey(stringEntry.key);
       stringEntry.value = stringValue.replace(/(?:\r\n|\r|\n)/g, "\\n");
       onEdit();
     }

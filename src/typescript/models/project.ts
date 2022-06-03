@@ -35,6 +35,10 @@ export default class Project implements ProjectMetaData {
     return this.stblMap.get(this.primaryLocale);
   }
 
+  get allStbls(): StblResourceType[] {
+    return Array.from(this.stblMap.values());
+  }
+
   /**
    * Creates a new STBL from given data.
    * 
@@ -150,6 +154,22 @@ export default class Project implements ProjectMetaData {
 
     this.numStrings = this.primaryStbl.size;
     this.save();
+  }
+
+  /**
+   * Updates the specifed keys in all STBLs.
+   * 
+   * @param updates Keys to update
+   */
+  updateKeys(updates: [number, number][]) {
+    updates.forEach(([previous, current]) => {
+      this.allStbls.forEach(stbl => {
+        const entry = stbl.getByKey(previous);
+        if (entry) entry.key = current;
+      });
+    });
+
+    this.saveStblMap();
   }
 
   /**
