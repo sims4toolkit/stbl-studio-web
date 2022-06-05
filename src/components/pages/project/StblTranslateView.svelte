@@ -20,7 +20,7 @@
   let showTranslationView = true;
 
   let primaryLocaleName = getLocaleData(project.primaryLocale).englishName;
-  $: otherLocaleName = getLocaleData(otherLocale).englishName;
+  $: otherLocaleName = getLocaleData(otherLocale)?.englishName;
 
   $: {
     otherStbl = project.stblMap.get(otherLocale);
