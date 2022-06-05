@@ -14,18 +14,21 @@
   export let entry: StringEntry;
   export let otherStbl: StringTableResource;
 
-  let translatedValue: string = otherStbl.getByKey(entry.key)?.value ?? "";
+  let translatedValue =
+    otherStbl.getByKey(entry.key)?.value.replaceAll("\\n", "\n") ?? "";
 
   function handleTranslateBlur() {
-    if (translatedValue === entry.value) {
+    const value = translatedValue.replaceAll("\n", "\\n");
+
+    if (value === entry.value) {
       otherStbl.deleteByKey(entry.key);
     } else {
       const otherEntry = otherStbl.getByKey(entry.key);
 
       if (otherEntry) {
-        otherEntry.value = translatedValue;
+        otherEntry.value = value;
       } else {
-        otherStbl.add(entry.key, translatedValue);
+        otherStbl.add(entry.key, value);
       }
     }
 
@@ -38,14 +41,16 @@
   {#if showKeys}
     <p
       transition:fly={{ y: 10, duration: Settings.reduceMotion ? 0 : 200 }}
-      class="monospace accent-color my-0"
+      class="monospace accent-color mt-0 mb-half"
     >
       {formatStringKey(entry.key)}
     </p>
   {/if}
-  <SplitView fillWidth={true}>
+  <SplitView fillWidth={true} centerV={false} useGap={true}>
     <div slot="left" class="w-100">
-      <p class="my-0 w-100">{entry.value}</p>
+      <p class="source-string w-100 pre-wrap">
+        {entry.value.replaceAll("\\n", "\n")}
+      </p>
     </div>
     <div slot="right" class="w-100">
       <ResizableTextArea
@@ -59,5 +64,9 @@
 </div>
 
 <style lang="scss">
-  // intentionally blank
+  p.source-string {
+    margin: 0;
+    padding: 8px;
+    font-size: 1em;
+  }
 </style>
