@@ -41,7 +41,7 @@
   {#if showKeys}
     <p
       transition:fly={{ y: 10, duration: Settings.reduceMotion ? 0 : 200 }}
-      class="monospace accent-color mt-0 mb-half"
+      class="monospace accent-color mt-0 mb-half key-string"
     >
       {formatStringKey(entry.key)}
     </p>
@@ -64,6 +64,10 @@
 </div>
 
 <style lang="scss">
+  p.key-string {
+    padding-left: 8px;
+  }
+
   p.source-string {
     margin: 0;
     padding: 8px;

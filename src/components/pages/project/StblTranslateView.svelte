@@ -1,5 +1,7 @@
 <script lang="ts">
+  import { fade } from "svelte/transition";
   import type { StringEntry } from "@s4tk/models/types";
+  import { getLocaleData } from "../../../typescript/helpers/localization";
   import type Project from "../../../typescript/models/project";
   import LocaleSelect from "../../shared/controls/LocaleSelect.svelte";
   import Checkbox from "../../shared/elements/Checkbox.svelte";
@@ -14,20 +16,38 @@
   let otherLocale = project.allLocales.find(
     (locale) => locale !== project.primaryLocale
   );
+  let otherStbl = project.stblMap.get(otherLocale);
+  let showTranslationView = true;
 
-  $: otherStbl = project.stblMap.get(otherLocale);
+  let primaryLocaleName = getLocaleData(project.primaryLocale).englishName;
+  $: otherLocaleName = getLocaleData(otherLocale).englishName;
 
   $: {
-    if (otherLocale != null) entries = project.primaryStbl.entries;
+    otherStbl = project.stblMap.get(otherLocale);
 
-    if (hideTranslated)
+    if (hideTranslated) {
       entries = entries.filter((entry) => !otherStbl.hasKey(entry.key));
+    } else {
+      entries = project.primaryStbl.entries;
+    }
+  }
+
+  let lastLocale = otherLocale;
+  $: {
+    if (lastLocale !== otherLocale) {
+      showTranslationView = false;
+      hideTranslated = false;
+      lastLocale = otherLocale;
+      setTimeout(() => {
+        showTranslationView = true;
+      }, 500);
+    }
   }
 </script>
 
 <div class="translate-view flex-col flex-gap">
   {#if Boolean(otherStbl)}
-    <div class="flex-space-between flex-center-v flex-wrap flex-gap mb-2">
+    <div class="flex-space-between flex-center-v flex-wrap flex-gap">
       <div class="flex flex-gap">
         <Checkbox label="Show keys" bind:checked={showKeys} />
         <Checkbox
@@ -43,10 +63,21 @@
         exclude={[project.primaryLocale]}
       />
     </div>
-    {#if Boolean(currentSlice)}
-      {#each currentSlice as entry (entry.id)}
-        <StringTranslateCell bind:project {showKeys} {otherStbl} {entry} />
-      {/each}
+    <p class="subtle-text mt-0 mb-1">
+      {primaryLocaleName} strings are shown on the left, and {otherLocaleName} strings
+      are on the right. Type your translations, and your changes will be autosaved
+      when you click out of the text box.
+    </p>
+    {#if showTranslationView}
+      {#if Boolean(currentSlice)}
+        {#each currentSlice as entry (entry.id)}
+          <StringTranslateCell bind:project {showKeys} {otherStbl} {entry} />
+        {/each}
+      {/if}
+    {:else}
+      <div in:fade class="flex-center flex-col w-100 py-3 px-1 text-center">
+        <h3>Refreshing...</h3>
+      </div>
     {/if}
   {:else}
     <div class="flex-center flex-col empty-stbl py-3 px-1 text-center">
