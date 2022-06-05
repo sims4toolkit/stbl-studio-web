@@ -179,24 +179,27 @@
           </div>
         </SplitView>
       </div>
+
       {#if project.view === ProjectView.Json}
         <StblJsonView {project} />
-      {:else if project.view === ProjectView.Translate}
-        <StblTranslateView bind:project bind:entries {currentSlice} />
       {:else if currentSlice && currentSlice.length}
-        <div
-          class:drop-shadow={project.view !== ProjectView.Grid}
-          class:grid-view={project.view === ProjectView.Grid}
-        >
-          {#each currentSlice as entry (entry.id)}
-            <StringEditCell
-              {selectionGroup}
-              stringEntry={entry}
-              isGrid={project.view === ProjectView.Grid}
-              onEdit={updateStblMap}
-            />
-          {/each}
-        </div>
+        {#if project.view === ProjectView.Translate}
+          <StblTranslateView bind:project bind:entries {currentSlice} />
+        {:else}
+          <div
+            class:drop-shadow={project.view !== ProjectView.Grid}
+            class:grid-view={project.view === ProjectView.Grid}
+          >
+            {#each currentSlice as entry (entry.id)}
+              <StringEditCell
+                {selectionGroup}
+                stringEntry={entry}
+                isGrid={project.view === ProjectView.Grid}
+                onEdit={updateStblMap}
+              />
+            {/each}
+          </div>
+        {/if}
       {:else}
         <div class="flex-center flex-col empty-stbl py-3 px-1 text-center">
           <h3>This Project is Empty</h3>
