@@ -83,6 +83,8 @@
 
   function updateView(view: ProjectView) {
     project.view = view;
+    if (view === ProjectView.Json || view === ProjectView.Translate)
+      selectionGroup.toggleSelectMode(false);
     project.saveMetaData();
   }
 
@@ -224,6 +226,7 @@
 <ProjectActionButtons
   {inModal}
   inSelectMode={selectionGroup?.selectMode}
+  canAddStrings={viewAllowsSelect}
   numSelected={selectionGroup?.allSelectedKeys?.length ?? 0}
   onAction={handleAction}
 />

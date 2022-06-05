@@ -5,6 +5,7 @@
 
   export let inModal: boolean;
   export let inSelectMode: boolean;
+  export let canAddStrings: boolean;
   export let numSelected: number;
   export let onAction: (action: ProjectAction) => void;
 
@@ -25,6 +26,7 @@
       icon: "upload",
       color: ToolbarColor.Upload,
       keybinding: "u",
+      disabled: !canAddStrings,
       async onClick() {
         onAction("import");
       },
@@ -34,11 +36,17 @@
       icon: "plus",
       color: ToolbarColor.Create,
       keybinding: "n",
+      disabled: !canAddStrings,
       async onClick() {
         onAction("create");
       },
     },
   ];
+
+  $: {
+    normalButtonData[1].disabled = !canAddStrings;
+    normalButtonData[2].disabled = !canAddStrings;
+  }
 
   const selectModeButtonData: FloatingActionButtonData[] = [
     {
