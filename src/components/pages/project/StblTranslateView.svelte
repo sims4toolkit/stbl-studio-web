@@ -26,26 +26,45 @@
 </script>
 
 <div class="translate-view flex-col flex-gap">
-  <div class="flex-space-between flex-center-v flex-wrap flex-gap mb-2">
-    <div class="flex flex-gap">
-      <Checkbox label="Show keys" bind:checked={showKeys} />
-      <Checkbox label="Skip translated strings" bind:checked={hideTranslated} />
+  {#if Boolean(otherStbl)}
+    <div class="flex-space-between flex-center-v flex-wrap flex-gap mb-2">
+      <div class="flex flex-gap">
+        <Checkbox label="Show keys" bind:checked={showKeys} />
+        <Checkbox
+          label="Skip translated strings"
+          bind:checked={hideTranslated}
+        />
+      </div>
+      <LocaleSelect
+        name="translation-locale-select"
+        label="translate to"
+        bind:selectedLocale={otherLocale}
+        include={project.allLocales}
+        exclude={[project.primaryLocale]}
+      />
     </div>
-    <LocaleSelect
-      name="translation-locale-select"
-      label="translate to"
-      bind:selectedLocale={otherLocale}
-      include={project.allLocales}
-      exclude={[project.primaryLocale]}
-    />
-  </div>
-  {#if Boolean(currentSlice)}
-    {#each currentSlice as entry (entry.id)}
-      <StringTranslateCell bind:project {showKeys} {otherStbl} {entry} />
-    {/each}
+    {#if Boolean(currentSlice)}
+      {#each currentSlice as entry (entry.id)}
+        <StringTranslateCell bind:project {showKeys} {otherStbl} {entry} />
+      {/each}
+    {/if}
+  {:else}
+    <div class="flex-center flex-col empty-stbl py-3 px-1 text-center">
+      <h3>No Languages to Translate</h3>
+      <p>Add other locales to this project at the top of this page.</p>
+    </div>
   {/if}
 </div>
 
 <style lang="scss">
-  // intentionally blank
+  .empty-stbl {
+    width: 100%;
+    border: 4px dashed var(--color-divider);
+    border-radius: 12px;
+
+    h3,
+    p {
+      color: var(--color-text-subtle) !important;
+    }
+  }
 </style>
