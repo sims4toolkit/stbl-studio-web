@@ -44,7 +44,7 @@
 <style lang="scss">
   textarea {
     resize: none;
-    background-color: var(--color-bg-secondary);
+    background-color: var(--color-card-secondary);
     border-radius: 4px;
     padding: 8px;
     width: 100%;
@@ -53,7 +53,7 @@
     font-size: 1em;
 
     &:not(:focus) {
-      border: 1px solid var(--color-bg-secondary);
+      border: 1px solid var(--color-card-secondary);
     }
   }
 </style>

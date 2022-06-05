@@ -53,6 +53,7 @@
     &:not(.active) {
       background-color: var(--color-card);
       border-color: var(--color-divider);
+      cursor: not-allowed;
     }
   }
 </style>

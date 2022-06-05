@@ -64,13 +64,17 @@
 </div>
 
 <style lang="scss">
-  p.key-string {
-    padding-left: 8px;
-  }
+  .translate-entry {
+    background-color: var(--color-bg-secondary) !important;
 
-  p.source-string {
-    margin: 0;
-    padding: 8px;
-    font-size: 1em;
+    p.key-string {
+      padding-left: 8px;
+    }
+
+    p.source-string {
+      margin: 0;
+      padding: 8px;
+      font-size: 1em;
+    }
   }
 </style>
