@@ -8,6 +8,7 @@
   export let onBlur: (e: FocusEvent) => void = () => {};
   export let disabled = false;
   export let textarea: HTMLTextAreaElement = null;
+  export let fillWidth = false;
 
   function onInput() {
     this.style.height = "auto";
@@ -35,6 +36,7 @@
   {disabled}
   rows="1"
   class="pre-wrap word-wrap"
+  class:w-100={fillWidth}
   on:focus={onFocus}
   on:blur={onBlur}
 />
@@ -48,6 +50,7 @@
     width: 100%;
     overflow-x: hidden;
     overflow-y: hidden;
+    font-size: 1em;
 
     &:not(:focus) {
       border: 1px solid var(--color-bg-secondary);

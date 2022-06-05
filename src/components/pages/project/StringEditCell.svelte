@@ -173,10 +173,11 @@
       background-color: var(--color-bg-secondary);
       border-radius: 4px;
       padding: 8px;
-      width: 100px;
+      width: 120px;
       height: auto;
       overflow-x: hidden;
       overflow-y: hidden;
+      font-size: 1em;
 
       &:not(:focus) {
         border: 1px solid var(--color-bg-secondary);
