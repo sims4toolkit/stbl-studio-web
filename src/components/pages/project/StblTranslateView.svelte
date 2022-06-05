@@ -34,6 +34,8 @@
 
   let lastLocale = otherLocale;
   $: {
+    // this is weird. i know this is weird. but svelte is weird, and svelte
+    // needs me to be weird so that it can stop being weird
     if (lastLocale !== otherLocale) {
       showTranslationView = false;
       hideTranslated = false;
@@ -51,7 +53,7 @@
       <div class="flex flex-gap">
         <Checkbox label="Show keys" bind:checked={showKeys} />
         <Checkbox
-          label="Skip translated strings"
+          label="Hide translated strings"
           bind:checked={hideTranslated}
         />
       </div>
@@ -64,9 +66,9 @@
       />
     </div>
     <p class="subtle-text mt-0 mb-1">
-      {primaryLocaleName} strings are shown on the left, and {otherLocaleName} strings
-      are on the right. Type your translations, and your changes will be autosaved
-      when you click out of the text box.
+      {primaryLocaleName} strings are on the left, and {otherLocaleName} strings
+      on the right. Type your translations, and they will be autosaved when you click
+      out of the text box.
     </p>
     {#if showTranslationView}
       {#if Boolean(currentSlice)}
