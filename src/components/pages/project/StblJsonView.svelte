@@ -5,6 +5,7 @@
   import Checkbox from "../../shared/elements/Checkbox.svelte";
   import IconTextButton from "../../shared/elements/IconTextButton.svelte";
   import ScreenDimmer from "../../shared/layout/ScreenDimmer.svelte";
+  import { parseStblJson } from "../../../typescript/helpers/json";
 
   const { formatStringKey } = window.S4TK.formatting;
 
@@ -38,18 +39,7 @@
 
   function saveJson() {
     try {
-      const entries = JSON.parse(jsonContent).map(({ key, value }, i) => {
-        if (!validateHexString(key, 8))
-          throw new Error(
-            `Key "${key}" of entry ${i} is not a valid 32-bit hex string.`
-          );
-
-        return {
-          key: parseInt(key, 16),
-          value,
-        };
-      });
-
+      const entries = parseStblJson(jsonContent).entries;
       project.replaceEntries(entries);
     } catch (err) {
       console.error(err);

@@ -3,6 +3,7 @@ import type { StringTableLocale as StblLocaleType } from "@s4tk/models/enums";
 import type { ResourceKey, ResourceKeyPair } from "@s4tk/models/types";
 import type { DefaultProjectMetaData, FileError, LocaleStblPair, ParsedFilesResult } from "../../global";
 import { Settings } from "../storage";
+import { parseStblJson } from "./json";
 import { allLocales } from "./localization";
 
 const { BinaryResourceType, StringTableLocale } = window.S4TK.enums;
@@ -183,16 +184,6 @@ function parsePackage(buffer: Buffer): ResourceKeyPair<StblType>[] {
 
 function parseStblBinary(buffer: Buffer): StblType {
   return StringTableResource.from(buffer);
-}
-
-function parseStblJson(buffer: Buffer): StblType {
-  const json: { key: string | number; value?: string, string?: string }[] = JSON.parse(buffer.toString());
-  return new StringTableResource(json.map((entry) => {
-    return {
-      key: typeof entry.key === "number" ? entry.key : parseInt(entry.key, 16),
-      value: entry.value ?? entry.string
-    };
-  }));
 }
 
 function getResourceKey(filename: string): ResourceKey {
