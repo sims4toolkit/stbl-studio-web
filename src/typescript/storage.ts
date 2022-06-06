@@ -170,6 +170,9 @@ export function loadProjectMetaData(uuid: string): ProjectMetaData {
 /**
  * Saves project meta data to localStorage.
  * 
+ * The format is a base-64 encoded string of a binary structure. There is a
+ * 32-byte header containing meta data (not all are currently used), followed
+ * by a null-terminated string for the project name.
  */
 export async function saveProjectMetaData(data: ProjectMetaData) {
   const buffer = Buffer.alloc(33 + byteLength(data.name)); // +1 for null
