@@ -6,18 +6,23 @@
   import LocaleSelect from "../../shared/controls/LocaleSelect.svelte";
   import Checkbox from "../../shared/elements/Checkbox.svelte";
   import StringTranslateCell from "./StringTranslateCell.svelte";
+  import { Settings } from "../../../typescript/storage";
 
   export let project: Project;
   export let entries: StringEntry[];
   export let currentSlice: StringEntry[];
 
-  let showKeys = false;
+  let showKeys = Settings.showTranslateKeys;
   let hideTranslated = false;
   let otherLocale = project.allLocales.find(
     (locale) => locale !== project.primaryLocale
   );
   let otherStbl = project.stblMap.get(otherLocale);
   let showTranslationView = true;
+
+  $: {
+    Settings.showTranslateKeys = showKeys;
+  }
 
   let primaryLocaleName = getLocaleData(project.primaryLocale).englishName;
   $: otherLocaleName = getLocaleData(otherLocale)?.englishName;
@@ -66,9 +71,11 @@
       />
     </div>
     <p class="subtle-text mt-0 mb-1">
-      {primaryLocaleName} strings are on the left, and {otherLocaleName} strings
-      on the right. Type your translations, and they will be autosaved when you click
-      out of the text box.
+      {primaryLocaleName} is on the left, and {otherLocaleName} is on the right.
+      Type your translations, and they will be autosaved when you click out of the
+      text box. If a string is the same in both languages, there is no need to translate
+      it - {primaryLocaleName} strings will be used to fill all missing {otherLocaleName}
+      strings when you download.
     </p>
     {#if showTranslationView}
       {#if Boolean(currentSlice)}

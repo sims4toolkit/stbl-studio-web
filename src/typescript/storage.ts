@@ -125,6 +125,7 @@ export const Settings = getSettingsProxy({
   isLightTheme: StoredBoolean(toggleLightTheme),
   projectUuids: StoredStringList(),
   reduceMotion: StoredBoolean(),
+  showTranslateKeys: StoredBoolean(),
 });
 
 //#endregion Settings
@@ -324,6 +325,7 @@ export function getWorkspaceJson(): WorkspaceJson {
       defaultLocale: Settings.defaultLocale,
       isLightTheme: Settings.isLightTheme,
       reduceMotion: Settings.reduceMotion,
+      showTranslateKeys: Settings.showTranslateKeys,
     },
     projects: Settings.projectUuids.map(uuid => {
       return {

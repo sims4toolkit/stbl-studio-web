@@ -75,6 +75,7 @@ interface UserSettings {
   isLightTheme: boolean;
   projectUuids: string[]
   reduceMotion: boolean;
+  showTranslateKeys: boolean;
 }
 
 interface WorkspaceJson {
