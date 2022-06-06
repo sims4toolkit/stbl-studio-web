@@ -64,6 +64,7 @@ interface ProjectMetaData {
   numLocales: number;
   numStrings: number;
   primaryLocale: StringTableLocale;
+  translatingTo: StringTableLocale;
   readonly uuid: string;
   view: ProjectView;
 }

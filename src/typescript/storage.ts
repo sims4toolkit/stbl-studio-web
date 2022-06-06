@@ -138,18 +138,23 @@ function readProjectMetaData(uuid: string, base64: string): ProjectMetaData {
   const buffer = Buffer.from(base64, "base64");
   const decoder = new BinaryDecoder(buffer);
 
-  decoder.skip(1); // don't need version
+  decoder.skip(1); // don't need version yet
 
-  return {
+  const data: Partial<ProjectMetaData> = {
     uuid,
     primaryLocale: decoder.uint8(),
     numLocales: decoder.uint8(),
+    translatingTo: decoder.uint8(),
     view: decoder.uint8(),
     numStrings: decoder.uint32(),
     group: decoder.uint32(),
     instanceBase: decoder.uint64(),
-    name: decoder.string(),
   };
+
+  decoder.skip(11); // reserved
+  data.name = decoder.string();
+
+  return data as ProjectMetaData;
 }
 
 /**
@@ -167,16 +172,18 @@ export function loadProjectMetaData(uuid: string): ProjectMetaData {
  * 
  */
 export async function saveProjectMetaData(data: ProjectMetaData) {
-  const buffer = Buffer.alloc(21 + byteLength(data.name)); // +1 for null
+  const buffer = Buffer.alloc(33 + byteLength(data.name)); // +1 for null
   const encoder = new BinaryEncoder(buffer);
 
   encoder.uint8(0); // version
   encoder.uint8(data.primaryLocale);
   encoder.uint8(data.numLocales);
+  encoder.uint8(data.translatingTo); // TODO:
   encoder.uint8(data.view);
   encoder.uint32(data.numStrings);
   encoder.uint32(data.group);
   encoder.uint64(data.instanceBase);
+  encoder.skip(11); // rest are reserved
   encoder.charsUtf8(data.name);
   // last byte is null for name string
 

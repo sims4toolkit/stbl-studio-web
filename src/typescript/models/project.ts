@@ -19,6 +19,7 @@ export default class Project implements ProjectMetaData {
   numLocales: number; // display only, use stblMap.size for logic
   numStrings: number; // display only, use primaryStbl.size for logic
   primaryLocale: StblLocaleType;
+  translatingTo: StblLocaleType;
   readonly uuid: string;
   view: ProjectView;
 
@@ -55,6 +56,7 @@ export default class Project implements ProjectMetaData {
     this.group = data.group ?? 0;
     this.instanceBase = data.instanceBase ?? StringTableLocale.getInstanceBase(fnv64(this.uuid));
     this.primaryLocale = data.primaryLocale ?? Settings.defaultLocale;
+    this.translatingTo = data.translatingTo ?? 0;
     this._stblMap = stblMap;
     this.view = data.view ?? ProjectView.List;
 

@@ -14,9 +14,11 @@
 
   let showKeys = Settings.showTranslateKeys;
   let hideTranslated = false;
-  let otherLocale = project.allLocales.find(
-    (locale) => locale !== project.primaryLocale
-  );
+  let otherLocale =
+    project.primaryLocale === project.translatingTo
+      ? project.allLocales.find((locale) => locale !== project.primaryLocale)
+      : project.translatingTo;
+
   let otherStbl = project.stblMap.get(otherLocale);
   let showTranslationView = true;
 
@@ -35,6 +37,9 @@
     } else {
       entries = project.primaryStbl.entries;
     }
+
+    project.translatingTo = otherLocale;
+    project.saveMetaData();
   }
 
   let lastLocale = otherLocale;
