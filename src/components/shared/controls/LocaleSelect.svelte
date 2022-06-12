@@ -29,6 +29,12 @@
         text: getDisplayName(getLocaleData(locale)),
       };
     });
+
+    localeOptions.sort((a, b) => {
+      if (a.text > b.text) return 1;
+      if (a.text < b.text) return -1;
+      return 0;
+    });
   }
 </script>
 
