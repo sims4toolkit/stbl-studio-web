@@ -21,12 +21,12 @@
     "male": "He",
     "female": "She",
     "token": "SimPronounSubjective",
-    "checked": false
+    "checked": true
   },
   {
     "male": "Himself",
     "female": "Herself",
     "token": "SimPronounReflexive",
-    "checked": false
+    "checked": true
   }
 ]

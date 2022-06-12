@@ -16,9 +16,6 @@
       </div>
     {/each}
   </div>
-  <p class="subtle-text mb-0">
-    It's only necessary to replace pronouns that contain "his" or "her".
-  </p>
 </div>
 
 <style lang="scss">
