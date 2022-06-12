@@ -46,6 +46,9 @@
   let groupHexString: string;
   let instanceHexString: string;
 
+  $: numStrings = stblMap?.get(primaryLocale)?.size ?? 0;
+  $: numLocales = stblMap?.size ?? 0;
+
   $: {
     if (settingMetaData) {
       completePages = 1 + (isMetaDataValid ? 1 : 0);
@@ -277,7 +280,9 @@
     {:else}
       <div in:fade>
         <h3>All set!</h3>
-        <p>A project with X strings in X locales has been created.</p>
+        <p>
+          A project with {numStrings} strings in {numLocales} locales has been created.
+        </p>
       </div>
     {/if}
   </div>
