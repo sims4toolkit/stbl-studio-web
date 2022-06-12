@@ -9,7 +9,7 @@
   let copiedPopoverVisible = false;
 
   function copyToClipboard() {
-    navigator.clipboard.writeText(textGenerator());
+    navigator.clipboard.writeText(textGenerator()?.replace(/\r?\n|\r/g, "\\n"));
   }
 </script>
 
