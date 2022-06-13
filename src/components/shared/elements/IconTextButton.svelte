@@ -8,15 +8,18 @@
   export let large = false;
   export let danger = false;
   export let fixedWidth: string = "";
+  export let disabledText = "";
 
   let button: HTMLButtonElement;
 
   function onButtonClick() {
-    onClick();
+    if (active) {
+      onClick();
 
-    setTimeout(() => {
-      button.blur();
-    }, 100);
+      setTimeout(() => {
+        button.blur();
+      }, 100);
+    }
   }
 
   onMount(() => {
@@ -35,7 +38,7 @@
   on:click={onButtonClick}
 >
   <img class="is-svg" src="./assets/{icon}.svg" alt={icon} />
-  {text}
+  {active ? text : disabledText}
 </button>
 
 <style lang="scss">
@@ -86,10 +89,14 @@
     &:not(.active) {
       border-color: var(--color-text-subtle);
       color: var(--color-text-subtle);
-      pointer-events: none;
+      cursor: not-allowed;
 
       &:hover {
         cursor: not-allowed;
+      }
+
+      img {
+        opacity: 0.65;
       }
     }
   }

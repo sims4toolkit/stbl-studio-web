@@ -15,6 +15,7 @@
   let wrapText = true;
   let fullHeight = false;
   let errorMsg = "";
+  let hasChanges = false;
 
   let jsonContent = JSON.stringify(
     project?.primaryStbl?.entries.map((entry) => {
@@ -41,6 +42,7 @@
     try {
       const entries = parseStblJson(jsonContent).entries;
       project.replaceEntries(entries);
+      hasChanges = false;
     } catch (err) {
       console.error(err);
       errorMsg = err;
@@ -53,7 +55,13 @@
     <Checkbox label="Wrap text" bind:checked={wrapText} />
     <Checkbox label="Full height" bind:checked={fullHeight} />
   </div>
-  <IconTextButton icon="save-outline" text="Save" onClick={saveJson} />
+  <IconTextButton
+    active={hasChanges}
+    icon="save-outline"
+    text="Save"
+    disabledText="Saved!"
+    onClick={saveJson}
+  />
 </div>
 
 <p class="subtle-text">
@@ -79,6 +87,7 @@
   bind:value={jsonContent}
   class:full-height={fullHeight}
   class:wrap-text={wrapText}
+  on:input={() => (hasChanges = true)}
 />
 
 {#if errorMsg}
