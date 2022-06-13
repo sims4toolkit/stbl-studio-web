@@ -42,6 +42,7 @@
     try {
       const entries = parseStblJson(jsonContent).entries;
       project.replaceEntries(entries);
+      project = project;
       hasChanges = false;
     } catch (err) {
       console.error(err);

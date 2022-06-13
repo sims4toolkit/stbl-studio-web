@@ -184,7 +184,7 @@
       </div>
 
       {#if project.view === ProjectView.Json}
-        <StblJsonView {project} />
+        <StblJsonView bind:project />
       {:else if currentSlice && currentSlice.length}
         {#if project.view === ProjectView.Translate}
           <StblTranslateView bind:project bind:entries {currentSlice} />
