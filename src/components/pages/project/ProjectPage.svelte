@@ -129,7 +129,15 @@
     <ContentArea banded={true} bottomShadow={true}>
       <SplitView>
         <div slot="left">
-          <GradientHeader title={project.name} />
+          <div class="flex flex-gap">
+            <GradientHeader title={project.name} />
+            <IconButton
+              icon="pencil"
+              title="Edit"
+              onClick={() => {}}
+              small={true}
+            />
+          </div>
           <p class="mb-0 monospace subtle-text">
             {formatAsHexString(project.group, 8)}-{formatAsHexString(
               project.instanceBase,
