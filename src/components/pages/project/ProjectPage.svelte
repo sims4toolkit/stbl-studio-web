@@ -23,6 +23,7 @@
   import PaginationController from "../../shared/controls/PaginationController.svelte";
   import StringRehashView from "./StringRehashView.svelte";
   import StringDownloadView from "./StringDownloadView.svelte";
+  import StblFeatures from "../../shared/controls/StblFeatures.svelte";
 
   const { formatAsHexString } = window.S4TK.formatting;
 
@@ -126,8 +127,8 @@
 <section id="project-section">
   {#if Boolean(project)}
     <ContentArea banded={true} bottomShadow={true}>
-      <div class="flex-space-between flex-wrap flex-gap-large">
-        <div class="mw-100">
+      <SplitView>
+        <div slot="left">
           <GradientHeader title={project.name} />
           <p class="mb-0 monospace subtle-text">
             {formatAsHexString(project.group, 8)}-{formatAsHexString(
@@ -136,7 +137,8 @@
             )}
           </p>
         </div>
-      </div>
+        <StblFeatures slot="right" {project} />
+      </SplitView>
     </ContentArea>
     <ContentArea banded={false}>
       <div class="mb-2">
