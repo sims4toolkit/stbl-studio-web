@@ -22,6 +22,7 @@
   import { subscribeToKey } from "../../../typescript/keybindings";
   import PaginationController from "../../shared/controls/PaginationController.svelte";
   import StringRehashView from "./StringRehashView.svelte";
+  import StringDownloadView from "./StringDownloadView.svelte";
 
   const { formatAsHexString } = window.S4TK.formatting;
 
@@ -34,6 +35,7 @@
   let isDeletingStrings = false;
   let isCreatingString = false;
   let isRehashingKeys = false;
+  let isDownloadingStrings = false;
 
   $: inModal = isDeletingStrings || isCreatingString;
   $: selectModeDisabled = !entries?.length;
@@ -99,8 +101,7 @@
   async function handleAction(action: ProjectAction) {
     switch (action) {
       case "download":
-        // TODO:
-        alert(action);
+        isDownloadingStrings = true;
         break;
       case "import":
         // TODO:
@@ -259,6 +260,16 @@
       bind:project
       bind:selectionGroup
       onComplete={() => (isDeletingStrings = false)}
+    />
+  </BlurOverlay>
+{/if}
+
+{#if isDownloadingStrings}
+  <BlurOverlay onClose={() => (isDownloadingStrings = false)}>
+    <StringDownloadView
+      bind:project
+      bind:selectionGroup
+      onComplete={() => (isDownloadingStrings = false)}
     />
   </BlurOverlay>
 {/if}

@@ -50,16 +50,7 @@
 
   const selectModeButtonData: FloatingActionButtonData[] = [
     {
-      title: "download",
-      icon: "download",
-      color: ToolbarColor.Download,
-      keybinding: "s",
-      async onClick() {
-        onAction("partial-download");
-      },
-    },
-    {
-      title: "rehash keys",
+      title: "rehash",
       icon: "refresh",
       color: ToolbarColor.Rehash,
       keybinding: "r",
