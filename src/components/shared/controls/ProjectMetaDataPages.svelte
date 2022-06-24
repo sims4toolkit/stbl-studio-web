@@ -41,6 +41,7 @@
       <ProjectNameInput {uuid} bind:name bind:isNameValid />
       <div class="mt-1">
         <GroupInstanceLocale
+          {uuid}
           bind:groupHexString
           bind:isGroupValid
           bind:instanceHexString

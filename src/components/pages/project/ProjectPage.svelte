@@ -24,6 +24,7 @@
   import StringRehashView from "./StringRehashView.svelte";
   import StringDownloadView from "./StringDownloadView.svelte";
   import StblFeatures from "../../shared/controls/StblFeatures.svelte";
+  import ProjectEditView from "./ProjectEditView.svelte";
 
   const { formatAsHexString } = window.S4TK.formatting;
 
@@ -37,6 +38,7 @@
   let isCreatingString = false;
   let isRehashingKeys = false;
   let isDownloadingStrings = false;
+  let isEditingProjectData = false;
 
   $: inModal = isDeletingStrings || isCreatingString;
   $: selectModeDisabled = !entries?.length;
@@ -134,7 +136,7 @@
             <IconButton
               icon="pencil"
               title="Edit"
-              onClick={() => {}}
+              onClick={() => (isEditingProjectData = true)}
               small={true}
             />
           </div>
@@ -280,6 +282,15 @@
       bind:project
       bind:selectionGroup
       onComplete={() => (isDownloadingStrings = false)}
+    />
+  </BlurOverlay>
+{/if}
+
+{#if isEditingProjectData}
+  <BlurOverlay onClose={() => (isEditingProjectData = false)}>
+    <ProjectEditView
+      bind:project
+      onComplete={() => (isEditingProjectData = false)}
     />
   </BlurOverlay>
 {/if}

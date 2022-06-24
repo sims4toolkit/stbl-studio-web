@@ -2,7 +2,7 @@
 
 import type { CompressionType, compressBuffer, decompressBuffer } from "@s4tk/compression";
 import type { BinaryEncoder, BinaryDecoder } from "@s4tk/encoding";
-import type { fnv64 } from "@s4tk/hashing";
+import type { fnv32, fnv64 } from "@s4tk/hashing";
 import type { formatAsHexString, formatResourceKey, formatStringKey, formatResourceInstance } from "@s4tk/hashing/formatting";
 import type { Package, StringTableResource } from "@s4tk/models";
 import type { StringTableLocale, BinaryResourceType } from "@s4tk/models/enums";

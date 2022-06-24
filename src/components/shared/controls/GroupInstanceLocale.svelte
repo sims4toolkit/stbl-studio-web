@@ -7,6 +7,7 @@
   import type Workspace from "../../../typescript/models/workspace";
   import { activeWorkspace } from "../../../typescript/stores";
 
+  export let uuid: string = null;
   export let groupHexString: string;
   export let isGroupValid = true;
   export let instanceHexString: string;
@@ -79,7 +80,10 @@
           return !workspace.projects.some(
             // canValidate is a hack to solve a visual glitch where the instance
             // will temporarily be shown as invalid after creating the project
-            (p) => canValidate && p.instanceBase === instanceBaseNumber
+            (p) => {
+              if (p.uuid === uuid) return false;
+              return canValidate && p.instanceBase === instanceBaseNumber;
+            }
           );
         },
       },
