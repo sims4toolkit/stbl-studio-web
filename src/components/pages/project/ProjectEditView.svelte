@@ -1,7 +1,6 @@
 <script lang="ts">
   import type { LocaleOption } from "../../../global";
   import { allLocales } from "../../../typescript/helpers/localization";
-
   import type Project from "../../../typescript/models/project";
   import ProjectMetaDataPages from "../../shared/controls/ProjectMetaDataPages.svelte";
   import MultipageModalContent from "../../shared/layout/MultipageModalContent.svelte";
@@ -34,6 +33,7 @@
 
       currentPage++;
     } else {
+      const oldPrimary = project.primaryLocale;
       project.name = name;
       project.group = parseInt(groupHexString, 16);
       project.instanceBase = BigInt("0x" + instanceHexString);
@@ -42,8 +42,13 @@
         otherLocaleOptions.filter((o) => o.checked).map((o) => o.data.enumValue)
       );
       project.save();
-      project = project;
-      onComplete();
+
+      if (project.primaryLocale === oldPrimary) {
+        project = project;
+        onComplete();
+      } else {
+        location.reload();
+      }
     }
   }
 </script>
@@ -55,7 +60,7 @@
   minimumContentHeight="230"
   bind:currentPage
   {completePages}
-  finalPageNextButtonText="Create"
+  finalPageNextButtonText="Save"
   onNextButtonClick={nextButtonClicked}
 >
   <div slot="content">

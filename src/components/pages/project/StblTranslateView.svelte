@@ -15,7 +15,8 @@
   let showKeys = Settings.showTranslateKeys;
   let hideTranslated = false;
   let otherLocale =
-    project.primaryLocale === project.translatingTo
+    project.primaryLocale === project.translatingTo ||
+    !project.stblMap.has(project.translatingTo)
       ? project.allLocales.find((locale) => locale !== project.primaryLocale)
       : project.translatingTo;
 
