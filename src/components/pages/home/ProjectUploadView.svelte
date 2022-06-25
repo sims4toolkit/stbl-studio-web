@@ -22,6 +22,8 @@
   import Project from "../../../typescript/models/project";
 
   const { formatAsHexString } = window.S4TK.formatting;
+  const { fnv64 } = window.S4TK.hashing;
+  const { StringTableLocale } = window.S4TK.enums;
 
   export let onComplete: () => void;
 
@@ -44,7 +46,11 @@
   let primaryLocale: StblLocaleType;
   let otherLocaleOptions: LocaleOption[];
   let groupHexString: string;
-  let instanceHexString: string;
+  let instanceHexString = formatAsHexString(
+    StringTableLocale.getInstanceBase(fnv64(uuid)),
+    14,
+    false
+  );
 
   $: numStrings = stblMap?.get(primaryLocale)?.size ?? 0;
   $: numLocales = stblMap?.size ?? 0;
@@ -114,7 +120,6 @@
     primaryLocale = defaultMetaData.primaryLocale;
     otherLocaleOptions = defaultMetaData.otherLocaleOptions;
     groupHexString = formatAsHexString(defaultMetaData.group, 8);
-    instanceHexString = formatAsHexString(defaultMetaData.instanceBase, 14); // FIXME: ensure not 0
 
     if (!hasBeen800ms) await timeout();
 
@@ -172,6 +177,9 @@
       reviewingErredFiles = false;
       findMetaData();
     } else if (currentPage === 2) {
+      otherLocaleOptions = otherLocaleOptions.filter(
+        (o) => o.data.enumValue !== primaryLocale
+      );
       metaDataPage++;
       currentPage++;
       completePages++;

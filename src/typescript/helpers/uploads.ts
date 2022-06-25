@@ -64,14 +64,13 @@ export function getDefaultMetaData(resources: ResourceKeyPair<StblType>[]): Defa
     ? Settings.defaultLocale
     : includedLocales[0];
 
-  const { group, instance } = resources.find(({ key }) => {
+  const { group } = resources.find(({ key }) => {
     return StringTableLocale.getLocale(key.instance) === primaryLocale;
   }).key;
 
-  const instanceBase = StringTableLocale.getInstanceBase(instance);
+  // const instanceBase = StringTableLocale.getInstanceBase(instance);
 
   const otherLocaleOptions = allLocales
-    .filter((data) => data.enumValue !== primaryLocale)
     .map((data) => {
       return {
         data,
@@ -82,7 +81,6 @@ export function getDefaultMetaData(resources: ResourceKeyPair<StblType>[]): Defa
   return {
     primaryLocale,
     group,
-    instanceBase,
     otherLocaleOptions
   };
 }

@@ -24,7 +24,6 @@ interface ParsedFilesResult {
 interface DefaultProjectMetaData {
   primaryLocale: StblLocaleType;
   group: number;
-  instanceBase: bigint;
   otherLocaleOptions: LocaleOption[];
 }
 
