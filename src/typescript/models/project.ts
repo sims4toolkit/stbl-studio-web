@@ -18,7 +18,6 @@ export default class Project implements ProjectMetaData {
   name: string;
   numLocales: number; // display only, use stblMap.size for logic
   numStrings: number; // display only, use primaryStbl.size for logic
-  primaryLocale: StblLocaleType;
   translatingTo: StblLocaleType;
   readonly uuid: string;
   view: ProjectView;
@@ -26,6 +25,23 @@ export default class Project implements ProjectMetaData {
   private _stblMap: StblMap;
   get stblMap() {
     return this._stblMap ??= loadStblMap(this.uuid);
+  }
+
+  private _primaryLocale: StblLocaleType;
+  get primaryLocale() { return this._primaryLocale; }
+  set primaryLocale(newLocale: StblLocaleType) {
+    if (this._primaryLocale !== newLocale) {
+      const stbl = this.addLocale(newLocale);
+
+      if (stbl.size !== this.primaryStbl.size) {
+        this.primaryStbl.entries.forEach(entry => {
+          if (!stbl.hasKey(entry.key))
+            stbl.add(entry.key, entry.value);
+        });
+      }
+
+      this._primaryLocale = newLocale;
+    }
   }
 
   get allLocales(): StblLocaleType[] {
@@ -55,7 +71,7 @@ export default class Project implements ProjectMetaData {
     this.name = data.name ?? this.uuid;
     this.group = data.group ?? 0;
     this.instanceBase = data.instanceBase ?? StringTableLocale.getInstanceBase(fnv64(this.uuid));
-    this.primaryLocale = data.primaryLocale ?? Settings.defaultLocale;
+    this._primaryLocale = data.primaryLocale ?? Settings.defaultLocale;
     this.translatingTo = data.translatingTo ?? 0;
     this._stblMap = stblMap;
     this.view = data.view ?? ProjectView.List;
@@ -78,7 +94,7 @@ export default class Project implements ProjectMetaData {
 
   /**
    * Adds a STBL for the specified locale and returns it. If a STBL already
-   * exists for the given locale, it is not changed and it is returned.
+   * exists for the given locale, it is not changed.
    * 
    * @param locale Locale to add STBL for
    */
@@ -94,14 +110,33 @@ export default class Project implements ProjectMetaData {
   }
 
   /**
-   * Removes the STBL for the specified locale.
+   * Replaces all of the locales, other than the primary one, in this project.
+   * If this project has locales that are not included in the given list, they
+   * will be removed. If it is missing any, they will be added. If it already
+   * has some, they will be left alone.
    * 
-   * @param locale Locale to remove STBL for
+   * @param locales New locales to use
    */
-  removeLocale(locale: StblLocaleType) {
-    this.stblMap.delete(locale);
+  setLocales(locales: StblLocaleType[]) {
+    const localesToUse = new Set(locales);
+
+    const localesToDelete: StblLocaleType[] = [];
+    this.stblMap.forEach((_, locale) => {
+      if (locale === this.primaryLocale) return;
+      if (this.stblMap.has(locale) && !localesToUse.has(locale)) {
+        localesToDelete.push(locale);
+      }
+    });
+
+    localesToDelete.forEach(locale => {
+      this.stblMap.delete(locale);
+    });
+
+    locales.forEach(locale => {
+      this.addLocale(locale);
+    });
+
     this.numLocales = this.stblMap.size;
-    this.save();
   }
 
   /**
