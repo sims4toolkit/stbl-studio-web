@@ -60,7 +60,7 @@
 </script>
 
 <div
-  class="string-entry-edit-cell p-1 flex"
+  class="string-entry-edit-cell p-1 flex-center-v"
   class:drop-shadow={isGrid}
   class:grid-item={isGrid}
   class:is-selecting={selectionGroup.selectMode}
