@@ -40,8 +40,8 @@
     &.small {
       border: none !important;
       padding: {
-        left: 0.6em;
-        right: 0.6em;
+        left: 0.65em;
+        right: 0.65em;
       }
     }
 
