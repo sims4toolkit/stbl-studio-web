@@ -5,6 +5,8 @@
   import type SelectionGroup from "../../../typescript/models/selection-group";
   import Select from "../../shared/elements/Select.svelte";
   import MultipageModalContent from "../../shared/layout/MultipageModalContent.svelte";
+  import { subscribeToKey } from "../../../typescript/keybindings";
+  import { onDestroy } from "svelte";
 
   const { fnv32 } = window.S4TK.hashing;
 
@@ -12,7 +14,13 @@
   export let selectionGroup: SelectionGroup<StringEntry, number>;
   export let onComplete: () => void;
 
-  let refreshMethod = 0;
+  let refreshMethod = 1; // string value
+
+  const keySubscriptions = [subscribeToKey("Escape", onComplete)];
+
+  onDestroy(() => {
+    keySubscriptions.forEach((unsubscribe) => unsubscribe());
+  });
 
   function handleNextButtonClick() {
     const replacements: [number, number][] =
@@ -55,6 +63,11 @@
         },
       ]}
     />
+    <p class="subtle-text">
+      {#if refreshMethod === 0}Completely random UUIDs will be generated and
+        hashed for each string.{:else}The project's UUID concatenated with the
+        string's content will be hashed for each string.{/if}
+    </p>
   </div>
 </MultipageModalContent>
 
