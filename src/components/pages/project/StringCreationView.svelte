@@ -39,7 +39,7 @@
       if (newStringTextarea.value) {
         const value = newStringTextarea.value.replace(/(?:\r\n|\r|\n)/g, "\\n");
         // TODO: should I generate new UUID instead?
-        const key = fnv32(project.uuid + value);
+        const key = fnv32(project.uuid + ":" + value);
         project.addEntry(key, value);
         project = project;
       }
