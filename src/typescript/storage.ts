@@ -120,6 +120,8 @@ export async function overwriteSettings(settings: Partial<UserSettings>) {
  */
 export const Settings = getSettingsProxy({
   defaultLocale: StoredInteger(),
+  downloadMethod: StoredInteger(),
+  downloadOption: StoredInteger(),
   hasWorkspace: StoredBoolean(),
   disableBlur: StoredBoolean(toggleBlurEffect),
   isLightTheme: StoredBoolean(toggleLightTheme),
@@ -333,6 +335,8 @@ export function getWorkspaceJson(): WorkspaceJson {
     settings: {
       disableBlur: Settings.disableBlur,
       defaultLocale: Settings.defaultLocale,
+      downloadMethod: Settings.downloadMethod,
+      downloadOption: Settings.downloadOption,
       isLightTheme: Settings.isLightTheme,
       reduceMotion: Settings.reduceMotion,
       showTranslateKeys: Settings.showTranslateKeys,

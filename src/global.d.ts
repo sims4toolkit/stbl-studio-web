@@ -7,6 +7,8 @@ import type { formatAsHexString, formatResourceKey, formatStringKey, formatResou
 import type { Package, StringTableResource } from "@s4tk/models";
 import type { StringTableLocale, BinaryResourceType } from "@s4tk/models/enums";
 import type StringEntry from "@s4tk/models/lib/resources/stbl/string-entry";
+import type DownloadMethod from "./typescript/enums/download-method";
+import type DownloadOption from "./typescript/enums/download-options";
 import type ProjectView from "./typescript/enums/project-view";
 
 type StblMap = Map<StringTableLocale, StringTableResource>;
@@ -14,6 +16,11 @@ type StblMap = Map<StringTableLocale, StringTableResource>;
 interface FileError {
   filename: string;
   reason: string;
+}
+
+interface FileDownloadInfo {
+  filename: string;
+  data: Blob;
 }
 
 interface ParsedFilesResult {
@@ -70,6 +77,8 @@ interface ProjectMetaData {
 
 interface UserSettings {
   defaultLocale: StringTableLocale;
+  downloadMethod: DownloadMethod;
+  downloadOption: DownloadOption;
   hasWorkspace: boolean;
   disableBlur: boolean;
   isLightTheme: boolean;

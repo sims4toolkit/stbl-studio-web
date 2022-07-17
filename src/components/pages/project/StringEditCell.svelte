@@ -72,7 +72,7 @@
       <SelectedIndicator {selectionGroup} item={stringEntry} />
     </div>
   {/if}
-  <div class="flex-col w-100">
+  <div class="flex-col w-100 h-100">
     <div class="flex-space-between">
       <div class="input-wrapper">
         <div class="input-copy-position" class:hidden={copyDisabled}>

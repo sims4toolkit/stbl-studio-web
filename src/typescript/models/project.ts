@@ -1,11 +1,13 @@
 import type { StringTableResource as StblResourceType } from "@s4tk/models";
-import type { StringTableLocale as StblLocaleType } from "@s4tk/models/enums";
-import type { ProjectMetaData, StblMap } from "../../global";
+import { BinaryResourceType, StringTableLocale as StblLocaleType } from "@s4tk/models/enums";
+import type { ResourceKey, ResourceKeyPair } from "@s4tk/models/types";
+import type { FileDownloadInfo, ProjectMetaData, StblMap } from "../../global";
 import { v4 as uuidv4 } from "uuid";
 import { loadStblMap, Settings, saveProjectMetaData, saveStblMap } from "../storage";
 import ProjectView from "../enums/project-view";
+import DownloadMethod from "../enums/download-method";
 
-const { StringTableResource } = window.S4TK.models;
+const { Package, StringTableResource } = window.S4TK.models;
 const { StringTableLocale } = window.S4TK.enums;
 const { fnv64 } = window.S4TK.hashing;
 
@@ -210,6 +212,48 @@ export default class Project implements ProjectMetaData {
   }
 
   /**
+   * Gets the blob for the user to download.
+   * 
+   * @param method Download method
+   * @param locales List of locales to get blobs for
+   */
+  getDownloadInfo(method: DownloadMethod, locales: StblLocaleType[]): FileDownloadInfo {
+    const entries: ResourceKeyPair[] = locales.map(locale => {
+      return {
+        key: this._getKeyForLocale(locale),
+        value: this.stblMap.get(locale)
+      }
+    });
+
+    if (method === DownloadMethod.Package) {
+      const pkg = new Package(entries);
+      const buffer = pkg.getBuffer();
+      const blob = new Blob([buffer]);
+      return {
+        filename: this.name.replace(/\W/g, '') + ".package",
+        data: blob
+      };
+    } else {
+      const downloadInfos: FileDownloadInfo[] = entries.map(entry => {
+        const buffer = entry.value.getBuffer();
+        const blob = new Blob([buffer]);
+
+        return {
+          filename: "test",
+          data: blob
+        }
+      });
+
+      if (locales.length === 1) {
+        const buffer = entries
+        return downloadInfos[0];
+      } else {
+        // TODO:
+      }
+    }
+  }
+
+  /**
    * Saves this project's meta data to localStorage.
    */
   async saveMetaData() {
@@ -229,5 +273,13 @@ export default class Project implements ProjectMetaData {
   async save() {
     this.saveMetaData();
     this.saveStblMap();
+  }
+
+  private _getKeyForLocale(locale: StblLocaleType): ResourceKey {
+    return {
+      type: BinaryResourceType.StringTable,
+      group: this.group,
+      instance: StringTableLocale.setHighByte(locale, this.instanceBase)
+    };
   }
 }
