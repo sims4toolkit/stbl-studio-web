@@ -6,10 +6,13 @@ import { v4 as uuidv4 } from "uuid";
 import { loadStblMap, Settings, saveProjectMetaData, saveStblMap } from "../storage";
 import ProjectView from "../enums/project-view";
 import DownloadMethod from "../enums/download-method";
+import NamingConvention from "../enums/naming-convention";
+import JSZip from "jszip";
 
 const { Package, StringTableResource } = window.S4TK.models;
 const { StringTableLocale } = window.S4TK.enums;
 const { fnv64 } = window.S4TK.hashing;
+const { formatResourceKey } = window.S4TK.formatting;
 
 /**
  * A project that contains string tables and associated meta data.
@@ -217,40 +220,55 @@ export default class Project implements ProjectMetaData {
    * @param method Download method
    * @param locales List of locales to get blobs for
    */
-  getDownloadInfo(method: DownloadMethod, locales: StblLocaleType[]): FileDownloadInfo {
-    const entries: ResourceKeyPair[] = locales.map(locale => {
-      return {
-        key: this._getKeyForLocale(locale),
-        value: this.stblMap.get(locale)
-      }
-    });
-
-    if (method === DownloadMethod.Package) {
-      const pkg = new Package(entries);
-      const buffer = pkg.getBuffer();
-      const blob = new Blob([buffer]);
-      return {
-        filename: this.name.replace(/\W/g, '') + ".package",
-        data: blob
-      };
-    } else {
-      const downloadInfos: FileDownloadInfo[] = entries.map(entry => {
-        const buffer = entry.value.getBuffer();
-        const blob = new Blob([buffer]);
-
+  async getDownloadInfo(method: DownloadMethod, locales: StblLocaleType[]): Promise<FileDownloadInfo> {
+    return new Promise(async (resolve, reject) => {
+      const entries: ResourceKeyPair<StblResourceType>[] = locales.map(locale => {
         return {
-          filename: "test",
-          data: blob
-        }
+          key: this._getKeyForLocale(locale),
+          value: this.stblMap.get(locale)
+        };
       });
 
-      if (locales.length === 1) {
-        const buffer = entries
-        return downloadInfos[0];
+      if (method === DownloadMethod.Package) {
+        const pkg = new Package(entries);
+        const buffer = pkg.getBuffer();
+
+        resolve({
+          filename: this.name.replace(/\W/g, '') + ".package",
+          data: new Blob([buffer])
+        });
       } else {
-        // TODO:
+        const downloadInfos: FileDownloadInfo[] = entries.map((entry, i) => {
+          const buffer = method === DownloadMethod.StringTables
+            ? entry.value.getBuffer()
+            : JSON.stringify(entry.value.toJsonObject(true, false), null, 2);
+
+          const ext = method === DownloadMethod.StringTables
+            ? ".stbl"
+            : ".json";
+
+          return {
+            filename: this._getFilenameForLocale(locales[i], entry.key) + ext,
+            data: new Blob([buffer])
+          }
+        });
+
+        if (locales.length === 1) {
+          resolve(downloadInfos[0]);
+        } else {
+          const zip = new JSZip();
+
+          downloadInfos.forEach(info => {
+            zip.file(info.filename, info.data);
+          });
+
+          resolve({
+            filename: this.name.replace(/\W/g, '') + ".zip",
+            data: await zip.generateAsync({ type: "blob" })
+          });
+        }
       }
-    }
+    });
   }
 
   /**
@@ -281,5 +299,16 @@ export default class Project implements ProjectMetaData {
       group: this.group,
       instance: StringTableLocale.setHighByte(locale, this.instanceBase)
     };
+  }
+
+  private _getFilenameForLocale(locale: StblLocaleType, key: ResourceKey): string {
+    switch (Settings.namingConvention) {
+      case NamingConvention.S4S:
+        return formatResourceKey(key, "!");
+      case NamingConvention.S4PI:
+        return "S4_" + formatResourceKey(key, "_");
+      case NamingConvention.NameOnly:
+        return `${this.name.replace(/\W/g, '')}_${StringTableLocale[locale]}`;
+    }
   }
 }

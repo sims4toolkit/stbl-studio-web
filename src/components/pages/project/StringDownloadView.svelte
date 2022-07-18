@@ -4,6 +4,7 @@
   import type { FileDownloadInfo } from "../../../global";
   import DownloadMethod from "../../../typescript/enums/download-method";
   import DownloadOption from "../../../typescript/enums/download-options";
+  import NamingConvention from "../../../typescript/enums/naming-convention";
   import {
     getDisplayName,
     getLocaleData,
@@ -24,12 +25,16 @@
   let selectedDownloadMethod = Settings.downloadMethod;
   const downloadMethods = [
     {
+      text: "Package",
+      value: DownloadMethod.Package,
+    },
+    {
       text: "String Table(s)",
       value: DownloadMethod.StringTables,
     },
     {
-      text: "Package",
-      value: DownloadMethod.Package,
+      text: "JSON(s)",
+      value: DownloadMethod.Jsons,
     },
   ];
   $: {
@@ -73,6 +78,28 @@
     }
   }
 
+  let selectedNamingConvention = Settings.namingConvention;
+  const namingOptions = [
+    {
+      text: "S4S",
+      value: NamingConvention.S4S,
+    },
+    {
+      text: "S4PI",
+      value: NamingConvention.S4PI,
+    },
+    {
+      text: "Project Name",
+      value: NamingConvention.NameOnly,
+    },
+  ];
+  $: {
+    if (selectedNamingConvention !== Settings.namingConvention) {
+      if (selectedNamingConvention in NamingConvention)
+        Settings.namingConvention = selectedNamingConvention;
+    }
+  }
+
   const keySubscriptions = [
     subscribeToKey("Escape", onComplete),
     subscribeToKey("Enter", downloadStrings),
@@ -85,7 +112,10 @@
   async function downloadStrings() {
     isDownloading = true;
     const locales = getStringTableLocales();
-    downloadInfo = project.getDownloadInfo(selectedDownloadMethod, locales);
+    downloadInfo = await project.getDownloadInfo(
+      selectedDownloadMethod,
+      locales
+    );
   }
 
   function getStringTableLocales(): StringTableLocale[] {
@@ -124,6 +154,13 @@
         options={tableOptions}
         fillWidth={true}
       />
+      <Select
+        label="naming convention"
+        name="naming-convention-select"
+        bind:selected={selectedNamingConvention}
+        options={namingOptions}
+        fillWidth={true}
+      />
     </div>
     <p class="subtle-text mt-2 mb-0">
       If downloading multiple string tables, they will be zipped together.
@@ -131,10 +168,10 @@
   </div>
 </MultipageModalContent>
 
-{#if isDownloading}
+{#if isDownloading && downloadInfo != undefined}
   <Downloader
     contentGenerator={() => downloadInfo.data}
-    filename={downloadInfo.filename}
+    filename={downloadInfo?.filename ?? "STBLs"}
     onDownload={onComplete}
   />
 {/if}

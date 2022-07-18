@@ -1,6 +1,7 @@
 enum DownloadMethod {
-  StringTables,
   Package,
+  StringTables,
+  Jsons,
 }
 
 export default DownloadMethod;

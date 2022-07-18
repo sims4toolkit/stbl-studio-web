@@ -280,7 +280,6 @@
   <BlurOverlay onClose={() => (isDownloadingStrings = false)}>
     <StringDownloadView
       bind:project
-      bind:selectionGroup
       onComplete={() => (isDownloadingStrings = false)}
     />
   </BlurOverlay>

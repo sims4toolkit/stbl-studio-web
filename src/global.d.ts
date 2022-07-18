@@ -9,6 +9,7 @@ import type { StringTableLocale, BinaryResourceType } from "@s4tk/models/enums";
 import type StringEntry from "@s4tk/models/lib/resources/stbl/string-entry";
 import type DownloadMethod from "./typescript/enums/download-method";
 import type DownloadOption from "./typescript/enums/download-options";
+import type NamingConvention from "./typescript/enums/naming-convention";
 import type ProjectView from "./typescript/enums/project-view";
 
 type StblMap = Map<StringTableLocale, StringTableResource>;
@@ -82,6 +83,7 @@ interface UserSettings {
   hasWorkspace: boolean;
   disableBlur: boolean;
   isLightTheme: boolean;
+  namingConvention: NamingConvention;
   projectUuids: string[]
   reduceMotion: boolean;
   showTranslateKeys: boolean;
