@@ -139,7 +139,7 @@
   onNextButtonClick={downloadStrings}
 >
   <div slot="content">
-    <div class="flex-space-between flex-gap my-1">
+    <div class="selects flex-space-between flex-gap my-1">
       <Select
         label="download as"
         name="download-type-select"
@@ -160,6 +160,7 @@
         bind:selected={selectedNamingConvention}
         options={namingOptions}
         fillWidth={true}
+        disabled={selectedDownloadMethod === DownloadMethod.Package}
       />
     </div>
     <p class="subtle-text mt-2 mb-0">
@@ -176,3 +177,12 @@
     onDownload={onComplete}
   />
 {/if}
+
+<style lang="scss">
+  @media only screen and (max-width: 768px) {
+    .selects {
+      flex-direction: column;
+      width: 100%;
+    }
+  }
+</style>
