@@ -163,7 +163,8 @@
       />
     </div>
     <p class="subtle-text mt-2 mb-0">
-      If downloading multiple string tables, they will be zipped together.
+      Click "Download" or press enter to download your file(s). If there are
+      multiple files, they will be zipped.
     </p>
   </div>
 </MultipageModalContent>

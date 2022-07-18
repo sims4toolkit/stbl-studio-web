@@ -24,7 +24,7 @@
       setTimeout(() => {
         saveAs(content, filename);
         onDownload();
-      }, 1000);
+      }, 500);
     })
     .catch((err) => {
       console.error(`Error downloading ${filename}:`, err);
