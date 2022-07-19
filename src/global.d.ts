@@ -33,6 +33,7 @@ interface DefaultProjectMetaData {
   primaryLocale: StblLocaleType;
   group: number;
   otherLocaleOptions: LocaleOption[];
+  existingInstances: Set<bigint>;
 }
 
 interface LocaleStblPair {

@@ -20,6 +20,7 @@
   import type { StringTableLocale as StblLocaleType } from "@s4tk/models/enums";
   import ProjectMetaDataPages from "../../shared/controls/ProjectMetaDataPages.svelte";
   import Project from "../../../typescript/models/project";
+  import Select from "../../shared/elements/Select.svelte";
 
   const { formatAsHexString } = window.S4TK.formatting;
   const { fnv64 } = window.S4TK.hashing;
@@ -46,18 +47,21 @@
   let primaryLocale: StblLocaleType;
   let otherLocaleOptions: LocaleOption[];
   let groupHexString: string;
-  let instanceHexString = formatAsHexString(
-    StringTableLocale.getInstanceBase(fnv64(uuid)),
-    14,
-    false
-  );
+  let instanceHexString: string;
+
+  let chosenInstance: bigint = null;
+  let choosingExistingInstance = false;
+  let existingInstanceOptions: {
+    value: bigint;
+    text: string;
+  }[];
 
   $: numStrings = stblMap?.get(primaryLocale)?.size ?? 0;
   $: numLocales = stblMap?.size ?? 0;
 
   $: {
     if (settingMetaData) {
-      completePages = 1 + (isMetaDataValid ? 1 : 0);
+      completePages = 1 + (isMetaDataValid || choosingExistingInstance ? 1 : 0);
     }
   }
 
@@ -121,6 +125,19 @@
     otherLocaleOptions = defaultMetaData.otherLocaleOptions;
     groupHexString = formatAsHexString(defaultMetaData.group, 8);
 
+    if (defaultMetaData.existingInstances.size) {
+      chosenInstance = defaultMetaData.existingInstances[0];
+      if (defaultMetaData.existingInstances.size > 1) {
+        choosingExistingInstance = true;
+        existingInstanceOptions = [...defaultMetaData.existingInstances].map(
+          (inst) => ({
+            text: formatAsHexString(inst, 14, false),
+            value: inst,
+          })
+        );
+      }
+    }
+
     if (!hasBeen800ms) await timeout();
 
     findingMetaData = false;
@@ -177,12 +194,16 @@
       reviewingErredFiles = false;
       findMetaData();
     } else if (currentPage === 2) {
-      otherLocaleOptions = otherLocaleOptions.filter(
-        (o) => o.data.enumValue !== primaryLocale
-      );
-      metaDataPage++;
-      currentPage++;
-      completePages++;
+      if (choosingExistingInstance) {
+        useChosenInstance();
+      } else {
+        otherLocaleOptions = otherLocaleOptions.filter(
+          (o) => o.data.enumValue !== primaryLocale
+        );
+        metaDataPage++;
+        currentPage++;
+        completePages++;
+      }
     } else if (currentPage === 3) {
       settingMetaData = false;
       currentPage++;
@@ -190,6 +211,21 @@
     } else {
       createProjectAndClose();
     }
+  }
+
+  function useChosenInstance() {
+    instanceHexString = formatAsHexString(chosenInstance, 14, false);
+    choosingExistingInstance = false;
+  }
+
+  function hashUuidForInstance() {
+    instanceHexString = formatAsHexString(
+      StringTableLocale.getInstanceBase(fnv64(uuid)),
+      14,
+      false
+    );
+
+    choosingExistingInstance = false;
   }
 </script>
 
@@ -266,6 +302,25 @@
           <h3>Finding meta data...</h3>
           <p>This might take a little bit.</p>
         </div>
+      {:else if choosingExistingInstance}
+        <p class="mt-0 mb-2">
+          There are {existingInstanceOptions.length} instance bases in the uploaded
+          STBLs. Which one should this project use?
+        </p>
+        <Select
+          name="existing-inst-select"
+          label="instance base"
+          bind:selected={chosenInstance}
+          options={existingInstanceOptions}
+          fillWidth={true}
+        />
+        <p class="subtle-text mt-3 mb-0">
+          Alternatively, you can <span
+            tabindex="0"
+            class="clickable-text hoverable"
+            on:click={hashUuidForInstance}>hash this project's UUID</span
+          >.
+        </p>
       {:else}
         <!-- FIXME: "The instance is a hash of the UUID by default, but it can be changed manually." is not accurate for this view -->
         <!-- FIXME: Add warning that unchecking locales will delete those translations from the project -->

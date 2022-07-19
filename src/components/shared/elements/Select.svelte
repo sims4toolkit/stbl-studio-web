@@ -2,10 +2,10 @@
   export let disabled = false;
   export let label: string = undefined;
   export let name: string;
-  export let selected: number;
+  export let selected: number | bigint;
   export let fillWidth = false;
   export let options: {
-    value: number;
+    value: number | bigint;
     text: string;
   }[];
 </script>

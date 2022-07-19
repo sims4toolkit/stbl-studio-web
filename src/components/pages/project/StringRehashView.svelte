@@ -70,6 +70,7 @@
     <div class="w-100">
       {#if currentPage === 1}
         <Select
+          fillWidth={true}
           label="rehash method"
           name="rehash-method-select"
           bind:selected={refreshMethod}

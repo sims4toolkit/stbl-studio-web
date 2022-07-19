@@ -22,6 +22,11 @@
   color: var(--color-text-subtle);
 }
 
+.clickable-text {
+  color: var(--color-accent-secondary);
+  text-decoration: underline;
+}
+
 .small-title {
   color: var(--color-text-subtle);
   text-transform: uppercase;

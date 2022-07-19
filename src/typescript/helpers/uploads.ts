@@ -68,7 +68,11 @@ export function getDefaultMetaData(resources: ResourceKeyPair<StblType>[]): Defa
     return StringTableLocale.getLocale(key.instance) === primaryLocale;
   }).key;
 
-  // const instanceBase = StringTableLocale.getInstanceBase(instance);
+  const existingInstances = new Set<bigint>();
+  resources.forEach(({ key }) => {
+    const inst = StringTableLocale.getInstanceBase(key.instance);
+    existingInstances.add(inst);
+  });
 
   const otherLocaleOptions = allLocales
     .map((data) => {
@@ -81,7 +85,8 @@ export function getDefaultMetaData(resources: ResourceKeyPair<StblType>[]): Defa
   return {
     primaryLocale,
     group,
-    otherLocaleOptions
+    otherLocaleOptions,
+    existingInstances
   };
 }
 
