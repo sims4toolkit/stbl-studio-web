@@ -71,7 +71,7 @@ export function getDefaultMetaData(resources: ResourceKeyPair<StblType>[]): Defa
   const existingInstances = new Set<bigint>();
   resources.forEach(({ key }) => {
     const inst = StringTableLocale.getInstanceBase(key.instance);
-    existingInstances.add(inst);
+    if (inst !== 0n) existingInstances.add(inst);
   });
 
   const otherLocaleOptions = allLocales
@@ -206,7 +206,7 @@ function getResourceKey(filename: string): ResourceKey {
 
     return {
       type: BinaryResourceType.StringTable,
-      group: 0,
+      group: 0x80000000,
       instance
     };
   }

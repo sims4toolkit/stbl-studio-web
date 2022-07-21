@@ -49,6 +49,7 @@
   let groupHexString: string;
   let instanceHexString: string;
 
+  let defaultInstanceStringMsg: string;
   let chosenInstance: bigint = null;
   let choosingExistingInstance = false;
   let existingInstanceOptions: {
@@ -80,7 +81,7 @@
     if (uploadedFiles?.length) readFiles();
   }
 
-  function timeout(ms = 800) {
+  function timeout(ms = 500) {
     // Wait times are being artifically inflated for visual reasons. The
     // progress screens are usually instant for small STBLs, which looks like
     // a glitch that the user doesn't have time to read. I think the pleasant
@@ -93,10 +94,10 @@
     filesInvalid = false;
     readingFiles = true;
 
-    let hasBeen800ms = false;
-    setTimeout(() => (hasBeen800ms = true), 800);
+    let hasBeen500ms = false;
+    setTimeout(() => (hasBeen500ms = true), 500);
     parseResult = await parseFiles(uploadedFiles);
-    if (!hasBeen800ms) await timeout();
+    if (!hasBeen500ms) await timeout();
 
     if (!parseResult.stbls.length) {
       uploadedFiles = null;
@@ -117,16 +118,16 @@
     readingFiles = false;
     findingMetaData = true;
 
-    let hasBeen800ms = false;
-    setTimeout(() => (hasBeen800ms = true), 800);
+    let hasBeen500ms = false;
+    setTimeout(() => (hasBeen500ms = true), 500);
 
     const defaultMetaData = getDefaultMetaData(parseResult.stbls);
     primaryLocale = defaultMetaData.primaryLocale;
     otherLocaleOptions = defaultMetaData.otherLocaleOptions;
     groupHexString = formatAsHexString(defaultMetaData.group, 8);
 
-    if (defaultMetaData.existingInstances.size) {
-      chosenInstance = defaultMetaData.existingInstances[0];
+    if (defaultMetaData.existingInstances.size >= 1) {
+      chosenInstance = defaultMetaData.existingInstances.values().next().value;
       if (defaultMetaData.existingInstances.size > 1) {
         choosingExistingInstance = true;
         existingInstanceOptions = [...defaultMetaData.existingInstances].map(
@@ -135,10 +136,14 @@
             value: inst,
           })
         );
+      } else {
+        useChosenInstance();
       }
+    } else {
+      hashUuidForInstance();
     }
 
-    if (!hasBeen800ms) await timeout();
+    if (!hasBeen500ms) await timeout();
 
     findingMetaData = false;
     settingMetaData = true;
@@ -180,7 +185,7 @@
           instanceBase: BigInt("0x" + instanceHexString),
         },
         stblMap,
-        otherLocaleOptions // FIXME: needed?
+        otherLocaleOptions
           .filter((option) => option.checked)
           .map((option) => option.data.enumValue)
       )
@@ -214,6 +219,7 @@
   }
 
   function useChosenInstance() {
+    defaultInstanceStringMsg = "from an existing STBL";
     instanceHexString = formatAsHexString(chosenInstance, 14, false);
     choosingExistingInstance = false;
   }
@@ -276,7 +282,6 @@
       {:else if !reviewingErredFiles}
         <div in:fade>
           <h3>Extracting STBLs...</h3>
-          <p>This might take a little bit.</p>
         </div>
       {:else}
         <div in:fade>
@@ -300,7 +305,6 @@
       {#if findingMetaData}
         <div in:fade>
           <h3>Finding meta data...</h3>
-          <p>This might take a little bit.</p>
         </div>
       {:else if choosingExistingInstance}
         <p class="mt-0 mb-2">
@@ -322,11 +326,10 @@
           >.
         </p>
       {:else}
-        <!-- FIXME: "The instance is a hash of the UUID by default, but it can be changed manually." is not accurate for this view -->
-        <!-- FIXME: Add warning that unchecking locales will delete those translations from the project -->
         <ProjectMetaDataPages
           {uuid}
           currentPage={metaDataPage}
+          defaultInstanceString={defaultInstanceStringMsg}
           bind:isPage1Valid={isMetaDataValid}
           bind:name={projectName}
           bind:primaryLocale
@@ -338,7 +341,6 @@
     {:else if preparingProject}
       <div in:fade>
         <h3>Preparing your project...</h3>
-        <p>This might take a little bit.</p>
       </div>
     {:else}
       <div in:fade>

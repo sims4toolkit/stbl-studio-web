@@ -12,6 +12,7 @@
   const { formatAsHexString } = window.S4TK.formatting;
 
   export let uuid: string;
+  export let defaultInstanceString: string = "the hash of the UUID";
   export let currentPage: number;
   export let isPage1Valid = false;
   export let name = "";
@@ -52,7 +53,7 @@
     </form>
     <div>
       <p class="subtle-text mt-0 mb-half">
-        The instance is a hash of the UUID by default, but it can be changed
+        The instance is {defaultInstanceString} by default, but it can be changed
         manually.
       </p>
       <p class="subtle-text my-0">
