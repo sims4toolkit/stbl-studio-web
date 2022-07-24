@@ -26,7 +26,10 @@ export async function getDownloadInfoForProjects(
   localesOption: DownloadOption
 ): Promise<FileDownloadInfo> {
   return new Promise(async (resolve) => {
-    const downloadInfos: FileDownloadInfo[] = [];
+    const downloadInfos: {
+      project: Project,
+      infos: FileDownloadInfo[]
+    }[] = [];
 
     for (let i = 0; i < projects.length; ++i) {
       const project = projects[i];
@@ -37,7 +40,10 @@ export async function getDownloadInfoForProjects(
         getStblLocales(project, localesOption)
       );
 
-      downloadInfos.push(...downloadInfosToAdd)
+      downloadInfos.push({
+        project,
+        infos: downloadInfosToAdd
+      });
     }
 
     const zipName = projects.length === 1
@@ -45,8 +51,8 @@ export async function getDownloadInfoForProjects(
       : "StblStudioProjects";
 
     resolve(
-      downloadInfos.length === 1
-        ? downloadInfos[0]
+      (downloadInfos.length === 1) && (downloadInfos[0].infos.length === 1)
+        ? downloadInfos[0].infos[0]
         : await combineDownloadInfos(downloadInfos, zipName)
     );
   });
@@ -99,15 +105,27 @@ async function getDownloadInfosForProject(
 }
 
 async function combineDownloadInfos(
-  infos: FileDownloadInfo[],
+  projectInfos: {
+    project: Project,
+    infos: FileDownloadInfo[]
+  }[],
   zipName: string
 ): Promise<FileDownloadInfo> {
   return new Promise(async (resolve) => {
     const zip = new JSZip();
 
-    infos.forEach(info => {
-      zip.file(info.filename, info.data);
-    });
+    if (projectInfos.length === 1) {
+      projectInfos[0].infos.forEach(info => {
+        zip.file(info.filename, info.data);
+      });
+    } else {
+      projectInfos.forEach(({ project, infos }) => {
+        const projectFolder = zip.folder(alphanumeric(project.name));
+        infos.forEach(info => {
+          projectFolder.file(info.filename, info.data);
+        });
+      });
+    }
 
     resolve({
       filename: zipName + ".zip",
@@ -153,7 +171,7 @@ function getFilenameForLocale(
     case NamingConvention.S4PI:
       return "S4_" + formatResourceKey(key, "_") + `.${localeName}`;
     case NamingConvention.NameOnly:
-      return `${projectName.replace(/\W/g, '')}_${localeName}`;
+      return `${alphanumeric(projectName)}_${localeName}`;
   }
 }
 
