@@ -14,7 +14,7 @@ const { StringTableLocale, BinaryResourceType } = window.S4TK.enums;
 const { formatResourceKey } = window.S4TK.formatting;
 
 /**
- * TODO:
+ * Get the download info for the provided projects and options.
  * 
  * @param projects List of projects to get download info for
  * @param method Download method to use
@@ -28,17 +28,17 @@ export async function getDownloadInfoForProjects(
   return new Promise(async (resolve) => {
     const downloadInfos: FileDownloadInfo[] = [];
 
-    projects.forEach(async (project) => {
-      const locales = getStblLocales(project, localesOption);
+    for (let i = 0; i < projects.length; ++i) {
+      const project = projects[i];
 
       const downloadInfosToAdd = await getDownloadInfosForProject(
         project,
         method,
-        locales
+        getStblLocales(project, localesOption)
       );
 
       downloadInfos.push(...downloadInfosToAdd)
-    });
+    }
 
     resolve(
       downloadInfos.length === 1
