@@ -17,6 +17,7 @@
   import { subscribeToKey } from "../../../typescript/keybindings";
   import HomeActionButtons from "./HomeActionButtons.svelte";
   import ProjectMergeView from "./ProjectMergeView.svelte";
+  import StblDownloadView from "../../shared/controls/StblDownloadView.svelte";
 
   let workspace: Workspace;
   let selectionGroup: SelectionGroup<Project>;
@@ -33,6 +34,7 @@
   let uploadingProject = false;
   let confirmingDeletion = false;
   let mergingProjects = false;
+  let downloadingProjects = false;
 
   let showDownload = false;
   let downloadFilename: string;
@@ -87,8 +89,7 @@
         mergingProjects = true;
         break;
       case "download":
-        // TODO:
-        alert(action);
+        downloadingProjects = true;
         break;
     }
   }
@@ -169,6 +170,15 @@
     <ProjectMergeView
       {selectedProjects}
       onComplete={() => (mergingProjects = false)}
+    />
+  </BlurOverlay>
+{/if}
+
+{#if downloadingProjects}
+  <BlurOverlay onClose={() => (downloadingProjects = false)}>
+    <StblDownloadView
+      projects={selectedProjects}
+      onComplete={() => (downloadingProjects = false)}
     />
   </BlurOverlay>
 {/if}
