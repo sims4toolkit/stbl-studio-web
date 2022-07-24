@@ -40,10 +40,14 @@ export async function getDownloadInfoForProjects(
       downloadInfos.push(...downloadInfosToAdd)
     }
 
+    const zipName = projects.length === 1
+      ? projects[0].name
+      : "StblStudioProjects";
+
     resolve(
       downloadInfos.length === 1
         ? downloadInfos[0]
-        : await combineDownloadInfos(downloadInfos)
+        : await combineDownloadInfos(downloadInfos, zipName)
     );
   });
 }
@@ -84,7 +88,7 @@ async function getDownloadInfosForProject(
           : ".json";
 
         return {
-          filename: getFilenameForLocale(locales[i], entry.key) + ext,
+          filename: getFilenameForLocale(locales[i], entry.key, project.name) + ext,
           data: new Blob([buffer])
         }
       });
@@ -96,7 +100,7 @@ async function getDownloadInfosForProject(
 
 async function combineDownloadInfos(
   infos: FileDownloadInfo[],
-  zipName?: string
+  zipName: string
 ): Promise<FileDownloadInfo> {
   return new Promise(async (resolve) => {
     const zip = new JSZip();
@@ -106,7 +110,7 @@ async function combineDownloadInfos(
     });
 
     resolve({
-      filename: (zipName ?? "StblStudio") + ".zip",
+      filename: zipName + ".zip",
       data: await zip.generateAsync({ type: "blob" })
     });
   });
@@ -139,15 +143,17 @@ function getKeyForLocale(
 
 function getFilenameForLocale(
   locale: StblLocaleType,
-  key: ResourceKey
+  key: ResourceKey,
+  projectName: string
 ): string {
+  const localeName = StringTableLocale[locale];
   switch (Settings.namingConvention) {
     case NamingConvention.S4S:
-      return formatResourceKey(key, "!");
+      return formatResourceKey(key, "!") + `.${localeName}`;
     case NamingConvention.S4PI:
-      return "S4_" + formatResourceKey(key, "_");
+      return "S4_" + formatResourceKey(key, "_") + `.${localeName}`;
     case NamingConvention.NameOnly:
-      return `${this.name.replace(/\W/g, '')}_${StringTableLocale[locale]}`;
+      return `${projectName.replace(/\W/g, '')}_${localeName}`;
   }
 }
 
