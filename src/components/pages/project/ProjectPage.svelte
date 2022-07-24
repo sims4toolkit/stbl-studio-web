@@ -22,9 +22,9 @@
   import { subscribeToKey } from "../../../typescript/keybindings";
   import PaginationController from "../../shared/controls/PaginationController.svelte";
   import StringRehashView from "./StringRehashView.svelte";
-  import StringDownloadView from "./StringDownloadView.svelte";
   import StblFeatures from "../../shared/controls/StblFeatures.svelte";
   import ProjectEditView from "./ProjectEditView.svelte";
+  import StblDownloadView from "../../shared/controls/StblDownloadView.svelte";
 
   const { formatAsHexString } = window.S4TK.formatting;
 
@@ -278,8 +278,8 @@
 
 {#if isDownloadingStrings}
   <BlurOverlay onClose={() => (isDownloadingStrings = false)}>
-    <StringDownloadView
-      bind:project
+    <StblDownloadView
+      projects={[project]}
       onComplete={() => (isDownloadingStrings = false)}
     />
   </BlurOverlay>

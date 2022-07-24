@@ -3,8 +3,11 @@
   import { onDestroy } from "svelte";
   import type { FileDownloadInfo } from "../../../global";
   import DownloadMethod from "../../../typescript/enums/download-method";
-  import DownloadOption from "../../../typescript/enums/download-options";
+  import DownloadOption, {
+    LOCALE_OFFSET,
+  } from "../../../typescript/enums/download-options";
   import NamingConvention from "../../../typescript/enums/naming-convention";
+  import { getDownloadInfoForProjects } from "../../../typescript/helpers/downloads";
   import {
     getDisplayName,
     getLocaleData,
@@ -12,18 +15,50 @@
   import { subscribeToKey } from "../../../typescript/keybindings";
   import type Project from "../../../typescript/models/project";
   import { Settings } from "../../../typescript/storage";
-  import Downloader from "../../shared/controls/Downloader.svelte";
-  import Select from "../../shared/elements/Select.svelte";
-  import MultipageModalContent from "../../shared/layout/MultipageModalContent.svelte";
+  import Select from "../elements/Select.svelte";
+  import MultipageModalContent from "../layout/MultipageModalContent.svelte";
+  import Downloader from "./Downloader.svelte";
 
-  export let project: Project;
+  //#region Variables
+
+  export let projects: Project[];
   export let onComplete: () => void;
 
+  const primaryLocale =
+    projects.length === 1 ? projects[0].primaryLocale : null;
+
+  let selectedDownloadMethod = Settings.downloadMethod;
+  let selectedLocaleOption = Settings.downloadOption;
+  let selectedNamingConvention = Settings.namingConvention;
   let isDownloading = false;
   let downloadInfo: FileDownloadInfo;
 
-  let selectedDownloadMethod = Settings.downloadMethod;
-  const downloadMethods = [
+  const otherLocalesSet = new Set<StringTableLocale>();
+  projects.forEach((project) => {
+    project.allLocales.forEach((locale) => {
+      if (locale !== primaryLocale) otherLocalesSet.add(locale);
+    });
+  });
+  const otherLocales = [...otherLocalesSet];
+
+  //#endregion Variables
+
+  //#region Lifecycle Hooks
+
+  const keySubscriptions = [
+    subscribeToKey("Escape", onComplete),
+    subscribeToKey("Enter", downloadStbls),
+  ];
+
+  onDestroy(() => {
+    keySubscriptions.forEach((unsubscribe) => unsubscribe());
+  });
+
+  //#endregion Lifecylce Hooks
+
+  //#region Options
+
+  const downloadMethodOptions = [
     {
       text: "Package",
       value: DownloadMethod.Package,
@@ -43,42 +78,37 @@
     }
   }
 
-  let selectedTableOption = Settings.downloadOption;
-  let selectedLocaleOffset = 100;
-  const tableOptions = [
+  const downloadLocaleOptions = [
     {
       text: "All Locales",
       value: DownloadOption.AllLocales,
     },
     {
-      text: `Primary Locale (${getDisplayName(
-        getLocaleData(project.primaryLocale)
-      )})`,
+      text: `Primary Locale (${
+        primaryLocale != null ? getEnglishName(primaryLocale) : "Varies"
+      })`,
       value: DownloadOption.PrimaryLocale,
     },
-    ...[
-      ...project.allLocales
-        .filter((locale) => locale !== project.primaryLocale)
-        .map((locale) => {
-          return {
-            text: getDisplayName(getLocaleData(locale)),
-            value: selectedLocaleOffset + locale,
-          };
-        }),
-    ].sort((a, b) => {
-      if (a.text > b.text) return 1;
-      if (a.text < b.text) return -1;
-      return 0;
-    }),
+    ...otherLocales
+      .map((locale) => {
+        return {
+          text: getEnglishName(locale),
+          value: LOCALE_OFFSET + locale,
+        };
+      })
+      .sort((a, b) => {
+        if (a.text > b.text) return 1;
+        if (a.text < b.text) return -1;
+        return 0;
+      }),
   ];
   $: {
-    if (selectedTableOption !== Settings.downloadOption) {
-      if (selectedTableOption in DownloadOption)
-        Settings.downloadOption = selectedTableOption;
+    if (selectedLocaleOption !== Settings.downloadOption) {
+      if (selectedLocaleOption in DownloadOption)
+        Settings.downloadOption = selectedLocaleOption;
     }
   }
 
-  let selectedNamingConvention = Settings.namingConvention;
   const namingOptions = [
     {
       text: "S4S",
@@ -100,43 +130,38 @@
     }
   }
 
-  const keySubscriptions = [
-    subscribeToKey("Escape", onComplete),
-    subscribeToKey("Enter", downloadStrings),
-  ];
+  //#endregion Options
 
-  onDestroy(() => {
-    keySubscriptions.forEach((unsubscribe) => unsubscribe());
-  });
+  //#region Functions
 
-  async function downloadStrings() {
+  async function downloadStbls() {
     isDownloading = true;
-    const locales = getStringTableLocales();
-    downloadInfo = await project.getDownloadInfo(
+    downloadInfo = await getDownloadInfoForProjects(
+      projects,
       selectedDownloadMethod,
-      locales
+      selectedLocaleOption
     );
   }
 
-  function getStringTableLocales(): StringTableLocale[] {
-    switch (selectedTableOption) {
-      case DownloadOption.AllLocales:
-        return project.allLocales;
-      case DownloadOption.PrimaryLocale:
-        return [project.primaryLocale];
-      default:
-        return [selectedTableOption - selectedLocaleOffset];
-    }
+  async function onDownloadComplete() {
+    isDownloading = false;
+    onComplete();
   }
+
+  function getEnglishName(locale: StringTableLocale): string {
+    return getDisplayName(getLocaleData(locale));
+  }
+
+  //#endregion Functions
 </script>
 
 <MultipageModalContent
-  title="Download Strings"
+  title="Download String Table(s)"
   numPages={1}
   completePages={1}
   currentPage={1}
   finalPageNextButtonText="Download"
-  onNextButtonClick={downloadStrings}
+  onNextButtonClick={downloadStbls}
 >
   <div slot="content">
     <div class="selects flex-space-between flex-gap my-1">
@@ -144,14 +169,14 @@
         label="download as"
         name="download-type-select"
         bind:selected={selectedDownloadMethod}
-        options={downloadMethods}
+        options={downloadMethodOptions}
         fillWidth={true}
       />
       <Select
         label="stbl(s) to download"
         name="download-tables-select"
-        bind:selected={selectedTableOption}
-        options={tableOptions}
+        bind:selected={selectedLocaleOption}
+        options={downloadLocaleOptions}
         fillWidth={true}
       />
       <Select
@@ -174,7 +199,7 @@
   <Downloader
     contentGenerator={() => downloadInfo.data}
     filename={downloadInfo?.filename ?? "STBLs"}
-    onDownload={onComplete}
+    onDownload={onDownloadComplete}
   />
 {/if}
 
