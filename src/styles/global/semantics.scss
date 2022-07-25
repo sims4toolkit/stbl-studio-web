@@ -29,6 +29,11 @@
 .clickable-text {
   color: var(--color-accent-secondary);
   text-decoration: underline;
+
+  &:hover {
+    cursor: pointer;
+    text-decoration: none;
+  }
 }
 
 .small-title {

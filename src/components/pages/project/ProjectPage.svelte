@@ -2,6 +2,7 @@
   //#region Imports
 
   import { onDestroy } from "svelte";
+  import { fade } from "svelte/transition";
   import type { StringEntry } from "@s4tk/models/types";
   import type Project from "../../../typescript/models/project";
   import type Workspace from "../../../typescript/models/workspace";
@@ -28,12 +29,10 @@
   import StblFeatures from "../../shared/controls/StblFeatures.svelte";
   import ProjectEditView from "./ProjectEditView.svelte";
   import StblDownloadView from "../../shared/controls/StblDownloadView.svelte";
-  import { fade } from "svelte/transition";
-  import MovableWindow from "../../shared/layout/MovableWindow.svelte";
   import FilterWindow from "./FilterWindow.svelte";
-  import FilterType, {
-    testFilter,
-  } from "../../../typescript/enums/filter-type";
+  import { testFilter } from "../../../typescript/enums/filter-type";
+  import SortWindow from "./SortWindow.svelte";
+  import SortOrder, { sortEntries } from "../../../typescript/enums/sort-order";
 
   const { formatAsHexString } = window.S4TK.formatting;
 
@@ -55,6 +54,7 @@
   let showFilterWindow = false;
   let stringFilters: StringFilterTerm[] = [];
   let showSortWindow = false;
+  let selectedSortOrder = SortOrder.Chronological;
 
   //#endregion Variables
 
@@ -70,9 +70,13 @@
 
   $: {
     if (project && project.view !== ProjectView.Translate) {
-      entries = stringFilters.length
-        ? filterEntries(project?.primaryStbl.entries)
-        : project?.primaryStbl.entries;
+      const projectEntries = project?.primaryStbl.entries;
+
+      const filteredEntries = stringFilters.length
+        ? filterEntries(projectEntries)
+        : projectEntries;
+
+      entries = sortEntries(filteredEntries, selectedSortOrder);
 
       selectionGroup.selectables = entries;
     }
@@ -166,6 +170,11 @@
     return filteredEntries;
   }
 
+  function clearFilters() {
+    stringFilters = [];
+    showFilterWindow = false;
+  }
+
   //#endregion Functions
 </script>
 
@@ -249,6 +258,16 @@
             {/if}
           </div>
         </SplitView>
+        {#if viewAllowsSelect && stringFilters.length > 0}
+          <div class="mt-1" in:fade>
+            <p class="my-0 subtle-text">
+              Showing {entries.length} of {project.primaryStbl.size} entries with
+              {stringFilters.length}
+              {stringFilters.length === 1 ? "filter" : "filters"} &nbsp;
+              <span class="clickable-text" on:click={clearFilters}>CLEAR</span>
+            </p>
+          </div>
+        {/if}
       </div>
 
       {#if project.view === ProjectView.Json}
@@ -357,11 +376,7 @@
 {/if}
 
 {#if showSortWindow}
-  <MovableWindow title="Sort" onClose={() => (showSortWindow = false)}>
-    <div>
-      <p>Sort</p>
-    </div>
-  </MovableWindow>
+  <SortWindow bind:showSortWindow bind:selectedSortOrder />
 {/if}
 
 <style lang="scss">
