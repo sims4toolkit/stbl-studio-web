@@ -25,6 +25,9 @@
   import StblFeatures from "../../shared/controls/StblFeatures.svelte";
   import ProjectEditView from "./ProjectEditView.svelte";
   import StblDownloadView from "../../shared/controls/StblDownloadView.svelte";
+  import { fade } from "svelte/transition";
+  import MovableWindow from "../../shared/layout/MovableWindow.svelte";
+  import FilterWindow from "./FilterWindow.svelte";
 
   const { formatAsHexString } = window.S4TK.formatting;
 
@@ -39,6 +42,9 @@
   let isRehashingKeys = false;
   let isDownloadingStrings = false;
   let isEditingProjectData = false;
+
+  let showFilterWindow = false;
+  let showSortWindow = false;
 
   $: inModal = isDeletingStrings || isCreatingString;
   $: selectModeDisabled = !entries?.length;
@@ -182,8 +188,20 @@
               />
             </div>
           </div>
-          <div slot="right">
+          <div slot="right" class="flex-center flex-gap">
             {#if viewAllowsSelect}
+              {#if !selectionGroup.selectMode}
+                <button
+                  class="plain-text-button"
+                  on:click={() => (showFilterWindow = true)}
+                  ><span in:fade>filter</span></button
+                >
+                <button
+                  class="plain-text-button"
+                  on:click={() => (showSortWindow = true)}
+                  ><span in:fade>sort</span></button
+                >
+              {/if}
               <SelectModeToggle
                 {selectionGroup}
                 disabled={selectModeDisabled}
@@ -294,6 +312,18 @@
   </BlurOverlay>
 {/if}
 
+{#if showFilterWindow}
+  <FilterWindow bind:showFilterWindow />
+{/if}
+
+{#if showSortWindow}
+  <MovableWindow title="Sort" onClose={() => (showSortWindow = false)}>
+    <div>
+      <p>Sort</p>
+    </div>
+  </MovableWindow>
+{/if}
+
 <style lang="scss">
   .grid-view {
     display: grid;
@@ -309,6 +339,21 @@
     h3,
     p {
       color: var(--color-text-subtle) !important;
+    }
+  }
+
+  .plain-text-button {
+    border: none;
+    background: none;
+    color: var(--color-text);
+    text-transform: uppercase;
+
+    &:hover {
+      &,
+      & span {
+        color: var(--color-text-subtle);
+        cursor: pointer;
+      }
     }
   }
 

@@ -4,6 +4,7 @@ import type Workspace from "./models/workspace";
 import { Settings } from "./storage";
 
 export const activeWorkspace: Writable<Workspace> = writable(null);
+export const numMovableWindowsStore = writable(0);
 
 function createSettingStore<T>(name: string): Writable<T> {
   const store = writable(Settings[name]);

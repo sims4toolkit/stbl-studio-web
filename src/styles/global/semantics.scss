@@ -22,6 +22,10 @@
   color: var(--color-text-subtle);
 }
 
+.subtle-border-color {
+  border-color: var(--color-text-subtle) !important;
+}
+
 .clickable-text {
   color: var(--color-accent-secondary);
   text-decoration: underline;

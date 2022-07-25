@@ -18,6 +18,7 @@
   export let isValid: boolean = true;
   export let fillWidth = false;
   export let focusOnMount = false;
+  export let subtleBorder = false;
 
   let input: HTMLInputElement;
   let errorMessage: string;
@@ -86,7 +87,8 @@
     type="text"
     class:monospace
     class:w-100={fillWidth}
-    class="mt-half"
+    class:mt-half={Boolean(label)}
+    class:subtle-border-color={subtleBorder}
     bind:value
     {placeholder}
     autocomplete="off"

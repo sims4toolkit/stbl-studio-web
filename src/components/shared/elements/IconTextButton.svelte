@@ -9,6 +9,7 @@
   export let danger = false;
   export let fixedWidth: string = "";
   export let disabledText = "";
+  export let border = true;
 
   let button: HTMLButtonElement;
 
@@ -33,6 +34,7 @@
   bind:this={button}
   class="flex-center-v py-half px-1"
   class:active
+  class:border
   class:large
   class:danger
   on:click={onButtonClick}
@@ -45,8 +47,15 @@
   button {
     background: none;
     color: var(--color-text);
-    border: 1px solid var(--color-text);
     border-radius: 4px;
+
+    &.border {
+      border: 1px solid var(--color-text);
+    }
+
+    &:not(.border) {
+      border: none;
+    }
 
     img {
       height: 18px;

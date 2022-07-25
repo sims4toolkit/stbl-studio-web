@@ -19,6 +19,11 @@ interface FileError {
   reason: string;
 }
 
+interface StringFilterTerm {
+  type: number;
+  text: string;
+}
+
 interface FileDownloadInfo {
   filename: string;
   data: Blob;

@@ -3,6 +3,7 @@
   export let label: string = undefined;
   export let name: string;
   export let selected: number | bigint;
+  export let subtleBorder = false;
   export let fillWidth = false;
   export let options: {
     value: number | bigint;
@@ -20,6 +21,7 @@
     bind:value={selected}
     class:mt-half={Boolean(label)}
     class:w-100={fillWidth}
+    class:subtle-border-color={subtleBorder}
     {disabled}
   >
     {#each options as option, key (key)}
