@@ -193,7 +193,7 @@
               {#if !selectionGroup.selectMode}
                 <button
                   class="plain-text-button"
-                  on:click={() => (showFilterWindow = true)}
+                  on:click={() => (showFilterWindow = !showFilterWindow)}
                   ><span in:fade>filter</span></button
                 >
                 <button
