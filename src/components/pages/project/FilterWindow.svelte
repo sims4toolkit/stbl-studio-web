@@ -7,6 +7,7 @@
   import MovableWindow from "../../shared/layout/MovableWindow.svelte";
 
   export let showFilterWindow: boolean;
+  export let filters: StringFilterTerm[];
 
   const filterItemOptions = [
     {
@@ -30,8 +31,6 @@
       value: FilterType.KeyEquals,
     },
   ];
-
-  let filters: StringFilterTerm[] = [];
 
   function addFilter() {
     filters.push({

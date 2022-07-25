@@ -1,7 +1,11 @@
 <script lang="ts">
+  //#region Imports
+
   import { onDestroy } from "svelte";
+  import type { StringEntry } from "@s4tk/models/types";
   import type Project from "../../../typescript/models/project";
   import type Workspace from "../../../typescript/models/workspace";
+  import type { StringFilterTerm } from "../../../global";
   import { activeWorkspace } from "../../../typescript/stores";
   import ContentArea from "../../shared/layout/ContentArea.svelte";
   import GradientHeader from "../../shared/elements/GradientHeader.svelte";
@@ -14,7 +18,6 @@
   import ProjectView from "../../../typescript/enums/project-view";
   import ScreenDimmer from "../../shared/layout/ScreenDimmer.svelte";
   import StblJsonView from "./StblJsonView.svelte";
-  import type { StringEntry } from "@s4tk/models/types";
   import StringDeletionView from "./StringDeletionView.svelte";
   import BlurOverlay from "../../shared/layout/BlurOverlay.svelte";
   import StringCreationView from "./StringCreationView.svelte";
@@ -28,8 +31,15 @@
   import { fade } from "svelte/transition";
   import MovableWindow from "../../shared/layout/MovableWindow.svelte";
   import FilterWindow from "./FilterWindow.svelte";
+  import FilterType, {
+    testFilter,
+  } from "../../../typescript/enums/filter-type";
 
   const { formatAsHexString } = window.S4TK.formatting;
+
+  //#endregion Imports
+
+  //#region Variables
 
   export let params: { uuid: string };
 
@@ -42,11 +52,16 @@
   let isRehashingKeys = false;
   let isDownloadingStrings = false;
   let isEditingProjectData = false;
-
   let showFilterWindow = false;
+  let stringFilters: StringFilterTerm[] = [];
   let showSortWindow = false;
 
+  //#endregion Variables
+
+  //#region Reactive Variables
+
   $: inModal = isDeletingStrings || isCreatingString;
+
   $: selectModeDisabled = !entries?.length;
 
   $: viewAllowsSelect =
@@ -55,10 +70,17 @@
 
   $: {
     if (project && project.view !== ProjectView.Translate) {
-      entries = project?.primaryStbl.entries;
+      entries = stringFilters.length
+        ? filterEntries(project?.primaryStbl.entries)
+        : project?.primaryStbl.entries;
+
       selectionGroup.selectables = entries;
     }
   }
+
+  //#endregion Reactive Variables
+
+  //#region Subscriptions
 
   let workspace: Workspace;
   const unsubscribeToWorkspace = activeWorkspace.subscribe((value) => {
@@ -91,6 +113,10 @@
     unsubscribeToWorkspace();
     keySubscriptions.forEach((unsubscribe) => unsubscribe());
   });
+
+  //#endregion Subscriptions
+
+  //#region Functions
 
   function updateView(view: ProjectView) {
     project.view = view;
@@ -127,6 +153,20 @@
         break;
     }
   }
+
+  function filterEntries(entries: StringEntry[]): StringEntry[] {
+    let filteredEntries = [...entries];
+
+    stringFilters.forEach((filter) => {
+      filteredEntries = filteredEntries.filter((entry) =>
+        testFilter(entry, filter)
+      );
+    });
+
+    return filteredEntries;
+  }
+
+  //#endregion Functions
 </script>
 
 <svelte:head>
@@ -313,7 +353,7 @@
 {/if}
 
 {#if showFilterWindow}
-  <FilterWindow bind:showFilterWindow />
+  <FilterWindow bind:showFilterWindow bind:filters={stringFilters} />
 {/if}
 
 {#if showSortWindow}
