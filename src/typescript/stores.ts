@@ -20,3 +20,5 @@ export const isLightThemeStore = createSettingStore<boolean>("isLightTheme");
 export const disableBlurStore = createSettingStore<boolean>("disableBlur");
 export const reduceMotionStore = createSettingStore<boolean>("reduceMotion");
 export const defaultLocaleStore = createSettingStore<StringTableLocale>("defaultLocale");
+export const entriesPerPageStore = createSettingStore<number>("entriesPerPage");
+export const showAllStringsStore = createSettingStore<boolean>("showAllStrings");

@@ -7,7 +7,11 @@
   import type Project from "../../../typescript/models/project";
   import type Workspace from "../../../typescript/models/workspace";
   import type { StringFilterTerm } from "../../../global";
-  import { activeWorkspace } from "../../../typescript/stores";
+  import {
+    activeWorkspace,
+    entriesPerPageStore,
+    showAllStringsStore,
+  } from "../../../typescript/stores";
   import ContentArea from "../../shared/layout/ContentArea.svelte";
   import GradientHeader from "../../shared/elements/GradientHeader.svelte";
   import SelectModeToggle from "../../shared/controls/SelectModeToggle.svelte";
@@ -32,6 +36,7 @@
   import { testFilter } from "../../../typescript/enums/filter-type";
   import SortOrder, { sortEntries } from "../../../typescript/enums/sort-order";
   import DisplayOptionsWindow from "./DisplayOptionsWindow.svelte";
+  import { Settings } from "../../../typescript/storage";
 
   const { formatAsHexString } = window.S4TK.formatting;
 
@@ -56,11 +61,62 @@
 
   //#endregion Variables
 
+  //#region Subscriptions
+
+  let workspace: Workspace;
+  let entriesPerPage = Settings.entriesPerPage;
+  let showAllStrings = Settings.showAllStrings;
+
+  const storeSubscriptions = [
+    activeWorkspace.subscribe((value) => {
+      if (value) {
+        workspace = value;
+        project = workspace.projects.find(({ uuid }) => uuid === params.uuid);
+        entries = project?.primaryStbl.entries;
+        selectionGroup = new SelectionGroup(entries, "id", () => {
+          selectionGroup = selectionGroup;
+        });
+      }
+    }),
+    entriesPerPageStore.subscribe((value) => {
+      entriesPerPage = value;
+    }),
+    showAllStringsStore.subscribe((value) => {
+      showAllStrings = value;
+    }),
+  ];
+
+  const keySubscriptions = [
+    subscribeToKey(
+      "e",
+      () => {
+        if (!inModal && entries?.length) {
+          selectionGroup.toggleSelectMode();
+        }
+      },
+      {
+        ctrlOrMeta: true,
+        preventDefault: true,
+      }
+    ),
+  ];
+
+  onDestroy(() => {
+    storeSubscriptions.forEach((unsubscribe) => unsubscribe());
+    keySubscriptions.forEach((unsubscribe) => unsubscribe());
+  });
+
+  //#endregion Subscriptions
+
   //#region Reactive Variables
 
   $: inModal = isDeletingStrings || isCreatingString;
 
   $: selectModeDisabled = !entries?.length;
+
+  $: itemsPerPage = showAllStrings
+    ? project?.primaryStbl.size ?? entriesPerPage
+    : entriesPerPage;
 
   $: viewAllowsSelect =
     project &&
@@ -81,42 +137,6 @@
   }
 
   //#endregion Reactive Variables
-
-  //#region Subscriptions
-
-  let workspace: Workspace;
-  const unsubscribeToWorkspace = activeWorkspace.subscribe((value) => {
-    if (value) {
-      workspace = value;
-      project = workspace.projects.find(({ uuid }) => uuid === params.uuid);
-      entries = project?.primaryStbl.entries;
-      selectionGroup = new SelectionGroup(entries, "id", () => {
-        selectionGroup = selectionGroup;
-      });
-    }
-  });
-
-  const keySubscriptions = [
-    subscribeToKey(
-      "e",
-      () => {
-        if (!inModal && entries?.length) {
-          selectionGroup.toggleSelectMode();
-        }
-      },
-      {
-        ctrlOrMeta: true,
-        preventDefault: true,
-      }
-    ),
-  ];
-
-  onDestroy(() => {
-    unsubscribeToWorkspace();
-    keySubscriptions.forEach((unsubscribe) => unsubscribe());
-  });
-
-  //#endregion Subscriptions
 
   //#region Functions
 
@@ -303,7 +323,7 @@
   <PaginationController
     items={entries}
     {inModal}
-    itemsPerPage={10}
+    {itemsPerPage}
     onSliceUpdate={updateSlice}
   />
 {/if}
