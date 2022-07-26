@@ -44,7 +44,8 @@
   </div>
   {#if showAllStrings}
     <p class="subtle-text error-color" transition:fade>
-      WARNING: Large STBLs might freeze or lag.
+      <strong class="error-color">WARNING</strong>: Large STBLs might freeze or
+      lag.
     </p>
   {/if}
 </div>
