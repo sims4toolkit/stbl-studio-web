@@ -122,7 +122,7 @@ export const Settings = getSettingsProxy({
   defaultLocale: StoredInteger(),
   downloadMethod: StoredInteger(),
   downloadOption: StoredInteger(),
-  entriesPerPage: StoredInteger(12),
+  entriesPerPage: StoredInteger(10),
   hasWorkspace: StoredBoolean(),
   disableBlur: StoredBoolean(toggleBlurEffect),
   isLightTheme: StoredBoolean(toggleLightTheme),

@@ -44,7 +44,7 @@
   </div>
   {#if showAllStrings}
     <p class="subtle-text error-color" transition:fade>
-      Showing all strings may cause lag.
+      WARNING: Large STBLs might freeze or lag.
     </p>
   {/if}
 </div>
