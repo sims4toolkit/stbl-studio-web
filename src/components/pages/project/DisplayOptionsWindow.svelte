@@ -2,6 +2,7 @@
   import type { StringFilterTerm } from "../../../global";
   import FilterType from "../../../typescript/enums/filter-type";
   import SortOrder from "../../../typescript/enums/sort-order";
+  import EntriesPerPage from "../../shared/controls/EntriesPerPage.svelte";
   import IconTextButton from "../../shared/elements/IconTextButton.svelte";
   import Select from "../../shared/elements/Select.svelte";
   import TextInput from "../../shared/elements/TextInput.svelte";
@@ -73,6 +74,7 @@
   onClose={() => (showDisplayOptions = false)}
 >
   <div class="flex-col flex-gap">
+    <EntriesPerPage />
     <Select
       name="sort-select"
       bind:selected={selectedSortOrder}

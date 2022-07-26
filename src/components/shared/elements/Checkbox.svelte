@@ -1,14 +1,19 @@
 <script lang="ts">
   export let label: string;
+  export let fillAndCenter = false;
 
   // only need one or the other, not both
-  export let checked = undefined;
+  export let checked: boolean = undefined;
   export let checkable: {
     checked: boolean;
   } = undefined;
 </script>
 
-<div class="checkbox">
+<div
+  class="checkbox"
+  class:w-100={fillAndCenter}
+  class:flex-center-h={fillAndCenter}
+>
   <!-- svelte-ignore a11y-label-has-associated-control -->
   <label>
     {#if checkable}
