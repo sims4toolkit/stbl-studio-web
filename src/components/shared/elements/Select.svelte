@@ -22,6 +22,7 @@
     class:mt-half={Boolean(label)}
     class:w-100={fillWidth}
     class:subtle-border-color={subtleBorder}
+    class="trans-on-disabled"
     {disabled}
   >
     {#each options as option, key (key)}
@@ -34,12 +35,6 @@
 
 <style lang="scss">
   .select-with-label {
-    &.disabled {
-      user-select: none;
-      pointer-events: none;
-      opacity: 0.5;
-    }
-
     select {
       height: 42px;
       // TODO: Fixes appearance on safari

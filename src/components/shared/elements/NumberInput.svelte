@@ -1,5 +1,6 @@
 <script lang="ts">
   export let label: string = undefined;
+  export let disabled = false;
   export let name: string;
   export let placeholder: string = "#";
   export let value: number;
@@ -17,12 +18,14 @@
     </div>
   {/if}
   <input
+    {disabled}
     id={name}
     {name}
     type="number"
     class:w-100={fillWidth}
     class:mt-half={Boolean(label)}
     class:subtle-border-color={subtleBorder}
+    class="trans-on-disabled"
     bind:value
     {placeholder}
     autocomplete="off"

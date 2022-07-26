@@ -59,7 +59,7 @@ function StoredBoolean(uiUpdateFn?: (value: boolean) => void): StoredSetting<boo
   return {
     get(prop: string, defaultValue: boolean = false) {
       const value = localStorage.getItem(settingKey(prop));
-      return value ? value === "true" : defaultValue;
+      return value != undefined ? value === "true" : defaultValue;
     },
     set(prop: string, value: boolean) {
       localStorage.setItem(settingKey(prop), value ? "true" : "false");
@@ -68,11 +68,11 @@ function StoredBoolean(uiUpdateFn?: (value: boolean) => void): StoredSetting<boo
   }
 };
 
-function StoredInteger(): StoredSetting<number> {
+function StoredInteger(defaultValue: number = 0): StoredSetting<number> {
   return {
-    get(prop: string, defaultValue: number = 0) {
+    get(prop: string) {
       const value = localStorage.getItem(settingKey(prop));
-      return value ? parseInt(value) : defaultValue;
+      return value != undefined ? parseInt(value) : defaultValue;
     },
     set(prop: string, value: number) {
       localStorage.setItem(settingKey(prop), value.toString());
@@ -84,7 +84,7 @@ function StoredStringList(): StoredSetting<string[]> {
   return {
     get(prop: string, defaultValue: string[] = []) {
       const value = localStorage.getItem(settingKey(prop));
-      return value ? JSON.parse(value) as string[] : defaultValue;
+      return value != undefined ? JSON.parse(value) as string[] : defaultValue;
     },
     set(prop: string, value: string[]) {
       localStorage.setItem(settingKey(prop), JSON.stringify(value));
@@ -122,12 +122,14 @@ export const Settings = getSettingsProxy({
   defaultLocale: StoredInteger(),
   downloadMethod: StoredInteger(),
   downloadOption: StoredInteger(),
+  entriesPerPage: StoredInteger(12),
   hasWorkspace: StoredBoolean(),
   disableBlur: StoredBoolean(toggleBlurEffect),
   isLightTheme: StoredBoolean(toggleLightTheme),
   namingConvention: StoredInteger(),
   projectUuids: StoredStringList(),
   reduceMotion: StoredBoolean(),
+  showAllStrings: StoredBoolean(),
   showTranslateKeys: StoredBoolean(),
 });
 
@@ -338,9 +340,11 @@ export function getWorkspaceJson(): WorkspaceJson {
       defaultLocale: Settings.defaultLocale,
       downloadMethod: Settings.downloadMethod,
       downloadOption: Settings.downloadOption,
+      entriesPerPage: Settings.entriesPerPage,
       isLightTheme: Settings.isLightTheme,
       namingConvention: Settings.namingConvention,
       reduceMotion: Settings.reduceMotion,
+      showAllStrings: Settings.showAllStrings,
       showTranslateKeys: Settings.showTranslateKeys,
     },
     projects: Settings.projectUuids.map(uuid => {

@@ -86,12 +86,14 @@ interface UserSettings {
   defaultLocale: StringTableLocale;
   downloadMethod: DownloadMethod;
   downloadOption: DownloadOption;
+  entriesPerPage: number;
   hasWorkspace: boolean;
   disableBlur: boolean;
   isLightTheme: boolean;
   namingConvention: NamingConvention;
   projectUuids: string[]
   reduceMotion: boolean;
+  showAllStrings: boolean;
   showTranslateKeys: boolean;
 }
 
