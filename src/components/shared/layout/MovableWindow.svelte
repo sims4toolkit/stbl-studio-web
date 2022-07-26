@@ -108,10 +108,11 @@
 
 <style lang="scss">
   .movable-window {
+    $height: 400px;
     z-index: 1024;
     position: fixed;
     width: 360px;
-    height: 300px;
+    height: $height;
     right: 20px;
     bottom: 20px;
     background-color: var(--color-card);
@@ -122,7 +123,7 @@
       overflow-y: auto;
       max-width: 100%;
       overflow-x: hidden;
-      max-height: 260px;
+      max-height: $height - 40;
     }
 
     .movable-window-header {

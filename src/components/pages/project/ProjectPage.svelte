@@ -29,10 +29,9 @@
   import StblFeatures from "../../shared/controls/StblFeatures.svelte";
   import ProjectEditView from "./ProjectEditView.svelte";
   import StblDownloadView from "../../shared/controls/StblDownloadView.svelte";
-  import FilterWindow from "./FilterWindow.svelte";
   import { testFilter } from "../../../typescript/enums/filter-type";
-  import SortWindow from "./SortWindow.svelte";
   import SortOrder, { sortEntries } from "../../../typescript/enums/sort-order";
+  import DisplayOptionsWindow from "./DisplayOptionsWindow.svelte";
 
   const { formatAsHexString } = window.S4TK.formatting;
 
@@ -51,9 +50,8 @@
   let isRehashingKeys = false;
   let isDownloadingStrings = false;
   let isEditingProjectData = false;
-  let showFilterWindow = false;
+  let showDisplayOptions = false;
   let stringFilters: StringFilterTerm[] = [];
-  let showSortWindow = false;
   let selectedSortOrder = SortOrder.Chronological;
 
   //#endregion Variables
@@ -172,7 +170,6 @@
 
   function clearFilters() {
     stringFilters = [];
-    showFilterWindow = false;
   }
 
   //#endregion Functions
@@ -242,13 +239,8 @@
               {#if !selectionGroup.selectMode}
                 <button
                   class="plain-text-button"
-                  on:click={() => (showFilterWindow = !showFilterWindow)}
-                  ><span in:fade>filter</span></button
-                >
-                <button
-                  class="plain-text-button"
-                  on:click={() => (showSortWindow = true)}
-                  ><span in:fade>sort</span></button
+                  on:click={() => (showDisplayOptions = !showDisplayOptions)}
+                  ><span in:fade>display</span></button
                 >
               {/if}
               <SelectModeToggle
@@ -371,12 +363,12 @@
   </BlurOverlay>
 {/if}
 
-{#if showFilterWindow}
-  <FilterWindow bind:showFilterWindow bind:filters={stringFilters} />
-{/if}
-
-{#if showSortWindow}
-  <SortWindow bind:showSortWindow bind:selectedSortOrder />
+{#if showDisplayOptions}
+  <DisplayOptionsWindow
+    bind:showDisplayOptions
+    bind:filters={stringFilters}
+    bind:selectedSortOrder
+  />
 {/if}
 
 <style lang="scss">
