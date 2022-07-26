@@ -44,6 +44,10 @@
       value: FilterType.EndsWith,
     },
     {
+      text: "Regex",
+      value: FilterType.Regex,
+    },
+    {
       text: "Key Equals",
       value: FilterType.KeyEquals,
     },

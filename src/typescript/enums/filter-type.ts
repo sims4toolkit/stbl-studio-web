@@ -6,7 +6,8 @@ enum FilterType {
   ExactMatch,
   BeginsWith,
   EndsWith,
-  KeyEquals
+  Regex,
+  KeyEquals,
 }
 
 /**
@@ -36,8 +37,15 @@ export function testFilter(entry: StringEntry, filter: StringFilterTerm): boolea
         return entryString.startsWith(userString);
       case FilterType.EndsWith:
         return entryString.endsWith(userString);
+      case FilterType.Regex:
+        try {
+          const regex = new RegExp(filter.text);
+          return regex.test(entryString);
+        } catch (e) {
+          return false;
+        }
       default:
-        return false;
+        return true;
     }
   }
 }
