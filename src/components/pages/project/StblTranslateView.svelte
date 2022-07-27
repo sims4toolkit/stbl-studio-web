@@ -34,7 +34,9 @@
     otherStbl = project.stblMap.get(otherLocale);
 
     if (hideTranslated) {
-      entries = entries.filter((entry) => !otherStbl.get(entry.id)?.value);
+      entries = entries.filter(
+        (entry) => !otherStbl.getByKey(entry.key)?.value
+      );
     } else {
       entries = project.primaryStbl.entries;
     }
@@ -78,12 +80,13 @@
     </div>
     <p class="subtle-text mt-0 mb-1">
       {primaryLocaleName} is on the left, and {otherLocaleName} is on the right.
-      Type your translations, and they will be autosaved when you click out of the
-      text box. If a string is the same in both languages, there is no need to translate
-      it - {primaryLocaleName} strings will be used to fill all missing {otherLocaleName}
-      strings when you download.
+      Translations will be autosaved as soon as you click out of a text box.
     </p>
-    {#if showTranslationView}
+    {#if entries && entries.length === 0}
+      <div class="flex-center flex-col empty-stbl py-3 px-1 text-center">
+        <h3>No Strings to Translate</h3>
+      </div>
+    {:else if showTranslationView}
       {#if Boolean(currentSlice)}
         {#each currentSlice as entry (entry.id)}
           <StringTranslateCell bind:project {showKeys} {otherStbl} {entry} />
