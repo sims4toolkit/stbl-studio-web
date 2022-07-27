@@ -37,6 +37,7 @@
   import SortOrder, { sortEntries } from "../../../typescript/enums/sort-order";
   import DisplayOptionsWindow from "./DisplayOptionsWindow.svelte";
   import { Settings } from "../../../typescript/storage";
+  import StringImportView from "./StringImportView.svelte";
 
   const { formatAsHexString } = window.S4TK.formatting;
 
@@ -55,6 +56,7 @@
   let isRehashingKeys = false;
   let isDownloadingStrings = false;
   let isEditingProjectData = false;
+  let isImportingStrings = false;
   let showDisplayOptions = false;
   let stringFilters: StringFilterTerm[] = [];
   let selectedSortOrder = SortOrder.Chronological;
@@ -161,8 +163,7 @@
         isDownloadingStrings = true;
         break;
       case "import":
-        // TODO:
-        alert(action);
+        isImportingStrings = true;
         break;
       case "create":
         isCreatingString = true;
@@ -369,6 +370,12 @@
       projects={[project]}
       onComplete={() => (isDownloadingStrings = false)}
     />
+  </BlurOverlay>
+{/if}
+
+{#if isImportingStrings}
+  <BlurOverlay onClose={() => (isImportingStrings = false)}>
+    <StringImportView onComplete={() => (isImportingStrings = false)} />
   </BlurOverlay>
 {/if}
 
