@@ -34,7 +34,7 @@
     otherStbl = project.stblMap.get(otherLocale);
 
     if (hideTranslated) {
-      entries = entries.filter((entry) => !otherStbl.hasKey(entry.key));
+      entries = entries.filter((entry) => !otherStbl.get(entry.id)?.value);
     } else {
       entries = project.primaryStbl.entries;
     }
