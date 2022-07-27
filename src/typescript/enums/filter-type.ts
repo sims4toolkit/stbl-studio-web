@@ -17,36 +17,32 @@ enum FilterType {
  * @param filter The filter to test with
  */
 export function testFilter(entry: StringEntry, filter: StringFilterTerm): boolean {
-  if (filter.type === FilterType.KeyEquals) {
-    try {
+  try {
+    if (filter.type === FilterType.KeyEquals) {
       const keyToMatch = parseInt(filter.text, 16);
       return entry.keyEquals(keyToMatch);
-    } catch (e) {
-      return false;
-    }
-  } else {
-    const entryString = entry.string.toLowerCase();
-    const userString = filter.text.toLowerCase();
+    } else if (filter.type === FilterType.Regex) {
+      const regex = new RegExp(filter.text);
+      return regex.test(entry.string);
+    } else {
+      const entryString = entry.string.toLowerCase();
+      const userString = filter.text.toLowerCase();
 
-    switch (filter.type) {
-      case FilterType.Contains:
-        return entryString.includes(userString);
-      case FilterType.ExactMatch:
-        return entryString === userString;
-      case FilterType.BeginsWith:
-        return entryString.startsWith(userString);
-      case FilterType.EndsWith:
-        return entryString.endsWith(userString);
-      case FilterType.Regex:
-        try {
-          const regex = new RegExp(filter.text);
-          return regex.test(entryString);
-        } catch (e) {
-          return false;
-        }
-      default:
-        return true;
+      switch (filter.type) {
+        case FilterType.Contains:
+          return entryString.includes(userString);
+        case FilterType.ExactMatch:
+          return entryString === userString;
+        case FilterType.BeginsWith:
+          return entryString.startsWith(userString);
+        case FilterType.EndsWith:
+          return entryString.endsWith(userString);
+        default:
+          return true;
+      }
     }
+  } catch (e) {
+    return false;
   }
 }
 
