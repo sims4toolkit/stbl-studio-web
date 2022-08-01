@@ -71,7 +71,7 @@ async function getDownloadInfosForProject(
       .map(locale => {
         return {
           key: getKeyForLocale(project, locale),
-          value: project.stblMap.get(locale)
+          value: project.getFullStbl(locale)
         };
       });
 

@@ -93,6 +93,24 @@ export default class Project implements ProjectMetaData {
   }
 
   /**
+   * Gets a copy of the STBL for a specific local, with any missing entries
+   * filled in by the default locale.
+   * 
+   * @param locale Locale of STBL to get
+   */
+  getFullStbl(locale: StblLocaleType): StblResourceType {
+    const stbl = this.stblMap.get(locale) ?? new StringTableResource();
+
+    if (locale !== this.primaryLocale) {
+      this.primaryStbl.entries.forEach(entry => {
+        if (!stbl.hasKey(entry.key)) stbl.add(entry.key, entry.value);
+      });
+    }
+
+    return stbl;
+  }
+
+  /**
    * Adds a STBL for the specified locale and returns it. If a STBL already
    * exists for the given locale, it is not changed.
    * 
