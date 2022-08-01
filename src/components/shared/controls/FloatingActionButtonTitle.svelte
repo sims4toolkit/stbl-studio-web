@@ -29,6 +29,9 @@
     padding-bottom: 0.2em;
     color: var(--color-light);
 
+    transition: background-color 200ms;
+    transition-delay: 0ms;
+
     &.disabled-color {
       color: var(--color-bg);
     }
