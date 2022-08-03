@@ -66,11 +66,7 @@
       onBlur={createStringEntry}
     />
     <p class="subtle-text mt-1 mb-0">
-      The key will be the hash of the project's UUID and the entered string.
-    </p>
-    <p class="subtle-text mt-half mb-0">
-      Click anywhere or press tab to save the string. Click X or press esc to
-      cancel.
+      Click anywhere or press tab to save. Click X or press esc to cancel.
     </p>
     <button class="button-wrapper save-button" />
   </div>
