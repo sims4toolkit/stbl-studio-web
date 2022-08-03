@@ -49,7 +49,7 @@ $azure-blue: #0095eb;
     --color-error-contrast: #3c1f1f;
     --color-success: rgb(79, 192, 79);
     --color-warning: rgb(226, 188, 100);
-    --color-dimmer: rgba(0, 0, 0, 0.65);
+    --color-dimmer: rgba(0, 0, 0, 0.45);
 
     // filters
     --filter-svg: var(--filter-light);
@@ -60,7 +60,7 @@ $azure-blue: #0095eb;
   // light theme variables
   &[data-theme="light"] {
     // colors
-    --color-bg: rgb(246, 248, 250);
+    --color-bg: rgb(248, 250, 252);
     --color-bg-secondary: white;
     --color-text: #{$darker-gray};
     --color-text-subtle: rgb(108, 109, 109);
@@ -80,7 +80,7 @@ $azure-blue: #0095eb;
     --color-error-contrast: #e09292;
     --color-success: rgb(79, 192, 79);
     --color-warning: rgb(219, 144, 31);
-    --color-dimmer: rgba(0, 0, 0, 0.4);
+    --color-dimmer: rgba(0, 0, 0, 0.25);
 
     // filters
     --filter-svg: var(--filter-dark);
