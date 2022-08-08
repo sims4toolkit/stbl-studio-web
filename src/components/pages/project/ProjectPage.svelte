@@ -301,6 +301,21 @@
             />
           {/each}
         </div>
+      {:else if stringFilters?.length && project?.numStrings}
+        <div class="flex-center flex-col empty-stbl py-3 px-1 text-center">
+          <h3>No Strings Match Filters</h3>
+          <p>
+            None of the strings in this project pass the filters you've set. You
+            can edit these filters in the <span
+              class="clickable-text"
+              on:click={() => (showDisplayOptions = true)}
+              >display options menu</span
+            >, or
+            <span class="clickable-text" on:click={clearFilters}
+              >clear them</span
+            >.
+          </p>
+        </div>
       {:else}
         <div class="flex-center flex-col empty-stbl py-3 px-1 text-center">
           <h3>This Project is Empty</h3>
