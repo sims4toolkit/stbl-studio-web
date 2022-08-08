@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { fade } from "svelte/transition";
   import { Settings } from "../../../typescript/storage";
   import {
     entriesPerPageStore,
@@ -43,7 +42,7 @@
     />
   </div>
   {#if showAllStrings}
-    <p class="subtle-text error-color" transition:fade>
+    <p class="subtle-text error-color">
       <strong class="error-color">WARNING</strong>: Large STBLs might freeze or
       lag.
     </p>
