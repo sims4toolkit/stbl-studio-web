@@ -15,7 +15,7 @@
   const keySubscriptions = [
     subscribeToKey("Escape", close),
     subscribeToKey("Enter", onComplete, {
-      ctrlOrMeta: true,
+      shift: true,
       preventDefault: true,
     }),
   ];
