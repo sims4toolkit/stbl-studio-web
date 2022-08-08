@@ -66,7 +66,9 @@
       onBlur={createStringEntry}
     />
     <p class="subtle-text mt-1 mb-0">
-      Click anywhere or press tab to save. Click X or press esc to cancel.
+      Click anywhere or press <mark class="key">shift</mark> +
+      <mark class="key">enter</mark>
+      to save. Click X or press <mark class="key">esc</mark> to cancel.
     </p>
     <button class="button-wrapper save-button" />
   </div>
