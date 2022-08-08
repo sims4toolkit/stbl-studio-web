@@ -27,7 +27,6 @@
   import BlurOverlay from "../../shared/layout/BlurOverlay.svelte";
   import StringCreationView from "./StringCreationView.svelte";
   import StblTranslateView from "./StblTranslateView.svelte";
-  import { subscribeToKey } from "../../../typescript/keybindings";
   import PaginationController from "../../shared/controls/PaginationController.svelte";
   import StringRehashView from "./StringRehashView.svelte";
   import StblFeatures from "../../shared/controls/StblFeatures.svelte";
@@ -88,24 +87,8 @@
     }),
   ];
 
-  const keySubscriptions = [
-    subscribeToKey(
-      "e",
-      () => {
-        if (!inModal && entries?.length) {
-          selectionGroup.toggleSelectMode();
-        }
-      },
-      {
-        ctrlOrMeta: true,
-        preventDefault: true,
-      }
-    ),
-  ];
-
   onDestroy(() => {
     storeSubscriptions.forEach((unsubscribe) => unsubscribe());
-    keySubscriptions.forEach((unsubscribe) => unsubscribe());
   });
 
   //#endregion Subscriptions

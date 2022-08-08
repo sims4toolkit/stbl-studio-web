@@ -1,6 +1,5 @@
 <script lang="ts">
   import type { StringTableLocale } from "@s4tk/models/enums";
-  import { onDestroy } from "svelte";
   import type { FileDownloadInfo } from "../../../global";
   import DownloadMethod from "../../../typescript/enums/download-method";
   import DownloadOption, {
@@ -12,7 +11,6 @@
     getDisplayName,
     getLocaleData,
   } from "../../../typescript/helpers/localization";
-  import { subscribeToKey } from "../../../typescript/keybindings";
   import type Project from "../../../typescript/models/project";
   import { Settings } from "../../../typescript/storage";
   import Select from "../elements/Select.svelte";
@@ -42,19 +40,6 @@
   const otherLocales = [...otherLocalesSet];
 
   //#endregion Variables
-
-  //#region Lifecycle Hooks
-
-  const keySubscriptions = [
-    subscribeToKey("Escape", onComplete),
-    subscribeToKey("Enter", downloadStbls),
-  ];
-
-  onDestroy(() => {
-    keySubscriptions.forEach((unsubscribe) => unsubscribe());
-  });
-
-  //#endregion Lifecylce Hooks
 
   //#region Options
 

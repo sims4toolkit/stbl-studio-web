@@ -5,8 +5,6 @@
   import type SelectionGroup from "../../../typescript/models/selection-group";
   import Select from "../../shared/elements/Select.svelte";
   import MultipageModalContent from "../../shared/layout/MultipageModalContent.svelte";
-  import { subscribeToKey } from "../../../typescript/keybindings";
-  import { onDestroy } from "svelte";
 
   const { fnv32 } = window.S4TK.hashing;
   const { formatStringKey } = window.S4TK.formatting;
@@ -20,12 +18,6 @@
   let replacements: [number, number][];
   let changedReplacements: [number, number][];
   let numUnchanged: number;
-
-  const keySubscriptions = [subscribeToKey("Escape", onComplete)];
-
-  onDestroy(() => {
-    keySubscriptions.forEach((unsubscribe) => unsubscribe());
-  });
 
   function handleNextButtonClick() {
     if (currentPage === 1) {

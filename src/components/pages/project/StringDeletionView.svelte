@@ -1,7 +1,5 @@
 <script lang="ts">
   import type { StringEntry } from "@s4tk/models/types";
-  import { onDestroy } from "svelte";
-  import { subscribeToKey } from "../../../typescript/keybindings";
   import type Project from "../../../typescript/models/project";
   import type SelectionGroup from "../../../typescript/models/selection-group";
   import TextInput from "../../shared/elements/TextInput.svelte";
@@ -14,12 +12,6 @@
   export let onComplete: () => void;
 
   let deletionConfirmed = false;
-
-  const keySubscriptions = [subscribeToKey("Escape", onComplete)];
-
-  onDestroy(() => {
-    keySubscriptions.forEach((unsubscribe) => unsubscribe());
-  });
 
   function deleteSelectedEntries() {
     if (deletionConfirmed) {

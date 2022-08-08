@@ -4,9 +4,9 @@
   import { parseFiles } from "../../../typescript/helpers/uploads";
   import { fade } from "svelte/transition";
 
+  export let parsedFilesResult: ParsedFilesResult;
   export let onValidUpload: (result: ParsedFilesResult) => void;
 
-  let parseResult: ParsedFilesResult;
   let uploadedFiles: FileList;
   let filesInvalid = false;
   let reviewErrors = false;
@@ -16,33 +16,36 @@
   }
 
   $: foundStbls =
-    parseResult?.stbls.length > 1
-      ? `${parseResult.stbls.length} valid STBLs that were found`
+    parsedFilesResult?.stbls.length > 1
+      ? `${parsedFilesResult.stbls.length} valid STBLs that were found`
       : `1 valid STBL that was found`;
 
   async function readFiles() {
     filesInvalid = false;
-    parseResult = await parseFiles(uploadedFiles);
+    parsedFilesResult = await parseFiles(uploadedFiles);
 
-    if (!parseResult.stbls.length) {
+    if (!parsedFilesResult.stbls.length) {
       filesInvalid = true;
-      parseResult = null;
+      parsedFilesResult = null;
     } else {
-      if (parseResult.errors.length) reviewErrors = true;
-      onValidUpload(parseResult);
+      if (parsedFilesResult.errors.length) {
+        reviewErrors = true;
+      } else {
+        onValidUpload(parsedFilesResult);
+      }
     }
   }
 </script>
 
 {#if reviewErrors}
   <div in:fade>
-    <h3 class="mt-0">{parseResult.errors.length} Error(s) Encountered</h3>
+    <h3 class="mt-0">{parsedFilesResult.errors.length} Error(s) Encountered</h3>
     <p>
       Some files either could not be read or did not contain valid STBL data.
       Don't worry - you can still use the {foundStbls}.
     </p>
     <ul class="error-summary">
-      {#each parseResult.errors as error, key (key)}
+      {#each parsedFilesResult.errors as error, key (key)}
         <li>
           <span class="monospace accent-color">{error.filename}</span>
           &nbsp;=&nbsp;{error.reason}

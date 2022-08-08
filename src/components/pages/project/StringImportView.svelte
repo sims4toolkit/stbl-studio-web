@@ -1,18 +1,31 @@
 <script lang="ts">
   import type { ParsedFilesResult } from "../../../global";
   import StblUploadInput from "../../shared/controls/StblUploadInput.svelte";
-  import FileInput from "../../shared/elements/FileInput.svelte";
   import MultipageModalContent from "../../shared/layout/MultipageModalContent.svelte";
+
+  //#region Variables
 
   export let onComplete: () => void;
 
   let currentPage = 1;
-  let uploadedFiles: FileList;
-  let filesInvalid = false;
+  let completePages = 0;
+  let parsedFilesResult: ParsedFilesResult;
+
+  //#endregion Variables
+
+  //#region Reactive Blocks
+
+  $: {
+    if (parsedFilesResult?.stbls.length && completePages < 1) completePages = 1;
+  }
+
+  //#endregion Reactive Blocks
+
+  //#region Functions
 
   function onNextButtonClick() {
     if (currentPage === 1) {
-      currentPage++;
+      onValidUpload(parsedFilesResult);
     } else if (currentPage === 2) {
       currentPage++;
     } else {
@@ -22,23 +35,24 @@
 
   function onValidUpload(result: ParsedFilesResult) {
     console.log(result);
-
-    // TODO:
+    currentPage++;
   }
+
+  //#endregion Functions
 </script>
 
 <MultipageModalContent
   title="Import Strings"
   canClickBack={false}
   numPages={3}
-  completePages={currentPage}
+  {completePages}
   bind:currentPage
   finalPageNextButtonText="Import"
   {onNextButtonClick}
 >
   <div slot="content" class="w-100">
     {#if currentPage === 1}
-      <StblUploadInput {onValidUpload} />
+      <StblUploadInput bind:parsedFilesResult {onValidUpload} />
     {:else if currentPage === 2}
       <p>page 2</p>
     {:else}

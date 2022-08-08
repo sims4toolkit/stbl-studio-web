@@ -14,7 +14,6 @@
   import GradientHeader from "../../shared/elements/GradientHeader.svelte";
   import ProjectDeletionView from "./ProjectDeletionView.svelte";
   import ProjectUploadView from "./ProjectUploadView.svelte";
-  import { subscribeToKey } from "../../../typescript/keybindings";
   import HomeActionButtons from "./HomeActionButtons.svelte";
   import ProjectMergeView from "./ProjectMergeView.svelte";
   import StblDownloadView from "../../shared/controls/StblDownloadView.svelte";
@@ -51,24 +50,8 @@
     workspace.getProject(uuid)
   );
 
-  const keySubscriptions = [
-    subscribeToKey(
-      "e",
-      () => {
-        if (!inModal && workspace?.projects?.length) {
-          selectionGroup.toggleSelectMode();
-        }
-      },
-      {
-        ctrlOrMeta: true,
-        preventDefault: true,
-      }
-    ),
-  ];
-
   onDestroy(() => {
     unsubscribeWorkspace();
-    keySubscriptions.forEach((unsubscribe) => unsubscribe());
   });
 
   async function handleAction(action: HomeAction) {

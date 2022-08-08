@@ -32,23 +32,13 @@
 
   const keySubscriptions = [
     subscribeToKey(
-      "ArrowLeft",
-      () => {
-        if (canClickBack && currentPage > 1) currentPage--;
-      },
-      {
-        preventDefault: true,
-        ctrlOrMeta: true,
-      }
-    ),
-    subscribeToKey(
-      "ArrowRight",
+      "Enter",
       () => {
         if (canClickNext) onNextButtonClick();
       },
       {
+        shift: true,
         preventDefault: true,
-        ctrlOrMeta: true,
       }
     ),
   ];

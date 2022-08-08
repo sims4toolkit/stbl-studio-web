@@ -1,12 +1,13 @@
 <script lang="ts">
   import { onMount, onDestroy } from "svelte";
   import { fade } from "svelte/transition";
+  import { subscribeToKey } from "../../../typescript/keybindings";
   import { Settings } from "../../../typescript/storage";
   import StickyCloseButton from "../elements/StickyCloseButton.svelte";
 
   export let large = false;
   export let fill = true;
-  export let onClose: () => void = undefined;
+  export let onClose: () => void = () => {};
 
   let modal: HTMLDivElement;
   let firstFocusableChild: Element;
@@ -14,6 +15,7 @@
 
   const bodyClassName = "overlay-active";
   const focusQuery = "a, button, input, textarea, select";
+  const keySubscriptions = [subscribeToKey("Escape", onClose)];
 
   onMount(() => {
     document.body.classList.add(bodyClassName);
@@ -26,6 +28,7 @@
     document.body.classList.remove(bodyClassName);
     window.removeEventListener("focusin", onFocusIn);
     window.removeEventListener("focusout", onFocusOut);
+    keySubscriptions.forEach((unsubscribe) => unsubscribe());
   });
 
   function resetChildrenRefs() {

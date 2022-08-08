@@ -1,8 +1,6 @@
 <script lang="ts">
-  import { onDestroy } from "svelte";
   import type { LocaleOption } from "../../../global";
   import { allLocales } from "../../../typescript/helpers/localization";
-  import { subscribeToKey } from "../../../typescript/keybindings";
   import type Project from "../../../typescript/models/project";
   import ProjectMetaDataPages from "../../shared/controls/ProjectMetaDataPages.svelte";
   import MultipageModalContent from "../../shared/layout/MultipageModalContent.svelte";
@@ -19,12 +17,6 @@
   let otherLocaleOptions: LocaleOption[] = null;
   let groupHexString = formatAsHexString(project.group, 8);
   let instanceHexString = formatAsHexString(project.instanceBase, 14);
-
-  const keySubscriptions = [subscribeToKey("Escape", onComplete)];
-
-  onDestroy(() => {
-    keySubscriptions.forEach((unsubscribe) => unsubscribe());
-  });
 
   $: completePages = currentPage + (isPage1Valid ? 0 : -1);
 
