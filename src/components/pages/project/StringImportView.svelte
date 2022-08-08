@@ -1,6 +1,7 @@
 <script lang="ts">
+  import type { ParsedFilesResult } from "../../../global";
+  import StblUploadInput from "../../shared/controls/StblUploadInput.svelte";
   import FileInput from "../../shared/elements/FileInput.svelte";
-
   import MultipageModalContent from "../../shared/layout/MultipageModalContent.svelte";
 
   export let onComplete: () => void;
@@ -18,6 +19,12 @@
       onComplete();
     }
   }
+
+  function onValidUpload(result: ParsedFilesResult) {
+    console.log(result);
+
+    // TODO:
+  }
 </script>
 
 <MultipageModalContent
@@ -31,15 +38,7 @@
 >
   <div slot="content" class="w-100">
     {#if currentPage === 1}
-      <FileInput
-        focusOnMount={true}
-        label="binaries, jsons, and/or packages only"
-        bind:files={uploadedFiles}
-        accept=".json,.stbl,.bnry,.binary,.package"
-        multiple={true}
-        bind:filesInvalid
-        errorMessage="No valid STBLs found"
-      />
+      <StblUploadInput {onValidUpload} />
     {:else if currentPage === 2}
       <p>page 2</p>
     {:else}

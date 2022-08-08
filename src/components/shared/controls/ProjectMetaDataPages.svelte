@@ -29,8 +29,6 @@
   let isGroupValid = false;
   let isInstanceValid = false;
 
-  // TODO: cmd + left/right to go back and forth if able to
-
   $: {
     isPage1Valid = isNameValid && isGroupValid && isInstanceValid;
   }

@@ -169,6 +169,14 @@ function parseFile(filename: string, buffer: Buffer): ResourceKeyPair<StblType>[
   } else {
     const key = getResourceKey(filename);
 
+    const locale = StringTableLocale.getLocale(key.instance);
+    if (!(locale in StringTableLocale)) {
+      key.instance = StringTableLocale.setHighByte(
+        Settings.defaultLocale,
+        key.instance
+      );
+    }
+
     const value = ext === "json"
       ? parseStblJson(buffer)
       : parseStblBinary(buffer);

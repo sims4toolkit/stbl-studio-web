@@ -352,11 +352,3 @@
     {/if}
   </div>
 </MultipageModalContent>
-
-<style lang="scss">
-  ul.error-summary {
-    max-height: 100px;
-    overflow-x: hidden;
-    overflow-y: auto;
-  }
-</style>

@@ -189,8 +189,8 @@
       />
     </div>
     <p class="subtle-text mt-2 mb-0">
-      Click "Download" or press enter to download your file(s). If there are
-      multiple files, they will be zipped.
+      Click "Download" or press <mark class="key">enter</mark> to download your file(s).
+      If there are multiple files, they will be zipped.
     </p>
   </div>
 </MultipageModalContent>
