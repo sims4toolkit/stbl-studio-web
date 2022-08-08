@@ -48,6 +48,8 @@
   {completePages}
   bind:currentPage
   finalPageNextButtonText="Import"
+  minimumContentHeight="220"
+  centerVertically={true}
   {onNextButtonClick}
 >
   <div slot="content" class="w-100">
