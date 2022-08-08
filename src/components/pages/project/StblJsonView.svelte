@@ -14,7 +14,6 @@
   let textarea: HTMLTextAreaElement;
   let wrapText = true;
   let fullHeight = false;
-  let errorMsg = "";
   let hasChanges = false;
 
   let jsonContent = JSON.stringify(
@@ -46,7 +45,7 @@
       hasChanges = false;
     } catch (err) {
       console.error(err);
-      errorMsg = err;
+      alert(`Could not save string table.\n\n${err}`);
     }
   }
 </script>
@@ -90,15 +89,6 @@
   class:wrap-text={wrapText}
   on:input={() => (hasChanges = true)}
 />
-
-{#if errorMsg}
-  <ScreenDimmer>
-    <div class="flex-center h-100">
-      {errorMsg}
-      <button on:click={() => (errorMsg = "")}>OK</button>
-    </div>
-  </ScreenDimmer>
-{/if}
 
 <style lang="scss">
   strong {
