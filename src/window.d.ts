@@ -1,9 +1,9 @@
-import type compression from "@s4tk/compression";
-import type encoding from "@s4tk/encoding";
-import type hashing from "@s4tk/hashing";
-import type formatting from "@s4tk/hashing/formatting";
-import type models from "@s4tk/models";
-import type enums from "@s4tk/models/enums";
+import type * as compression from "@s4tk/compression";
+import type * as encoding from "@s4tk/encoding";
+import type * as hashing from "@s4tk/hashing";
+import type * as formatting from "@s4tk/hashing/formatting";
+import type * as models from "@s4tk/models";
+import type * as enums from "@s4tk/models/enums";
 
 declare global {
   interface Window {

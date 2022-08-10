@@ -58,11 +58,11 @@ export default class LocalizedStringTable {
 
   constructor(
     private _primaryLocale: StringTableLocale,
-    private _allLocales: Set<StringTableLocale>,
+    private _allLocales: Set<StringTableLocale> = new Set(),
     entries: Omit<LocalizedStringEntry, "id">[] = []
   ) {
     if (!_allLocales.has(_primaryLocale))
-      throw new Error("Primary locale must be included in all locales.");
+      _allLocales.add(_primaryLocale);
 
     this._entryMap = new Map();
     entries.forEach(({ key, values }) => {
