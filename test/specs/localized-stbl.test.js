@@ -3,6 +3,53 @@ const { StringTableLocale } = window.S4TK.enums;
 import LocalizedStringTable from "../lib/models/localized-stbl.js";
 
 describe("LocalizedStringEntry", () => {
+  //#region Helpers
+
+  const oneLocaleStbl = () => new LocalizedStringTable(
+    StringTableLocale.English,
+    new Set([StringTableLocale.English]),
+    [
+      {
+        key: 0x12345678,
+        values: new Map([
+          [StringTableLocale.English, "First"]
+        ])
+      },
+      {
+        key: 0x87654321,
+        values: new Map([
+          [StringTableLocale.English, "Second"]
+        ])
+      }
+    ]
+  );
+
+  const twoLocaleStbl = () => new LocalizedStringTable(
+    StringTableLocale.English,
+    new Set([
+      StringTableLocale.English,
+      StringTableLocale.Italian
+    ]),
+    [
+      {
+        key: 0x12345678,
+        values: new Map([
+          [StringTableLocale.English, "First"],
+          [StringTableLocale.Italian, "Primo"]
+        ])
+      },
+      {
+        key: 0x87654321,
+        values: new Map([
+          [StringTableLocale.English, "Second"],
+          [StringTableLocale.Italian, "Secondo"]
+        ])
+      }
+    ]
+  );
+
+  //#endregion Helpers
+
   //#region Getters / Setters
 
   describe("#allLocales", () => {
@@ -96,25 +143,7 @@ describe("LocalizedStringEntry", () => {
     });
 
     it("should use the given entries in its map (one locale)", () => {
-      const stbl = new LocalizedStringTable(
-        StringTableLocale.English,
-        new Set([StringTableLocale.English]),
-        [
-          {
-            key: 0x12345678,
-            values: new Map([
-              [StringTableLocale.English, "First"]
-            ])
-          },
-          {
-            key: 0x87654321,
-            values: new Map([
-              [StringTableLocale.English, "Second"]
-            ])
-          }
-        ]
-      );
-
+      const stbl = oneLocaleStbl();
       expect(stbl.entries).to.be.an("Array").with.lengthOf(2);
       const [first, second] = stbl.entries;
       expect(first.key).to.equal(0x12345678);
@@ -124,55 +153,19 @@ describe("LocalizedStringEntry", () => {
     });
 
     it("should use the given entries in its map (two locales)", () => {
-      const stbl = new LocalizedStringTable(
-        StringTableLocale.English,
-        new Set([StringTableLocale.English]),
-        [
-          {
-            key: 0x12345678,
-            values: new Map([
-              [StringTableLocale.English, "First"],
-              [StringTableLocale.Italian, "Primo"]
-            ])
-          },
-          {
-            key: 0x87654321,
-            values: new Map([
-              [StringTableLocale.English, "Second"],
-              [StringTableLocale.Italian, "Secondo"]
-            ])
-          }
-        ]
-      );
-
+      const stbl = twoLocaleStbl();
       expect(stbl.entries).to.be.an("Array").with.lengthOf(2);
       const [first, second] = stbl.entries;
-      
       expect(first.key).to.equal(0x12345678);
       expect(first.values.get(StringTableLocale.English)).to.equal("First");
       expect(first.values.get(StringTableLocale.Italian)).to.equal("Primo");
-
       expect(second.key).to.equal(0x87654321);
       expect(second.values.get(StringTableLocale.English)).to.equal("Second");
       expect(second.values.get(StringTableLocale.Italian)).to.equal("Secondo");
     });
 
     it("should assign incremental IDs to each given entry", () => {
-      const stbl = new LocalizedStringTable(
-        StringTableLocale.English,
-        new Set([StringTableLocale.English]),
-        [
-          {
-            key: 0x12345678,
-            value: "First"
-          },
-          {
-            key: 0x87654321,
-            value: "Second"
-          }
-        ]
-      );
-
+      const stbl = oneLocaleStbl();
       expect(stbl.entries).to.be.an("Array").with.lengthOf(2);
       expect(stbl.getEntry(0)).to.not.be.undefined;
       expect(stbl.getEntry(1)).to.not.be.undefined;
