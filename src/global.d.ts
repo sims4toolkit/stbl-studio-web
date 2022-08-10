@@ -14,11 +14,6 @@ import type ProjectView from "./typescript/enums/project-view";
 
 type StblMap = Map<StringTableLocale, StringTableResource>;
 
-type StringTableJson = {
-  key: number;
-  value: string;
-}[];
-
 interface FileError {
   filename: string;
   reason: string;
@@ -113,42 +108,3 @@ interface WorkspaceJson {
     stblMap: string;
   }[];
 }
-
-declare global {
-  interface Window {
-    S4TK: {
-      compression: {
-        CompressionType: typeof CompressionType;
-        compressBuffer: typeof compressBuffer;
-        decompressBuffer: typeof decompressBuffer;
-      },
-      encoding: {
-        BinaryEncoder: typeof BinaryEncoder;
-        BinaryDecoder: typeof BinaryDecoder;
-      },
-      enums: {
-        StringTableLocale: typeof StringTableLocale;
-        BinaryResourceType: typeof BinaryResourceType;
-      },
-      formatting: {
-        formatAsHexString: typeof formatAsHexString;
-        formatResourceKey: typeof formatResourceKey;
-        formatStringKey: typeof formatStringKey;
-        formatResourceInstance: typeof formatResourceInstance;
-      },
-      hashing: {
-        fnv64: typeof fnv64;
-        fnv32: typeof fnv32;
-      },
-      models: {
-        Package: typeof Package;
-        StringTableResource: typeof StringTableResource;
-      },
-      Node: {
-        Buffer: typeof Buffer;
-      }
-    };
-  }
-}
-
-window.S4TK = window.S4TK || {};
