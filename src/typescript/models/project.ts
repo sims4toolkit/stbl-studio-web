@@ -1,13 +1,10 @@
-import type { StringTableResource as StblResourceType } from "@s4tk/models";
-import type { StringTableLocale as StblLocaleType } from "@s4tk/models/enums";
+import type { StringTableResource } from "@s4tk/models";
+import type { StringTableLocale } from "@s4tk/models/enums";
 import type { ProjectMetaData, StblMap } from "../../global";
 import { v4 as uuidv4 } from "uuid";
 import { loadStblMap, Settings, saveProjectMetaData, saveStblMap } from "../storage";
 import ProjectView from "../enums/project-view";
-
-const { StringTableResource } = window.S4TK.models;
-const { StringTableLocale } = window.S4TK.enums;
-const { fnv64 } = window.S4TK.hashing;
+const { models, enums, hashing } = window.S4TK;
 
 /**
  * A project that contains string tables and associated meta data.
@@ -18,7 +15,7 @@ export default class Project implements ProjectMetaData {
   name: string;
   numLocales: number; // display only, use stblMap.size for logic
   numStrings: number; // display only, use primaryStbl.size for logic
-  translatingTo: StblLocaleType;
+  translatingTo: StringTableLocale;
   readonly uuid: string;
   view: ProjectView;
 
@@ -27,9 +24,9 @@ export default class Project implements ProjectMetaData {
     return this._stblMap ??= loadStblMap(this.uuid);
   }
 
-  private _primaryLocale: StblLocaleType;
+  private _primaryLocale: StringTableLocale;
   get primaryLocale() { return this._primaryLocale; }
-  set primaryLocale(newLocale: StblLocaleType) {
+  set primaryLocale(newLocale: StringTableLocale) {
     if (this._primaryLocale !== newLocale) {
       const stbl = this.addLocale(newLocale);
 
@@ -44,15 +41,15 @@ export default class Project implements ProjectMetaData {
     }
   }
 
-  get allLocales(): StblLocaleType[] {
+  get allLocales(): StringTableLocale[] {
     return Array.from(this.stblMap.keys());
   }
 
-  get primaryStbl(): StblResourceType {
+  get primaryStbl(): StringTableResource {
     return this.stblMap.get(this.primaryLocale);
   }
 
-  get allStbls(): StblResourceType[] {
+  get allStbls(): StringTableResource[] {
     return Array.from(this.stblMap.values());
   }
 
@@ -65,12 +62,12 @@ export default class Project implements ProjectMetaData {
   constructor(
     data: Partial<ProjectMetaData>,
     stblMap?: StblMap,
-    otherLocales?: StblLocaleType[]
+    otherLocales?: StringTableLocale[]
   ) {
     this.uuid = data.uuid ?? uuidv4();
     this.name = data.name ?? this.uuid;
     this.group = data.group ?? 0;
-    this.instanceBase = data.instanceBase ?? StringTableLocale.getInstanceBase(fnv64(this.uuid));
+    this.instanceBase = data.instanceBase ?? enums.StringTableLocale.getInstanceBase(hashing.fnv64(this.uuid));
     this._primaryLocale = data.primaryLocale ?? Settings.defaultLocale;
     this.translatingTo = data.translatingTo ?? 0;
     this._stblMap = stblMap;
@@ -98,8 +95,8 @@ export default class Project implements ProjectMetaData {
    * 
    * @param locale Locale of STBL to get
    */
-  getFullStbl(locale: StblLocaleType): StblResourceType {
-    const stbl = this.stblMap.get(locale) ?? new StringTableResource();
+  getFullStbl(locale: StringTableLocale): StringTableResource {
+    const stbl = this.stblMap.get(locale) ?? new models.StringTableResource();
 
     if (locale !== this.primaryLocale) {
       this.primaryStbl.entries.forEach(entry => {
@@ -116,9 +113,9 @@ export default class Project implements ProjectMetaData {
    * 
    * @param locale Locale to add STBL for
    */
-  addLocale(locale: StblLocaleType): StblResourceType {
+  addLocale(locale: StringTableLocale): StringTableResource {
     if (!this.stblMap.has(locale)) {
-      const stbl = new StringTableResource();
+      const stbl = new models.StringTableResource();
       this.stblMap.set(locale, stbl);
       this.numLocales = this.stblMap.size;
       return stbl;
@@ -135,10 +132,10 @@ export default class Project implements ProjectMetaData {
    * 
    * @param locales New locales to use
    */
-  setLocales(locales: StblLocaleType[]) {
+  setLocales(locales: StringTableLocale[]) {
     const localesToUse = new Set(locales);
 
-    const localesToDelete: StblLocaleType[] = [];
+    const localesToDelete: StringTableLocale[] = [];
     this.stblMap.forEach((_, locale) => {
       if (locale === this.primaryLocale) return;
       if (this.stblMap.has(locale) && !localesToUse.has(locale)) {
