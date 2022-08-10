@@ -26,12 +26,10 @@ export interface LocalizedStringEntry {
 export default class LocalizedStringTable {
   //#region Properties
 
-  private _allLocales: Set<StringTableLocale>;
   private _allLocalesCache?: StringTableLocale[];
   private _entryMap: Map<number, LocalizedStringEntry>;
   private _entriesCache?: LocalizedStringEntry[];
   private _nextId = 0;
-  private _primaryLocale: StringTableLocale;
 
   //#endregion Properties
 
@@ -54,8 +52,19 @@ export default class LocalizedStringTable {
 
   //#region Initialization
 
-  constructor() {
-    // TODO:
+  constructor(
+    private _primaryLocale: StringTableLocale,
+    private _allLocales: Set<StringTableLocale>,
+    entries: Omit<LocalizedStringEntry, "id">[] = []
+  ) {
+    if (!_allLocales.has(_primaryLocale))
+      throw new Error("Primary locale must be included in all locales.");
+
+    this._entryMap = new Map();
+    entries.forEach(({ key, values }) => {
+      const id = this._nextId++;
+      this._entryMap.set(id, { id, key, values });
+    });
   }
 
   //#endregion Initialization
