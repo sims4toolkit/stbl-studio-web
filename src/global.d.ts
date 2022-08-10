@@ -14,6 +14,11 @@ import type ProjectView from "./typescript/enums/project-view";
 
 type StblMap = Map<StringTableLocale, StringTableResource>;
 
+type StringTableJson = {
+  key: number;
+  value: string;
+}[];
+
 interface FileError {
   filename: string;
   reason: string;
