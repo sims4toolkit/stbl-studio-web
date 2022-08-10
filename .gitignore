@@ -2,6 +2,7 @@ node_modules/
 public/build/
 public/node/
 temp/
+test/lib
 
 .DS_Store
 .vscode/settings.json

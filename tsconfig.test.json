@@ -1,0 +1,11 @@
+{
+  "include": [
+    "src/window.d.ts",
+    "src/lib/**/*.ts"
+  ],
+  "compilerOptions": {
+    "outDir": "test/lib",
+    "moduleResolution": "node",
+    "target": "ES2022"
+  }
+}

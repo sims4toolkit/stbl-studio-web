@@ -1,7 +1,11 @@
 import type { StringTableResource } from "@s4tk/models";
 import type { StringTableLocale } from "@s4tk/models/enums";
-import type { StringTableJson } from "../../global";
 const { models } = window.S4TK;
+
+type StringTableJson = {
+  key: number;
+  value: string;
+}[];
 
 /**
  * The data for a LocalizedStringEntry.

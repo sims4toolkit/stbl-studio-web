@@ -10,7 +10,8 @@
     "sass:watch": "sass --watch src/styles/_index.scss public/build/global.css",
     "dev": "npm run clean ; concurrently \"npm run sass:watch\" \"rollup -c -w\"",
     "start": "sirv public --no-clear --port 5000",
-    "serve": "sirv public --no-clear --host"
+    "serve": "sirv public --no-clear --host",
+    "build:test": "tsc --project tsconfig.test.json"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
@@ -21,9 +22,7 @@
     "@s4tk/hashing": "^0.2.1",
     "@s4tk/models": "^0.4.0",
     "@tsconfig/svelte": "^2.0.0",
-    "@types/chai": "^4.3.3",
     "@types/file-saver": "^2.0.5",
-    "@types/mocha": "^9.1.1",
     "@types/uuid": "^8.3.4",
     "browserify": "^17.0.0",
     "chai": "^4.3.6",
@@ -40,6 +39,7 @@
     "svelte-check": "^2.0.0",
     "svelte-popover": "^2.0.8",
     "svelte-preprocess": "^4.0.0",
+    "ts-node": "^10.5.0",
     "tslib": "^2.0.0",
     "typescript": "^4.0.0"
   },

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Mocha</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../node_modules/mocha/mocha.css">
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script src="../node_modules/chai/chai.js"></script>
+    <script src="../public/node/s4tk-api.min.js"></script>
+
+    <script type="module" class="mocha-init">
+        mocha.setup('bdd');
+    </script>
+
+    <!-- ------------------------------------ -->
+    <script type="module" src="./specs/localized-stbl.test.js"></script>  
+    <!-- ------------------------------------ -->
+
+    <script type="module">
+        mocha.run();
+    </script>
+</head>
+<body>
+    <div id="mocha"></div>
+</body>
+</html>
