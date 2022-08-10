@@ -1,4 +1,5 @@
 const { expect } = chai;
+const { StringTableLocale } = window.S4TK.enums;
 import LocalizedStringTable from "../lib/models/localized-stbl.js";
 
 describe("LocalizedStringEntry", () => {
@@ -72,27 +73,110 @@ describe("LocalizedStringEntry", () => {
 
   describe("#constructor", () => {
     it("should use the first argument as a primary locale", () => {
-      // TODO:
+      const stbl = new LocalizedStringTable(StringTableLocale.Italian);
+      expect(stbl.primaryLocale).to.equal(StringTableLocale.Italian);
     });
 
     it("should use a set with only the primary locale if not given", () => {
-      // TODO:
+      const stbl = new LocalizedStringTable(StringTableLocale.English);
+      expect(stbl._allLocales.size).to.equal(1);
+      expect(stbl._allLocales.has(StringTableLocale.English)).to.be.true;
+      expect(stbl._allLocales.has(StringTableLocale.Italian)).to.be.false;
     });
 
     it("should add the primary locale to all locales if not present", () => {
-      // TODO:
+      const stbl = new LocalizedStringTable(
+        StringTableLocale.English,
+        new Set([StringTableLocale.Italian])
+      );
+
+      expect(stbl._allLocales.size).to.equal(2);
+      expect(stbl._allLocales.has(StringTableLocale.English)).to.be.true;
+      expect(stbl._allLocales.has(StringTableLocale.Italian)).to.be.true;
     });
 
-    it("should clone the given entries", () => {
-      // TODO:
+    it("should use the given entries in its map (one locale)", () => {
+      const stbl = new LocalizedStringTable(
+        StringTableLocale.English,
+        new Set([StringTableLocale.English]),
+        [
+          {
+            key: 0x12345678,
+            values: new Map([
+              [StringTableLocale.English, "First"]
+            ])
+          },
+          {
+            key: 0x87654321,
+            values: new Map([
+              [StringTableLocale.English, "Second"]
+            ])
+          }
+        ]
+      );
+
+      expect(stbl.entries).to.be.an("Array").with.lengthOf(2);
+      const [first, second] = stbl.entries;
+      expect(first.key).to.equal(0x12345678);
+      expect(first.values.get(StringTableLocale.English)).to.equal("First");
+      expect(second.key).to.equal(0x87654321);
+      expect(second.values.get(StringTableLocale.English)).to.equal("Second");
     });
 
-    it("should use the given entries in its map", () => {
-      // TODO:
+    it("should use the given entries in its map (two locales)", () => {
+      const stbl = new LocalizedStringTable(
+        StringTableLocale.English,
+        new Set([StringTableLocale.English]),
+        [
+          {
+            key: 0x12345678,
+            values: new Map([
+              [StringTableLocale.English, "First"],
+              [StringTableLocale.Italian, "Primo"]
+            ])
+          },
+          {
+            key: 0x87654321,
+            values: new Map([
+              [StringTableLocale.English, "Second"],
+              [StringTableLocale.Italian, "Secondo"]
+            ])
+          }
+        ]
+      );
+
+      expect(stbl.entries).to.be.an("Array").with.lengthOf(2);
+      const [first, second] = stbl.entries;
+      
+      expect(first.key).to.equal(0x12345678);
+      expect(first.values.get(StringTableLocale.English)).to.equal("First");
+      expect(first.values.get(StringTableLocale.Italian)).to.equal("Primo");
+
+      expect(second.key).to.equal(0x87654321);
+      expect(second.values.get(StringTableLocale.English)).to.equal("Second");
+      expect(second.values.get(StringTableLocale.Italian)).to.equal("Secondo");
     });
 
     it("should assign incremental IDs to each given entry", () => {
-      // TODO:
+      const stbl = new LocalizedStringTable(
+        StringTableLocale.English,
+        new Set([StringTableLocale.English]),
+        [
+          {
+            key: 0x12345678,
+            value: "First"
+          },
+          {
+            key: 0x87654321,
+            value: "Second"
+          }
+        ]
+      );
+
+      expect(stbl.entries).to.be.an("Array").with.lengthOf(2);
+      expect(stbl.getEntry(0)).to.not.be.undefined;
+      expect(stbl.getEntry(1)).to.not.be.undefined;
+      expect(stbl.getEntry(2)).to.be.undefined;
     });
   });
 
