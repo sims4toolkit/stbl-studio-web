@@ -281,7 +281,27 @@ describe("LocalizedStringEntry", () => {
   });
 
   describe("#replaceEntries()", () => {
-    // TODO:
+    context("entry with key already exists", () => {
+      it("should retain all existing translations", () => {
+        // TODO:
+      });
+
+      it("should update the primary locale's value", () => {
+        // TODO:
+      });
+    });
+
+    context("entry with key does not exist", () => {
+      it("should create new entry in primary locale only", () => {
+        // TODO:
+      });
+    });
+
+    context("is missing entries that exist", () => {
+      it("should delete entries who are not in new list", () => {
+        // TODO:
+      });
+    });
   });
 
   describe("#replaceLocales()", () => {
