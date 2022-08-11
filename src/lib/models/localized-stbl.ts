@@ -2,6 +2,8 @@ import type { StringTableResource } from "@s4tk/models";
 import type { StringTableLocale } from "@s4tk/models/enums";
 const { models } = window.S4TK;
 
+const UNTRANSLATED_PLACEHOLDER = "[UNTRANSLATED]";
+
 /**
  * A JSON representation of a single-locale string table.
  */
@@ -190,7 +192,7 @@ export default class LocalizedStringTable {
       entries.forEach(entryToAdd => {
         const existingEntry = this.entries.find(existingEntry => {
           return existingEntry.key === entryToAdd.key;
-        }) ?? this.addEntry(entryToAdd.key, entryToAdd.value);
+        }) ?? this.addEntry(entryToAdd.key, UNTRANSLATED_PLACEHOLDER);
 
         existingEntry.values.set(locale, entryToAdd.value);
       });
@@ -312,9 +314,7 @@ export default class LocalizedStringTable {
     // fill in all missing strings
     this.entries.forEach(entry => {
       if (!entry.values.has(locale)) {
-        const value = entry.values.get(this.primaryLocale);
-        entry.values.set(locale, value);
-        entry.values.delete(this.primaryLocale);
+        entry.values.set(locale, UNTRANSLATED_PLACEHOLDER);
       }
     });
 
