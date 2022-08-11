@@ -1,6 +1,7 @@
 import type { StringTableResource } from "@s4tk/models";
 import type { StringTableLocale } from "@s4tk/models/enums";
-const { models } = window.S4TK;
+const { models, encoding } = window.S4TK;
+const { Buffer } = window.S4TK.Node;
 
 const UNTRANSLATED_PLACEHOLDER = "[UNTRANSLATED]";
 
@@ -25,6 +26,8 @@ export interface LocalizedStringEntry {
  * A string table that contains data for multiple languages.
  */
 export default class LocalizedStringTable {
+  static readonly VERSION = 0;
+
   //#region Properties
 
   private _allLocalesCache?: StringTableLocale[];
@@ -74,6 +77,51 @@ export default class LocalizedStringTable {
       const id = this._nextId++;
       this._entryMap.set(id, { id, key, values });
     });
+  }
+
+  /**
+   * TODO:
+   * 
+   * @param string TODO:
+   */
+  static deserialize(string: string): LocalizedStringTable {
+    const buffer = Buffer.from(string, "base64");
+    const decoder = new encoding.BinaryDecoder(buffer);
+
+    decoder.skip(1); // version currently unneeded
+    const primaryLocale = decoder.uint8();
+    const numLocales = decoder.uint8();
+    const numEntries = decoder.uint32();
+
+    const allLocales = new Set<StringTableLocale>();
+    const localesToDecode: StringTableLocale[] = [];
+    for (let i = 0; i < numLocales; ++i) {
+      const locale = decoder.uint8();
+      const hasData = decoder.boolean();
+      allLocales.add(locale);
+      if (hasData) localesToDecode.push(locale);
+    }
+
+    const entries: Partial<LocalizedStringEntry>[] = [];
+    for (let i = 0; i < numEntries; ++i) {
+      entries.push({
+        key: decoder.uint32(),
+        values: new Map()
+      });
+    }
+
+    localesToDecode.forEach(locale => {
+      for (let i = 0; i < numEntries; ++i) {
+        const value = decoder.string();
+        entries[i].values.set(locale, value);
+      }
+    });
+
+    return new LocalizedStringTable(
+      primaryLocale,
+      allLocales,
+      entries
+    );
   }
 
   //#endregion Initialization
@@ -184,6 +232,7 @@ export default class LocalizedStringTable {
    * @param locale Locale to import entries to (primary locale by default)
    */
   importEntries(entries: StringTableJson, locale = this.primaryLocale) {
+    // FIXME: let user choose to overwrite or not
     if (locale === this.primaryLocale) {
       entries.forEach(entry => this.addEntry(entry.key, entry.value));
     } else if (!this._allLocales.has(locale)) {
@@ -291,6 +340,53 @@ export default class LocalizedStringTable {
     } else {
       values.set(locale, value);
     }
+  }
+
+  /**
+   * TODO:
+   */
+  serialize(): string {
+    const localesWithData: StringTableLocale[] = [];
+
+    const headerBuffer = (() => {
+      const bufferSize = 7 + (this.numLocales * 2) + (this.numEntries * 4);
+      const buffer = Buffer.alloc(bufferSize);
+      const encoder = new encoding.BinaryEncoder(buffer);
+
+      // header & properties (7 bytes)
+      encoder.uint8(LocalizedStringTable.VERSION);
+      encoder.uint8(this.primaryLocale);
+      encoder.uint8(this.numLocales);
+      encoder.uint32(this.numEntries);
+
+      // locale data
+      this.allLocales.forEach(locale => {
+        encoder.uint8(locale);
+        const hasData = this.entries.some(entry => entry.values.has(locale));
+        if (hasData) localesWithData.push(locale);
+        encoder.boolean(hasData);
+      });
+
+      // keys
+      this.entries.forEach(entry => encoder.uint32(entry.key));
+
+      return buffer;
+    })();
+
+    const entriesBuffer = Buffer.concat(localesWithData.map(locale => {
+      return Buffer.concat(this.entries.map(entry => {
+        const value = entry.values.get(locale) ?? "";
+        const buffer = Buffer.alloc(Buffer.byteLength(value) + 1);
+        const encoder = new encoding.BinaryEncoder(buffer);
+        encoder.charsUtf8(value);
+        return buffer;
+      }));
+    }));
+
+    return Buffer.concat([
+      headerBuffer,
+      entriesBuffer
+    ]).toString("base64");
   }
 
   //#endregion Public Methods
