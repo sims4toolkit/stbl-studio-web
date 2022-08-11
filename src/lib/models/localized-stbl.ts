@@ -39,6 +39,14 @@ export default class LocalizedStringTable {
     return this._entriesCache ??= [...this._entryMap.values()];
   }
 
+  get numEntries(): number {
+    return this._entryMap.size;
+  }
+
+  get numLocales(): number {
+    return this._allLocales.size;
+  }
+
   get primaryLocale(): StringTableLocale { return this._primaryLocale; }
   set primaryLocale(locale: StringTableLocale) {
     if (this._primaryLocale !== locale) this._switchPrimaryLocale(locale);

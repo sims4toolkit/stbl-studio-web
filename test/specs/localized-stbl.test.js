@@ -152,6 +152,20 @@ describe("LocalizedStringEntry", () => {
     });
   });
 
+  describe("#numEntries", () => {
+    it("should be the number of entries", () => {
+      expect((new LocalizedStringTable(0)).numEntries).to.equal(0);
+      expect(twoLocaleStbl().numEntries).to.equal(2);
+    });
+  });
+
+  describe("#numLocales", () => {
+    it("should be the number of entries", () => {
+      expect(oneLocaleStbl().numLocales).to.equal(1);
+      expect(twoLocaleStbl().numLocales).to.equal(2);
+    });
+  });
+
   describe("#primaryLocale", () => {
     it("should return the primary locale", () => {
       const stbl = twoLocaleStbl();
@@ -245,31 +259,56 @@ describe("LocalizedStringEntry", () => {
 
   describe("#addEntry()", () => {
     it("should add an entry in the primary locale to the STBL", () => {
-      // TODO:
+      const stbl = twoLocaleStbl();
+      expect(stbl.numEntries).to.equal(2);
+      expect(() => stbl.getValue(2)).to.throw();
+      stbl.addEntry(0x1234, "Hello");
+      expect(stbl.numEntries).to.equal(3);
+      expect(stbl.getValue(2)).to.equal("Hello");
     });
 
     it("should not add an entry to non-primary locales", () => {
-      // TODO:
+      const stbl = twoLocaleStbl();
+      expect(stbl.numEntries).to.equal(2);
+      expect(() => stbl.getValue(2, StringTableLocale.Italian)).to.throw();
+      stbl.addEntry(0x1234, "Hello");
+      expect(stbl.numEntries).to.equal(3);
+      expect(stbl.getValue(2, StringTableLocale.Italian)).to.be.undefined;
     });
 
     it("should return the entry that was created", () => {
-      // TODO:
+      const stbl = twoLocaleStbl();
+      const entry = stbl.addEntry(0x1234, "Hello");
+      expect(entry.key).to.equal(0x1234);
+      expect(entry.values.get(StringTableLocale.English)).to.equal("Hello");
     });
 
     it("should use the next incremental ID", () => {
-      // TODO:
+      const stbl = twoLocaleStbl();
+      const entry = stbl.addEntry(0x1234, "Hello");
+      expect(entry.id).to.equal(2);
     });
   });
 
   describe("#deleteEntry()", () => {
     it("should delete the specific entry from the stbl", () => {
-      // TODO:
+      const stbl = twoLocaleStbl();
+      expect(stbl.numEntries).to.equal(2);
+      expect(stbl.getValue(1)).to.not.be.undefined;
+      stbl.deleteEntry(1);
+      expect(stbl.numEntries).to.equal(1);
+      expect(() => stbl.getValue(1)).to.throw();
     });
   });
 
   describe("#getEntry()", () => {
     it("should return the entry with the given id", () => {
-      // TODO:
+      const stbl = twoLocaleStbl();
+      const entry = stbl.getEntry(1);
+      expect(entry.id).to.equal(1);
+      expect(entry.key).to.equal(0x87654321);
+      expect(entry.values.get(StringTableLocale.English)).to.equal("Second");
+      expect(entry.values.get(StringTableLocale.Italian)).to.equal("Secondo");
     });
   });
 
@@ -406,11 +445,13 @@ describe("LocalizedStringEntry", () => {
 
   describe("#hasEntry()", () => {
     it("should return true if an entry with the given ID exists", () => {
-      // TODO:
+      const stbl = twoLocaleStbl();
+      expect(stbl.hasEntry(1)).to.be.true;
     });
 
     it("should return false if an entry with the given ID does not exist", () => {
-      // TODO:
+      const stbl = twoLocaleStbl();
+      expect(stbl.hasEntry(2)).to.be.false;
     });
   });
 
