@@ -315,33 +315,64 @@ describe("LocalizedStringTable", () => {
   describe("#getJson()", () => {
     context("locale is not provided", () => {
       it("should return a JSON for the primary locale", () => {
-        // TODO:
+        const stbl = twoLocaleStbl();
+        const json = stbl.getJson();
+        expect(json).to.be.an("Array").with.lengthOf(2);
+        const [first, second] = json;
+        expect(first.key).to.equal(0x12345678);
+        expect(first.value).to.equal("First");
+        expect(second.key).to.equal(0x87654321);
+        expect(second.value).to.equal("Second");
       });
     });
 
     context("locale is primary", () => {
       it("should return a JSON for the given locale", () => {
-        // TODO:
+        const stbl = twoLocaleStbl();
+        const json = stbl.getJson(StringTableLocale.English);
+        expect(json).to.be.an("Array").with.lengthOf(2);
+        const [first, second] = json;
+        expect(first.key).to.equal(0x12345678);
+        expect(first.value).to.equal("First");
+        expect(second.key).to.equal(0x87654321);
+        expect(second.value).to.equal("Second");
       });
     });
 
     context("locale is not primary, but is in all locales", () => {
       it("should return a JSON for the given locale", () => {
-        // TODO:
+        const stbl = twoLocaleStbl();
+        const json = stbl.getJson(StringTableLocale.Italian);
+        expect(json).to.be.an("Array").with.lengthOf(2);
+        const [first, second] = json;
+        expect(first.key).to.equal(0x12345678);
+        expect(first.value).to.equal("Primo");
+        expect(second.key).to.equal(0x87654321);
+        expect(second.value).to.equal("Secondo");
       });
 
       it("should backfill missing strings with the primary locale's value", () => {
-        // TODO:
+        const stbl = incompleteStbl();
+        const json = stbl.getJson(StringTableLocale.Italian);
+        expect(json).to.be.an("Array").with.lengthOf(2);
+        const [first, second] = json;
+        expect(first.key).to.equal(0x12345678);
+        expect(first.value).to.equal("Primo");
+        expect(second.key).to.equal(0x87654321);
+        expect(second.value).to.equal("Second");
       });
     });
 
     context("locale is not listed in all locales", () => {
-      it("should return a JSON for the given locale", () => {
-        // TODO:
-      });
-
       it("should backfill missing strings with the primary locale's value", () => {
-        // TODO:
+        const stbl = twoLocaleStbl();
+        const json = stbl.getJson(StringTableLocale.Spanish);
+        expect(json).to.be.an("Array").with.lengthOf(2);
+        const [first, second] = json;
+        expect(first.key).to.equal(0x12345678);
+        expect(first.value).to.equal("First");
+        expect(second.key).to.equal(0x87654321);
+        expect(second.value).to.equal("Second");
       });
     });
   });
@@ -349,33 +380,59 @@ describe("LocalizedStringTable", () => {
   describe("#getStringTable()", () => {
     context("locale is not provided", () => {
       it("should return a STBL for the primary locale", () => {
-        // TODO:
+        const stbl = twoLocaleStbl().getStringTable();
+        expect(stbl.size).to.equal(2);
+        const [first, second] = stbl.entries;
+        expect(first.key).to.equal(0x12345678);
+        expect(first.value).to.equal("First");
+        expect(second.key).to.equal(0x87654321);
+        expect(second.value).to.equal("Second");
       });
     });
 
     context("locale is primary", () => {
       it("should return a STBL for the given locale", () => {
-        // TODO:
+        const stbl = twoLocaleStbl().getStringTable(StringTableLocale.English);
+        expect(stbl.size).to.equal(2);
+        const [first, second] = stbl.entries;
+        expect(first.key).to.equal(0x12345678);
+        expect(first.value).to.equal("First");
+        expect(second.key).to.equal(0x87654321);
+        expect(second.value).to.equal("Second");
       });
     });
 
     context("locale is not primary, but is in all locales", () => {
       it("should return a STBL for the given locale", () => {
-        // TODO:
+        const stbl = twoLocaleStbl().getStringTable(StringTableLocale.Italian);
+        expect(stbl.size).to.equal(2);
+        const [first, second] = stbl.entries;
+        expect(first.key).to.equal(0x12345678);
+        expect(first.value).to.equal("Primo");
+        expect(second.key).to.equal(0x87654321);
+        expect(second.value).to.equal("Secondo");
       });
 
       it("should backfill missing strings with the primary locale's value", () => {
-        // TODO:
+        const stbl = incompleteStbl().getStringTable(StringTableLocale.Italian);
+        expect(stbl.size).to.equal(2);
+        const [first, second] = stbl.entries;
+        expect(first.key).to.equal(0x12345678);
+        expect(first.value).to.equal("Primo");
+        expect(second.key).to.equal(0x87654321);
+        expect(second.value).to.equal("Second");
       });
     });
 
     context("locale is not listed in all locales", () => {
-      it("should return a STBL for the given locale", () => {
-        // TODO:
-      });
-
       it("should backfill missing strings with the primary locale's value", () => {
-        // TODO:
+        const stbl = twoLocaleStbl().getStringTable(StringTableLocale.Spanish);
+        expect(stbl.size).to.equal(2);
+        const [first, second] = stbl.entries;
+        expect(first.key).to.equal(0x12345678);
+        expect(first.value).to.equal("First");
+        expect(second.key).to.equal(0x87654321);
+        expect(second.value).to.equal("Second");
       });
     });
   });
