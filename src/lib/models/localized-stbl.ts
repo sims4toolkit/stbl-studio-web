@@ -2,6 +2,9 @@ import type { StringTableResource } from "@s4tk/models";
 import type { StringTableLocale } from "@s4tk/models/enums";
 const { models } = window.S4TK;
 
+/**
+ * A JSON representation of a single-locale string table.
+ */
 type StringTableJson = {
   key: number;
   value: string;
@@ -75,6 +78,12 @@ export default class LocalizedStringTable {
 
   //#region Public Methods
 
+  /**
+   * Creates and returns a new entry in this STBL from the given key/value pair.
+   * 
+   * @param key Key of entry to add
+   * @param string String value of entry to add
+   */
   addEntry(key: number, string: string): LocalizedStringEntry {
     const id = this._nextId++;
     const values = new Map<StringTableLocale, string>();
@@ -85,15 +94,31 @@ export default class LocalizedStringTable {
     return entry;
   }
 
+  /**
+   * Deletes the entry with the given ID.
+   * 
+   * @param id ID of entry to delete
+   */
   deleteEntry(id: number) {
     this._entryMap.delete(id);
     this._clearEntriesCache();
   }
 
+  /**
+   * Returns the entry with the given ID.
+   * 
+   * @param id ID of entry to get
+   */
   getEntry(id: number): LocalizedStringEntry {
     return this._entryMap.get(id);
   }
 
+  /**
+   * Returns a JSON structure containing the key/value pairs for the given
+   * locale.
+   * 
+   * @param locale Locale to create JSON for (primary locale by default)
+   */
   getJson(locale = this.primaryLocale): StringTableJson {
     return this.entries.map(entry => ({
       key: entry.key,
@@ -101,6 +126,11 @@ export default class LocalizedStringTable {
     }));
   }
 
+  /**
+   * Returns a STBL containing the key/value pairs for the given locale.
+   * 
+   * @param locale Locale to create STBL for (primary locale by default)
+   */
   getStringTable(locale = this.primaryLocale): StringTableResource {
     return new models.StringTableResource(this.getJson(locale));
   }
@@ -132,13 +162,30 @@ export default class LocalizedStringTable {
       ?? "";
   }
 
+  /**
+   * Returns true if an entry with the given ID exists, false otherwise.
+   * 
+   * @param id ID of entry to check for
+   */
   hasEntry(id: number) {
     return this._entryMap.has(id);
   }
 
+  /**
+   * Imports all of the given entries to this STBL using the given locale. If
+   * importing to the primary locale, all entries will be added as-is. If 
+   * importing to another locale, any entries with existing keys will have
+   * their translations updated, while ones with new keys will be added with
+   * the text being added to the primary locale.
+   * 
+   * @param entries Entries to import
+   * @param locale Locale to import entries to (primary locale by default)
+   */
   importEntries(entries: StringTableJson, locale = this.primaryLocale) {
     if (locale === this.primaryLocale) {
       entries.forEach(entry => this.addEntry(entry.key, entry.value));
+    } else if (!this._allLocales.has(locale)) {
+      throw new Error("Cannot import strings to locale not in this STBL.");
     } else {
       entries.forEach(entryToAdd => {
         const existingEntry = this.entries.find(existingEntry => {
@@ -152,6 +199,14 @@ export default class LocalizedStringTable {
     this._clearEntriesCache();
   }
 
+  /**
+   * Replaces all entries in this STBL. If any entries have keys that already
+   * exist, the text for those entries will be updated. If any entries have
+   * new keys, new entries will be created. If there are any keys in this STBL
+   * that do not appear in the given entries, they will be deleted.
+   * 
+   * @param entries Entries to use
+   */
   replaceEntries(entries: StringTableJson) {
     const newEntries = new Map<number, string>();
     entries.forEach(({ key, value }) => newEntries.set(key, value));
@@ -201,6 +256,12 @@ export default class LocalizedStringTable {
     this._clearLocalesCache();
   }
 
+  /**
+   * Updates the key for the entry with the given ID.
+   * 
+   * @param id ID of entry to change key of
+   * @param key New key to use for entry
+   */
   setKey(id: number, key: number) {
     this.getEntry(id).key = key;
   }
