@@ -164,6 +164,12 @@ export default class LocalizedStringTable {
     this._clearEntriesCache();
   }
 
+  /**
+   * Replaces the locales in this string table. If locales are removed, then
+   * all translations for those locales will be deleted.
+   * 
+   * @param locales New locales to use
+   */
   replaceLocales(locales: StringTableLocale[]) {
     if (!locales.includes(this.primaryLocale))
       throw new Error("Locale list must include primary locale.");

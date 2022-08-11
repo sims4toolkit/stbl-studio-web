@@ -77,19 +77,30 @@ describe("LocalizedStringEntry", () => {
 
   describe("#allLocales", () => {
     it("should return all locales in the stbl", () => {
-      // TODO:
+      const stbl = twoLocaleStbl();
+      expect(stbl.allLocales).to.be.an("Array").with.lengthOf(2);
+      expect(stbl.allLocales[0]).to.equal(StringTableLocale.English);
+      expect(stbl.allLocales[1]).to.equal(StringTableLocale.Italian);
     });
 
     it("should return the same list if accessed more than once", () => {
-      // TODO:
+      const stbl = twoLocaleStbl();
+      const allLocales = stbl.allLocales;
+      expect(allLocales).to.equal(stbl.allLocales)
     });
 
     it("should return a new list if locales were updated", () => {
-      // TODO:
+      const stbl = twoLocaleStbl();
+      const allLocales = stbl.allLocales;
+      stbl.replaceLocales([StringTableLocale.English]);
+      expect(allLocales).to.not.equal(stbl.allLocales);
     });
 
-    it("should return a new list if primary locale was changed", () => {
-      // TODO:
+    it("should return a new list if primary locale is changed to new locale", () => {
+      const stbl = twoLocaleStbl();
+      const allLocales = stbl.allLocales;
+      stbl.primaryLocale = StringTableLocale.Spanish;
+      expect(allLocales).to.not.equal(stbl.allLocales);
     });
   });
 
