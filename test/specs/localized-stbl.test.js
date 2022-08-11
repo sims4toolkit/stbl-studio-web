@@ -301,29 +301,34 @@ describe("LocalizedStringEntry", () => {
   describe("#getValue()", () => {
     context("locale is not provided", () => {
       it("should return the value for the primary locale", () => {
-        // TODO:
+        const stbl = twoLocaleStbl();
+        expect(stbl.getValue(0)).to.equal("First");
       });
     });
 
     context("locale is primary", () => {
       it("should return the value for the primary locale", () => {
-        // TODO:
+        const stbl = twoLocaleStbl();
+        expect(stbl.getValue(0, StringTableLocale.English)).to.equal("First");
       });
     });
 
     context("locale is not primary, but is in all locales", () => {
       it("should return the value for the given locale if there is one", () => {
-        // TODO:
+        const stbl = twoLocaleStbl();
+        expect(stbl.getValue(0, StringTableLocale.Italian)).to.equal("Primo");
       });
 
       it("should return undefined if there is no value for the given locale", () => {
-        // TODO:
+        const stbl = incompleteStbl();
+        expect(stbl.getValue(1, StringTableLocale.Italian)).to.be.undefined;
       });
     });
 
     context("locale is not listed in all locales", () => {
       it("should return undefined", () => {
-        // TODO:
+        const stbl = twoLocaleStbl();
+        expect(stbl.getValue(0, StringTableLocale.Spanish)).to.be.undefined;
       });
     });
   });
@@ -331,23 +336,27 @@ describe("LocalizedStringEntry", () => {
   describe("#getValueWithFallback()", () => {
     context("locale is primary", () => {
       it("should return the value for the primary locale", () => {
-        // TODO:
+        const stbl = twoLocaleStbl();
+        expect(stbl.getValueWithFallback(0, StringTableLocale.English)).to.equal("First");
       });
     });
 
     context("locale is not primary, but is in all locales", () => {
       it("should return the value for the given locale if there is one", () => {
-        // TODO:
+        const stbl = twoLocaleStbl();
+        expect(stbl.getValueWithFallback(1, StringTableLocale.Italian)).to.equal("Secondo");
       });
 
       it("should return the value for the primary locale if there is no value for the given locale", () => {
-        // TODO:
+        const stbl = incompleteStbl();
+        expect(stbl.getValueWithFallback(1, StringTableLocale.Italian)).to.equal("Second");
       });
     });
 
     context("locale is not listed in all locales", () => {
       it("should return the value for the primary locale", () => {
-        // TODO:
+        const stbl = twoLocaleStbl();
+        expect(stbl.getValueWithFallback(0, StringTableLocale.Spanish)).to.equal("First");
       });
     });
   });
