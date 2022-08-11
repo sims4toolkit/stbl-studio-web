@@ -106,45 +106,77 @@ describe("LocalizedStringEntry", () => {
 
   describe("#entries", () => {
     it("should return all entries in the stbl", () => {
-      // TODO:
+      const stbl = twoLocaleStbl();
+      expect(stbl.entries).to.be.an("Array").with.lengthOf(2);
+      const [first, second] = stbl.entries;
+      expect(first.key).to.equal(0x12345678);
+      expect(first.values.get(StringTableLocale.English)).to.equal("First");
+      expect(first.values.get(StringTableLocale.Italian)).to.equal("Primo");
+      expect(second.key).to.equal(0x87654321);
+      expect(second.values.get(StringTableLocale.English)).to.equal("Second");
+      expect(second.values.get(StringTableLocale.Italian)).to.equal("Secondo");
     });
 
     it("should return the same list if accessed more than once", () => {
-      // TODO:
+      const stbl = twoLocaleStbl();
+      const entries = stbl.entries;
+      expect(entries).to.equal(stbl.entries);
     });
 
     it("should return a new list if an entry was added", () => {
-      // TODO:
+      const stbl = twoLocaleStbl();
+      const entries = stbl.entries;
+      stbl.addEntry(0x1234, "Hello");
+      expect(entries).to.not.equal(stbl.entries);
     });
 
     it("should return a new list if an entry was deleted", () => {
-      // TODO:
+      const stbl = twoLocaleStbl();
+      const entries = stbl.entries;
+      stbl.deleteEntry(0);
+      expect(entries).to.not.equal(stbl.entries);
     });
 
     it("should return a new list if entries were replaced", () => {
-      // TODO:
+      const stbl = twoLocaleStbl();
+      const entries = stbl.entries;
+      stbl.replaceEntries([ { key: 0x12345678, value: "New" } ]);
+      expect(entries).to.not.equal(stbl.entries);
     });
 
     it("should return a new list if entries were imported", () => {
-      // TODO:
+      const stbl = twoLocaleStbl();
+      const entries = stbl.entries;
+      stbl.importEntries([ { key: 0x12345678, value: "New" } ]);
+      expect(entries).to.not.equal(stbl.entries);
     });
   });
 
   describe("#primaryLocale", () => {
     it("should return the primary locale", () => {
-      // TODO:
+      const stbl = twoLocaleStbl();
+      expect(stbl.primaryLocale).to.equal(StringTableLocale.English);
     });
 
     it("should change the primary locale when set", () => {
-      // TODO:
+      const stbl = twoLocaleStbl();
+      expect(stbl.primaryLocale).to.equal(StringTableLocale.English);
+      stbl.primaryLocale = StringTableLocale.Italian;
+      expect(stbl.primaryLocale).to.equal(StringTableLocale.Italian);
     });
 
     it("should backfill entries for new primary locale if it is missing any", () => {
-      // TODO:
+      const stbl = incompleteStbl();
+      expect(stbl.getValue(1, StringTableLocale.Italian)).to.be.undefined;
+      stbl.primaryLocale = StringTableLocale.Italian;
+      expect(stbl.getValue(1, StringTableLocale.Italian)).to.equal("Second");
     });
 
     it("should delete backfilled entries from the old primary locale", () => {
-      // TODO:
+      const stbl = incompleteStbl();
+      expect(stbl.getValue(1, StringTableLocale.English)).to.equal("Second");
+      stbl.primaryLocale = StringTableLocale.Italian;
+      expect(stbl.getValue(1, StringTableLocale.English)).to.be.undefined;
     });
   });
 
