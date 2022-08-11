@@ -2,7 +2,6 @@ const { expect } = chai;
 const { StringTableLocale } = window.S4TK.enums;
 import LocalizedStringTable from "../lib/models/localized-stbl.js";
 
-// just for concision
 const { English, Italian, Spanish } = StringTableLocale;
 const UNTRANSLATED_PLACEHOLDER = "[UNTRANSLATED]";
 
@@ -640,24 +639,57 @@ describe("LocalizedStringTable", () => {
 
   describe("#replaceEntries()", () => {
     context("entry with key already exists", () => {
-      it("should retain all existing translations", () => {
-        // TODO:
+      it("should retain existing translations", () => {
+        const stbl = twoLocaleStbl();
+
+        stbl.replaceEntries([
+          { key: 0x12345678, value: "New" }
+        ]);
+
+        expect(stbl.getValue(0, Italian)).to.equal("Primo");
       });
 
       it("should update the primary locale's value", () => {
-        // TODO:
+        const stbl = twoLocaleStbl();
+
+        stbl.replaceEntries([
+          { key: 0x12345678, value: "New" }
+        ]);
+
+        expect(stbl.getValue(0, English)).to.equal("New");
       });
     });
 
     context("entry with key does not exist", () => {
       it("should create new entry in primary locale only", () => {
-        // TODO:
+        const stbl = twoLocaleStbl();
+
+        expect(stbl.numEntries).to.equal(2);
+        expect(() => stbl.getValue(2)).to.throw();
+        
+        stbl.replaceEntries([
+          { key: 0x1234, value: "New" }
+        ]);
+
+        expect(stbl.numEntries).to.equal(1);
+        expect(stbl.getValue(2, English)).to.equal("New");
+        expect(stbl.getValue(2, Italian)).to.be.undefined
       });
     });
 
     context("is missing entries that exist", () => {
       it("should delete entries whose keys are not in new list", () => {
-        // TODO:
+        const stbl = twoLocaleStbl();
+
+        expect(stbl.getValue(0)).to.not.be.undefined;
+        expect(stbl.getValue(1)).to.not.be.undefined;
+        
+        stbl.replaceEntries([
+          { key: 0x1234, value: "New" }
+        ]);
+
+        expect(() => stbl.getValue(0)).to.throw();
+        expect(() => stbl.getValue(1)).to.throw();
       });
     });
   });
