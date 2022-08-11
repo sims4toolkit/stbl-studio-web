@@ -2,70 +2,73 @@ const { expect } = chai;
 const { StringTableLocale } = window.S4TK.enums;
 import LocalizedStringTable from "../lib/models/localized-stbl.js";
 
+// just for concision
+const { English, Italian, Spanish } = StringTableLocale;
+
 describe("LocalizedStringTable", () => {
   //#region Helpers
 
   const oneLocaleStbl = () => new LocalizedStringTable(
-    StringTableLocale.English,
-    new Set([StringTableLocale.English]),
+    English,
+    new Set([English]),
     [
       {
         key: 0x12345678,
         values: new Map([
-          [StringTableLocale.English, "First"]
+          [English, "First"]
         ])
       },
       {
         key: 0x87654321,
         values: new Map([
-          [StringTableLocale.English, "Second"]
+          [English, "Second"]
         ])
       }
     ]
   );
 
   const twoLocaleStbl = () => new LocalizedStringTable(
-    StringTableLocale.English,
+    English,
     new Set([
-      StringTableLocale.English,
-      StringTableLocale.Italian
+      English,
+      Italian
     ]),
     [
       {
         key: 0x12345678,
         values: new Map([
-          [StringTableLocale.English, "First"],
-          [StringTableLocale.Italian, "Primo"]
+          [English, "First"],
+          [Italian, "Primo"]
         ])
       },
       {
         key: 0x87654321,
         values: new Map([
-          [StringTableLocale.English, "Second"],
-          [StringTableLocale.Italian, "Secondo"]
+          [English, "Second"],
+          [Italian, "Secondo"]
         ])
       }
     ]
   );
 
   const incompleteStbl = () => new LocalizedStringTable(
-    StringTableLocale.English,
+    English,
     new Set([
-      StringTableLocale.English,
-      StringTableLocale.Italian
+      English,
+      Italian
     ]),
     [
       {
         key: 0x12345678,
         values: new Map([
-          [StringTableLocale.English, "First"],
-          [StringTableLocale.Italian, "Primo"]
+          [English, "First"],
+          [Italian, "Primo"]
         ])
       },
       {
         key: 0x87654321,
         values: new Map([
-          [StringTableLocale.English, "Second"]
+          [English, "Second"]
         ])
       }
     ]
@@ -79,8 +82,8 @@ describe("LocalizedStringTable", () => {
     it("should return all locales in the stbl", () => {
       const stbl = twoLocaleStbl();
       expect(stbl.allLocales).to.be.an("Array").with.lengthOf(2);
-      expect(stbl.allLocales[0]).to.equal(StringTableLocale.English);
-      expect(stbl.allLocales[1]).to.equal(StringTableLocale.Italian);
+      expect(stbl.allLocales[0]).to.equal(English);
+      expect(stbl.allLocales[1]).to.equal(Italian);
     });
 
     it("should return the same list if accessed more than once", () => {
@@ -92,14 +95,14 @@ describe("LocalizedStringTable", () => {
     it("should return a new list if locales were updated", () => {
       const stbl = twoLocaleStbl();
       const allLocales = stbl.allLocales;
-      stbl.replaceLocales([StringTableLocale.English]);
+      stbl.replaceLocales([English]);
       expect(allLocales).to.not.equal(stbl.allLocales);
     });
 
     it("should return a new list if primary locale is changed to new locale", () => {
       const stbl = twoLocaleStbl();
       const allLocales = stbl.allLocales;
-      stbl.primaryLocale = StringTableLocale.Spanish;
+      stbl.primaryLocale = Spanish;
       expect(allLocales).to.not.equal(stbl.allLocales);
     });
   });
@@ -110,11 +113,11 @@ describe("LocalizedStringTable", () => {
       expect(stbl.entries).to.be.an("Array").with.lengthOf(2);
       const [first, second] = stbl.entries;
       expect(first.key).to.equal(0x12345678);
-      expect(first.values.get(StringTableLocale.English)).to.equal("First");
-      expect(first.values.get(StringTableLocale.Italian)).to.equal("Primo");
+      expect(first.values.get(English)).to.equal("First");
+      expect(first.values.get(Italian)).to.equal("Primo");
       expect(second.key).to.equal(0x87654321);
-      expect(second.values.get(StringTableLocale.English)).to.equal("Second");
-      expect(second.values.get(StringTableLocale.Italian)).to.equal("Secondo");
+      expect(second.values.get(English)).to.equal("Second");
+      expect(second.values.get(Italian)).to.equal("Secondo");
     });
 
     it("should return the same list if accessed more than once", () => {
@@ -169,28 +172,28 @@ describe("LocalizedStringTable", () => {
   describe("#primaryLocale", () => {
     it("should return the primary locale", () => {
       const stbl = twoLocaleStbl();
-      expect(stbl.primaryLocale).to.equal(StringTableLocale.English);
+      expect(stbl.primaryLocale).to.equal(English);
     });
 
     it("should change the primary locale when set", () => {
       const stbl = twoLocaleStbl();
-      expect(stbl.primaryLocale).to.equal(StringTableLocale.English);
-      stbl.primaryLocale = StringTableLocale.Italian;
-      expect(stbl.primaryLocale).to.equal(StringTableLocale.Italian);
+      expect(stbl.primaryLocale).to.equal(English);
+      stbl.primaryLocale = Italian;
+      expect(stbl.primaryLocale).to.equal(Italian);
     });
 
     it("should backfill entries for new primary locale if it is missing any", () => {
       const stbl = incompleteStbl();
-      expect(stbl.getValue(1, StringTableLocale.Italian)).to.be.undefined;
-      stbl.primaryLocale = StringTableLocale.Italian;
-      expect(stbl.getValue(1, StringTableLocale.Italian)).to.equal("Second");
+      expect(stbl.getValue(1, Italian)).to.be.undefined;
+      stbl.primaryLocale = Italian;
+      expect(stbl.getValue(1, Italian)).to.equal("Second");
     });
 
     it("should delete backfilled entries from the old primary locale", () => {
       const stbl = incompleteStbl();
-      expect(stbl.getValue(1, StringTableLocale.English)).to.equal("Second");
-      stbl.primaryLocale = StringTableLocale.Italian;
-      expect(stbl.getValue(1, StringTableLocale.English)).to.be.undefined;
+      expect(stbl.getValue(1, English)).to.equal("Second");
+      stbl.primaryLocale = Italian;
+      expect(stbl.getValue(1, English)).to.be.undefined;
     });
   });
 
@@ -200,26 +203,26 @@ describe("LocalizedStringTable", () => {
 
   describe("#constructor", () => {
     it("should use the first argument as a primary locale", () => {
-      const stbl = new LocalizedStringTable(StringTableLocale.Italian);
-      expect(stbl.primaryLocale).to.equal(StringTableLocale.Italian);
+      const stbl = new LocalizedStringTable(Italian);
+      expect(stbl.primaryLocale).to.equal(Italian);
     });
 
     it("should use a set with only the primary locale if not given", () => {
-      const stbl = new LocalizedStringTable(StringTableLocale.English);
+      const stbl = new LocalizedStringTable(English);
       expect(stbl._allLocales.size).to.equal(1);
-      expect(stbl._allLocales.has(StringTableLocale.English)).to.be.true;
-      expect(stbl._allLocales.has(StringTableLocale.Italian)).to.be.false;
+      expect(stbl._allLocales.has(English)).to.be.true;
+      expect(stbl._allLocales.has(Italian)).to.be.false;
     });
 
     it("should add the primary locale to all locales if not present", () => {
       const stbl = new LocalizedStringTable(
-        StringTableLocale.English,
-        new Set([StringTableLocale.Italian])
+        English,
+        new Set([Italian])
       );
 
       expect(stbl._allLocales.size).to.equal(2);
-      expect(stbl._allLocales.has(StringTableLocale.English)).to.be.true;
-      expect(stbl._allLocales.has(StringTableLocale.Italian)).to.be.true;
+      expect(stbl._allLocales.has(English)).to.be.true;
+      expect(stbl._allLocales.has(Italian)).to.be.true;
     });
 
     it("should use the given entries in its map (one locale)", () => {
@@ -227,9 +230,9 @@ describe("LocalizedStringTable", () => {
       expect(stbl.entries).to.be.an("Array").with.lengthOf(2);
       const [first, second] = stbl.entries;
       expect(first.key).to.equal(0x12345678);
-      expect(first.values.get(StringTableLocale.English)).to.equal("First");
+      expect(first.values.get(English)).to.equal("First");
       expect(second.key).to.equal(0x87654321);
-      expect(second.values.get(StringTableLocale.English)).to.equal("Second");
+      expect(second.values.get(English)).to.equal("Second");
     });
 
     it("should use the given entries in its map (two locales)", () => {
@@ -237,11 +240,11 @@ describe("LocalizedStringTable", () => {
       expect(stbl.entries).to.be.an("Array").with.lengthOf(2);
       const [first, second] = stbl.entries;
       expect(first.key).to.equal(0x12345678);
-      expect(first.values.get(StringTableLocale.English)).to.equal("First");
-      expect(first.values.get(StringTableLocale.Italian)).to.equal("Primo");
+      expect(first.values.get(English)).to.equal("First");
+      expect(first.values.get(Italian)).to.equal("Primo");
       expect(second.key).to.equal(0x87654321);
-      expect(second.values.get(StringTableLocale.English)).to.equal("Second");
-      expect(second.values.get(StringTableLocale.Italian)).to.equal("Secondo");
+      expect(second.values.get(English)).to.equal("Second");
+      expect(second.values.get(Italian)).to.equal("Secondo");
     });
 
     it("should assign incremental IDs to each given entry", () => {
@@ -270,17 +273,17 @@ describe("LocalizedStringTable", () => {
     it("should not add an entry to non-primary locales", () => {
       const stbl = twoLocaleStbl();
       expect(stbl.numEntries).to.equal(2);
-      expect(() => stbl.getValue(2, StringTableLocale.Italian)).to.throw();
+      expect(() => stbl.getValue(2, Italian)).to.throw();
       stbl.addEntry(0x1234, "Hello");
       expect(stbl.numEntries).to.equal(3);
-      expect(stbl.getValue(2, StringTableLocale.Italian)).to.be.undefined;
+      expect(stbl.getValue(2, Italian)).to.be.undefined;
     });
 
     it("should return the entry that was created", () => {
       const stbl = twoLocaleStbl();
       const entry = stbl.addEntry(0x1234, "Hello");
       expect(entry.key).to.equal(0x1234);
-      expect(entry.values.get(StringTableLocale.English)).to.equal("Hello");
+      expect(entry.values.get(English)).to.equal("Hello");
     });
 
     it("should use the next incremental ID", () => {
@@ -307,8 +310,8 @@ describe("LocalizedStringTable", () => {
       const entry = stbl.getEntry(1);
       expect(entry.id).to.equal(1);
       expect(entry.key).to.equal(0x87654321);
-      expect(entry.values.get(StringTableLocale.English)).to.equal("Second");
-      expect(entry.values.get(StringTableLocale.Italian)).to.equal("Secondo");
+      expect(entry.values.get(English)).to.equal("Second");
+      expect(entry.values.get(Italian)).to.equal("Secondo");
     });
   });
 
@@ -329,7 +332,7 @@ describe("LocalizedStringTable", () => {
     context("locale is primary", () => {
       it("should return a JSON for the given locale", () => {
         const stbl = twoLocaleStbl();
-        const json = stbl.getJson(StringTableLocale.English);
+        const json = stbl.getJson(English);
         expect(json).to.be.an("Array").with.lengthOf(2);
         const [first, second] = json;
         expect(first.key).to.equal(0x12345678);
@@ -342,7 +345,7 @@ describe("LocalizedStringTable", () => {
     context("locale is not primary, but is in all locales", () => {
       it("should return a JSON for the given locale", () => {
         const stbl = twoLocaleStbl();
-        const json = stbl.getJson(StringTableLocale.Italian);
+        const json = stbl.getJson(Italian);
         expect(json).to.be.an("Array").with.lengthOf(2);
         const [first, second] = json;
         expect(first.key).to.equal(0x12345678);
@@ -353,7 +356,7 @@ describe("LocalizedStringTable", () => {
 
       it("should backfill missing strings with the primary locale's value", () => {
         const stbl = incompleteStbl();
-        const json = stbl.getJson(StringTableLocale.Italian);
+        const json = stbl.getJson(Italian);
         expect(json).to.be.an("Array").with.lengthOf(2);
         const [first, second] = json;
         expect(first.key).to.equal(0x12345678);
@@ -366,7 +369,7 @@ describe("LocalizedStringTable", () => {
     context("locale is not listed in all locales", () => {
       it("should backfill missing strings with the primary locale's value", () => {
         const stbl = twoLocaleStbl();
-        const json = stbl.getJson(StringTableLocale.Spanish);
+        const json = stbl.getJson(Spanish);
         expect(json).to.be.an("Array").with.lengthOf(2);
         const [first, second] = json;
         expect(first.key).to.equal(0x12345678);
@@ -392,7 +395,7 @@ describe("LocalizedStringTable", () => {
 
     context("locale is primary", () => {
       it("should return a STBL for the given locale", () => {
-        const stbl = twoLocaleStbl().getStringTable(StringTableLocale.English);
+        const stbl = twoLocaleStbl().getStringTable(English);
         expect(stbl.size).to.equal(2);
         const [first, second] = stbl.entries;
         expect(first.key).to.equal(0x12345678);
@@ -404,7 +407,7 @@ describe("LocalizedStringTable", () => {
 
     context("locale is not primary, but is in all locales", () => {
       it("should return a STBL for the given locale", () => {
-        const stbl = twoLocaleStbl().getStringTable(StringTableLocale.Italian);
+        const stbl = twoLocaleStbl().getStringTable(Italian);
         expect(stbl.size).to.equal(2);
         const [first, second] = stbl.entries;
         expect(first.key).to.equal(0x12345678);
@@ -414,7 +417,7 @@ describe("LocalizedStringTable", () => {
       });
 
       it("should backfill missing strings with the primary locale's value", () => {
-        const stbl = incompleteStbl().getStringTable(StringTableLocale.Italian);
+        const stbl = incompleteStbl().getStringTable(Italian);
         expect(stbl.size).to.equal(2);
         const [first, second] = stbl.entries;
         expect(first.key).to.equal(0x12345678);
@@ -426,7 +429,7 @@ describe("LocalizedStringTable", () => {
 
     context("locale is not listed in all locales", () => {
       it("should backfill missing strings with the primary locale's value", () => {
-        const stbl = twoLocaleStbl().getStringTable(StringTableLocale.Spanish);
+        const stbl = twoLocaleStbl().getStringTable(Spanish);
         expect(stbl.size).to.equal(2);
         const [first, second] = stbl.entries;
         expect(first.key).to.equal(0x12345678);
@@ -448,26 +451,26 @@ describe("LocalizedStringTable", () => {
     context("locale is primary", () => {
       it("should return the value for the primary locale", () => {
         const stbl = twoLocaleStbl();
-        expect(stbl.getValue(0, StringTableLocale.English)).to.equal("First");
+        expect(stbl.getValue(0, English)).to.equal("First");
       });
     });
 
     context("locale is not primary, but is in all locales", () => {
       it("should return the value for the given locale if there is one", () => {
         const stbl = twoLocaleStbl();
-        expect(stbl.getValue(0, StringTableLocale.Italian)).to.equal("Primo");
+        expect(stbl.getValue(0, Italian)).to.equal("Primo");
       });
 
       it("should return undefined if there is no value for the given locale", () => {
         const stbl = incompleteStbl();
-        expect(stbl.getValue(1, StringTableLocale.Italian)).to.be.undefined;
+        expect(stbl.getValue(1, Italian)).to.be.undefined;
       });
     });
 
     context("locale is not listed in all locales", () => {
       it("should return undefined", () => {
         const stbl = twoLocaleStbl();
-        expect(stbl.getValue(0, StringTableLocale.Spanish)).to.be.undefined;
+        expect(stbl.getValue(0, Spanish)).to.be.undefined;
       });
     });
   });
@@ -476,26 +479,26 @@ describe("LocalizedStringTable", () => {
     context("locale is primary", () => {
       it("should return the value for the primary locale", () => {
         const stbl = twoLocaleStbl();
-        expect(stbl.getValueWithFallback(0, StringTableLocale.English)).to.equal("First");
+        expect(stbl.getValueWithFallback(0, English)).to.equal("First");
       });
     });
 
     context("locale is not primary, but is in all locales", () => {
       it("should return the value for the given locale if there is one", () => {
         const stbl = twoLocaleStbl();
-        expect(stbl.getValueWithFallback(1, StringTableLocale.Italian)).to.equal("Secondo");
+        expect(stbl.getValueWithFallback(1, Italian)).to.equal("Secondo");
       });
 
       it("should return the value for the primary locale if there is no value for the given locale", () => {
         const stbl = incompleteStbl();
-        expect(stbl.getValueWithFallback(1, StringTableLocale.Italian)).to.equal("Second");
+        expect(stbl.getValueWithFallback(1, Italian)).to.equal("Second");
       });
     });
 
     context("locale is not listed in all locales", () => {
       it("should return the value for the primary locale", () => {
         const stbl = twoLocaleStbl();
-        expect(stbl.getValueWithFallback(0, StringTableLocale.Spanish)).to.equal("First");
+        expect(stbl.getValueWithFallback(0, Spanish)).to.equal("First");
       });
     });
   });
@@ -515,41 +518,128 @@ describe("LocalizedStringTable", () => {
   describe("#importEntries()", () => {
     context("no locale given", () => {
       it("should import strings to primary locale", () => {
-        // TODO:
+        const stbl = twoLocaleStbl();
+        expect(stbl.numEntries).to.equal(2);
+
+        stbl.importEntries([
+          { key: 0x1234, value: "New" },
+          { key: 0x5678, value: "Newer" }
+        ]);
+
+        expect(stbl.numEntries).to.equal(4);
+        expect(stbl.getValue(2, English)).to.equal("New");
+        expect(stbl.getValue(3, English)).to.equal("Newer");
+        expect(stbl.getValue(2, Italian)).to.be.undefined;
+        expect(stbl.getValue(3, Italian)).to.be.undefined;
       });
     });
 
     context("locale is primary", () => {
       it("should add new entries for all of the given strings", () => {
-        // TODO:
+        const stbl = twoLocaleStbl();
+        expect(stbl.numEntries).to.equal(2);
+
+        stbl.importEntries([
+          { key: 0x1234, value: "New" },
+          { key: 0x5678, value: "Newer" }
+        ], English);
+
+        expect(stbl.numEntries).to.equal(4);
+        expect(stbl.getValue(2, English)).to.equal("New");
+        expect(stbl.getValue(3, English)).to.equal("Newer");
+        expect(stbl.getValue(2, Italian)).to.be.undefined;
+        expect(stbl.getValue(3, Italian)).to.be.undefined;
       });
 
       it("should add new entries even if keys are repeated", () => {
-        // TODO:
+        const stbl = twoLocaleStbl();
+
+        stbl.importEntries([
+          { key: 0x12345678, value: "Third" },
+          { key: 0x87654321, value: "Fourth" }
+        ], English);
+
+        expect(stbl.getEntry(0).key).to.equal(0x12345678);
+        expect(stbl.getValue(0)).to.equal("First");
+        expect(stbl.getEntry(1).key).to.equal(0x87654321);
+        expect(stbl.getValue(1)).to.equal("Second");
+        expect(stbl.getEntry(2).key).to.equal(0x12345678);
+        expect(stbl.getValue(2)).to.equal("Third");
+        expect(stbl.getEntry(3).key).to.equal(0x87654321);
+        expect(stbl.getValue(3)).to.equal("Fourth");
       });
 
       it("should add new entries even if values are repeated", () => {
-        // TODO:
+        const stbl = twoLocaleStbl();
+
+        stbl.importEntries([
+          { key: 0x1234, value: "First" },
+          { key: 0x5678, value: "Second" }
+        ]);
+
+        expect(stbl.getEntry(0).key).to.equal(0x12345678);
+        expect(stbl.getValue(0)).to.equal("First");
+        expect(stbl.getEntry(1).key).to.equal(0x87654321);
+        expect(stbl.getValue(1)).to.equal("Second");
+        expect(stbl.getEntry(2).key).to.equal(0x1234);
+        expect(stbl.getValue(2)).to.equal("First");
+        expect(stbl.getEntry(3).key).to.equal(0x5678);
+        expect(stbl.getValue(3)).to.equal("Second");
       });
     });
 
     context("locale is not primary, but is in all locales", () => {
       context("key is already associated with an existing entry", () => {
-        it("should set the value of the existing entry in the given locale only", () => {
-          // TODO:
+        it("should replace the value for the given locale if one already exists", () => {
+          const stbl = twoLocaleStbl();
+
+          expect(stbl.getValue(1, Italian)).to.equal("Secondo");
+
+          stbl.importEntries([
+            { key: 0x87654321, value: "Nuovo" }
+          ], Italian);
+
+          expect(stbl.getValue(1, Italian)).to.equal("Nuovo");
+        });
+
+        it("should set the value for the given locale if it doesn't have one", () => {
+          const stbl = incompleteStbl();
+
+          expect(stbl.getValue(1, Italian)).to.be.undefined;
+
+          stbl.importEntries([
+            { key: 0x87654321, value: "Secondo" }
+          ], Italian);
+
+          expect(stbl.getValue(1, Italian)).to.equal("Secondo");
         });
       });
 
       context("key is not associated with an existing entry", () => {
-        it("should create an entry and set value for both primary and given locale", () => {
-          // TODO:
+        it("should create an entry and set value for the primary locale only", () => {
+          const stbl = twoLocaleStbl();
+
+          expect(stbl.numEntries).to.equal(2);
+
+          stbl.importEntries([
+            { key: 0x1234, value: "Nuovo" }
+          ], Italian);
+
+          expect(stbl.numEntries).to.equal(3);
+          expect(stbl.getValue(2, English)).to.equal("Nuovo");
+          expect(stbl.getValue(2, Italian)).to.be.undefined;
         });
       });
     });
 
     context("locale is not listed in all locales", () => {
       it("should throw an exception", () => {
-        // TODO:
+        const stbl = twoLocaleStbl();
+
+        expect(() => stbl.importEntries([
+          { key: 0x1234, value: "New" },
+          { key: 0x5678, value: "Newer" }
+        ], Spanish)).to.throw();
       });
     });
   });
@@ -582,38 +672,38 @@ describe("LocalizedStringTable", () => {
     context("missing primary locale", () => {
       it("should throw an exception", () => {
         const stbl = oneLocaleStbl();
-        expect(() => stbl.replaceLocales([StringTableLocale.Italian])).to.throw();
+        expect(() => stbl.replaceLocales([Italian])).to.throw();
       });
     });
 
     context("has new locales", () => {
       it("should add new locales to allLocales", () => {
         const stbl = oneLocaleStbl();
-        expect(stbl._allLocales.has(StringTableLocale.Italian)).to.be.false;
-        stbl.replaceLocales([StringTableLocale.English, StringTableLocale.Italian]);
-        expect(stbl._allLocales.has(StringTableLocale.Italian)).to.be.true;
+        expect(stbl._allLocales.has(Italian)).to.be.false;
+        stbl.replaceLocales([English, Italian]);
+        expect(stbl._allLocales.has(Italian)).to.be.true;
       });
     });
 
     context("missing existing locales", () => {
       it("should remove missing locales from allLocales", () => {
         const stbl = twoLocaleStbl();
-        expect(stbl._allLocales.has(StringTableLocale.Italian)).to.be.true;
-        stbl.replaceLocales([StringTableLocale.English]);
-        expect(stbl._allLocales.has(StringTableLocale.Italian)).to.be.false;
+        expect(stbl._allLocales.has(Italian)).to.be.true;
+        stbl.replaceLocales([English]);
+        expect(stbl._allLocales.has(Italian)).to.be.false;
       });
 
       it("should delete all string values for missing locales", () => {
         const stbl = twoLocaleStbl();
 
         stbl.entries.forEach(entry => {
-          expect(entry.values.get(StringTableLocale.Italian)).to.not.be.undefined;
+          expect(entry.values.get(Italian)).to.not.be.undefined;
         });
 
-        stbl.replaceLocales([StringTableLocale.English]);
+        stbl.replaceLocales([English]);
 
         stbl.entries.forEach(entry => {
-          expect(entry.values.get(StringTableLocale.Italian)).to.be.undefined;
+          expect(entry.values.get(Italian)).to.be.undefined;
         });
       });
 
@@ -621,13 +711,13 @@ describe("LocalizedStringTable", () => {
         const stbl = twoLocaleStbl();
 
         stbl.entries.forEach(entry => {
-          expect(entry.values.get(StringTableLocale.English)).to.not.be.undefined;
+          expect(entry.values.get(English)).to.not.be.undefined;
         });
 
-        stbl.replaceLocales([StringTableLocale.English]);
+        stbl.replaceLocales([English]);
 
         stbl.entries.forEach(entry => {
-          expect(entry.values.get(StringTableLocale.English)).to.not.be.undefined;
+          expect(entry.values.get(English)).to.not.be.undefined;
         });
       });
     });
@@ -656,7 +746,7 @@ describe("LocalizedStringTable", () => {
       it("should set the value of the primary locale", () => {
         const stbl = twoLocaleStbl();
         expect(stbl.getValue(0)).to.equal("First");
-        stbl.setValue(0, "New", StringTableLocale.English);
+        stbl.setValue(0, "New", English);
         expect(stbl.getValue(0)).to.equal("New");
       });
     });
@@ -665,32 +755,32 @@ describe("LocalizedStringTable", () => {
       context("entry already has a translation for this locale", () => {
         it("should set the value of the given locale", () => {
           const stbl = twoLocaleStbl();
-          expect(stbl.getValue(0, StringTableLocale.Italian)).to.equal("Primo");
-          stbl.setValue(0, "Nuovo", StringTableLocale.Italian);
-          expect(stbl.getValue(0, StringTableLocale.Italian)).to.equal("Nuovo");
+          expect(stbl.getValue(0, Italian)).to.equal("Primo");
+          stbl.setValue(0, "Nuovo", Italian);
+          expect(stbl.getValue(0, Italian)).to.equal("Nuovo");
         });
 
         it("should delete the translation if value is same as primary locale", () => {
           const stbl = twoLocaleStbl();
-          expect(stbl.getValue(0, StringTableLocale.Italian)).to.equal("Primo");
-          stbl.setValue(0, "First", StringTableLocale.Italian);
-          expect(stbl.getValue(0, StringTableLocale.Italian)).to.be.undefined;
+          expect(stbl.getValue(0, Italian)).to.equal("Primo");
+          stbl.setValue(0, "First", Italian);
+          expect(stbl.getValue(0, Italian)).to.be.undefined;
         });
       });
       
       context("entry does not have a value for this locale", () => {
         it("should add a value for the given locale", () => {
           const stbl = incompleteStbl();
-          expect(stbl.getValue(1, StringTableLocale.Italian)).to.be.undefined;
-          stbl.setValue(1, "Secondo", StringTableLocale.Italian);
-          expect(stbl.getValue(1, StringTableLocale.Italian)).to.equal("Secondo");
+          expect(stbl.getValue(1, Italian)).to.be.undefined;
+          stbl.setValue(1, "Secondo", Italian);
+          expect(stbl.getValue(1, Italian)).to.equal("Secondo");
         });
 
         it("should delete the translation if value is same as primary locale", () => {
           const stbl = incompleteStbl();
-          expect(stbl.getValue(1, StringTableLocale.Italian)).to.be.undefined;
-          stbl.setValue(1, "Second", StringTableLocale.Italian);
-          expect(stbl.getValue(1, StringTableLocale.Italian)).to.be.undefined;
+          expect(stbl.getValue(1, Italian)).to.be.undefined;
+          stbl.setValue(1, "Second", Italian);
+          expect(stbl.getValue(1, Italian)).to.be.undefined;
         });
       });
     });
@@ -698,7 +788,7 @@ describe("LocalizedStringTable", () => {
     context("locale is not listed in all locales", () => {
       it("should throw an exception", () => {
         const stbl = twoLocaleStbl();
-        expect(() => stbl.setValue(0, "New", StringTableLocale.Spanish)).to.throw();
+        expect(() => stbl.setValue(0, "New", Spanish)).to.throw();
       });
     });
   });
