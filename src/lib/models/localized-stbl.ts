@@ -8,20 +8,12 @@ type StringTableJson = {
 }[];
 
 /**
- * The data for a LocalizedStringEntry.
- */
-export interface LocalizedStringData {
-  translated?: boolean;
-  value: string;
-}
-
-/**
  * An entry in a LocalizedStringTable.
  */
 export interface LocalizedStringEntry {
   readonly id: number;
   key: number;
-  readonly values: Map<StringTableLocale, LocalizedStringData>;
+  readonly values: Map<StringTableLocale, string>;
 }
 
 /**
@@ -77,8 +69,8 @@ export default class LocalizedStringTable {
 
   addEntry(key: number, string: string): LocalizedStringEntry {
     const id = this._nextId++;
-    const values = new Map<StringTableLocale, LocalizedStringData>();
-    values.set(this.primaryLocale, { value: string });
+    const values = new Map<StringTableLocale, string>();
+    values.set(this.primaryLocale, string);
     const entry = { id, key, values };
     this._entryMap.set(id, entry);
     this._clearEntriesCache();
@@ -97,7 +89,7 @@ export default class LocalizedStringTable {
   getJson(locale = this.primaryLocale): StringTableJson {
     return this.entries.map(entry => ({
       key: entry.key,
-      value: this.getValue(entry.id, locale) ?? ""
+      value: this.getValueWithFallback(entry.id, locale)
     }));
   }
 
@@ -105,12 +97,31 @@ export default class LocalizedStringTable {
     return new models.StringTableResource(this.getJson(locale));
   }
 
+  /**
+   * Returns the value of the entry with the given ID in the given locale. If
+   * there is no value for the given locale (including if the locale is not in
+   * this STBLs locale set), undefined is returned.
+   * 
+   * @param id ID of entry to get value for
+   * @param locale Locale to get value for (primary locale by default)
+   */
   getValue(id: number, locale = this.primaryLocale): string {
-    return this._entryMap.get(id).values.get(locale).value ??
-      (locale === this.primaryLocale
-        ? ""
-        : this.getValue(id)
-      );
+    return this._entryMap.get(id).values.get(locale);
+  }
+
+  /**
+   * Returns the value of the entry with the given ID in the given locale, if it
+   * exists. If not, then it returns the value for the primary locale. When 
+   * building string tables and JSONs, this function should be used instead of
+   * `getValue()`.
+   * 
+   * @param id ID of entry to get value for
+   * @param locale Locale to get value for
+   */
+  getValueWithFallback(id: number, locale: StringTableLocale): string {
+    return this.getValue(id, locale)
+      ?? this.getValue(id, this.primaryLocale)
+      ?? "";
   }
 
   hasEntry(id: number) {
@@ -126,7 +137,7 @@ export default class LocalizedStringTable {
           return existingEntry.key === entryToAdd.key;
         }) ?? this.addEntry(entryToAdd.key, entryToAdd.value);
 
-        existingEntry.values.set(locale, { value: entryToAdd.value });
+        existingEntry.values.set(locale, entryToAdd.value);
       });
     }
 
@@ -140,7 +151,7 @@ export default class LocalizedStringTable {
     // updating existing strings & delete missing ones
     this.entries.forEach(entry => {
       if (newEntries.has(entry.key)) {
-        this.setString(entry.id, newEntries.get(entry.key));
+        this.setValue(entry.id, newEntries.get(entry.key));
         newEntries.delete(entry.key);
       } else {
         this.deleteEntry(entry.id);
@@ -180,8 +191,26 @@ export default class LocalizedStringTable {
     this.getEntry(id).key = key;
   }
 
-  setString(id: number, value: string, locale = this.primaryLocale) {
-    this.getEntry(id).values.get(locale).value = value;
+  /**
+   * Sets the value of the given entry for the given locale.
+   * 
+   * @param id ID of entry to set value of
+   * @param value String value to set
+   * @param locale Locale to set value for (primary locale by default)
+   */
+  setValue(id: number, value: string, locale = this.primaryLocale) {
+    if (!this._allLocales.has(locale))
+      throw new Error("Cannot set value of locale that isn't in this STBL.");
+
+    const values = this.getEntry(id).values;
+
+    if (locale === this.primaryLocale) {
+      values.set(locale, value);
+    } else if (this.getValue(id) === value) {
+      values.delete(locale);
+    } else {
+      values.set(locale, value);
+    }
   }
 
   //#endregion Public Methods
@@ -205,8 +234,8 @@ export default class LocalizedStringTable {
     // fill in all missing strings
     this.entries.forEach(entry => {
       if (!entry.values.has(locale)) {
-        const value = entry.values.get(this.primaryLocale).value;
-        entry.values.set(locale, { value });
+        const value = entry.values.get(this.primaryLocale);
+        entry.values.set(locale, value);
         entry.values.delete(this.primaryLocale);
       }
     });

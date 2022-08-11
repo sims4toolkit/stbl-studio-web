@@ -4,7 +4,7 @@
   "scripts": {
     "build": "npm run clean ; npm run sass:build ; rollup -c",
     "build:s4tk": "sh scripts/browserify-s4tk.sh",
-    "build:test": "rm -rf ./test/lib && tsc --project tsconfig.test.json",
+    "build:test": "rm -rf ./test/lib && tsc --project tsconfig.test.json --watch",
     "deploy": "sh ./scripts/deploy.sh",
     "clean": "rm -rf ./public/build",
     "sass:build": "sass src/styles/_index.scss public/build/global.css",
