@@ -245,6 +245,9 @@ export default class LocalizedStringTable {
         newLocaleSet.delete(locale);
       } else {
         this._allLocales.delete(locale);
+        this.entries.forEach(entry => {
+          entry.values.delete(locale);
+        });
       }
     });
 

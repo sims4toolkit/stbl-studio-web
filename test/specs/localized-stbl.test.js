@@ -515,19 +515,73 @@ describe("LocalizedStringEntry", () => {
     });
 
     context("is missing entries that exist", () => {
-      it("should delete entries who are not in new list", () => {
+      it("should delete entries whose keys are not in new list", () => {
         // TODO:
       });
     });
   });
 
   describe("#replaceLocales()", () => {
-    // TODO:
+    context("missing primary locale", () => {
+      it("should throw an exception", () => {
+        const stbl = oneLocaleStbl();
+        expect(() => stbl.replaceLocales([StringTableLocale.Italian])).to.throw();
+      });
+    });
+
+    context("has new locales", () => {
+      it("should add new locales to allLocales", () => {
+        const stbl = oneLocaleStbl();
+        expect(stbl._allLocales.has(StringTableLocale.Italian)).to.be.false;
+        stbl.replaceLocales([StringTableLocale.English, StringTableLocale.Italian]);
+        expect(stbl._allLocales.has(StringTableLocale.Italian)).to.be.true;
+      });
+    });
+
+    context("missing existing locales", () => {
+      it("should remove missing locales from allLocales", () => {
+        const stbl = twoLocaleStbl();
+        expect(stbl._allLocales.has(StringTableLocale.Italian)).to.be.true;
+        stbl.replaceLocales([StringTableLocale.English]);
+        expect(stbl._allLocales.has(StringTableLocale.Italian)).to.be.false;
+      });
+
+      it("should delete all string values for missing locales", () => {
+        const stbl = twoLocaleStbl();
+
+        stbl.entries.forEach(entry => {
+          expect(entry.values.get(StringTableLocale.Italian)).to.not.be.undefined;
+        });
+
+        stbl.replaceLocales([StringTableLocale.English]);
+
+        stbl.entries.forEach(entry => {
+          expect(entry.values.get(StringTableLocale.Italian)).to.be.undefined;
+        });
+      });
+
+      it("should keep existing locales intact", () => {
+        const stbl = twoLocaleStbl();
+
+        stbl.entries.forEach(entry => {
+          expect(entry.values.get(StringTableLocale.English)).to.not.be.undefined;
+        });
+
+        stbl.replaceLocales([StringTableLocale.English]);
+
+        stbl.entries.forEach(entry => {
+          expect(entry.values.get(StringTableLocale.English)).to.not.be.undefined;
+        });
+      });
+    });
   });
 
   describe("#setKey()", () => {
     it("should set the key of the entry with the given ID", () => {
-      // TODO:
+      const stbl = twoLocaleStbl();
+      expect(stbl.getEntry(0).key).to.equal(0x12345678);
+      stbl.setKey(0, 0x1234);
+      expect(stbl.getEntry(0).key).to.equal(0x1234);
     });
   });
 
