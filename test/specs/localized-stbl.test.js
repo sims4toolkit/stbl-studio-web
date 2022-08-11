@@ -4,6 +4,7 @@ import LocalizedStringTable from "../lib/models/localized-stbl.js";
 
 // just for concision
 const { English, Italian, Spanish } = StringTableLocale;
+const UNTRANSLATED_PLACEHOLDER = "[UNTRANSLATED]";
 
 describe("LocalizedStringTable", () => {
   //#region Helpers
@@ -182,18 +183,11 @@ describe("LocalizedStringTable", () => {
       expect(stbl.primaryLocale).to.equal(Italian);
     });
 
-    it("should backfill entries for new primary locale if it is missing any", () => {
+    it("should use default value for new primary locale if it is missing any", () => {
       const stbl = incompleteStbl();
       expect(stbl.getValue(1, Italian)).to.be.undefined;
       stbl.primaryLocale = Italian;
-      expect(stbl.getValue(1, Italian)).to.equal("Second");
-    });
-
-    it("should delete backfilled entries from the old primary locale", () => {
-      const stbl = incompleteStbl();
-      expect(stbl.getValue(1, English)).to.equal("Second");
-      stbl.primaryLocale = Italian;
-      expect(stbl.getValue(1, English)).to.be.undefined;
+      expect(stbl.getValue(1, Italian)).to.equal(UNTRANSLATED_PLACEHOLDER);
     });
   });
 
@@ -616,7 +610,7 @@ describe("LocalizedStringTable", () => {
       });
 
       context("key is not associated with an existing entry", () => {
-        it("should create an entry and set value for the primary locale only", () => {
+        it("should create an entry, set the value of the locale, and use the default value for primary", () => {
           const stbl = twoLocaleStbl();
 
           expect(stbl.numEntries).to.equal(2);
@@ -626,8 +620,8 @@ describe("LocalizedStringTable", () => {
           ], Italian);
 
           expect(stbl.numEntries).to.equal(3);
-          expect(stbl.getValue(2, English)).to.equal("Nuovo");
-          expect(stbl.getValue(2, Italian)).to.be.undefined;
+          expect(stbl.getValue(2, English)).to.equal(UNTRANSLATED_PLACEHOLDER);
+          expect(stbl.getValue(2, Italian)).to.equal("Nuovo");
         });
       });
     });
