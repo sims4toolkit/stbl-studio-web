@@ -2,7 +2,7 @@ const { expect } = chai;
 const { StringTableLocale } = window.S4TK.enums;
 import LocalizedStringTable from "../lib/models/localized-stbl.js";
 
-describe("LocalizedStringEntry", () => {
+describe("LocalizedStringTable", () => {
   //#region Helpers
 
   const oneLocaleStbl = () => new LocalizedStringTable(
