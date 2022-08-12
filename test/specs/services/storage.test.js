@@ -65,50 +65,58 @@ describe("StorageService", () => {
   });
 
   describe("#readMetaData()", () => {
-    it("should use the uuid in the key", () => {
-      // TODO:
-    });
-
     it("should return the meta data for the given uuid", () => {
-      // TODO:
+      StorageService.writeMetaData(uuid, newProject());
+      expect(StorageService.readMetaData(uuid)).to.equal(metaDataString);
     });
   });
 
   describe("#writeMetaData()", () => {
-    it("should use the uuid in the key", () => {
-      // TODO:
-    });
-
     it("should overwrite the project meta data that exists", () => {
-      // TODO:
+      const project = newProject();
+      StorageService.writeMetaData(uuid, project);
+      MockStorage.assert("p:12345", metaDataString);
+      project.metaData.group = 0x80000000;
+      const newMetaData = project.serializeMetaData();
+      expect(metaDataString).to.not.equal(newMetaData);
+      StorageService.writeMetaData(uuid, project);
+      MockStorage.assert("p:12345", newMetaData);
     });
 
     it("should add meta data if the project doesn't exist yet", () => {
-      // TODO:
+      expect(MockStorage.count).to.equal(0);
+      MockStorage.assert("p:12345", undefined);
+      StorageService.writeMetaData(uuid, newProject());
+      expect(MockStorage.count).to.equal(1);
+      MockStorage.assert("p:12345", metaDataString);
     });
   });
 
   describe("#readStringTable()", () => {
-    it("should use the uuid in the key", () => {
-      // TODO:
-    });
-
     it("should return the stbl data for the given uuid", () => {
-      // TODO:
+      StorageService.writeStringTable(uuid, newStbl());
+      expect(StorageService.readStringTable(uuid)).to.equal(stblString);
     });
   });
 
   describe("#writeStringTable()", () => {
-    it("should use the uuid in the key", () => {
-      // TODO:
-    });
-
     it("should overwrite the stbl data that exists", () => {
-      // TODO:
+      const stbl = newStbl();
+      StorageService.writeStringTable(uuid, stbl);
+      MockStorage.assert("m:12345", stblString);
+      stbl.addEntry(0x1234, "hi");
+      const newStblString = stbl.serialize();
+      expect(metaDataString).to.not.equal(newStblString);
+      StorageService.writeStringTable(uuid, stbl);
+      MockStorage.assert("m:12345", newStblString);
     });
 
     it("should add stbl data if the project doesn't exist yet", () => {
-      // TODO:
+      expect(MockStorage.count).to.equal(0);
+      MockStorage.assert("m:12345", undefined);
+      StorageService.writeStringTable(uuid, newStbl());
+      expect(MockStorage.count).to.equal(1);
+      MockStorage.assert("m:12345", stblString);
     });
   });
 
