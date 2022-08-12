@@ -5,6 +5,7 @@
   ],
   "compilerOptions": {
     "outDir": "test/lib",
+    "declaration": true,
     "moduleResolution": "node",
     "target": "ES2022"
   }
