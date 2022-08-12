@@ -10,6 +10,18 @@ class _MockStorage {
     this._values = new Map();
   }
 
+  assert(key, expected) {
+    expect(this.get(key)).to.equal(expected);
+  }
+
+  clear() {
+    this._values.clear();
+  }
+
+  delete(key) {
+    this._values.delete(key);
+  }
+
   get(key) {
     return this._values.get(key);
   }
@@ -17,29 +29,17 @@ class _MockStorage {
   set(key, value) {
     return this._values.set(key, value);
   }
-
-  clear() {
-    this._values.clear();
-  }
-
-  assertSetting(key, expected) {
-    this._assert("s", key, expected);
-  }
-
-  assertStbl(key, expected) {
-    this._assert("m", key, expected);
-  }
-
-  assertMetaData(key, expected) {
-    this._assert("p", key, expected);
-  }
-
-  _assert(prefix, key, expected) {
-    expect(this.get(`${prefix}:${key}`)).to.equal(expected);
-  }
 }
 
 const MockStorage = new _MockStorage();
+
+StorageService._storageInterface.clear = function (key) {
+  MockStorage.clear();
+};
+
+StorageService._storageInterface.delete = function (key) {
+  MockStorage.delete(key);
+};
 
 StorageService._storageInterface.read = function (key) {
   return MockStorage.get(key);
