@@ -13,9 +13,14 @@
         mocha.setup('bdd');
     </script>
 
-    <!-- ------------------------------------ -->
-    <script type="module" src="./specs/localized-stbl.test.js"></script>  
-    <!-- ------------------------------------ -->
+    <!-- Models -->
+    <script type="module" src="./specs/models/localized-stbl.test.js"></script>
+    <script type="module" src="./specs/models/project.test.js"></script>
+    <script type="module" src="./specs/models/workspace.test.js"></script>
+
+    <!-- Services -->
+    <script type="module" src="./specs/services/settings.test.js"></script>
+    <script type="module" src="./specs/services/storage.test.js"></script>
 
     <script type="module">
         mocha.run();
