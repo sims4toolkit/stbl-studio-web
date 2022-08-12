@@ -792,8 +792,46 @@ describe("LocalizedStringTable", () => {
   });
 
   describe("#serialize()", () => {
+    it("should write complete stbls for 2 languages", () => {
+      const stbl = twoLocaleStbl();
+
+      const [first, second] = stbl.entries;
+      expect(first.values.get(English)).to.equal("First");
+      expect(first.values.get(Italian)).to.equal("Primo");
+      expect(second.values.get(English)).to.equal("Second");
+      expect(second.values.get(Italian)).to.equal("Secondo");
+
+      expect(stbl.serialize()).to.equal(
+        "AAACAgAAAAABCwF4VjQSIUNlh0ZpcnN0AFNlY29uZABQcmltbwBTZWNvbmRvAA=="
+      );
+    });
+
+    it("should write null strings for entries missing from a particular language", () => {
+      const stbl = incompleteStbl();
+
+      const [first, second] = stbl.entries;
+      expect(first.values.get(English)).to.equal("First");
+      expect(first.values.get(Italian)).to.equal("Primo");
+      expect(second.values.get(English)).to.equal("Second");
+      expect(second.values.get(Italian)).to.be.undefined;
+
+      expect(stbl.serialize()).to.equal(
+        "AAACAgAAAAABCwF4VjQSIUNlh0ZpcnN0AFNlY29uZABQcmltbwAA"
+      );
+    });
+
     it("should not write entries for locales that don't have data", () => {
-      // TODO:
+      const stbl = incompleteStbl();
+      stbl.setValue(0, "First", Italian);
+
+      stbl.entries.forEach((entry) => {
+        expect(entry.values.get(English)).to.not.be.undefined;
+        expect(entry.values.get(Italian)).to.be.undefined;
+      });
+
+      expect(stbl.serialize()).to.equal(
+        "AAACAgAAAAABCwB4VjQSIUNlh0ZpcnN0AFNlY29uZAA="
+      );
     });
 
     // TODO:

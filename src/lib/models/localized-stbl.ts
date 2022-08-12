@@ -120,7 +120,7 @@ export default class LocalizedStringTable {
     return new LocalizedStringTable(
       primaryLocale,
       allLocales,
-      entries
+      (entries as LocalizedStringEntry[])
     );
   }
 
