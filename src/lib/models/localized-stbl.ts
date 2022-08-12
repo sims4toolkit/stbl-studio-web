@@ -16,7 +16,7 @@ type StringTableJson = {
 /**
  * An entry in a LocalizedStringTable.
  */
-export interface LocalizedStringEntry {
+interface LocalizedStringEntry {
   readonly id: number;
   key: number;
   readonly values: Map<StringTableLocale, string>;
@@ -80,9 +80,9 @@ export default class LocalizedStringTable {
   }
 
   /**
-   * TODO:
+   * Parses a Base64-encoded string as a LocalizedStringTable.
    * 
-   * @param string TODO:
+   * @param string String to deserialize
    */
   static deserialize(string: string): LocalizedStringTable {
     const buffer = Buffer.from(string, "base64");
@@ -343,7 +343,7 @@ export default class LocalizedStringTable {
   }
 
   /**
-   * TODO:
+   * Writes this LocalizedStringTable into a Base64-encoded string.
    */
   serialize(): string {
     const localesWithData: StringTableLocale[] = [];
