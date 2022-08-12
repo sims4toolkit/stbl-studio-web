@@ -1,7 +1,11 @@
-import StorageService from "../lib/services/storage";
+import StorageService from "../lib/services/storage.js";
 const { expect } = chai;
 
 class _MockStorage {
+  get count() {
+    return this._values.size;
+  }
+
   constructor() {
     this._values = new Map();
   }
@@ -18,19 +22,19 @@ class _MockStorage {
     this._values.clear();
   }
 
-  expect(key, expected) {
-    expect(this.get(key)).to.equal(expected);
+  assertSetting(key, expected) {
+    expect(this.get("s:" + key)).to.equal(expected);
   }
 }
 
 const MockStorage = new _MockStorage();
 
-StorageService._readItem = function (key) {
+StorageService._storageInterface.read = function (key) {
   return MockStorage.get(key);
 };
 
-StorageService._writeItem = function (key, value) {
-  return MockStorage.set(key, value);
+StorageService._storageInterface.write = function (key, value) {
+  MockStorage.set(key, value);
 };
 
 export default MockStorage;
