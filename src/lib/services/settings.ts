@@ -116,14 +116,25 @@ interface UserSettings {
 }
 
 type StoredUserSettings = {
+  [T in keyof UserSettings]: StoredSetting<UserSettings[T]>;
+};
+
+type StoredUserSettingsBuilder = {
   [T in keyof UserSettings]: [
-    new (name: string, defaultValue: UserSettings[T]) => StoredSetting<UserSettings[T]>,
+    new (name: string, defaultValue: UserSettings[T])
+      => StoredSetting<UserSettings[T]>,
     UserSettings[T]
   ];
 };
 
-function getSettingsProxy(settings: StoredUserSettings): UserSettings {
-  return new Proxy(settings, {
+function getSettingsProxy(settingsBuilder: StoredUserSettingsBuilder): UserSettings {
+  const settings: Partial<StoredUserSettings> = {};
+  for (const settingName in settingsBuilder) {
+    const [cls, defaultValue] = settingsBuilder[settingName];
+    settings[settingName] = new cls(settingName, defaultValue);
+  }
+
+  return new Proxy(settings as StoredUserSettings, {
     get(target, prop) {
       return target[prop].get(prop);
     },
