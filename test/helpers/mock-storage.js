@@ -23,7 +23,19 @@ class _MockStorage {
   }
 
   assertSetting(key, expected) {
-    expect(this.get("s:" + key)).to.equal(expected);
+    this._assert("s", key, expected);
+  }
+
+  assertStbl(key, expected) {
+    this._assert("m", key, expected);
+  }
+
+  assertMetaData(key, expected) {
+    this._assert("p", key, expected);
+  }
+
+  _assert(prefix, key, expected) {
+    expect(this.get(`${prefix}:${key}`)).to.equal(expected);
   }
 }
 
