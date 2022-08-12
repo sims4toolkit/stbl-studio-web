@@ -1,5 +1,5 @@
-import type LocalizedStringTable from "../models/localized-stbl";
-import type Project from "../models/project";
+import type LocalizedStringTable from "../models/localized-stbl.js";
+import type Project from "../models/project.js";
 
 enum Prefix {
   MetaData = "p",
@@ -16,12 +16,18 @@ namespace StorageService {
   // testing purposes (to write to an object instead of local storage)
 
   export const _storageInterface = {
+    clear() {
+      localStorage.clear();
+    },
+    delete(key: string) {
+      localStorage.removeItem(key);
+    },
     read(key: string) {
       return localStorage.getItem(key);
     },
     write(key: string, value: string) {
       localStorage.setItem(key, value);
-    }
+    },
   };
 
   //#endregion Helpers
@@ -46,6 +52,11 @@ namespace StorageService {
     _storageInterface.write(key, stbl.serialize());
   }
 
+  export function deleteProject(uuid: string) {
+    _storageInterface.delete(getKey(Prefix.MetaData, uuid));
+    _storageInterface.delete(getKey(Prefix.Stbl, uuid));
+  }
+
   export function readSetting(name: string): string | undefined {
     return _storageInterface.read(getKey(Prefix.Setting, name));
   }
@@ -53,6 +64,10 @@ namespace StorageService {
   export function writeSetting(name: string, value: string) {
     const key = getKey(Prefix.Setting, name);
     _storageInterface.write(key, value);
+  }
+
+  export function clear() {
+    _storageInterface.clear();
   }
 
   //#endregion Public Functions

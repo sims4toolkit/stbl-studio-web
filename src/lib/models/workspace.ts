@@ -1,7 +1,7 @@
-import Settings from "../services/settings";
-import StorageService from "../services/storage";
-import LocalizedStringTable from "./localized-stbl";
-import Project from "./project";
+import Settings from "../services/settings.js";
+import StorageService from "../services/storage.js";
+import LocalizedStringTable from "./localized-stbl.js";
+import Project from "./project.js";
 
 /**
  * TODO:

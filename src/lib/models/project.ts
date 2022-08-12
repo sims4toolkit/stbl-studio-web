@@ -1,6 +1,6 @@
 import type { StringTableLocale } from "@s4tk/models/enums";
-import StorageService from "../services/storage";
-import LocalizedStringTable from "./localized-stbl";
+import StorageService from "../services/storage.js";
+import LocalizedStringTable from "./localized-stbl.js";
 const { encoding, enums } = window.S4TK;
 const { Buffer } = window.S4TK.Node;
 

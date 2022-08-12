@@ -1,5 +1,5 @@
 import type { StringTableLocale } from "@s4tk/models/enums";
-import StorageService from "./storage";
+import StorageService from "./storage.js";
 const { enums } = window.S4TK;
 
 //#region Abstract Types
