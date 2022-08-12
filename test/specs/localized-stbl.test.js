@@ -53,6 +53,49 @@ describe("LocalizedStringTable", () => {
       },
     ]);
 
+  const largeStbl = () =>
+    new LocalizedStringTable(Italian, new Set(StringTableLocale.all()), [
+      {
+        key: 0x1,
+        values: new Map([
+          [Italian, "Uno"],
+          [English, "One"],
+        ]),
+      },
+      {
+        key: 0x2,
+        values: new Map([
+          [Italian, "Due"],
+          [English, "Two"],
+          [Spanish, "Dos"],
+        ]),
+      },
+      {
+        key: 0x3,
+        values: new Map([
+          [Italian, "Tre"],
+          [English, "Three"],
+          [Spanish, "Tres"],
+        ]),
+      },
+      {
+        key: 0x4,
+        values: new Map([
+          [Italian, "Quattro"],
+          [English, "Four"],
+          [Spanish, "Cuatro"],
+        ]),
+      },
+      {
+        key: 0x5,
+        values: new Map([
+          [Italian, "Cinque"],
+          [English, "Five"],
+          [Spanish, "Cinco"],
+        ]),
+      },
+    ]);
+
   //#endregion Helpers
 
   //#region Getters / Setters
@@ -306,6 +349,41 @@ describe("LocalizedStringTable", () => {
       expect(stbl.numLocales).to.equal(1);
       expect(stbl.numEntries).to.equal(0);
       expect(stbl.primaryLocale).to.equal(English);
+    });
+
+    it("should parse STBL with 18 locales and 5 entries", () => {
+      const stbl = LocalizedStringTable.deserialize(
+        "AAsSBQAAAAABAQACAAMABAAFAAYABwAIAAsBDAANAA4ADwARABIAEwEVAAEAAAACAAAAAwAAAAQAAAAFAAAAT25lAFR3bwBUaHJlZQBGb3VyAEZpdmUAVW5vAER1ZQBUcmUAUXVhdHRybwBDaW5xdWUAAERvcwBUcmVzAEN1YXRybwBDaW5jbwA="
+      );
+
+      expect(stbl.primaryLocale).to.equal(Italian);
+      expect(stbl.numLocales).to.equal(18);
+      expect(stbl.numEntries).to.equal(5);
+
+      expect(stbl.getEntry(0).key).to.equal(1);
+      expect(stbl.getValue(0, Italian)).to.equal("Uno");
+      expect(stbl.getValue(0, English)).to.equal("One");
+      expect(stbl.getValue(0, Spanish)).to.be.undefined;
+
+      expect(stbl.getEntry(1).key).to.equal(2);
+      expect(stbl.getValue(1, Italian)).to.equal("Due");
+      expect(stbl.getValue(1, English)).to.equal("Two");
+      expect(stbl.getValue(1, Spanish)).to.equal("Dos");
+
+      expect(stbl.getEntry(2).key).to.equal(3);
+      expect(stbl.getValue(2, Italian)).to.equal("Tre");
+      expect(stbl.getValue(2, English)).to.equal("Three");
+      expect(stbl.getValue(2, Spanish)).to.equal("Tres");
+
+      expect(stbl.getEntry(3).key).to.equal(4);
+      expect(stbl.getValue(3, Italian)).to.equal("Quattro");
+      expect(stbl.getValue(3, English)).to.equal("Four");
+      expect(stbl.getValue(3, Spanish)).to.equal("Cuatro");
+
+      expect(stbl.getEntry(4).key).to.equal(5);
+      expect(stbl.getValue(4, Italian)).to.equal("Cinque");
+      expect(stbl.getValue(4, English)).to.equal("Five");
+      expect(stbl.getValue(4, Spanish)).to.equal("Cinco");
     });
   });
 
@@ -953,6 +1031,13 @@ describe("LocalizedStringTable", () => {
     it("should serialize a stbl with no entries correctly", () => {
       const stbl = new LocalizedStringTable(English);
       expect(stbl.serialize()).to.equal("AAABAAAAAAAA");
+    });
+
+    it("should serialize a stbl with 18 locales and 5 entries, with some translated", () => {
+      const stbl = largeStbl();
+      expect(stbl.serialize()).to.equal(
+        "AAsSBQAAAAABAQACAAMABAAFAAYABwAIAAsBDAANAA4ADwARABIAEwEVAAEAAAACAAAAAwAAAAQAAAAFAAAAT25lAFR3bwBUaHJlZQBGb3VyAEZpdmUAVW5vAER1ZQBUcmUAUXVhdHRybwBDaW5xdWUAAERvcwBUcmVzAEN1YXRybwBDaW5jbwA="
+      );
     });
   });
 
