@@ -147,7 +147,7 @@ function getSettingsProxy(settingsBuilder: StoredUserSettingsBuilder): UserSetti
 
 const Settings = getSettingsProxy({
   defaultLocale: [StoredInteger, enums.StringTableLocale.English],
-  entriesPerPage: [StoredInteger, 0],
+  entriesPerPage: [StoredInteger, 12],
   hasWorkspace: [StoredBoolean, false],
   disableBlur: [StoredBoolean, false],
   isLightTheme: [StoredBoolean, false],
