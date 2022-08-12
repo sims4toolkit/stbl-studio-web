@@ -8,38 +8,53 @@ enum Prefix {
 }
 
 const getKey = (prefix: string, id: string) => `${prefix}:${id}`;
-const readItem = (key: string) => localStorage.getItem(key);
-const writeItem = (key: string, value: string) => localStorage.setItem(key, value);
 
 namespace StorageService {
-  //#region Projects
+  //#region Helpers
+
+  // NOTE: Intentionally being exported so that they can be swapped out for
+  // testing purposes (to write to an object instead of local storage)
+
+  export function _readItem(key: string) {
+    return localStorage.getItem(key);
+  }
+
+  export function _writeItem(key: string, value: string) {
+    localStorage.setItem(key, value);
+  }
+
+  //#endregion Helpers
+
+  //#region Public Functions
 
   export function readMetaData(uuid: string) {
-    return readItem(getKey(Prefix.MetaData, uuid));
+    return _readItem(getKey(Prefix.MetaData, uuid));
   }
 
   export function writeMetaData(uuid: string, project: Project) {
     const key = getKey(Prefix.MetaData, uuid);
-    writeItem(key, project.serializeMetaData());
+    _writeItem(key, project.serializeMetaData());
   }
 
   export function readStringTable(uuid: string) {
-    return readItem(getKey(Prefix.Stbl, uuid));
+    return _readItem(getKey(Prefix.Stbl, uuid));
   }
 
   export function writeStringTable(uuid: string, stbl: LocalizedStringTable) {
     const key = getKey(Prefix.Stbl, uuid);
-    writeItem(key, stbl.serialize());
+    _writeItem(key, stbl.serialize());
   }
 
   export function readSetting(name: string): string | undefined {
-    return readItem(getKey(Prefix.Setting, name));
+    return _readItem(getKey(Prefix.Setting, name));
   }
 
   export function writeSetting(name: string, value: string) {
     const key = getKey(Prefix.Setting, name);
-    writeItem(key, value);
+    _writeItem(key, value);
   }
+
+  //#endregion Public Functions
 }
 
 export default StorageService;
