@@ -1,6 +1,6 @@
 const { expect } = chai;
 const { StringTableLocale } = window.S4TK.enums;
-import LocalizedStringTable from "../lib/models/localized-stbl.js";
+import LocalizedStringTable from "../../lib/models/localized-stbl.js";
 
 const { English, Italian, Spanish } = StringTableLocale;
 const UNTRANSLATED_PLACEHOLDER = "[UNTRANSLATED]";
