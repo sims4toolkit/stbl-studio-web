@@ -1,4 +1,5 @@
 import type { StringTableLocale } from "@s4tk/models/enums";
+import StorageService from "../services/storage";
 import LocalizedStringTable from "./localized-stbl";
 const { encoding, enums } = window.S4TK;
 const { Buffer } = window.S4TK.Node;
@@ -105,8 +106,7 @@ export default class Project {
   //#region Private Methods
 
   _loadStblFromStorage(): LocalizedStringTable {
-    // FIXME: use storage service
-    const stblData = localStorage.getItem(`p:${this.uuid}`);
+    const stblData = StorageService.readStringTable(this.uuid);
     return LocalizedStringTable.deserialize(stblData);
   }
 

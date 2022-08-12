@@ -27,7 +27,7 @@ namespace StorageService {
 
   //#region Public Functions
 
-  export function readMetaData(uuid: string) {
+  export function readMetaData(uuid: string): string {
     return _readItem(getKey(Prefix.MetaData, uuid));
   }
 
@@ -36,7 +36,7 @@ namespace StorageService {
     _writeItem(key, project.serializeMetaData());
   }
 
-  export function readStringTable(uuid: string) {
+  export function readStringTable(uuid: string): string {
     return _readItem(getKey(Prefix.Stbl, uuid));
   }
 
