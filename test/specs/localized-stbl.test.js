@@ -792,6 +792,18 @@ describe("LocalizedStringTable", () => {
   });
 
   describe("#serialize()", () => {
+    it("should write complete stbl for 1 language", () => {
+      const stbl = oneLocaleStbl();
+
+      const [first, second] = stbl.entries;
+      expect(first.values.get(English)).to.equal("First");
+      expect(second.values.get(English)).to.equal("Second");
+
+      expect(stbl.serialize()).to.equal(
+        "AAABAgAAAAABeFY0EiFDZYdGaXJzdABTZWNvbmQA"
+      );
+    });
+
     it("should write complete stbls for 2 languages", () => {
       const stbl = twoLocaleStbl();
 
@@ -803,6 +815,25 @@ describe("LocalizedStringTable", () => {
 
       expect(stbl.serialize()).to.equal(
         "AAACAgAAAAABCwF4VjQSIUNlh0ZpcnN0AFNlY29uZABQcmltbwBTZWNvbmRvAA=="
+      );
+    });
+
+    it("should write complete stbls for 3 locales, skipping an empty one in-between", () => {
+      const stbl = oneLocaleStbl();
+      stbl.replaceLocales([English, Spanish, Italian]);
+      stbl.setValue(0, "Primo", Italian);
+      stbl.setValue(1, "Secondo", Italian);
+
+      const [first, second] = stbl.entries;
+      expect(first.values.get(English)).to.equal("First");
+      expect(second.values.get(English)).to.equal("Second");
+      expect(first.values.get(Spanish)).to.be.undefined;
+      expect(second.values.get(Spanish)).to.be.undefined;
+      expect(first.values.get(Italian)).to.equal("Primo");
+      expect(second.values.get(Italian)).to.equal("Secondo");
+
+      expect(stbl.serialize()).to.equal(
+        "AAADAgAAAAABEwALAXhWNBIhQ2WHRmlyc3QAU2Vjb25kAFByaW1vAFNlY29uZG8A"
       );
     });
 
@@ -834,7 +865,10 @@ describe("LocalizedStringTable", () => {
       );
     });
 
-    // TODO:
+    it("should serialize a stbl with no entries correctly", () => {
+      const stbl = new LocalizedStringTable(English);
+      expect(stbl.serialize()).to.equal("AAABAAAAAAAA");
+    });
   });
 
   //#endregion Methods
