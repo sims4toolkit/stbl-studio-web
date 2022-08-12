@@ -224,6 +224,91 @@ describe("LocalizedStringTable", () => {
     });
   });
 
+  describe("static#deserialize()", () => {
+    it("should parse STBL with 1 locale with 2 entries", () => {
+      const stbl = LocalizedStringTable.deserialize(
+        "AAABAgAAAAABeFY0EiFDZYdGaXJzdABTZWNvbmQA"
+      );
+
+      expect(stbl.numLocales).to.equal(1);
+      expect(stbl.numEntries).to.equal(2);
+      expect(stbl.primaryLocale).to.equal(English);
+      expect(stbl.getValue(0)).to.equal("First");
+      expect(stbl.getValue(1)).to.equal("Second");
+    });
+
+    it("should parse STBL with 2 locales and 2 entries each", () => {
+      const stbl = LocalizedStringTable.deserialize(
+        "AAACAgAAAAABCwF4VjQSIUNlh0ZpcnN0AFNlY29uZABQcmltbwBTZWNvbmRvAA=="
+      );
+
+      expect(stbl.numLocales).to.equal(2);
+      expect(stbl.numEntries).to.equal(2);
+      expect(stbl.primaryLocale).to.equal(English);
+      expect(stbl._allLocales.has(Italian)).to.be.true;
+      expect(stbl.getValue(0)).to.equal("First");
+      expect(stbl.getValue(1)).to.equal("Second");
+      expect(stbl.getValue(0, Italian)).to.equal("Primo");
+      expect(stbl.getValue(1, Italian)).to.equal("Secondo");
+    });
+
+    it("should parse STBL with 3 locales, first/last with 2 entries, middle with none", () => {
+      const stbl = LocalizedStringTable.deserialize(
+        "AAADAgAAAAABEwALAXhWNBIhQ2WHRmlyc3QAU2Vjb25kAFByaW1vAFNlY29uZG8A"
+      );
+
+      expect(stbl.numLocales).to.equal(3);
+      expect(stbl.numEntries).to.equal(2);
+      expect(stbl.primaryLocale).to.equal(English);
+      expect(stbl._allLocales.has(Italian)).to.be.true;
+      expect(stbl._allLocales.has(Spanish)).to.be.true;
+      expect(stbl.getValue(0)).to.equal("First");
+      expect(stbl.getValue(1)).to.equal("Second");
+      expect(stbl.getValue(0, Spanish)).to.be.undefined;
+      expect(stbl.getValue(1, Spanish)).to.be.undefined;
+      expect(stbl.getValue(0, Italian)).to.equal("Primo");
+      expect(stbl.getValue(1, Italian)).to.equal("Secondo");
+    });
+
+    it("should parse STBL with 2 locales, first with 2 entries second with 1", () => {
+      const stbl = LocalizedStringTable.deserialize(
+        "AAACAgAAAAABCwF4VjQSIUNlh0ZpcnN0AFNlY29uZABQcmltbwAA"
+      );
+
+      expect(stbl.numLocales).to.equal(2);
+      expect(stbl.numEntries).to.equal(2);
+      expect(stbl.primaryLocale).to.equal(English);
+      expect(stbl._allLocales.has(Italian)).to.be.true;
+      expect(stbl.getValue(0)).to.equal("First");
+      expect(stbl.getValue(1)).to.equal("Second");
+      expect(stbl.getValue(0, Italian)).to.equal("Primo");
+      expect(stbl.getValue(1, Italian)).to.be.undefined;
+    });
+
+    it("should parse STBL with 2 locales, first with 2 entries second with none", () => {
+      const stbl = LocalizedStringTable.deserialize(
+        "AAACAgAAAAABCwB4VjQSIUNlh0ZpcnN0AFNlY29uZAA="
+      );
+
+      expect(stbl.numLocales).to.equal(2);
+      expect(stbl.numEntries).to.equal(2);
+      expect(stbl.primaryLocale).to.equal(English);
+      expect(stbl._allLocales.has(Italian)).to.be.true;
+      expect(stbl.getValue(0)).to.equal("First");
+      expect(stbl.getValue(1)).to.equal("Second");
+      expect(stbl.getValue(0, Italian)).to.be.undefined;
+      expect(stbl.getValue(1, Italian)).to.be.undefined;
+    });
+
+    it("should parse STBL with 1 locales and no entries", () => {
+      const stbl = LocalizedStringTable.deserialize("AAABAAAAAAAA");
+
+      expect(stbl.numLocales).to.equal(1);
+      expect(stbl.numEntries).to.equal(0);
+      expect(stbl.primaryLocale).to.equal(English);
+    });
+  });
+
   //#endregion Initialization
 
   //#region Methods

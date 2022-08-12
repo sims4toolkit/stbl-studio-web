@@ -113,7 +113,7 @@ export default class LocalizedStringTable {
     localesToDecode.forEach(locale => {
       for (let i = 0; i < numEntries; ++i) {
         const value = decoder.string();
-        entries[i].values.set(locale, value);
+        if (value) entries[i].values.set(locale, value);
       }
     });
 
