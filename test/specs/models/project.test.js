@@ -89,19 +89,23 @@ describe("class Project", () => {
     });
   });
 
-  describe("#fromStorage()", () => {
+  describe("static#fromStorage()", () => {
     context("meta data version 0", () => {
-      beforeEach(() => {
+      it("should load the meta data from local storage", () => {
         StorageService.writeMetaData(newProject());
         StorageService.writeStringTable(uuid, newStbl());
-      });
 
-      it("should load the meta data from local storage", () => {
-        // TODO:
-      });
+        const project = Project.fromStorage(uuid);
+        const metaData = project.metaData;
 
-      it("should load the stbl from local storage", () => {
-        // TODO:
+        expect(metaData.group).to.equal(0x80000000);
+        expect(metaData.instance).to.equal(0x1234567890abcdn);
+        expect(metaData.name).to.equal("New Project");
+        expect(metaData.numEntries).to.equal(0);
+        expect(metaData.numLocales).to.equal(1);
+        expect(metaData.primaryLocale).to.equal(
+          enums.StringTableLocale.English
+        );
       });
     });
   });
