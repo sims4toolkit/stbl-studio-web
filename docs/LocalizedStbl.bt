@@ -1,0 +1,48 @@
+//------------------------------------------------
+//--- 010 Editor v12.0 Binary Template
+//
+//      File: LocalizedStbl.bt
+//    Author: Frank Kulak
+//   Version: 1.0
+//   Purpose: Multi-locale STBL for STBL Studio.
+//------------------------------------------------
+
+
+LittleEndian();
+BitfieldRightToLeft();
+
+byte version;
+byte primaryLocale;
+byte numLocales;
+uint32 numEntries;
+
+typedef struct
+{
+    byte locale;
+    byte hasData;
+} LocaleData;
+
+LocaleData allLocales[numLocales];
+
+uint32 keys[numEntries];
+
+local uint32 i, j;
+
+typedef struct
+{
+    typedef struct
+    {
+        string value;
+    } StringData;
+    
+    for (j = 0; j < numEntries; ++j)
+    {
+        StringData values;
+    }
+} LocalizedStrings;
+
+for (i = 0; i < numLocales; ++i)
+{
+    if (allLocales[i].hasData)
+        LocalizedStrings localization;
+}

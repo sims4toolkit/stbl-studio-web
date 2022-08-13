@@ -1,0 +1,20 @@
+//------------------------------------------------
+//--- 010 Editor v12.0 Binary Template
+//
+//      File: ProjectMetaData.bt
+//    Author: Frank Kulak
+//   Version: 1.0
+//   Purpose: Meta data for a STBL Studio project.
+//------------------------------------------------
+
+
+LittleEndian();
+BitfieldRightToLeft();
+
+byte version;
+uint32 group <format=hex>;
+uint64 instance : 56 <format=hex>;
+uint64 primaryLocale : 8 <format=hex>;
+byte numLocales;
+uint32 numEntries;
+string name;
