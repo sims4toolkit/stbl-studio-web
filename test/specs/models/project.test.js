@@ -51,13 +51,9 @@ describe("class Project", () => {
 
   //#region Initialization
 
-  describe("#constructor", () => {
-    // TODO:
-  });
+  // nothing to test for constructor
 
-  describe("static#deserialize()", () => {
-    // TODO:
-  });
+  // deserialize() is essentially just deserializeMetaData()
 
   describe("static#deserializeMetaData()", () => {
     context("version 0", () => {
@@ -94,7 +90,20 @@ describe("class Project", () => {
   });
 
   describe("#fromStorage()", () => {
-    // TODO:
+    context("meta data version 0", () => {
+      beforeEach(() => {
+        StorageService.writeMetaData(newProject());
+        StorageService.writeStringTable(uuid, newStbl());
+      });
+
+      it("should load the meta data from local storage", () => {
+        // TODO:
+      });
+
+      it("should load the stbl from local storage", () => {
+        // TODO:
+      });
+    });
   });
 
   //#endregion Initialization
