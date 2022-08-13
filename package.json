@@ -4,14 +4,15 @@
   "scripts": {
     "build": "npm run clean ; npm run sass:build ; rollup -c",
     "build:s4tk": "sh scripts/browserify-s4tk.sh",
-    "build:test": "rm -rf ./test/lib && tsc --project tsconfig.test.json --watch",
     "deploy": "sh ./scripts/deploy.sh",
     "clean": "rm -rf ./public/build",
     "sass:build": "sass src/styles/_index.scss public/build/global.css",
     "sass:watch": "sass --watch src/styles/_index.scss public/build/global.css",
     "dev": "npm run clean ; concurrently \"npm run sass:watch\" \"rollup -c -w\"",
     "start": "sirv public --no-clear --port 5000",
-    "serve": "sirv public --no-clear --host"
+    "serve": "sirv public --no-clear --host",
+    "test:build": "rm -rf ./test/lib && tsc --project tsconfig.test.json",
+    "test:watch": "rm -rf ./test/lib && tsc --project tsconfig.test.json --watch"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
