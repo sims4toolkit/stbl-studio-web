@@ -34,7 +34,7 @@ describe("StorageService", () => {
   describe("#clear()", () => {
     it("should clear all entries in storage", () => {
       StorageService.writeSetting("setting", "1");
-      StorageService.writeMetaData(uuid, newProject());
+      StorageService.writeMetaData(newProject());
       StorageService.writeStringTable(uuid, newStbl());
       expect(MockStorage.count).to.equal(3);
       StorageService.clear();
@@ -44,7 +44,7 @@ describe("StorageService", () => {
 
   describe("#deleteProject()", () => {
     it("should delete the meta data and stbl for project with uuid", () => {
-      StorageService.writeMetaData(uuid, newProject());
+      StorageService.writeMetaData(newProject());
       StorageService.writeStringTable(uuid, newStbl());
       MockStorage.assert("p:12345", metaDataString);
       MockStorage.assert("m:12345", stblString);
@@ -54,7 +54,7 @@ describe("StorageService", () => {
     });
 
     it("should not delete other projects", () => {
-      StorageService.writeMetaData(uuid, newProject());
+      StorageService.writeMetaData(newProject());
       StorageService.writeStringTable(uuid, newStbl());
       MockStorage.assert("p:12345", metaDataString);
       MockStorage.assert("m:12345", stblString);
@@ -66,7 +66,7 @@ describe("StorageService", () => {
 
   describe("#readMetaData()", () => {
     it("should return the meta data for the given uuid", () => {
-      StorageService.writeMetaData(uuid, newProject());
+      StorageService.writeMetaData(newProject());
       expect(StorageService.readMetaData(uuid)).to.equal(metaDataString);
     });
   });
@@ -74,19 +74,19 @@ describe("StorageService", () => {
   describe("#writeMetaData()", () => {
     it("should overwrite the project meta data that exists", () => {
       const project = newProject();
-      StorageService.writeMetaData(uuid, project);
+      StorageService.writeMetaData(project);
       MockStorage.assert("p:12345", metaDataString);
       project.metaData.group = 0x80000000;
       const newMetaData = project.serializeMetaData();
       expect(metaDataString).to.not.equal(newMetaData);
-      StorageService.writeMetaData(uuid, project);
+      StorageService.writeMetaData(project);
       MockStorage.assert("p:12345", newMetaData);
     });
 
     it("should add meta data if the project doesn't exist yet", () => {
       expect(MockStorage.count).to.equal(0);
       MockStorage.assert("p:12345", undefined);
-      StorageService.writeMetaData(uuid, newProject());
+      StorageService.writeMetaData(newProject());
       expect(MockStorage.count).to.equal(1);
       MockStorage.assert("p:12345", metaDataString);
     });

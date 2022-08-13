@@ -38,8 +38,8 @@ namespace StorageService {
     return _storageInterface.read(getKey(Prefix.MetaData, uuid));
   }
 
-  export function writeMetaData(uuid: string, project: Project) {
-    const key = getKey(Prefix.MetaData, uuid);
+  export function writeMetaData(project: Project) {
+    const key = getKey(Prefix.MetaData, project.uuid);
     _storageInterface.write(key, project.serializeMetaData());
   }
 
