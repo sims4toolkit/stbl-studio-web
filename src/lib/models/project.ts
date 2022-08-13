@@ -70,6 +70,16 @@ export default class Project {
     return metaData as ProjectMetaData;
   }
 
+  /**
+   * Loads the project with the given UUID from storage.
+   * 
+   * @param uuid UUID of project to load
+   */
+  static fromStorage(uuid: string): Project {
+    const metaData = StorageService.readMetaData(uuid);
+    return Project.deserialize(uuid, metaData);
+  }
+
   //#endregion Initialization
 
   //#region Public Methods
