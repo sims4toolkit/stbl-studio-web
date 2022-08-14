@@ -98,8 +98,11 @@ export default class Project {
    */
   async loadStringTable(): Promise<void> {
     return new Promise((resolve, reject) => {
+      if (this._stbl) return resolve();
+
       DatabaseService.getItem("stbls", this.uuid)
         .then(data => {
+          if (!data) return reject("Could not deserialize STBL.");
           this._stbl = LocalizedStringTable.deserialize(data);
           resolve();
         })

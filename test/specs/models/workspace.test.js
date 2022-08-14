@@ -97,25 +97,63 @@ describe("Workspace", () => {
 
   describe("static#fromStorage()", () => {
     it("should load all project meta data from storage", async () => {
-      // TODO:
-      expect(false).to.be.true;
+      const metaData = newMetaData();
+      await DatabaseService.setItem("metadata", uuid, metaDataString);
+      await DatabaseService.setItem("stbls", uuid, stblString);
+      const workspace = await Workspace.fromStorage();
+      expect(workspace.projects).to.be.an("Array").with.lengthOf(1);
+      const [project] = workspace.projects;
+      for (const key in project.metaData) {
+        expect(project.metaData[key]).to.equal(metaData[key]);
+      }
     });
 
-    it("should not load any stbls from storage", () => {
-      // TODO:
-      expect(false).to.be.true;
+    it("should not load any stbls from storage", async () => {
+      await DatabaseService.setItem("metadata", uuid, metaDataString);
+      await DatabaseService.setItem("stbls", uuid, stblString);
+      const workspace = await Workspace.fromStorage();
+      const [project] = workspace.projects;
+      expect(() => project.stbl).to.throw();
     });
   });
 
   describe("#toJson()", () => {
-    it("should write all settings properly", () => {
-      // TODO:
-      expect(false).to.be.true;
+    it("should write the version", async () => {
+      await DatabaseService.setItem("metadata", uuid, metaDataString);
+      await DatabaseService.setItem("stbls", uuid, stblString);
+      const workspace = new Workspace([newProject()]);
+      const json = await workspace.toJson();
+
+      expect(json.version).to.equal(0);
     });
 
-    it("should write all projects as base64 strings", () => {
-      // TODO:
-      expect(false).to.be.true;
+    it("should write all settings properly", async () => {
+      await DatabaseService.setItem("metadata", uuid, metaDataString);
+      await DatabaseService.setItem("stbls", uuid, stblString);
+      const workspace = new Workspace([newProject()]);
+      const json = await workspace.toJson();
+
+      expect(json.settings.defaultLocale).to.equal(0);
+      expect(json.settings.disableBlur).to.equal(false);
+      expect(json.settings.entriesPerPage).to.equal(12);
+      expect(json.settings.hasWorkspace).to.equal(false);
+      expect(json.settings.isLightTheme).to.equal(false);
+      expect(json.settings.reduceMotion).to.equal(false);
+      expect(json.settings.showAllStrings).to.equal(false);
+      expect(json.settings.showTranslateKeys).to.equal(false);
+    });
+
+    it("should write all projects as base64 strings", async () => {
+      await DatabaseService.setItem("metadata", uuid, metaDataString);
+      await DatabaseService.setItem("stbls", uuid, stblString);
+      const workspace = new Workspace([newProject()]);
+      const json = await workspace.toJson();
+
+      expect(json.projects).to.be.an("Array").with.lengthOf(1);
+      const [project] = json.projects;
+      expect(project.uuid).to.equal(uuid);
+      expect(project.metaData).to.equal(metaDataString);
+      expect(project.stbl).to.equal(stblString);
     });
   });
 });

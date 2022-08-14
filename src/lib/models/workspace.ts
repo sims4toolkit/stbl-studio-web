@@ -88,16 +88,24 @@ export default class Workspace {
   /**
    * Returns a JSON representation of this workspace.
    */
-  toJson(): WorkspaceJson {
-    return {
-      version: Workspace.VERSION,
-      settings: Settings,
-      projects: this.projects.map(project => ({
-        uuid: project.uuid,
-        metaData: project.serializeMetaData(),
-        stbl: project.stbl.serialize()
-      }))
-    };
+  async toJson(): Promise<WorkspaceJson> {
+    return new Promise(async (resolve) => {
+      for (let i = 0; i < this.projects.length; ++i)
+        await this.projects[i].loadStringTable();
+
+      const settings: object = {};
+      for (const key in Settings) settings[key] = Settings[key];
+
+      resolve({
+        version: Workspace.VERSION,
+        settings: settings,
+        projects: this.projects.map(project => ({
+          uuid: project.uuid,
+          metaData: project.serializeMetaData(),
+          stbl: project.stbl.serialize()
+        }))
+      });
+    });
   }
 
   //#endregion Public Methods
