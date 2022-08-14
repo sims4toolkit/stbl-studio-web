@@ -41,10 +41,15 @@ export default class Workspace {
           Settings[setting] = json.settings[setting];
         }
 
-        const projects = json.projects.map(projectData => {
-          const metaData = Project.deserializeMetaData(projectData.metaData);
-          const stbl = LocalizedStringTable.deserialize(projectData.stbl);
-          return new Project(projectData.uuid, metaData, stbl);
+        const projects = json.projects.map(({ uuid, metaData, stbl }) => {
+          DatabaseService.setItem("metadata", uuid, metaData);
+          DatabaseService.setItem("stbls", uuid, stbl);
+
+          return new Project(
+            uuid,
+            Project.deserializeMetaData(metaData),
+            LocalizedStringTable.deserialize(stbl)
+          );
         });
 
         const workspace = new Workspace(projects);
