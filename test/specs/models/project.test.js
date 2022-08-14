@@ -1,5 +1,7 @@
 import MockStorage from "../../helpers/mock-storage.js";
+import MockDatabase from "../../helpers/mock-db.js";
 import StorageService from "../../lib/services/storage.js";
+import DatabaseService from "../../lib/services/database.js";
 import LocalizedStringTable from "../../lib/models/localized-stbl.js";
 import Project from "../../lib/models/project.js";
 const { expect } = chai;
@@ -21,7 +23,7 @@ describe("class Project", () => {
 
   const newStbl = () => new LocalizedStringTable(0);
 
-  const sbtlString = newStbl().serialize();
+  const stblString = newStbl().serialize();
 
   const newProject = () => new Project(uuid, newMetaData());
 
@@ -29,6 +31,7 @@ describe("class Project", () => {
 
   beforeEach(() => {
     MockStorage.clear();
+    for (const store in MockDatabase) MockDatabase[store].clear();
   });
 
   //#endregion Helpers
@@ -38,12 +41,18 @@ describe("class Project", () => {
   // uuid & meta data tested as part of constructor & deserialize()
 
   describe("#stbl", () => {
-    it("should lazy load once accessed", () => {
-      StorageService.writeStringTable(uuid, newStbl());
+    it("should throw an exception if stbl not loaded", () => {
       const project = newProject();
       expect(project._stbl).to.be.undefined;
+      expect(() => project.stbl).to.throw();
+    });
+
+    it("should lazy load the stbl from the DB", async () => {
+      await DatabaseService.setItem("stbls", uuid, stblString);
+      const project = newProject();
+      expect(project._stbl).to.be.undefined;
+      await project.loadStringTable();
       expect(project.stbl).to.not.be.undefined;
-      expect(project._stbl).to.not.be.undefined;
     });
   });
 
@@ -53,7 +62,7 @@ describe("class Project", () => {
 
   // nothing to test for constructor
 
-  // deserialize() is essentially just deserializeMetaData()
+  // nothing to test for deserialize(); only logic is in deserializeMetaData()
 
   describe("static#deserializeMetaData()", () => {
     context("version 0", () => {
@@ -91,13 +100,14 @@ describe("class Project", () => {
 
   describe("static#fromStorage()", () => {
     context("meta data version 0", () => {
-      it("should load the meta data from local storage", () => {
-        StorageService.writeMetaData(newProject());
-        StorageService.writeStringTable(uuid, newStbl());
+      it("should load the meta data from storage", async () => {
+        await DatabaseService.setItem("metadata", uuid, metaDataString);
+        await DatabaseService.setItem("stbls", uuid, stblString);
 
-        const project = Project.fromStorage(uuid);
+        const project = await Project.fromStorage(uuid);
         const metaData = project.metaData;
 
+        expect(project.uuid).to.equal(uuid);
         expect(metaData.group).to.equal(0x80000000);
         expect(metaData.instance).to.equal(0x1234567890abcdn);
         expect(metaData.name).to.equal("New Project");
@@ -113,6 +123,32 @@ describe("class Project", () => {
   //#endregion Initialization
 
   //#region Methods
+
+  describe("#loadStringTable()", () => {
+    it("should load the stbl with the same uuid from storage", async () => {
+      const stbl = newStbl();
+      stbl.addEntry(0x12345678, "First");
+      stbl.addEntry(0x87654321, "Second");
+      stbl.replaceLocales([
+        enums.StringTableLocale.English,
+        enums.StringTableLocale.Italian,
+      ]);
+
+      await DatabaseService.setItem("stbls", uuid, stbl.serialize());
+
+      const project = Project.deserialize(uuid, metaDataString);
+      expect(() => project.stbl).to.throw();
+      await project.loadStringTable();
+
+      expect(project.stbl.primaryLocale).to.equal(
+        enums.StringTableLocale.English
+      );
+      expect(project.stbl.allLocales).to.have.lengthOf(2);
+      expect(project.stbl.numEntries).to.equal(2);
+      expect(project.stbl.getValue(0)).to.equal("First");
+      expect(project.stbl.getValue(1)).to.equal("Second");
+    });
+  });
 
   describe("#serializeMetaData()", () => {
     context("version 0", () => {
