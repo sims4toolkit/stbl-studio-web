@@ -1,10 +1,10 @@
+import DatabaseService from "../services/database.js";
 import Settings from "../services/settings.js";
-import StorageService from "../services/storage.js";
 import LocalizedStringTable from "./localized-stbl.js";
 import Project from "./project.js";
 
 /**
- * TODO:
+ * How a workspace will be saved in a JSON.
  */
 interface WorkspaceJson {
   version: number;
@@ -17,7 +17,7 @@ interface WorkspaceJson {
 }
 
 /**
- * TODO:
+ * Model for an entire user workspace.
  */
 export default class Workspace {
   static readonly VERSION = 0;
@@ -35,6 +35,10 @@ export default class Workspace {
    * @param json JSON containing settings and workspace data
    */
   static restoreFromJson(json: WorkspaceJson): Workspace {
+    for (const setting in json.settings) {
+      Settings[setting] = json.settings[setting];
+    }
+
     const projects = json.projects.map(projectData => {
       const metaData = Project.deserializeMetaData(projectData.metaData);
       const stbl = LocalizedStringTable.deserialize(projectData.stbl);
@@ -47,13 +51,17 @@ export default class Workspace {
   /**
    * Reads the existing workspace from storage.
    */
-  static fromStorage(): Workspace {
-    const projects = Settings.projectUuids.map(uuid => {
-      const metaData = StorageService.readMetaData(uuid);
-      return Project.deserialize(uuid, metaData)
-    });
+  static async fromStorage(): Promise<Workspace> {
+    return new Promise(async (resolve, reject) => {
+      const uuids = await DatabaseService.getAllKeys("metadata");
+      const metaDatas = await DatabaseService.getAll("metadata");
 
-    return new Workspace(projects);
+      const projects = uuids.map((uuid, i) => {
+        return Project.deserialize(uuid, metaDatas[i]);
+      });
+
+      resolve(new Workspace(projects));
+    });
   }
 
   //#endregion Initialization
@@ -61,7 +69,7 @@ export default class Workspace {
   //#region Public Methods
 
   /**
-   * TODO:
+   * Returns a JSON representation of this workspace.
    */
   toJson(): WorkspaceJson {
     return {

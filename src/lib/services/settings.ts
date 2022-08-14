@@ -1,6 +1,5 @@
 import type { StringTableLocale } from "@s4tk/models/enums";
 import StorageService from "./storage.js";
-const { enums } = window.S4TK;
 
 //#region Abstract Types
 
@@ -21,12 +20,12 @@ abstract class StoredSetting<T> {
   //#region Public Methods
 
   get(setting: string): T {
-    const stringValue = StorageService.readSetting(setting);
+    const stringValue = StorageService.getItem("s:" + setting);
     return stringValue ? this._parseValue(stringValue) : this.defaultValue;
   }
 
   set(setting: string, value: T): void {
-    StorageService.writeSetting(setting, this._stringifyValue(value));
+    StorageService.setItem("s:" + setting, this._stringifyValue(value));
     this._onChange(value);
   }
 
@@ -146,7 +145,7 @@ function getSettingsProxy(settingsBuilder: StoredUserSettingsBuilder): UserSetti
 }
 
 const Settings = getSettingsProxy({
-  defaultLocale: [StoredInteger, enums.StringTableLocale.English],
+  defaultLocale: [StoredInteger, 0],
   entriesPerPage: [StoredInteger, 12],
   hasWorkspace: [StoredBoolean, false],
   disableBlur: [StoredBoolean, false],

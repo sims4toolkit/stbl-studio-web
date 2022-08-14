@@ -1,5 +1,5 @@
 import type { StringTableLocale } from "@s4tk/models/enums";
-import StorageService from "../services/storage.js";
+import DatabaseService from "../services/database.js";
 import LocalizedStringTable from "./localized-stbl.js";
 const { encoding, enums } = window.S4TK;
 const { Buffer } = window.S4TK.Node;
@@ -26,7 +26,10 @@ export default class Project {
 
   get metaData() { return this._metaData; }
 
-  get stbl() { return this._stbl ??= this._loadStblFromStorage(); }
+  get stbl() {
+    if (this._stbl) return this._stbl;
+    throw new Error("Project STBL was accessed before being loaded.");
+  }
 
   //#endregion Getters / Setters
 
@@ -75,14 +78,36 @@ export default class Project {
    * 
    * @param uuid UUID of project to load
    */
-  static fromStorage(uuid: string): Project {
-    const metaData = StorageService.readMetaData(uuid);
-    return Project.deserialize(uuid, metaData);
+  static async fromStorage(uuid: string): Promise<Project> {
+    return new Promise((resolve, reject) => {
+      DatabaseService.getItem("metadata", uuid)
+        .then(metaData => {
+          resolve(Project.deserialize(uuid, metaData));
+        }).catch(err => {
+          reject(err);
+        });
+    });
   }
 
   //#endregion Initialization
 
   //#region Public Methods
+
+  /**
+   * Loads the STBL for this project from storage.
+   */
+  async loadStringTable(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      DatabaseService.getItem("stbls", this.uuid)
+        .then(data => {
+          this._stbl = LocalizedStringTable.deserialize(data);
+          resolve();
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
 
   /**
    * Serializes the meta data for this project into a Base64-encoded string.
@@ -112,13 +137,4 @@ export default class Project {
   }
 
   //#endregion Public Methods
-
-  //#region Private Methods
-
-  _loadStblFromStorage(): LocalizedStringTable {
-    const stblData = StorageService.readStringTable(this.uuid);
-    return LocalizedStringTable.deserialize(stblData);
-  }
-
-  //#endregion Private Methods
 }
