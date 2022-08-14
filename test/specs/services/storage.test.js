@@ -1,29 +1,9 @@
 import MockStorage from "../../helpers/mock-storage.js";
 import StorageService from "../../lib/services/storage.js";
-import LocalizedStringTable from "../../lib/models/localized-stbl.js";
-import Project from "../../lib/models/project.js";
 const { expect } = chai;
 
 describe("StorageService", () => {
   //#region Helpers
-
-  const uuid = "12345";
-
-  const newStbl = () => new LocalizedStringTable(0);
-
-  const stblString = newStbl().serialize();
-
-  const newProject = () =>
-    new Project(uuid, {
-      group: 0,
-      instance: 12345n,
-      name: "New Project",
-      numEntries: 0,
-      numLocales: 1,
-      primaryLocale: 0,
-    });
-
-  const metaDataString = newProject().serializeMetaData();
 
   beforeEach(() => {
     MockStorage.clear();

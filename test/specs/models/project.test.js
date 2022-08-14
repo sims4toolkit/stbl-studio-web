@@ -1,13 +1,12 @@
 import MockStorage from "../../helpers/mock-storage.js";
 import MockDatabase from "../../helpers/mock-db.js";
-import StorageService from "../../lib/services/storage.js";
 import DatabaseService from "../../lib/services/database.js";
 import LocalizedStringTable from "../../lib/models/localized-stbl.js";
 import Project from "../../lib/models/project.js";
 const { expect } = chai;
 const { enums } = window.S4TK;
 
-describe("class Project", () => {
+describe("Project", () => {
   //#region Helpers
 
   const uuid = "12345";
