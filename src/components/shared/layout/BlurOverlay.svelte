@@ -7,7 +7,7 @@
 
   export let large = false;
   export let fill = true;
-  export let onClose: () => void = () => {};
+  export let onClose: () => void = undefined;
 
   let modal: HTMLDivElement;
   let firstFocusableChild: Element;
@@ -15,7 +15,9 @@
 
   const bodyClassName = "overlay-active";
   const focusQuery = "a, button, input, textarea, select";
-  const keySubscriptions = [subscribeToKey("Escape", onClose)];
+  const keySubscriptions = [];
+  if (onClose != undefined)
+    keySubscriptions.push(subscribeToKey("Escape", onClose));
 
   onMount(() => {
     document.body.classList.add(bodyClassName);

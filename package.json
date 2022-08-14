@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "build": "npm run clean ; npm run sass:build ; rollup -c",
-    "build:s4tk": "sh scripts/browserify-s4tk.sh",
+    "s4tk": "sh scripts/browserify-s4tk.sh",
     "deploy": "sh ./scripts/deploy.sh",
     "clean": "rm -rf ./public/build",
     "sass:build": "sass src/styles/_index.scss public/build/global.css",
