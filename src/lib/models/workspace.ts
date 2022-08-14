@@ -34,18 +34,26 @@ export default class Workspace {
    * 
    * @param json JSON containing settings and workspace data
    */
-  static restoreFromJson(json: WorkspaceJson): Workspace {
-    for (const setting in json.settings) {
-      Settings[setting] = json.settings[setting];
-    }
+  static async restoreFromJson(json: WorkspaceJson): Promise<Workspace> {
+    return new Promise((resolve, reject) => {
+      try {
+        for (const setting in json.settings) {
+          Settings[setting] = json.settings[setting];
+        }
 
-    const projects = json.projects.map(projectData => {
-      const metaData = Project.deserializeMetaData(projectData.metaData);
-      const stbl = LocalizedStringTable.deserialize(projectData.stbl);
-      return new Project(projectData.uuid, metaData, stbl);
+        const projects = json.projects.map(projectData => {
+          const metaData = Project.deserializeMetaData(projectData.metaData);
+          const stbl = LocalizedStringTable.deserialize(projectData.stbl);
+          return new Project(projectData.uuid, metaData, stbl);
+        });
+
+        const workspace = new Workspace(projects);
+
+        resolve(workspace);
+      } catch (err) {
+        reject(err);
+      }
     });
-
-    return new Workspace(projects);
   }
 
   /**

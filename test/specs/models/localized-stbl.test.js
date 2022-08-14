@@ -5,7 +5,7 @@ import LocalizedStringTable from "../../lib/models/localized-stbl.js";
 const { English, Italian, Spanish } = StringTableLocale;
 const UNTRANSLATED_PLACEHOLDER = "[UNTRANSLATED]";
 
-describe("class LocalizedStringTable", () => {
+describe("LocalizedStringTable", () => {
   //#region Helpers
 
   const oneLocaleStbl = () =>
