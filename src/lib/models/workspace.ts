@@ -53,14 +53,18 @@ export default class Workspace {
    */
   static async fromStorage(): Promise<Workspace> {
     return new Promise(async (resolve, reject) => {
-      const uuids = await DatabaseService.getAllKeys("metadata");
-      const metaDatas = await DatabaseService.getAll("metadata");
+      try {
+        const uuids = await DatabaseService.getAllKeys("metadata");
+        const metaDatas = await DatabaseService.getAll("metadata");
 
-      const projects = uuids.map((uuid, i) => {
-        return Project.deserialize(uuid, metaDatas[i]);
-      });
+        const projects = uuids.map((uuid, i) => {
+          return Project.deserialize(uuid, metaDatas[i]);
+        });
 
-      resolve(new Workspace(projects));
+        resolve(new Workspace(projects));
+      } catch (err) {
+        reject(err);
+      }
     });
   }
 
