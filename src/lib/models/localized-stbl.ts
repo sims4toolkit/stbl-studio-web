@@ -155,6 +155,15 @@ export default class LocalizedStringTable {
   }
 
   /**
+   * TODO:
+   * 
+   * @param locale TODO:
+   */
+  hasLocale(locale: StringTableLocale): boolean {
+    return this._allLocales.has(locale);
+  }
+
+  /**
    * Returns the entry with the given ID.
    * 
    * @param id ID of entry to get

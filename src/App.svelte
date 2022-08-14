@@ -1,48 +1,48 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  // import { onMount } from "svelte";
   import Router, { replace } from "svelte-spa-router";
-  import { activeWorkspace, isLightThemeStore } from "./typescript/stores";
-  import { Settings } from "./typescript/storage";
-  import Workspace from "./typescript/models/workspace";
-  import Navbar from "./components/Navbar.svelte";
-  import Footer from "./components/Footer.svelte";
-  import BlurOverlay from "./components/shared/layout/BlurOverlay.svelte";
-  import OnboardingView from "./components/views/OnboardingView.svelte";
-  import NotFoundPage from "./components/pages/NotFoundPage.svelte";
-  import HomePage from "./components/pages/home/HomePage.svelte";
-  import HelpPage from "./components/pages/help/HelpPage.svelte";
-  import ProjectPage from "./components/pages/project/ProjectPage.svelte";
-  import SettingsPage from "./components/pages/settings/SettingsPage.svelte";
-  import PronounToolPage from "./components/pages/tools/pronouns/PronounToolPage.svelte";
-  import ToolsPage from "./components/pages/tools/ToolsPage.svelte";
-  import HasherToolPage from "./components/pages/tools/hasher/HasherToolPage.svelte";
+  // import { activeWorkspace, isLightThemeStore } from "./typescript/stores";
+  // import Settings from "./lib/services/settings";
+  // import Workspace from "./typescript/models/workspace";
+  // import Navbar from "./components/Navbar.svelte";
+  // import Footer from "./components/Footer.svelte";
+  // import BlurOverlay from "./components/shared/layout/BlurOverlay.svelte";
+  // import OnboardingView from "./components/views/OnboardingView.svelte";
+  import NotFoundPage from "./pages/NotFoundPage.svelte";
+  import HomePage from "./pages/HomePage.svelte";
+  // import HelpPage from "./components/pages/help/HelpPage.svelte";
+  // import ProjectPage from "./components/pages/project/ProjectPage.svelte";
+  // import SettingsPage from "./components/pages/settings/SettingsPage.svelte";
+  // import PronounToolPage from "./components/pages/tools/pronouns/PronounToolPage.svelte";
+  // import ToolsPage from "./components/pages/tools/ToolsPage.svelte";
+  // import HasherToolPage from "./components/pages/tools/hasher/HasherToolPage.svelte";
 
   let onboardUser = false;
   let restoreError = false;
 
-  onMount(() => {
-    if (Settings.hasWorkspace) {
-      Workspace.restoreFromStorage()
-        .then((workspace) => {
-          activeWorkspace.set(workspace);
-        })
-        .catch((err) => {
-          console.error(err);
-          restoreError = true;
-        });
-    } else {
-      onboardUser = true;
-    }
-  });
+  // onMount(() => {
+  //   if (Settings.hasWorkspace) {
+  //     Workspace.restoreFromStorage()
+  //       .then((workspace) => {
+  //         activeWorkspace.set(workspace);
+  //       })
+  //       .catch((err) => {
+  //         console.error(err);
+  //         restoreError = true;
+  //       });
+  //   } else {
+  //     onboardUser = true;
+  //   }
+  // });
 
   const routes = {
     "/": HomePage,
-    "/help": HelpPage,
-    "/settings": SettingsPage,
-    "/project/:uuid": ProjectPage,
-    "/tools": ToolsPage,
-    "/tools/pronouns": PronounToolPage,
-    "/tools/hasher": HasherToolPage,
+    // "/help": HelpPage,
+    // "/settings": SettingsPage,
+    // "/project/:uuid": ProjectPage,
+    // "/tools": ToolsPage,
+    // "/tools/pronouns": PronounToolPage,
+    // "/tools/hasher": HasherToolPage,
     "*": NotFoundPage,
   };
 
@@ -53,39 +53,40 @@
     }
   }
 
-  let storageSyncTimeout: any;
+  // let storageSyncTimeout: any;
 
-  function startStorageSyncTimeout() {
-    storageSyncTimeout = setTimeout(async () => {
-      if (Settings.hasWorkspace) {
-        onboardUser = false;
-        activeWorkspace.set(await Workspace.restoreFromStorage());
-        isLightThemeStore.set(Settings.isLightTheme);
-      } else {
-        onboardUser = true;
-        activeWorkspace.set(undefined);
-      }
-    }, 500);
-  }
+  // function startStorageSyncTimeout() {
+  //   storageSyncTimeout = setTimeout(async () => {
+  //     if (Settings.hasWorkspace) {
+  //       onboardUser = false;
+  //       activeWorkspace.set(await Workspace.restoreFromStorage());
+  //       isLightThemeStore.set(Settings.isLightTheme);
+  //     } else {
+  //       onboardUser = true;
+  //       activeWorkspace.set(undefined);
+  //     }
+  //   }, 500);
+  // }
 
-  window.addEventListener("storage", async () => {
-    if (storageSyncTimeout === undefined) {
-      startStorageSyncTimeout();
-    } else {
-      clearTimeout(storageSyncTimeout);
-      startStorageSyncTimeout();
-    }
-  });
+  // window.addEventListener("storage", async () => {
+  //   if (storageSyncTimeout === undefined) {
+  //     startStorageSyncTimeout();
+  //   } else {
+  //     clearTimeout(storageSyncTimeout);
+  //     startStorageSyncTimeout();
+  //   }
+  // });
 </script>
 
-<Navbar />
+<!-- <Navbar /> -->
 <main>
   <div class="main-content-wrapper">
     <Router {routes} restoreScrollState={true} on:routeLoaded={routeLoaded} />
   </div>
-  <Footer />
+  <!-- <Footer /> -->
 </main>
-{#if restoreError}
+
+<!-- {#if restoreError}
   <BlurOverlay>
     <div>
       <h2>Well, this is awkward...</h2>
@@ -112,8 +113,7 @@
   <BlurOverlay>
     <OnboardingView exitOnboarding={() => (onboardUser = false)} />
   </BlurOverlay>
-{/if}
-
+{/if} -->
 <style lang="scss">
   main {
     .main-content-wrapper {

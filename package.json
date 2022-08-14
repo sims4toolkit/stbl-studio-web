@@ -2,17 +2,20 @@
   "name": "stbl-studio-web",
   "version": "0.0.0",
   "scripts": {
-    "build": "npm run clean ; npm run sass:build ; rollup -c",
-    "build:s4tk": "sh scripts/browserify-s4tk.sh",
-    "deploy": "sh ./scripts/deploy.sh",
     "clean": "rm -rf ./public/build",
-    "sass:build": "sass src/styles/_index.scss public/build/global.css",
-    "sass:watch": "sass --watch src/styles/_index.scss public/build/global.css",
-    "dev": "npm run clean ; concurrently \"npm run sass:watch\" \"rollup -c -w\"",
+    "build": "npm run clean && npm run sass:build && npm run tw:build && rollup -c",
+    "dev": "npm run clean ; concurrently \"npm run sass:watch\" \"npm run tw:watch\" \"rollup -c -w\"",
     "start": "sirv public --no-clear --port 5000",
     "serve": "sirv public --no-clear --host",
-    "test:build": "rm -rf ./test/lib && tsc --project tsconfig.test.json",
-    "test:watch": "rm -rf ./test/lib && tsc --project tsconfig.test.json --watch"
+    "deploy": "sh ./scripts/deploy.sh",
+    "s4tk": "sh scripts/browserify-s4tk.sh",
+    "sass:build": "sass src/styles/global.scss public/build/global.css",
+    "sass:watch": "npm run sass:build -- --watch",
+    "test:build": "npm run test:clean && tsc --project tsconfig.test.json",
+    "test:watch": "npm run test:build -- --watch",
+    "test:clean": "rm -rf ./test/lib",
+    "tw:build": "npx tailwindcss -i ./src/styles/tailwind.css -o ./public/build/tailwind.css",
+    "tw:watch": "npm run tw:build -- --watch"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
@@ -40,6 +43,7 @@
     "svelte-check": "^2.0.0",
     "svelte-popover": "^2.0.8",
     "svelte-preprocess": "^4.0.0",
+    "tailwindcss": "^3.1.8",
     "ts-node": "^10.5.0",
     "tslib": "^2.0.0",
     "typescript": "^4.0.0"
