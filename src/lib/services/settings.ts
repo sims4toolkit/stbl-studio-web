@@ -84,19 +84,19 @@ class StoredInteger extends StoredSetting<number> {
   }
 }
 
-class StoredStringArray extends StoredSetting<string[]> {
-  constructor(name: string, defaultValue = []) {
-    super(name, defaultValue);
-  }
+// class StoredStringArray extends StoredSetting<string[]> {
+//   constructor(name: string, defaultValue = []) {
+//     super(name, defaultValue);
+//   }
 
-  protected _parseValue(value: string): string[] {
-    return JSON.parse(value);
-  }
+//   protected _parseValue(value: string): string[] {
+//     return JSON.parse(value);
+//   }
 
-  protected _stringifyValue(value: string[]): string {
-    return JSON.stringify(value);
-  }
-}
+//   protected _stringifyValue(value: string[]): string {
+//     return JSON.stringify(value);
+//   }
+// }
 
 //#endregion Classes
 
@@ -108,7 +108,6 @@ interface UserSettings {
   hasWorkspace: boolean;
   disableBlur: boolean;
   isLightTheme: boolean;
-  projectUuids: string[]
   reduceMotion: boolean;
   showAllStrings: boolean;
   showTranslateKeys: boolean;
@@ -150,7 +149,6 @@ const Settings = getSettingsProxy({
   hasWorkspace: [StoredBoolean, false],
   disableBlur: [StoredBoolean, false],
   isLightTheme: [StoredBoolean, false],
-  projectUuids: [StoredStringArray, []],
   reduceMotion: [StoredBoolean, false],
   showAllStrings: [StoredBoolean, false],
   showTranslateKeys: [StoredBoolean, false],

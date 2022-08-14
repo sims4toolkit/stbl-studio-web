@@ -6,12 +6,12 @@ namespace StorageService {
     localStorage.clear();
   }
 
-  export function removeItem(key: string) {
-    localStorage.removeItem(key);
-  }
-
   export function getItem(key: string): string {
     return localStorage.getItem(key);
+  }
+
+  export function removeItem(key: string) {
+    localStorage.removeItem(key);
   }
 
   export function setItem(key: string, value: string) {

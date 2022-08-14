@@ -9,7 +9,7 @@ describe("Settings", () => {
 
   describe("StoredBoolean", () => {
     it("should be false by default", () => {
-      MockStorage.assert("s:disableBlur", undefined);
+      expect(MockStorage.get("s:disableBlur")).to.be.undefined;
       expect(Settings.disableBlur).to.be.false;
     });
 
@@ -24,26 +24,26 @@ describe("Settings", () => {
     });
 
     it("should write 'true' if value is set to true", () => {
-      MockStorage.assert("s:disableBlur", undefined);
+      expect(MockStorage.get("s:disableBlur")).to.be.undefined;
       Settings.disableBlur = true;
-      MockStorage.assert("s:disableBlur", "true");
+      expect(MockStorage.get("s:disableBlur")).to.equal("true");
     });
 
     it("should write 'false' if value is set to false", () => {
-      MockStorage.assert("s:disableBlur", undefined);
+      expect(MockStorage.get("s:disableBlur")).to.be.undefined;
       Settings.disableBlur = false;
-      MockStorage.assert("s:disableBlur", "false");
+      expect(MockStorage.get("s:disableBlur")).to.equal("false");
     });
   });
 
   describe("StoredInteger", () => {
     it("should use default value if doesn't exist (0)", () => {
-      MockStorage.assert("s:defaultLocale", undefined);
+      expect(MockStorage.get("s:defaultLocale")).to.be.undefined;
       expect(Settings.defaultLocale).to.equal(0);
     });
 
     it("should use default value if doesn't exist (12)", () => {
-      MockStorage.assert("s:entriesPerPage", undefined);
+      expect(MockStorage.get("s:entriesPerPage")).to.be.undefined;
       expect(Settings.entriesPerPage).to.equal(12);
     });
 
@@ -53,30 +53,9 @@ describe("Settings", () => {
     });
 
     it("should write value as string when set", () => {
-      MockStorage.assert("s:entriesPerPage", undefined);
+      expect(MockStorage.get("s:entriesPerPage")).to.be.undefined;
       Settings.entriesPerPage = 20;
-      MockStorage.assert("s:entriesPerPage", "20");
-    });
-  });
-
-  describe("StoredStringArray", () => {
-    it("should be an empty array by default", () => {
-      MockStorage.assert("s:projectUuids", undefined);
-      expect(Settings.projectUuids).to.be.an("Array").that.is.empty;
-    });
-
-    it("should return array of strings when accessed", () => {
-      MockStorage.set("s:projectUuids", '["12345","54321"]');
-      const projectUuids = Settings.projectUuids;
-      expect(projectUuids).to.be.an("Array").with.lengthOf(2);
-      expect(projectUuids[0]).to.equal("12345");
-      expect(projectUuids[1]).to.equal("54321");
-    });
-
-    it("should write JSON string when set", () => {
-      MockStorage.assert("s:projectUuids", undefined);
-      Settings.projectUuids = ["12345", "54321"];
-      MockStorage.assert("s:projectUuids", '["12345","54321"]');
+      expect(MockStorage.get("s:entriesPerPage")).to.equal("20");
     });
   });
 });
