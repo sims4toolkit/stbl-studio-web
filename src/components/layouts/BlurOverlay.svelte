@@ -83,8 +83,8 @@
     </div>
   </div>
   {#if onClose != undefined}
-    <button class="fixed top-4 right-4" on:click={onClose}>
-      <img class="svg w-8 h-8" src="./assets/x.svg" alt="Close" />
+    <button class="fixed top-6 right-6" on:click={onClose}>
+      <img class="svg w-10 h-10" src="./assets/x.svg" alt="Close" />
     </button>
   {/if}
 </div>
