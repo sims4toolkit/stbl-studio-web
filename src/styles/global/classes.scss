@@ -16,6 +16,12 @@
 
 //#region Blurred Background
 
+:root[data-allow-blur="true"] {
+  .blurred-bg {
+    background-color: var(--color-blur-fallback)
+  }
+}
+
 @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
   :root[data-allow-blur="true"] {
     .blurred-bg {

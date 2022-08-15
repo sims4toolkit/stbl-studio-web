@@ -70,7 +70,7 @@
 
 <div
   bind:this={modal}
-  class="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-40 blurred-bg"
+  class="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-40 blurred-bg bg-gray-100 dark:bg-gray-800"
   transition:fade={{ duration: Settings.reduceMotion ? 0 : 500 }}
 >
   <div
