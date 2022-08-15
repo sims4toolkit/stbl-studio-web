@@ -11,7 +11,11 @@ html {
     transition-delay: 0ms;
   }
 
-  * {
+  *,
+  *::before,
+  *::after,
+  *::placeholder {
+    // needed for smooth transitions of non-colored text
     color: var(--color-text);
   }
 }
