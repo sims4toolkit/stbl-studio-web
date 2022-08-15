@@ -1,0 +1,15 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+
+:root {
+  --font-sans: "Noto Sans";
+  --font-mono: "Roboto Mono";
+}
+
+body {
+  font-family: var(--font-sans), sans-serif;
+}
+
+.monospace {
+  font-family: var(--font-mono), monospace;
+}

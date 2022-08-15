@@ -18,7 +18,7 @@
 </script>
 
 <Navbar />
-<main>
+<main class="mt-10">
   <div class="min-h-screen">
     <Router {routes} restoreScrollState={true} on:routeLoaded={routeLoaded} />
   </div>

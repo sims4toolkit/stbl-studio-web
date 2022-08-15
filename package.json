@@ -9,7 +9,7 @@
     "serve": "sirv public --no-clear --host",
     "deploy": "sh ./scripts/deploy.sh",
     "s4tk": "sh scripts/browserify-s4tk.sh",
-    "sass:build": "sass src/styles/global.scss public/build/global.css",
+    "sass:build": "sass src/styles/global/_index.scss public/build/global.css",
     "sass:watch": "npm run sass:build -- --watch",
     "test:build": "npm run test:clean && tsc --project tsconfig.test.json",
     "test:watch": "npm run test:build -- --watch",

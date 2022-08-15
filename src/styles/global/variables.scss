@@ -1,0 +1,46 @@
+:root {
+  // custom grays in tailwind.config.js
+  $gray-50: #FAFAFB;
+  $gray-100: #F4F4F6;
+  $gray-200: #E6E7EB;
+  $gray-300: #D2D5DB;
+  $gray-400: #9A9EA7;
+  $gray-500: #666A74;
+  $gray-600: #4D515A;
+  $gray-700: #393E4A;
+  $gray-800: #2F3440;
+  $gray-900: #1F2227;
+
+  // colors
+  --color-scrollbar-shadow: rgba(0, 0, 0, 0.2);
+
+  // filters
+  --filter-dark: invert(13%) sepia(3%) saturate(427%) hue-rotate(314deg)
+    brightness(105%) contrast(84%);
+  --filter-light: invert(99%) sepia(74%) saturate(352%) hue-rotate(196deg)
+    brightness(121%) contrast(100%);
+
+  &.dark {
+    // colors
+    --color-scrollbar-bg: #{$gray-800};
+    --color-scrollbar-fg: #{$gray-500};
+    --color-scrollbar-hover: #{$gray-400};
+
+    // filters
+    --filter-svg: var(--filter-light);
+    --filter-svg-invert: var(--filter-dark);
+    --filter-bg-blur: blur(12px) brightness(55%);
+  }
+
+  &:not(.dark) {
+    // colors
+    --color-scrollbar-bg: #{$gray-200};
+    --color-scrollbar-fg: #{$gray-400};
+    --color-scrollbar-hover: #{$gray-500};
+
+    // filters
+    --filter-svg: var(--filter-dark);
+    --filter-svg-invert: var(--filter-light);
+    --filter-bg-blur: blur(12px);
+  }
+}
