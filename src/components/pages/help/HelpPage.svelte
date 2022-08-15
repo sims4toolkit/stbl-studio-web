@@ -1,6 +1,6 @@
 <script lang="ts">
   import { link } from "svelte-spa-router";
-  import ContentArea from "../../shared/layout/ContentArea.svelte";
+  import ContentArea from "../../layout/ContentArea.svelte";
   import StorageUsageView from "../../views/StorageUsageView.svelte";
 
   const discordLink = "https://discord.gg/qNhD3Jh";

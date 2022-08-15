@@ -4,7 +4,7 @@
   import { subscribeToKey } from "../../../typescript/keybindings";
   import type Project from "../../../typescript/models/project";
   import { Settings } from "../../../typescript/storage";
-  import ResizableTextArea from "../../shared/elements/ResizableTextArea.svelte";
+  import ResizableTextArea from "../../elements/ResizableTextArea.svelte";
   const { fnv32 } = window.S4TK.hashing;
 
   export let project: Project;

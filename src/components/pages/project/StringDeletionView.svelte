@@ -2,8 +2,8 @@
   import type { StringEntry } from "@s4tk/models/types";
   import type Project from "../../../typescript/models/project";
   import type SelectionGroup from "../../../typescript/models/selection-group";
-  import TextInput from "../../shared/elements/TextInput.svelte";
-  import MultipageModalContent from "../../shared/layout/MultipageModalContent.svelte";
+  import TextInput from "../../elements/TextInput.svelte";
+  import MultipageModalContent from "../../layout/MultipageModalContent.svelte";
 
   const { formatStringKey } = window.S4TK.formatting;
 

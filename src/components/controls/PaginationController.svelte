@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onDestroy } from "svelte";
-  import { subscribeToKey } from "../../../typescript/keybindings";
+  import { subscribeToKey } from "../../typescript/keybindings";
   import PaginationButton from "./PaginationButton.svelte";
 
   export let items: any[];

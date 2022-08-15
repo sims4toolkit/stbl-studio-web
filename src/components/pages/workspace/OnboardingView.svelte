@@ -1,33 +1,28 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
-  import Workspace from "../../typescript/models/workspace";
-  import { Settings } from "../../typescript/storage";
-  import { activeWorkspace, defaultLocaleStore } from "../../typescript/stores";
-  import GradientHeader from "../shared/elements/GradientHeader.svelte";
-  import IconTextButton from "../shared/elements/IconTextButton.svelte";
-  import AccessibilityOptions from "../shared/controls/AccessibilityOptions.svelte";
-  import LocaleSelect from "../shared/controls/LocaleSelect.svelte";
-  import MultipageModalContent from "../shared/layout/MultipageModalContent.svelte";
+  import Workspace from "../../../lib/models/workspace";
+  import Settings from "../../../lib/services/settings";
+  import { activeWorkspace } from "../../../lib/services/stores";
+  import LocaleSelect from "../../controls/LocaleSelect.svelte";
+  import ThemeToggler from "../../controls/ThemeToggler.svelte";
+  import GradientHeader from "../../elements/GradientHeader.svelte";
+  import IconTextButton from "../../elements/IconTextButton.svelte";
+  import MultipageModalContent from "../../layout/MultipageModalContent.svelte";
+  import AccessibilityOptions from "./AccessibilityOptions.svelte";
   import UploadWorkspaceView from "./UploadWorkspaceView.svelte";
-  import ThemeToggler from "../shared/controls/ThemeToggler.svelte";
 
   export let exitOnboarding: () => void;
 
   let currentPage = 1;
-  let defaultLocale = Settings.defaultLocale;
+  let defaultLocale = 0;
   let uploadingWorkspace = false;
-
-  $: {
-    defaultLocale;
-    defaultLocaleStore.set(defaultLocale);
-  }
 
   function nextButtonClicked() {
     if (currentPage === 1) {
       currentPage++;
     } else if (currentPage === 2) {
-      Settings.hasWorkspace = true;
       activeWorkspace.set(new Workspace());
+      Settings.hasWorkspace = true;
       exitOnboarding();
     }
   }

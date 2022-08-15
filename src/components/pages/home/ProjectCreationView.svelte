@@ -7,9 +7,9 @@
   import { activeWorkspace } from "../../../typescript/stores";
   import type { LocaleOption } from "../../../global";
   import { Settings } from "../../../typescript/storage";
-  import MultipageModalContent from "../../shared/layout/MultipageModalContent.svelte";
+  import MultipageModalContent from "../../layout/MultipageModalContent.svelte";
   import { subscribeToKey } from "../../../typescript/keybindings";
-  import ProjectMetaDataPages from "../../shared/controls/ProjectMetaDataPages.svelte";
+  import ProjectMetaDataPages from "../..//controls/ProjectMetaDataPages.svelte";
 
   const { StringTableLocale } = window.S4TK.enums;
   const { fnv64 } = window.S4TK.hashing;

@@ -12,26 +12,26 @@
     entriesPerPageStore,
     showAllStringsStore,
   } from "../../../typescript/stores";
-  import ContentArea from "../../shared/layout/ContentArea.svelte";
-  import GradientHeader from "../../shared/elements/GradientHeader.svelte";
-  import SelectModeToggle from "../../shared/controls/SelectModeToggle.svelte";
+  import ContentArea from "../../layout/ContentArea.svelte";
+  import GradientHeader from "../../elements/GradientHeader.svelte";
+  import SelectModeToggle from "../..//controls/SelectModeToggle.svelte";
   import SelectionGroup from "../../../typescript/models/selection-group";
   import ProjectActionButtons from "./ProjectActionButtons.svelte";
-  import IconButton from "../../shared/elements/IconButton.svelte";
+  import IconButton from "../../elements/IconButton.svelte";
   import StringEditCell from "./StringEditCell.svelte";
-  import SplitView from "../../shared/layout/SplitView.svelte";
+  import SplitView from "../../layout/SplitView.svelte";
   import ProjectView from "../../../typescript/enums/project-view";
-  import ScreenDimmer from "../../shared/layout/ScreenDimmer.svelte";
+  import ScreenDimmer from "../../layout/ScreenDimmer.svelte";
   import StblJsonView from "./StblJsonView.svelte";
   import StringDeletionView from "./StringDeletionView.svelte";
-  import BlurOverlay from "../../shared/layout/BlurOverlay.svelte";
+  import BlurOverlay from "../../layout/BlurOverlay.svelte";
   import StringCreationView from "./StringCreationView.svelte";
   import StblTranslateView from "./StblTranslateView.svelte";
-  import PaginationController from "../../shared/controls/PaginationController.svelte";
+  import PaginationController from "../..//controls/PaginationController.svelte";
   import StringRehashView from "./StringRehashView.svelte";
-  import StblFeatures from "../../shared/controls/StblFeatures.svelte";
+  import StblFeatures from "../..//controls/StblFeatures.svelte";
   import ProjectEditView from "./ProjectEditView.svelte";
-  import StblDownloadView from "../../shared/controls/StblDownloadView.svelte";
+  import StblDownloadView from "../..//controls/StblDownloadView.svelte";
   import { testFilter } from "../../../typescript/enums/filter-type";
   import SortOrder, { sortEntries } from "../../../typescript/enums/sort-order";
   import DisplayOptionsWindow from "./DisplayOptionsWindow.svelte";

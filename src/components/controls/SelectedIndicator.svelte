@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type SelectionGroup from "../../../typescript/models/selection-group";
+  import type SelectionGroup from "../../typescript/models/selection-group";
   import { fly } from "svelte/transition";
-  import { Settings } from "../../../typescript/storage";
+  import { Settings } from "../../typescript/storage";
 
   export let selectionGroup: SelectionGroup<any, string | number>;
   export let item: any;

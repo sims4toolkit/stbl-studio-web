@@ -1,8 +1,8 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
-  import GradientHeader from "../../../shared/elements/GradientHeader.svelte";
-  import IconTextButton from "../../../shared/elements/IconTextButton.svelte";
-  import SplitView from "../../../shared/layout/SplitView.svelte";
+  import GradientHeader from "../../../elements/GradientHeader.svelte";
+  import IconTextButton from "../../../elements/IconTextButton.svelte";
+  import SplitView from "../../../layout/SplitView.svelte";
 
   let showInstructions = false;
 </script>

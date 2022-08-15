@@ -4,7 +4,7 @@
     disableBlurStore,
     reduceMotionStore,
   } from "../../../typescript/stores";
-  import Checkbox from "../elements/Checkbox.svelte";
+  import Checkbox from "../../elements/Checkbox.svelte";
 
   export let matchInputHeight = false;
 

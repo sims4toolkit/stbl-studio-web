@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onDestroy, onMount } from "svelte";
-  import { numMovableWindowsStore } from "../../../typescript/stores";
+  import { numMovableWindowsStore } from "../../typescript/stores";
 
   export let title: string;
   export let onClose: () => void;

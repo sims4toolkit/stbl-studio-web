@@ -1,9 +1,9 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
-  import type { LocaleOption } from "../../../global";
-  import { getLocaleData } from "../../../typescript/helpers/localization";
-  import { Settings } from "../../../typescript/storage";
-  import LocaleCheckboxesView from "../../pages/home/LocaleCheckboxesView.svelte";
+  import type { LocaleOption } from "../../global";
+  import { getLocaleData } from "../../typescript/helpers/localization";
+  import { Settings } from "../../typescript/storage";
+  import LocaleCheckboxesView from "../pages/home/LocaleCheckboxesView.svelte";
   import GroupInstanceLocale from "./GroupInstanceLocale.svelte";
   import ProjectNameInput from "./ProjectNameInput.svelte";
 

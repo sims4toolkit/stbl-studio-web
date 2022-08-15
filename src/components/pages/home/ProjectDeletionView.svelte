@@ -4,8 +4,8 @@
   import type Project from "../../../typescript/models/project";
   import type Workspace from "../../../typescript/models/workspace";
   import { activeWorkspace } from "../../../typescript/stores";
-  import TextInput from "../../shared/elements/TextInput.svelte";
-  import MultipageModalContent from "../../shared/layout/MultipageModalContent.svelte";
+  import TextInput from "../../elements/TextInput.svelte";
+  import MultipageModalContent from "../../layout/MultipageModalContent.svelte";
 
   export let selectedProjects: Project[];
   export let onComplete: () => void;

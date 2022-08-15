@@ -2,8 +2,8 @@
   import { fly } from "svelte/transition";
   import type { StringTableResource } from "@s4tk/models";
   import type { StringEntry } from "@s4tk/models/types";
-  import ResizableTextArea from "../../shared/elements/ResizableTextArea.svelte";
-  import SplitView from "../../shared/layout/SplitView.svelte";
+  import ResizableTextArea from "../../elements/ResizableTextArea.svelte";
+  import SplitView from "../../layout/SplitView.svelte";
   import { Settings } from "../../../typescript/storage";
   import type Project from "../../../typescript/models/project";
 

@@ -1,11 +1,11 @@
 <script lang="ts">
   import { onDestroy, onMount } from "svelte";
   import { fly } from "svelte/transition";
-  import { Settings } from "../../../typescript/storage";
+  import { Settings } from "../../typescript/storage";
   import GradientHeader from "../elements/GradientHeader.svelte";
   import NavigationButton from "../elements/NavigationButton.svelte";
-  import ProgressCircles from "../controls/ProgressCircles.svelte";
-  import { subscribeToKey } from "../../../typescript/keybindings";
+  import ProgressCircles from "..//controls/ProgressCircles.svelte";
+  import { subscribeToKey } from "../../typescript/keybindings";
 
   const animationDuration = Settings.reduceMotion ? 0 : 850;
 

@@ -3,8 +3,8 @@
   import type { StringEntry } from "@s4tk/models/types";
   import type Project from "../../../typescript/models/project";
   import type SelectionGroup from "../../../typescript/models/selection-group";
-  import Select from "../../shared/elements/Select.svelte";
-  import MultipageModalContent from "../../shared/layout/MultipageModalContent.svelte";
+  import Select from "../../elements/Select.svelte";
+  import MultipageModalContent from "../../layout/MultipageModalContent.svelte";
 
   const { fnv32 } = window.S4TK.hashing;
   const { formatStringKey } = window.S4TK.formatting;

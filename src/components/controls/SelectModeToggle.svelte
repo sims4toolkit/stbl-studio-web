@@ -1,6 +1,6 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
-  import type SelectionGroup from "../../../typescript/models/selection-group";
+  import type SelectionGroup from "../../typescript/models/selection-group";
 
   export let selectionGroup: SelectionGroup<any, string | number>;
   export let disabled = false;

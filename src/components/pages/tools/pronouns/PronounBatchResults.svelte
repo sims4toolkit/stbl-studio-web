@@ -1,6 +1,6 @@
 <script lang="ts">
-  import GradientHeader from "../../../shared/elements/GradientHeader.svelte";
-  import NavigationButton from "../../../shared/elements/NavigationButton.svelte";
+  import GradientHeader from "../../../elements/GradientHeader.svelte";
+  import NavigationButton from "../../../elements/NavigationButton.svelte";
   const { formatResourceInstance, formatStringKey } = window.S4TK.formatting;
 
   export let batchFixResult: BatchFixResult;

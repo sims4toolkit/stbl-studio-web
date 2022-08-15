@@ -2,8 +2,8 @@
   import { replace } from "svelte-spa-router";
   import type Project from "../../../typescript/models/project";
   import type SelectionGroup from "../../../typescript/models/selection-group";
-  import SelectedIndicator from "../../shared/controls/SelectedIndicator.svelte";
-  import StblFeatures from "../../shared/controls/StblFeatures.svelte";
+  import SelectedIndicator from "../..//controls/SelectedIndicator.svelte";
+  import StblFeatures from "../..//controls/StblFeatures.svelte";
 
   export let project: Project;
   export let selectionGroup: SelectionGroup<Project>;

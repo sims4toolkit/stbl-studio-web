@@ -1,8 +1,8 @@
 <script lang="ts">
   import { onDestroy } from "svelte";
-  import type Workspace from "../../../typescript/models/workspace";
-  import { activeWorkspace } from "../../../typescript/stores";
-  import TextInput from "../../shared/elements/TextInput.svelte";
+  import type Workspace from "../../typescript/models/workspace";
+  import { activeWorkspace } from "../../typescript/stores";
+  import TextInput from "../elements/TextInput.svelte";
 
   export let uuid: string;
   export let name: string;

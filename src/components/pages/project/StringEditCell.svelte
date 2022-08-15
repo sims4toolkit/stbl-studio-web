@@ -3,8 +3,8 @@
   import CopyButton from "./CopyButton.svelte";
   import { validateHexString } from "../../../typescript/helpers/tgi";
   import type SelectionGroup from "../../../typescript/models/selection-group";
-  import SelectedIndicator from "../../shared/controls/SelectedIndicator.svelte";
-  import ResizableTextArea from "../../shared/elements/ResizableTextArea.svelte";
+  import SelectedIndicator from "../..//controls/SelectedIndicator.svelte";
+  import ResizableTextArea from "../../elements/ResizableTextArea.svelte";
   import type { StringEntry } from "@s4tk/models/types";
 
   const { formatStringKey } = window.S4TK.formatting;

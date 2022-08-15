@@ -2,11 +2,11 @@
   import type { StringFilterTerm } from "../../../global";
   import FilterType from "../../../typescript/enums/filter-type";
   import SortOrder from "../../../typescript/enums/sort-order";
-  import EntriesPerPage from "../../shared/controls/EntriesPerPage.svelte";
-  import IconTextButton from "../../shared/elements/IconTextButton.svelte";
-  import Select from "../../shared/elements/Select.svelte";
-  import TextInput from "../../shared/elements/TextInput.svelte";
-  import MovableWindow from "../../shared/layout/MovableWindow.svelte";
+  import EntriesPerPage from "../..//controls/EntriesPerPage.svelte";
+  import IconTextButton from "../../elements/IconTextButton.svelte";
+  import Select from "../../elements/Select.svelte";
+  import TextInput from "../../elements/TextInput.svelte";
+  import MovableWindow from "../../layout/MovableWindow.svelte";
 
   export let showDisplayOptions: boolean;
   export let selectedSortOrder: SortOrder;

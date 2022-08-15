@@ -1,8 +1,8 @@
 <script lang="ts">
   import { onMount, onDestroy } from "svelte";
   import { fade } from "svelte/transition";
-  import { subscribeToKey } from "../../../typescript/keybindings";
-  import { Settings } from "../../../typescript/storage";
+  import { subscribeToKey } from "../../typescript/keybindings";
+  import Settings from "../../lib/services/settings";
   import StickyCloseButton from "../elements/StickyCloseButton.svelte";
 
   export let large = false;

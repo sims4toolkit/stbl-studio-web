@@ -2,11 +2,11 @@
   import { fade } from "svelte/transition";
   import { onDestroy } from "svelte";
   import { v4 as uuidv4 } from "uuid";
-  import FileInput from "../../shared/elements/FileInput.svelte";
+  import FileInput from "../../elements/FileInput.svelte";
   import type Workspace from "../../../typescript/models/workspace";
   import { activeWorkspace } from "../../../typescript/stores";
   import { subscribeToKey } from "../../../typescript/keybindings";
-  import MultipageModalContent from "../../shared/layout/MultipageModalContent.svelte";
+  import MultipageModalContent from "../../layout/MultipageModalContent.svelte";
   import {
     getDefaultMetaData,
     mergeAndPruneLocales,
@@ -18,9 +18,9 @@
     StblMap,
   } from "../../../global";
   import type { StringTableLocale as StblLocaleType } from "@s4tk/models/enums";
-  import ProjectMetaDataPages from "../../shared/controls/ProjectMetaDataPages.svelte";
+  import ProjectMetaDataPages from "../..//controls/ProjectMetaDataPages.svelte";
   import Project from "../../../typescript/models/project";
-  import Select from "../../shared/elements/Select.svelte";
+  import Select from "../../elements/Select.svelte";
 
   const { formatAsHexString } = window.S4TK.formatting;
   const { fnv64 } = window.S4TK.hashing;

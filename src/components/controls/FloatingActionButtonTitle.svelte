@@ -1,7 +1,7 @@
 <script lang="ts">
   import { fly } from "svelte/transition";
-  import { Settings } from "../../../typescript/storage";
-  import ToolbarColor from "../../../typescript/enums/toolbar-colors";
+  import { Settings } from "../../typescript/storage";
+  import ToolbarColor from "../../typescript/enums/toolbar-colors";
 
   export let text: string;
   export let bgColor: string;

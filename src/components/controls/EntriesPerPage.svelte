@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { Settings } from "../../../typescript/storage";
+  import { Settings } from "../../typescript/storage";
   import {
     entriesPerPageStore,
     showAllStringsStore,
-  } from "../../../typescript/stores";
+  } from "../../typescript/stores";
   import Checkbox from "../elements/Checkbox.svelte";
   import NumberInput from "../elements/NumberInput.svelte";
 

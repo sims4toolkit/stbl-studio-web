@@ -4,7 +4,7 @@
     allLocales,
     getDisplayName,
     getLocaleData,
-  } from "../../../typescript/helpers/localization";
+  } from "../../typescript/helpers/localization";
   import Select from "../elements/Select.svelte";
 
   export let name: string;

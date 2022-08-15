@@ -3,20 +3,20 @@
   import type Project from "../../../typescript/models/project";
   import type Workspace from "../../../typescript/models/workspace";
   import SelectionGroup from "../../../typescript/models/selection-group";
-  import ContentArea from "../../shared/layout/ContentArea.svelte";
-  import SplitView from "../../shared/layout/SplitView.svelte";
-  import SelectModeToggle from "../../shared/controls/SelectModeToggle.svelte";
+  import ContentArea from "../../layout/ContentArea.svelte";
+  import SplitView from "../../layout/SplitView.svelte";
+  import SelectModeToggle from "../..//controls/SelectModeToggle.svelte";
   import ProjectViewGroup from "./ProjectViewGroup.svelte";
-  import Downloader from "../../shared/controls/Downloader.svelte";
+  import Downloader from "../..//controls/Downloader.svelte";
   import { activeWorkspace } from "../../../typescript/stores";
-  import BlurOverlay from "../../shared/layout/BlurOverlay.svelte";
+  import BlurOverlay from "../../layout/BlurOverlay.svelte";
   import ProjectCreationView from "./ProjectCreationView.svelte";
-  import GradientHeader from "../../shared/elements/GradientHeader.svelte";
+  import GradientHeader from "../../elements/GradientHeader.svelte";
   import ProjectDeletionView from "./ProjectDeletionView.svelte";
   import ProjectUploadView from "./ProjectUploadView.svelte";
   import HomeActionButtons from "./HomeActionButtons.svelte";
   import ProjectMergeView from "./ProjectMergeView.svelte";
-  import StblDownloadView from "../../shared/controls/StblDownloadView.svelte";
+  import StblDownloadView from "../..//controls/StblDownloadView.svelte";
 
   let workspace: Workspace;
   let selectionGroup: SelectionGroup<Project>;

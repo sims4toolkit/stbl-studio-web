@@ -1,8 +1,8 @@
 <script lang="ts">
   import { v4 as uuidv4 } from "uuid";
-  import Checkbox from "../../../shared/elements/Checkbox.svelte";
-  import TextInput from "../../../shared/elements/TextInput.svelte";
-  import ContentArea from "../../../shared/layout/ContentArea.svelte";
+  import Checkbox from "../../../elements/Checkbox.svelte";
+  import TextInput from "../../../elements/TextInput.svelte";
+  import ContentArea from "../../../layout/ContentArea.svelte";
 
   const { fnv32, fnv64 } = window.S4TK.hashing;
   const { formatAsHexString } = window.S4TK.formatting;

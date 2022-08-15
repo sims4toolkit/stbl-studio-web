@@ -2,9 +2,9 @@
   import { onMount } from "svelte";
   import type Project from "../../../typescript/models/project";
   import { validateHexString } from "../../../typescript/helpers/tgi";
-  import Checkbox from "../../shared/elements/Checkbox.svelte";
-  import IconTextButton from "../../shared/elements/IconTextButton.svelte";
-  import ScreenDimmer from "../../shared/layout/ScreenDimmer.svelte";
+  import Checkbox from "../../elements/Checkbox.svelte";
+  import IconTextButton from "../../elements/IconTextButton.svelte";
+  import ScreenDimmer from "../../layout/ScreenDimmer.svelte";
   import { parseStblJson } from "../../../typescript/helpers/json";
 
   const { formatStringKey } = window.S4TK.formatting;

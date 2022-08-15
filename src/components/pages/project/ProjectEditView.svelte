@@ -2,8 +2,8 @@
   import type { LocaleOption } from "../../../global";
   import { allLocales } from "../../../typescript/helpers/localization";
   import type Project from "../../../typescript/models/project";
-  import ProjectMetaDataPages from "../../shared/controls/ProjectMetaDataPages.svelte";
-  import MultipageModalContent from "../../shared/layout/MultipageModalContent.svelte";
+  import ProjectMetaDataPages from "../..//controls/ProjectMetaDataPages.svelte";
+  import MultipageModalContent from "../../layout/MultipageModalContent.svelte";
 
   const { formatAsHexString } = window.S4TK.formatting;
 

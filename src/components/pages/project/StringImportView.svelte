@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { ParsedFilesResult } from "../../../global";
-  import StblUploadInput from "../../shared/controls/StblUploadInput.svelte";
-  import MultipageModalContent from "../../shared/layout/MultipageModalContent.svelte";
+  import StblUploadInput from "../..//controls/StblUploadInput.svelte";
+  import MultipageModalContent from "../../layout/MultipageModalContent.svelte";
 
   //#region Variables
 

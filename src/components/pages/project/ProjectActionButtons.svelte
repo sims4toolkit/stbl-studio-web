@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { FloatingActionButtonData } from "../../../global";
   import ToolbarColor from "../../../typescript/enums/toolbar-colors";
-  import FloatingActionButtonGroup from "../../shared/controls/FloatingActionButtonGroup.svelte";
+  import FloatingActionButtonGroup from "../..//controls/FloatingActionButtonGroup.svelte";
 
   export let inModal: boolean;
   export let inSelectMode: boolean;

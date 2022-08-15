@@ -3,8 +3,8 @@
   import type { StringEntry } from "@s4tk/models/types";
   import { getLocaleData } from "../../../typescript/helpers/localization";
   import type Project from "../../../typescript/models/project";
-  import LocaleSelect from "../../shared/controls/LocaleSelect.svelte";
-  import Checkbox from "../../shared/elements/Checkbox.svelte";
+  import LocaleSelect from "../..//controls/LocaleSelect.svelte";
+  import Checkbox from "../../elements/Checkbox.svelte";
   import StringTranslateCell from "./StringTranslateCell.svelte";
   import { Settings } from "../../../typescript/storage";
 

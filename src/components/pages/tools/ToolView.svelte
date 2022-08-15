@@ -1,6 +1,6 @@
 <script lang="ts">
   import { replace } from "svelte-spa-router";
-  import SectionHeader from "../../shared/elements/SectionHeader.svelte";
+  import SectionHeader from "../../elements/SectionHeader.svelte";
 
   export let name: string;
   export let description: string;

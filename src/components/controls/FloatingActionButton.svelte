@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onDestroy } from "svelte";
-  import ToolbarColor from "../../../typescript/enums/toolbar-colors";
-  import { subscribeToKey } from "../../../typescript/keybindings";
+  import ToolbarColor from "../../typescript/enums/toolbar-colors";
+  import { subscribeToKey } from "../../typescript/keybindings";
 
   export let color: string;
   export let title: string;

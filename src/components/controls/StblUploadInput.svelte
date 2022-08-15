@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { ParsedFilesResult } from "../../../global";
+  import type { ParsedFilesResult } from "../../global";
   import FileInput from "../elements/FileInput.svelte";
-  import { parseFiles } from "../../../typescript/helpers/uploads";
+  import { parseFiles } from "../../typescript/helpers/uploads";
   import { fade } from "svelte/transition";
 
   export let parsedFilesResult: ParsedFilesResult;

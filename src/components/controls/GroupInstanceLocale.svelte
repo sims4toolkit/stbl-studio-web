@@ -3,9 +3,9 @@
   import type { StringTableLocale } from "@s4tk/models/enums";
   import LocaleSelect from "./LocaleSelect.svelte";
   import TextInput from "../elements/TextInput.svelte";
-  import { validateHexString } from "../../../typescript/helpers/tgi";
-  import type Workspace from "../../../typescript/models/workspace";
-  import { activeWorkspace } from "../../../typescript/stores";
+  import { validateHexString } from "../../typescript/helpers/tgi";
+  import type Workspace from "../../typescript/models/workspace";
+  import { activeWorkspace } from "../../typescript/stores";
 
   export let uuid: string = null;
   export let groupHexString: string;

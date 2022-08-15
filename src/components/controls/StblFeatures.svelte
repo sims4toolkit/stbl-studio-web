@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { getLocaleData } from "../../../typescript/helpers/localization";
-  import type Project from "../../../typescript/models/project";
+  import { getLocaleData } from "../../typescript/helpers/localization";
+  import type Project from "../../typescript/models/project";
 
   export let project: Project;
 

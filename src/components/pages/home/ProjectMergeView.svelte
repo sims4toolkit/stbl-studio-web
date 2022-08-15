@@ -4,9 +4,9 @@
   import type Project from "../../../typescript/models/project";
   import type Workspace from "../../../typescript/models/workspace";
   import { activeWorkspace } from "../../../typescript/stores";
-  import GroupInstanceLocale from "../../shared/controls/GroupInstanceLocale.svelte";
-  import ProjectMetaDataPages from "../../shared/controls/ProjectMetaDataPages.svelte";
-  import MultipageModalContent from "../../shared/layout/MultipageModalContent.svelte";
+  import GroupInstanceLocale from "../..//controls/GroupInstanceLocale.svelte";
+  import ProjectMetaDataPages from "../..//controls/ProjectMetaDataPages.svelte";
+  import MultipageModalContent from "../../layout/MultipageModalContent.svelte";
 
   const { formatAsHexString } = window.S4TK.formatting;
 

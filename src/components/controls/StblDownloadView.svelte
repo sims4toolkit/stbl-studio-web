@@ -1,18 +1,18 @@
 <script lang="ts">
   import type { StringTableLocale } from "@s4tk/models/enums";
-  import type { FileDownloadInfo } from "../../../global";
-  import DownloadMethod from "../../../typescript/enums/download-method";
+  import type { FileDownloadInfo } from "../../global";
+  import DownloadMethod from "../../typescript/enums/download-method";
   import DownloadOption, {
     LOCALE_OFFSET,
-  } from "../../../typescript/enums/download-options";
-  import NamingConvention from "../../../typescript/enums/naming-convention";
-  import { getDownloadInfoForProjects } from "../../../typescript/helpers/downloads";
+  } from "../../typescript/enums/download-options";
+  import NamingConvention from "../../typescript/enums/naming-convention";
+  import { getDownloadInfoForProjects } from "../../typescript/helpers/downloads";
   import {
     getDisplayName,
     getLocaleData,
-  } from "../../../typescript/helpers/localization";
-  import type Project from "../../../typescript/models/project";
-  import { Settings } from "../../../typescript/storage";
+  } from "../../typescript/helpers/localization";
+  import type Project from "../../typescript/models/project";
+  import { Settings } from "../../typescript/storage";
   import Select from "../elements/Select.svelte";
   import MultipageModalContent from "../layout/MultipageModalContent.svelte";
   import Downloader from "./Downloader.svelte";

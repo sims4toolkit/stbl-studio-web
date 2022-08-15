@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { FloatingActionButtonData } from "../../../global";
+  import type { FloatingActionButtonData } from "../../global";
   import FloatingActionButton from "./FloatingActionButton.svelte";
   import FloatingActionButtonTitle from "./FloatingActionButtonTitle.svelte";
 
