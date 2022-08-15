@@ -22,20 +22,6 @@
 
 //#region Blurred Background
 
-:root {
-  &[data-allow-blur="true"] {
-    .blurred-bg {
-      background-color: var(--color-blur-fallback);
-    }
-  }
-
-  &:not([data-allow-blur="true"]) {
-    .blurred-bg {
-      background-color: var(--color-bg);
-    }
-  }
-}
-
 @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
   :root[data-allow-blur="true"] {
     .blurred-bg {
@@ -47,3 +33,11 @@
 }
 
 //#endregion Blurred Background
+
+//#region Utilities
+
+.bottom-shadow {
+  box-shadow: 0px 2px 4px var(--color-shadow);
+}
+
+//#endregion Utilities

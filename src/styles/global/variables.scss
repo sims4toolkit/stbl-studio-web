@@ -11,9 +11,6 @@
   $gray-800: #2F3440;
   $gray-900: #1F2227;
 
-  // colors
-  --color-scrollbar-shadow: rgba(0, 0, 0, 0.2);
-
   // filters
   --filter-dark: invert(13%) sepia(3%) saturate(427%) hue-rotate(314deg)
     brightness(105%) contrast(84%);
@@ -22,6 +19,7 @@
 
   &.dark {
     // colors
+    --color-shadow: rgba(0, 0, 0, 0.2);
     --color-scrollbar-bg: #{$gray-800};
     --color-scrollbar-fg: #{$gray-500};
     --color-scrollbar-hover: #{$gray-400};
@@ -34,6 +32,7 @@
 
   &:not(.dark) {
     // colors
+    --color-shadow: rgba(64, 64, 64, 0.15);
     --color-scrollbar-bg: #{$gray-200};
     --color-scrollbar-fg: #{$gray-400};
     --color-scrollbar-hover: #{$gray-500};
@@ -41,6 +40,6 @@
     // filters
     --filter-svg: var(--filter-dark);
     --filter-svg-invert: var(--filter-light);
-    --filter-bg-blur: blur(12px);
+    --filter-bg-blur: blur(12px) brightness(96%);
   }
 }
