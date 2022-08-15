@@ -4,6 +4,10 @@
   "exclude": ["node_modules/*", "__sapper__/*", "public/*"],
   "compilerOptions": {
     "resolveJsonModule": true,
-    "target": "ES2020"
+    "target": "ES2020",
+    "baseUrl": ".",
+    "paths": {
+      "src/*": ["src/*"]
+    }
   }
 }

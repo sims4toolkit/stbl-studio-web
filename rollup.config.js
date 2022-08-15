@@ -1,3 +1,4 @@
+import path from "path";
 import svelte from "rollup-plugin-svelte";
 import commonjs from "@rollup/plugin-commonjs";
 import resolve from "@rollup/plugin-node-resolve";
@@ -7,6 +8,7 @@ import sveltePreprocess from "svelte-preprocess";
 import typescript from "@rollup/plugin-typescript";
 import json from "@rollup/plugin-json";
 import css from "rollup-plugin-css-only";
+import alias from "@rollup/plugin-alias";
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -59,6 +61,10 @@ export default {
     typescript({
       sourceMap: !production,
       inlineSources: !production,
+    }),
+    alias({
+      resolve: [".js", ".ts", ".svelte"],
+      entries: [{ find: "src", replacement: path.resolve(__dirname, "./src") }],
     }),
     json(),
     !production && serve(),
