@@ -57,15 +57,13 @@
         <a
           href="https://ionic.io/ionicons"
           target="_blank"
-          class="text-accent-secondary-light dark:text-accent-secondary-dark"
-          >Ionicons</a
+          class="text-secondary">Ionicons</a
         >
         and
         <a
           href="https://primer.github.io/octicons/"
           target="_blank"
-          class="text-accent-secondary-light dark:text-accent-secondary-dark"
-          >GitHub Octicons</a
+          class="text-secondary">GitHub Octicons</a
         >.
       </p>
       <p>2022 © Frank Kulak</p>

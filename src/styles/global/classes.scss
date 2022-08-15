@@ -45,3 +45,32 @@
 }
 
 //#endregion Utilities
+
+//#region Colors
+
+.text-primary {
+  color: var(--color-accent);
+}
+
+.text-secondary {
+  color: var(--color-accent-secondary);
+}
+
+.text-gradient {
+  background-image: linear-gradient(45deg, var(--color-accent) 0%, var(--color-accent-secondary) 100%);
+  display: inline-block;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.bg-primary {
+  background-color: var(--color-accent);
+}
+
+.bg-secondary {
+  background-color: var(--color-accent-secondary);
+}
+
+//#endregion Colors
