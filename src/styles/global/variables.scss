@@ -18,6 +18,7 @@
 
   &.dark {
     // colors
+    --color-text: white;
     --color-shadow: rgba(0, 0, 0, 0.2);
     --color-scrollbar-bg: #{$gray-800};
     --color-scrollbar-fg: #{$gray-500};
@@ -31,6 +32,7 @@
 
   &:not(.dark) {
     // colors
+    --color-text: black;
     --color-shadow: rgba(64, 64, 64, 0.15);
     --color-scrollbar-bg: #{$gray-200};
     --color-scrollbar-fg: #{$gray-400};

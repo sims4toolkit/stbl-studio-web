@@ -1,20 +1,16 @@
 import type { StringTableLocale } from "@s4tk/models/enums";
-import StorageService from "./storage.js";
+import DocumentUtils from "src/lib/utilities/document.js";
+import StorageService from "src/lib/services/storage.js";
 
 //#region Abstract Types
 
 type OnChangeCallback<T> = (value: T) => void;
 
 abstract class StoredSetting<T> {
-  //#region Properties
-
-  private _onChangeCallbacks: OnChangeCallback<T>[] = [];
-
-  //#endregion Properties
-
   constructor(
     public readonly name: string,
-    public readonly defaultValue: T
+    public readonly defaultValue: T,
+    private _onChangeCallbacks: OnChangeCallback<T>[] = []
   ) { }
 
   //#region Public Methods
@@ -57,8 +53,12 @@ abstract class StoredSetting<T> {
 //#region Classes
 
 class StoredBoolean extends StoredSetting<boolean> {
-  constructor(name: string, defaultValue = false) {
-    super(name, defaultValue);
+  constructor(
+    name: string,
+    defaultValue = false,
+    callbacks?: OnChangeCallback<boolean>[]
+  ) {
+    super(name, defaultValue, callbacks);
   }
 
   protected _parseValue(value: string): boolean {
@@ -71,8 +71,12 @@ class StoredBoolean extends StoredSetting<boolean> {
 }
 
 class StoredInteger extends StoredSetting<number> {
-  constructor(name: string, defaultValue = 0) {
-    super(name, defaultValue);
+  constructor(
+    name: string,
+    defaultValue = 0,
+    callbacks?: OnChangeCallback<number>[]
+  ) {
+    super(name, defaultValue, callbacks);
   }
 
   protected _parseValue(value: string): number {
@@ -83,20 +87,6 @@ class StoredInteger extends StoredSetting<number> {
     return value.toString();
   }
 }
-
-// class StoredStringArray extends StoredSetting<string[]> {
-//   constructor(name: string, defaultValue = []) {
-//     super(name, defaultValue);
-//   }
-
-//   protected _parseValue(value: string): string[] {
-//     return JSON.parse(value);
-//   }
-
-//   protected _stringifyValue(value: string[]): string {
-//     return JSON.stringify(value);
-//   }
-// }
 
 //#endregion Classes
 
@@ -118,18 +108,23 @@ type StoredUserSettings = {
 };
 
 type StoredUserSettingsBuilder = {
-  [T in keyof UserSettings]: [
-    new (name: string, defaultValue: UserSettings[T])
+  [T in keyof UserSettings]: {
+    cls: new (name: string, defaultValue: UserSettings[T])
       => StoredSetting<UserSettings[T]>,
-    UserSettings[T]
-  ];
+    defaultValue?: UserSettings[T],
+    callbacks?: OnChangeCallback<UserSettings[T]>[]
+  };
 };
 
 function getSettingsProxy(settingsBuilder: StoredUserSettingsBuilder): UserSettings {
   const settings: Partial<StoredUserSettings> = {};
   for (const settingName in settingsBuilder) {
-    const [cls, defaultValue] = settingsBuilder[settingName];
-    settings[settingName] = new cls(settingName, defaultValue);
+    const builder = settingsBuilder[settingName];
+    settings[settingName] = new builder.cls(
+      settingName,
+      builder.defaultValue,
+      builder.callbacks
+    );
   }
 
   return new Proxy(settings as StoredUserSettings, {
@@ -144,14 +139,37 @@ function getSettingsProxy(settingsBuilder: StoredUserSettingsBuilder): UserSetti
 }
 
 const Settings = getSettingsProxy({
-  defaultLocale: [StoredInteger, 0],
-  entriesPerPage: [StoredInteger, 12],
-  hasWorkspace: [StoredBoolean, false],
-  disableBlur: [StoredBoolean, false],
-  isLightTheme: [StoredBoolean, false],
-  reduceMotion: [StoredBoolean, false],
-  showAllStrings: [StoredBoolean, false],
-  showTranslateKeys: [StoredBoolean, false],
+  defaultLocale: {
+    cls: StoredInteger
+  },
+  entriesPerPage: {
+    cls: StoredInteger,
+    defaultValue: 12
+  },
+  hasWorkspace: {
+    cls: StoredBoolean
+  },
+  disableBlur: {
+    cls: StoredBoolean,
+    callbacks: [
+      DocumentUtils.toggleBlurEffect
+    ]
+  },
+  isLightTheme: {
+    cls: StoredBoolean,
+    callbacks: [
+      (value) => DocumentUtils.toggleLightTheme(value, !Settings.reduceMotion)
+    ]
+  },
+  reduceMotion: {
+    cls: StoredBoolean
+  },
+  showAllStrings: {
+    cls: StoredBoolean
+  },
+  showTranslateKeys: {
+    cls: StoredBoolean
+  },
 });
 
 export default Settings;

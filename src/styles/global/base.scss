@@ -1,3 +1,21 @@
+html {
+  &.theme-transition,
+  &.theme-transition *,
+  &.theme-transition *::before,
+  &.theme-transition *::after,
+  &.theme-transition *::placeholder {
+    // keep in sync with timeout in ThemeToggler.sveltes
+    $time: 500ms;
+
+    transition: all $time;
+    transition-delay: 0ms;
+  }
+
+  * {
+    color: var(--color-text);
+  }
+}
+
 ::-webkit-scrollbar-track,
 ::-webkit-scrollbar-corner {
   background: var(--color-scrollbar-bg);
@@ -17,12 +35,4 @@
 ::-webkit-scrollbar {
   width: 12px;
   height: 8px;
-}
-
-a {
-  text-decoration: underline;
-
-  &:hover {
-    text-decoration: none;
-  }
 }
