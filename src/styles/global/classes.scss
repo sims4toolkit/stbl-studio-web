@@ -1,0 +1,49 @@
+//#region SVG
+
+.svg {
+  filter: var(--filter-svg);
+}
+
+.svg-dark {
+  filter: var(--filter-dark);
+}
+
+.svg-light {
+  filter: var(--filter-light);
+}
+
+.svg, .svg-dark, .svg-light {
+  &.tint-on-hover:hover {
+    opacity: 0.65;
+  }
+}
+
+//#endregion SVG
+
+//#region Blurred Background
+
+:root {
+  &[data-allow-blur="true"] {
+    .blurred-bg {
+      background-color: var(--color-blur-fallback);
+    }
+  }
+
+  &:not([data-allow-blur="true"]) {
+    .blurred-bg {
+      background-color: var(--color-bg);
+    }
+  }
+}
+
+@supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+  :root[data-allow-blur="true"] {
+    .blurred-bg {
+      background-color: transparent;
+      backdrop-filter: var(--filter-bg-blur);
+      -webkit-backdrop-filter: var(--filter-bg-blur);
+    }
+  }
+}
+
+//#endregion Blurred Background
