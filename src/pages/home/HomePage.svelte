@@ -1,7 +1,9 @@
 <script lang="ts">
   import SectionHeader from "src/components/elements/SectionHeader.svelte";
+  import BlurOverlay from "src/components/layouts/BlurOverlay.svelte";
   import Workspace from "src/lib/models/workspace";
   import Settings from "src/lib/services/settings";
+  import OnboardingView from "./views/OnboardingView.svelte";
 
   let workspace: Workspace;
   let showingProjects = false;
@@ -52,3 +54,9 @@
     </div>
   {/if}
 </div>
+
+{#if isOnboarding}
+  <BlurOverlay>
+    <OnboardingView />
+  </BlurOverlay>
+{/if}
