@@ -4,11 +4,16 @@
   import MultipageContentGroup from "src/components/layouts/MultipageContentGroup.svelte";
   import MultipageContent from "src/components/layouts/MultipageContent.svelte";
   import TextInput from "src/components/elements/TextInput.svelte";
+  const { hashing, formatting } = window.S4TK;
 
   export let onComplete: () => void;
 
   const uuid = uuidv4();
   let projectName = "";
+  let groupHexString = "80000000";
+  let instanceHexString = formatting.formatResourceInstance(
+    hashing.fnv64(uuid, false)
+  );
 
   let multipageState: MultipageContentState = {
     currentPage: 1,
@@ -33,7 +38,7 @@
 >
   <div slot="content" class="w-full">
     <MultipageContent pageNumber={1} bind:state={multipageState}>
-      <div class="w-full">
+      <div class="w-full flex flex-col gap-4">
         <TextInput
           label="project name"
           name="project-name-input"
@@ -42,6 +47,23 @@
           bind:value={projectName}
           focusOnMount={true}
         />
+        <div class="flex gap-4">
+          <TextInput
+            label="group"
+            name="project-group-input"
+            placeholder="Group"
+            fillWidth={true}
+            bind:value={groupHexString}
+          />
+          <TextInput
+            label="instance"
+            name="project-instance-input"
+            placeholder="Instance"
+            fillWidth={true}
+            bind:value={instanceHexString}
+          />
+          <!-- TODO: Locale Select -->
+        </div>
       </div>
     </MultipageContent>
     <MultipageContent pageNumber={2} bind:state={multipageState}>
