@@ -1,14 +1,24 @@
 import type { StringTableLocale } from "@s4tk/models/enums";
-import type { LocaleData } from "../../global";
 import localeData from "../../data/locales.json";
 const { enums } = window.S4TK;
 
-localeData.forEach(data => {
-  //@ts-expect-error Adding a value that isn't on the base
-  data.enumValue = enums.StringTableLocale[data.enumName];
-});
+interface LocaleData {
+  enumName: string;
+  enumValue: string;
+  englishName: string;
+  country: string;
+  nativeName: string;
+  code: string;
+}
 
-export const allLocales = localeData as LocaleData[];
+const localeDataMap = new Map<StringTableLocale, LocaleData>();
+
+localeData.forEach(data => {
+  const enumValue = enums.StringTableLocale[data.enumName];
+  //@ts-expect-error Adding a value that isn't on the base
+  data.enumValue = enumValue
+  localeDataMap.set(enumValue, data as LocaleData);
+});
 
 /**
  * Returns an object containing data for the given locale.
@@ -16,15 +26,16 @@ export const allLocales = localeData as LocaleData[];
  * @param locale Locale to get data for
  */
 export function getLocaleData(locale: StringTableLocale): LocaleData {
-  return allLocales.find(data => data.enumValue === locale);
+  return localeDataMap.get(locale);
 }
 
 /**
  * Gets the name to display for a given locale.
  * 
- * @param localeData Locale to get display name for
+ * @param locale Locale to get display name for
  */
-export function getDisplayName(localeData: LocaleData): string {
+export function getDisplayName(locale: StringTableLocale): string {
+  const localeData = getLocaleData(locale);
   if (!localeData.enumValue) return localeData.englishName;
   return `${localeData.englishName} (${localeData.nativeName})`;
 }

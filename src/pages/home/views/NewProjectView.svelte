@@ -4,16 +4,18 @@
   import MultipageContentGroup from "src/components/layouts/MultipageContentGroup.svelte";
   import MultipageContent from "src/components/layouts/MultipageContent.svelte";
   import TextInput from "src/components/elements/TextInput.svelte";
-  const { hashing, formatting } = window.S4TK;
+  import LocaleSelect from "src/components/controls/LocaleSelect.svelte";
+  import Settings from "src/lib/services/settings";
+  const { fnv64 } = window.S4TK.hashing;
+  const { formatResourceInstance } = window.S4TK.formatting;
 
   export let onComplete: () => void;
 
   const uuid = uuidv4();
   let projectName = "";
   let groupHexString = "80000000";
-  let instanceHexString = formatting.formatResourceInstance(
-    hashing.fnv64(uuid, false)
-  );
+  let instanceHexString = formatResourceInstance(fnv64(uuid, false));
+  let primaryLocale = Settings.defaultLocale;
 
   let multipageState: MultipageContentState = {
     currentPage: 1,
@@ -62,7 +64,7 @@
             fillWidth={true}
             bind:value={instanceHexString}
           />
-          <!-- TODO: Locale Select -->
+          <LocaleSelect bind:selected={primaryLocale} />
         </div>
       </div>
     </MultipageContent>
