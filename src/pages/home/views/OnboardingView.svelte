@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { fade } from "svelte/transition";
+  import MultipageContent from "src/components/layouts/MultipageContent.svelte";
   import MultipageContentGroup from "src/components/layouts/MultipageContentGroup.svelte";
   import type { MultipageContentState } from "src/components/layouts/types";
 
@@ -14,6 +16,8 @@
 <MultipageContentGroup
   numPages={2}
   bind:state={multipageState}
+  minimumContentHeight="150"
+  centerVertically={true}
   onLastPageComplete={onOnboardingComplete}
 >
   <div slot="header">
@@ -30,19 +34,23 @@
     </p>
   </div>
   <div slot="content" class="flex flex-col gap-4">
-    <div>
-      <p>
-        String Table Studio is a web app that makes it easy to create, edit, and
-        translate string tables for Sims 4 mods. View the <a
-          class="text-secondary"
-          href="/"
-          target="_blank">feature list</a
-        > to learn more about what it can do.
-      </p>
-      <p>TODO</p>
-    </div>
-    <div>
-      <p>Second page.</p>
-    </div>
+    <MultipageContent pageNumber={1} bind:state={multipageState}>
+      <div>
+        <p>
+          String Table Studio is a web app that makes it easy to create, edit,
+          and translate string tables for Sims 4 mods. View the <a
+            class="text-secondary"
+            href="/"
+            target="_blank">feature list</a
+          > to learn more about what it can do.
+        </p>
+        <p>TODO</p>
+      </div>
+    </MultipageContent>
+    <MultipageContent pageNumber={2} bind:state={multipageState}>
+      <div in:fade>
+        <p>Second page.</p>
+      </div>
+    </MultipageContent>
   </div>
 </MultipageContentGroup>

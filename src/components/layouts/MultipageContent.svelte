@@ -5,10 +5,10 @@
   export let nextButtonText: string = "Next";
   export let state: MultipageContentState;
 
-  let hidden = true;
+  let visible = false;
 
   $: {
-    hidden = pageNumber !== state.currentPage;
+    visible = pageNumber === state.currentPage;
     onVisibilityChange();
   }
 
@@ -18,6 +18,6 @@
   }
 </script>
 
-<div {hidden}>
+{#if visible}
   <slot />
-</div>
+{/if}
