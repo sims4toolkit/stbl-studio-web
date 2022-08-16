@@ -83,7 +83,7 @@
           color: "#48AD6F",
           title: "New Project",
           icon: "plus",
-          keybinding: "d",
+          keybinding: "n",
           onClick: ifNotInModal(() => {
             modalContentComponent = NewProjectView;
             modalContentArgs = {};
