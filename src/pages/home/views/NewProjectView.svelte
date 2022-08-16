@@ -18,7 +18,7 @@
 <MultipageContentGroup
   title="New Project"
   subtitle="UUID: {uuid}"
-  numPages={3}
+  numPages={2}
   bind:state={multipageState}
   onLastPageComplete={onNewProjectCreated}
 >
@@ -35,12 +35,5 @@
     bind:state={multipageState}
   >
     <p>second</p>
-  </MultipageContent>
-  <MultipageContent
-    pageNumber={3}
-    nextButtonText="Create"
-    bind:state={multipageState}
-  >
-    <p>third</p>
   </MultipageContent>
 </MultipageContentGroup>
