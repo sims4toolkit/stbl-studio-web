@@ -21,6 +21,12 @@
   } else {
     isOnboarding = true;
   }
+
+  function onOnboardingComplete() {
+    workspace = new Workspace();
+    Settings.hasWorkspace = true;
+    isOnboarding = false;
+  }
 </script>
 
 <div class="w-100 flex justify-center" class:flex-1={!showingProjects}>
@@ -57,6 +63,6 @@
 
 {#if isOnboarding}
   <BlurOverlay>
-    <OnboardingView onOnboardingComplete={() => (isOnboarding = false)} />
+    <OnboardingView {onOnboardingComplete} />
   </BlurOverlay>
 {/if}
