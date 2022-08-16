@@ -10,6 +10,7 @@
   export let minimumContentHeight: string = null;
   export let centerVertically = false;
   export let numPages: number;
+  export let canClickBack = true;
   export let state: MultipageContentState;
   export let onLastPageComplete: () => void;
 
@@ -31,6 +32,10 @@
     return index < state.currentPage;
   }
 
+  function circleClickable(index: number) {
+    return canClickBack && index + 1 < state.currentPage;
+  }
+
   function onNextButtonClick() {
     if (!state.nextButtonEnabled) return;
 
@@ -38,6 +43,13 @@
       onLastPageComplete();
     } else {
       state.currentPage++;
+      pageCounter = pageCounter;
+    }
+  }
+
+  function onProgressCircleClick(index: number) {
+    if (circleClickable(index)) {
+      state.currentPage = index + 1;
       pageCounter = pageCounter;
     }
   }
@@ -70,11 +82,13 @@
   >
     <div class="flex gap-2">
       {#each pageCounter as _, i (i)}
-        <div
-          class="h-5 w-5 rounded-full border border-gray-500"
-          class:border-none={circleFilledIn(i)}
+        <button
+          class="progress-circle h-5 w-5 rounded-full border border-gray-500"
+          class:clickable={circleClickable(i)}
+          class:filled={circleFilledIn(i)}
           class:opacity-20={circleTransparent(i)}
-          class:bg-primary={circleFilledIn(i)}
+          tabindex={circleClickable(i) ? 0 : -1}
+          on:click={() => onProgressCircleClick(i)}
         />
       {/each}
     </div>
@@ -86,3 +100,18 @@
     />
   </div>
 </div>
+
+<style lang="scss">
+  .progress-circle {
+    cursor: default;
+
+    &.filled {
+      border: none;
+      background-color: var(--color-accent);
+
+      &.clickable:hover {
+        cursor: pointer;
+      }
+    }
+  }
+</style>
