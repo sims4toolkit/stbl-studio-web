@@ -45,7 +45,7 @@
   }
 
   function handleLeaveOrBlur(e: MouseEvent | FocusEvent) {
-    floatingActionButton.style.backgroundColor = "var(--color-bg)"; // FIXME:
+    floatingActionButton.style.backgroundColor = "var(--color-bg)";
     floatingActionButton.style.borderColor = "var(--color-text)";
     toggleTitle();
   }
@@ -77,7 +77,7 @@
 
     height: 36px;
     width: 48px;
-    background-color: var(--color-bg); // FIXME:
+    background-color: var(--color-bg);
     border: 1px solid var(--color-text);
 
     &:first-child {
