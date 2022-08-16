@@ -3,6 +3,7 @@
   import BlurOverlay from "src/components/layouts/BlurOverlay.svelte";
   import Workspace from "src/lib/models/workspace";
   import Settings from "src/lib/services/settings";
+  import HomeActionButtons from "./views/HomeActionButtons.svelte";
   import OnboardingView from "./views/OnboardingView.svelte";
 
   let workspace: Workspace;
@@ -60,6 +61,8 @@
     </div>
   {/if}
 </div>
+
+<HomeActionButtons inModal={false} inSelectMode={false} numSelected={0} />
 
 {#if isOnboarding}
   <BlurOverlay>
