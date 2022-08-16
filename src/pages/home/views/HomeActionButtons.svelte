@@ -1,7 +1,12 @@
 <script lang="ts">
   import FloatingActionButtonGroup from "src/components/controls/FloatingActionButtonGroup.svelte";
+  import BlurOverlay from "src/components/layouts/BlurOverlay.svelte";
+  import DeleteProjectView from "./DeleteProjectView.svelte";
+  import DownloadProjectView from "./DownloadProjectView.svelte";
+  import MergeProjectView from "./MergeProjectView.svelte";
+  import NewProjectView from "./NewProjectView.svelte";
+  import UploadProjectView from "./UploadProjectView.svelte";
 
-  export let inModal: boolean;
   export let inSelectMode: boolean;
   export let numSelected: number;
 
@@ -11,6 +16,10 @@
     };
   };
 
+  let inModal = false;
+  let modalContentComponent: any;
+  let modalContentArgs: object;
+
   $: buttonData = inSelectMode
     ? [
         {
@@ -19,7 +28,9 @@
           icon: "download",
           keybinding: "s",
           onClick: ifNotInModal(() => {
-            console.log("download");
+            modalContentComponent = DownloadProjectView;
+            modalContentArgs = {};
+            inModal = true;
           }),
         },
         {
@@ -29,7 +40,9 @@
           keybinding: "m",
           disabled: numSelected < 2,
           onClick: ifNotInModal(() => {
-            console.log("merge");
+            modalContentComponent = MergeProjectView;
+            modalContentArgs = {};
+            inModal = true;
           }),
         },
         {
@@ -39,7 +52,9 @@
           keybinding: "d",
           disabled: numSelected < 1,
           onClick: ifNotInModal(() => {
-            console.log("delete");
+            modalContentComponent = DeleteProjectView;
+            modalContentArgs = {};
+            inModal = true;
           }),
         },
       ]
@@ -50,7 +65,7 @@
           icon: "desktop-download",
           keybinding: "s",
           onClick: ifNotInModal(() => {
-            console.log("save");
+            alert("save");
           }),
         },
         {
@@ -59,7 +74,9 @@
           icon: "upload",
           keybinding: "u",
           onClick: ifNotInModal(() => {
-            console.log("upload");
+            modalContentComponent = UploadProjectView;
+            modalContentArgs = {};
+            inModal = true;
           }),
         },
         {
@@ -68,10 +85,24 @@
           icon: "plus",
           keybinding: "d",
           onClick: ifNotInModal(() => {
-            console.log("create");
+            modalContentComponent = NewProjectView;
+            modalContentArgs = {};
+            inModal = true;
           }),
         },
       ];
+
+  function onModalClose() {
+    inModal = false;
+    modalContentComponent = undefined;
+    modalContentArgs = undefined;
+  }
 </script>
 
 <FloatingActionButtonGroup {buttonData} />
+
+{#if inModal}
+  <BlurOverlay onClose={onModalClose}>
+    <svelte:component this={modalContentComponent} {...modalContentArgs} />
+  </BlurOverlay>
+{/if}

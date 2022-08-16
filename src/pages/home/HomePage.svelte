@@ -62,7 +62,7 @@
   {/if}
 </div>
 
-<HomeActionButtons inModal={false} inSelectMode={false} numSelected={0} />
+<HomeActionButtons inSelectMode={false} numSelected={0} />
 
 {#if isOnboarding}
   <BlurOverlay>
