@@ -1,5 +1,6 @@
 <script lang="ts">
   import { v4 as uuidv4 } from "uuid";
+  import { fade } from "svelte/transition";
   import type { MultipageContentState } from "src/components/layouts/types";
   import MultipageContentGroup from "src/components/layouts/MultipageContentGroup.svelte";
   import MultipageContent from "src/components/layouts/MultipageContent.svelte";
@@ -95,7 +96,9 @@
       </div>
     </MultipageContent>
     <MultipageContent pageNumber={2} bind:state={multipageState}>
-      <p>second</p>
+      <div in:fade>
+        <p>second</p>
+      </div>
     </MultipageContent>
   </div>
 </MultipageContentGroup>
