@@ -1,13 +1,22 @@
 <script lang="ts">
-  import { fly } from "svelte/transition";
-  import Settings from "src/lib/services/settings";
+  import MultipageContentGroup from "src/components/layouts/MultipageContentGroup.svelte";
+  import type { MultipageContentState } from "src/components/layouts/types";
 
-  const flyDistance = 15;
-  const flyDuration = Settings.reduceMotion ? 0 : 500;
+  export let onOnboardingComplete: () => void;
+
+  let multipageState: MultipageContentState = {
+    currentPage: 1,
+    nextButtonEnabled: true,
+    nextButtonText: "Next",
+  };
 </script>
 
-<div class="flex flex-col gap-8">
-  <div transition:fly={{ y: -flyDistance, duration: flyDuration }}>
+<MultipageContentGroup
+  numPages={2}
+  bind:state={multipageState}
+  onLastPageComplete={onOnboardingComplete}
+>
+  <div slot="header">
     <p>Welcome to</p>
     <h2 class="font-bold text-2xl mb-2 text-gradient drop-shadow">
       String Table Studio
@@ -20,18 +29,20 @@
       >
     </p>
   </div>
-  <div
-    class="flex flex-col gap-4"
-    transition:fly={{ y: flyDistance, duration: flyDuration }}
-  >
-    <p>
-      String Table Studio is a web app that makes it easy to create, edit, and
-      translate string tables for Sims 4 mods. View the <a
-        class="text-secondary"
-        href="/"
-        target="_blank">feature list</a
-      > to learn more about what it can do.
-    </p>
-    <p>TODO</p>
+  <div slot="content" class="flex flex-col gap-4">
+    <div>
+      <p>
+        String Table Studio is a web app that makes it easy to create, edit, and
+        translate string tables for Sims 4 mods. View the <a
+          class="text-secondary"
+          href="/"
+          target="_blank">feature list</a
+        > to learn more about what it can do.
+      </p>
+      <p>TODO</p>
+    </div>
+    <div>
+      <p>Second page.</p>
+    </div>
   </div>
-</div>
+</MultipageContentGroup>

@@ -57,6 +57,6 @@
 
 {#if isOnboarding}
   <BlurOverlay>
-    <OnboardingView />
+    <OnboardingView onOnboardingComplete={() => (isOnboarding = false)} />
   </BlurOverlay>
 {/if}
