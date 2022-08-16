@@ -1,5 +1,8 @@
 <script lang="ts">
+  import Settings from "src/lib/services/settings";
+
   import { onMount } from "svelte";
+  import { fade } from "svelte/transition";
 
   export let label: string = "";
   export let name: string;
@@ -9,8 +12,31 @@
   export let fillWidth = false;
   export let focusOnMount = false;
   export let monospace = false;
+  export let validators: {
+    test: (value: string) => boolean;
+    message: string;
+  }[] = [];
 
   let input: HTMLInputElement;
+  let invalidMessage = "";
+
+  $: {
+    value;
+    runValidators();
+  }
+
+  function runValidators() {
+    for (let i = 0; i < validators.length; ++i) {
+      const { test, message } = validators[i];
+      if (!test(value)) {
+        isValid = false;
+        invalidMessage = message;
+        return;
+      }
+    }
+
+    isValid = true;
+  }
 
   onMount(() => {
     if (focusOnMount) input.focus();
@@ -19,10 +45,20 @@
 
 <div class:w-full={fillWidth}>
   {#if Boolean(label)}
-    <label
-      class="text-gray-500 dark:text-gray-400 uppercase text-xs font-bold"
-      for={name}>{label}</label
-    >
+    <div class="flex items-center">
+      <label
+        class="text-gray-500 dark:text-gray-400 uppercase text-xs font-bold"
+        for={name}>{label}</label
+      >
+      {#if !isValid}
+        <p
+          in:fade={{ duration: Settings.reduceMotion ? 0 : 500 }}
+          class="my-0 ml-1 text-xs text-red-600 dark:text-red-400"
+        >
+          • {invalidMessage}
+        </p>
+      {/if}
+    </div>
   {/if}
   <input
     bind:this={input}

@@ -48,6 +48,21 @@
           fillWidth={true}
           bind:value={projectName}
           focusOnMount={true}
+          validators={[
+            {
+              test: (value) => value.trim().length > 0,
+              message: "Must be non-empty",
+            },
+            {
+              test: (value) => value.trim().length <= 30,
+              message: "Cannot exceed 30 characters",
+            },
+            // TODO: cannot reuse names
+            // {
+            //   test: (value) => value.trim().length <= 30,
+            //   message: "Cannot exceed 30 characters",
+            // },
+          ]}
         />
         <div class="flex gap-4">
           <TextInput
