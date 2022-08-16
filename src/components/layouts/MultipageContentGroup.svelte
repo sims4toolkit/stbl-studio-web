@@ -70,7 +70,7 @@
   </div>
   <div
     bind:this={contentContainer}
-    class="my-8 flex"
+    class="my-8 flex w-full"
     class:items-center={centerVertically}
     in:fly={{ y: 20, duration: animationDuration }}
   >

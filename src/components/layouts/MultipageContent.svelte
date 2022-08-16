@@ -9,10 +9,10 @@
 
   $: {
     visible = pageNumber === state.currentPage;
-    onVisibilityChange();
+    if (visible) onVisible();
   }
 
-  function onVisibilityChange() {
+  function onVisible() {
     state.nextButtonText = nextButtonText;
     state.nextButtonEnabled = true;
   }
