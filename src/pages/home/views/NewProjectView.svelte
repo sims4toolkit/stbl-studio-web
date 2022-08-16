@@ -65,7 +65,7 @@
             // },
           ]}
         />
-        <div class="flex gap-4">
+        <div class="flex gap-4 flex-wrap sm:flex-nowrap">
           <TextInput
             label="group"
             name="project-group-input"
