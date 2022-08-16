@@ -5,6 +5,7 @@
   import Settings from "src/lib/services/settings";
   import HomeActionButtons from "./views/HomeActionButtons.svelte";
   import OnboardingView from "./views/OnboardingView.svelte";
+  import WorkspaceView from "./views/WorkspaceView.svelte";
 
   let workspace: Workspace;
   let showingProjects = false;
@@ -31,15 +32,9 @@
 </script>
 
 <div class="w-100 flex justify-center" class:flex-1={!showingProjects}>
-  {#if showingProjects}
+  {#if showingProjects || true}
     <div class="w-full xl:max-w-screen-xl px-4 py-12">
-      <div class="flex justify-between mb-8">
-        <SectionHeader title="My Workspace" />
-        <div>
-          <p class="text-sm">SELECT</p>
-        </div>
-      </div>
-      <p>Has workspace</p>
+      <WorkspaceView />
     </div>
   {:else}
     <div class="w-full xl:max-w-screen-xl px-4 flex flex-col justify-center">

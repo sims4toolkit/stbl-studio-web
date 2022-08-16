@@ -5,9 +5,7 @@ html {
   &.theme-transition *::after,
   &.theme-transition *::placeholder {
     // keep in sync with timeout in ThemeToggler.sveltes
-    $time: 500ms;
-
-    transition: all $time;
+    transition: all 500ms;
     transition-delay: 0ms;
   }
 
