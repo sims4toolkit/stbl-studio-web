@@ -103,6 +103,10 @@
 
 {#if inModal}
   <BlurOverlay onClose={onModalClose}>
-    <svelte:component this={modalContentComponent} {...modalContentArgs} />
+    <svelte:component
+      this={modalContentComponent}
+      onComplete={onModalClose}
+      {...modalContentArgs}
+    />
   </BlurOverlay>
 {/if}

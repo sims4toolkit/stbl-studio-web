@@ -5,18 +5,29 @@
   import NavigationButton from "src/components/elements/NavigationButton.svelte";
   import type { MultipageContentState } from "./types";
 
+  export let numPages: number;
+  export let state: MultipageContentState;
+  export let onLastPageComplete: () => void;
+
   export let title: string = null;
   export let subtitle: string = null;
   export let minimumContentHeight: string = null;
   export let centerVertically = false;
-  export let numPages: number;
   export let canClickBack = true;
-  export let state: MultipageContentState;
-  export let onLastPageComplete: () => void;
+  export let nextButton = "Next";
+  export let completeButton = nextButton;
 
   const animationDuration = Settings.reduceMotion ? 0 : 850;
   let contentContainer: HTMLDivElement;
   let pageCounter = { length: numPages };
+
+  $: nextButtonText =
+    state.currentPage === numPages ? completeButton : nextButton;
+
+  $: {
+    state.nextButtonEnabled;
+    pageCounter = pageCounter;
+  }
 
   onMount(() => {
     if (minimumContentHeight) {
@@ -95,7 +106,7 @@
     <NavigationButton
       direction="right"
       active={state.nextButtonEnabled}
-      text={state.nextButtonText}
+      text={nextButtonText}
       onClick={onNextButtonClick}
     />
   </div>

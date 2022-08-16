@@ -5,7 +5,7 @@
   import MultipageContent from "src/components/layouts/MultipageContent.svelte";
   import TextInput from "src/components/elements/TextInput.svelte";
 
-  export let onNewProjectCreated: () => void;
+  export let onComplete: () => void;
 
   const uuid = uuidv4();
   let projectName = "";
@@ -13,7 +13,6 @@
   let multipageState: MultipageContentState = {
     currentPage: 1,
     nextButtonEnabled: false,
-    nextButtonText: "Next",
   };
 
   $: {
@@ -27,15 +26,13 @@
   title="New Project"
   subtitle="UUID: {uuid}"
   numPages={2}
+  minimumContentHeight="100"
   bind:state={multipageState}
-  onLastPageComplete={onNewProjectCreated}
+  completeButton="Create"
+  onLastPageComplete={onComplete}
 >
   <div slot="content" class="w-full">
-    <MultipageContent
-      pageNumber={1}
-      nextButtonText="Next"
-      bind:state={multipageState}
-    >
+    <MultipageContent pageNumber={1} bind:state={multipageState}>
       <div class="w-full">
         <TextInput
           label="project name"
@@ -47,11 +44,7 @@
         />
       </div>
     </MultipageContent>
-    <MultipageContent
-      pageNumber={2}
-      nextButtonText="Create"
-      bind:state={multipageState}
-    >
+    <MultipageContent pageNumber={2} bind:state={multipageState}>
       <p>second</p>
     </MultipageContent>
   </div>
