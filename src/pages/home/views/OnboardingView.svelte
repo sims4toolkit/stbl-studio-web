@@ -9,7 +9,6 @@
   let multipageState: MultipageContentState = {
     currentPage: 1,
     nextButtonEnabled: true,
-    nextButtonText: "Next",
   };
 </script>
 
@@ -19,13 +18,14 @@
   minimumContentHeight="180"
   centerVertically={true}
   onLastPageComplete={onOnboardingComplete}
+  completeButton="Get Started"
 >
   <div slot="header">
     <p>Welcome to</p>
     <h2 class="font-bold text-2xl mb-2 text-gradient drop-shadow">
       String Table Studio
     </h2>
-    <p class="text-sm text-gray-600 dark:text-gray-400">
+    <p class="text-sm text-subtle">
       Powered by <a
         class="text-secondary"
         href="https://sims4toolkit.com"

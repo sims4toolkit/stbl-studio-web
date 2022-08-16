@@ -12,16 +12,13 @@
 
 <div class:w-full={fillWidth}>
   {#if Boolean(label)}
-    <label
-      class="text-gray-500 dark:text-gray-400 uppercase text-xs font-bold"
-      for={name}>{label}</label
-    >
+    <!-- Not using a label because it doesn't match input -->
+    <p class="text-subtle uppercase text-xs font-bold mb-2">{label}</p>
   {/if}
   <select
     {name}
     bind:value={selected}
-    class="h-10 px-2 rounded text-sm bg-transparent border border-gray-700 dark:border-gray-300"
-    class:mt-2={Boolean(label)}
+    class="block h-10 px-2 rounded text-sm bg-transparent border border-gray-700 dark:border-gray-300"
     class:w-full={fillWidth}
     {disabled}
   >

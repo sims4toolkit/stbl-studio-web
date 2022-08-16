@@ -33,7 +33,8 @@
   title="New Project"
   subtitle="UUID: {uuid}"
   numPages={2}
-  minimumContentHeight="100"
+  minimumContentHeight="220"
+  centerVertically={true}
   bind:state={multipageState}
   completeButton="Create"
   onLastPageComplete={onComplete}
@@ -79,7 +80,17 @@
             fillWidth={true}
             bind:value={instanceHexString}
           />
-          <LocaleSelect bind:selected={primaryLocale} />
+          <LocaleSelect bind:selected={primaryLocale} fillWidth={true} />
+        </div>
+        <div>
+          <p class="text-subtle text-xs mb-2">
+            The instance is the hash of the UUID by default, but it can be
+            changed manually.
+          </p>
+          <p class="text-subtle text-xs">
+            The 2-digit locale code will automatically be prepended to the
+            instance.
+          </p>
         </div>
       </div>
     </MultipageContent>

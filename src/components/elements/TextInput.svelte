@@ -46,9 +46,8 @@
 <div class:w-full={fillWidth}>
   {#if Boolean(label)}
     <div class="flex items-center">
-      <label
-        class="text-gray-500 dark:text-gray-400 uppercase text-xs font-bold"
-        for={name}>{label}</label
+      <label class="text-subtle uppercase text-xs font-bold" for={name}
+        >{label}</label
       >
       {#if !isValid}
         <p

@@ -73,7 +73,7 @@
         {title}
       </h2>
       {#if subtitle}
-        <p class="text-sm text-gray-600 dark:text-gray-400">{subtitle}</p>
+        <p class="text-sm text-subtle">{subtitle}</p>
       {/if}
     {:else}
       <slot name="header" />

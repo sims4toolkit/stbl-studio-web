@@ -19,6 +19,7 @@
   &.dark {
     // colors
     --color-text: #f9f9f9;
+    --color-text-subtle: #{$gray-400};
     --color-bg: #{$gray-800};
     --color-accent: #70cfb6;
     --color-accent-secondary: #49c6e6;
@@ -37,6 +38,7 @@
   &:not(.dark) {
     // colors
     --color-text: #1b1b1b;
+    --color-text-subtle: #{$gray-600};
     --color-bg: #{$gray-100};
     --color-accent: #18ac87;
     --color-accent-secondary: #0095eb;

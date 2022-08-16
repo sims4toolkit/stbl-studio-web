@@ -45,12 +45,12 @@
       </p>
     </div>
     <div class="text-xs flex flex-col gap-4">
-      <p class="text-gray-500 dark:text-gray-400">
+      <p class="text-subtle">
         The Sims™ and its plumbob icon are registered trademarks of Electronic
         Arts, Inc. (EA). Sims 4 Toolkit is not affiliated with or endorsed by
         EA.
       </p>
-      <p class="text-gray-500 dark:text-gray-400">
+      <p class="text-subtle">
         All icons on this website are supplied by
         <a
           href="https://ionic.io/ionicons"
@@ -64,7 +64,7 @@
           class="text-secondary">GitHub Octicons</a
         >.
       </p>
-      <p class="text-gray-500 dark:text-gray-400">2022 © Frank Kulak</p>
+      <p class="text-subtle">2022 © Frank Kulak</p>
     </div>
   </div>
 </footer>
