@@ -16,7 +16,7 @@
 <MultipageContentGroup
   numPages={2}
   bind:state={multipageState}
-  minimumContentHeight="150"
+  minimumContentHeight="180"
   centerVertically={true}
   onLastPageComplete={onOnboardingComplete}
 >
@@ -35,7 +35,7 @@
   </div>
   <div slot="content" class="flex flex-col gap-4">
     <MultipageContent pageNumber={1} bind:state={multipageState}>
-      <div>
+      <div class="flex flex-col gap-4">
         <p>
           String Table Studio is a web app that makes it easy to create, edit,
           and translate string tables for Sims 4 mods. View the <a
@@ -48,8 +48,22 @@
       </div>
     </MultipageContent>
     <MultipageContent pageNumber={2} bind:state={multipageState}>
-      <div in:fade>
-        <p>Second page.</p>
+      <div class="flex flex-col gap-4" in:fade>
+        <p>Before proceeding, please keep in mind:</p>
+        <ul class="list-disc pl-8 flex flex-col gap-2">
+          <li class="pl-2">
+            All data that you create or upload on this website is stored locally
+            on your computer, not on the internet. If you clear your browser's
+            storage, you will lose your data.
+          </li>
+          <li class="pl-2">
+            You can download your data at any time, and use it to backup,
+            restore, or move your entire workspace to another browser or device.
+          </li>
+          <li class="pl-2">
+            Your data is your responsibility. I am not at fault for any losses.
+          </li>
+        </ul>
       </div>
     </MultipageContent>
   </div>
