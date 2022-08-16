@@ -18,7 +18,7 @@
 
   &.dark {
     // colors
-    --color-text: white;
+    --color-text: #f9f9f9;
     --color-accent: #70cfb6;
     --color-accent-secondary: #49c6e6;
     --color-shadow: rgba(0, 0, 0, 0.2);
@@ -35,7 +35,7 @@
 
   &:not(.dark) {
     // colors
-    --color-text: black;
+    --color-text: #1b1b1b;
     --color-accent: #18ac87;
     --color-accent-secondary: #0095eb;
     --color-shadow: rgba(64, 64, 64, 0.15);
