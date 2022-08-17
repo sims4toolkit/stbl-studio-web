@@ -50,9 +50,13 @@
       cursor: pointer;
     }
 
-    div.selected {
-      border: 1px solid var(--color-accent-secondary);
+    div {
+      border: 1px solid transparent;
       border-radius: 0.375rem;
+
+      &.selected {
+        border-color: var(--color-accent-secondary);
+      }
     }
   }
 </style>
