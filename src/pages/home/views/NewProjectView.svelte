@@ -132,7 +132,7 @@
             fillWidth={true}
           />
         </div>
-        <div>
+        <div class="mt-2">
           <p class="text-subtle text-xs mb-2">
             The instance is the hash of the UUID by default, but it can be
             changed manually.
