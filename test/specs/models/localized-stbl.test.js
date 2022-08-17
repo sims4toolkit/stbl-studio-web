@@ -884,6 +884,12 @@ describe("LocalizedStringTable", () => {
     });
   });
 
+  describe("#saveToStorage()", () => {
+    it("should save the stbl to storage with the given uuid as its key", () => {
+      // TODO:
+    });
+  });
+
   describe("#setKey()", () => {
     it("should set the key of the entry with the given ID", () => {
       const stbl = twoLocaleStbl();

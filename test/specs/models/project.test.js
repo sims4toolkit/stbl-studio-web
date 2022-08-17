@@ -149,6 +149,16 @@ describe("Project", () => {
     });
   });
 
+  describe("#saveToStorage()", () => {
+    it("should save the meta data to storage", () => {
+      // TODO:
+    });
+
+    it("should not save the STBL to storage", () => {
+      // TODO:
+    });
+  });
+
   describe("#serializeMetaData()", () => {
     context("version 0", () => {
       it("should serialize correctly", () => {

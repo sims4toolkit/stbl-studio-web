@@ -117,6 +117,28 @@ describe("Workspace", () => {
     });
   });
 
+  describe("#addProject()", () => {
+    it("should add the project to the workspace", () => {
+      const workspace = new Workspace();
+      const project = newProject();
+      expect(workspace.projects.length).to.equal(0);
+      workspace.addProject(project);
+      expect(workspace.projects.length).to.equal(1);
+    });
+
+    it("should save the project meta data to storage", () => {
+      // TODO:
+    });
+
+    it("should save the project's string table to storage", () => {
+      // TODO:
+    });
+
+    it("should update subscribers to the workspace", () => {
+      // TODO:
+    });
+  });
+
   describe("#toJson()", () => {
     it("should write the version", async () => {
       await DatabaseService.setItem("metadata", uuid, metaDataString);
