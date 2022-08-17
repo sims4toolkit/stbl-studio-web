@@ -45,7 +45,7 @@
   }
 </script>
 
-<div class="w-100 flex justify-center" class:flex-1={!showingProjects}>
+<section class="w-100 flex justify-center" class:flex-1={!showingProjects}>
   {#if showingProjects}
     <div class="w-full xl:max-w-screen-xl px-4 py-12">
       <WorkspaceView bind:workspace={activeWorkspace} />
@@ -69,7 +69,7 @@
       {/if}
     </div>
   {/if}
-</div>
+</section>
 
 <HomeActionButtons inSelectMode={false} numSelected={0} />
 

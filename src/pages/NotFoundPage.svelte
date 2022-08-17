@@ -1,31 +1,22 @@
-<script lang="ts">
-  // import ContentArea from "../shared/layout/ContentArea.svelte";
-  // import GradientHeader from "../shared/elements/GradientHeader.svelte";
-
-  // just silencing warnings in a hacky way, don't mind me
-  export let params: any;
-  if (false) console.log(params);
+<script>
+  import SectionHeader from "src/components/elements/SectionHeader.svelte";
 </script>
 
 <svelte:head>
   <title>Page Not Found</title>
 </svelte:head>
-<section id="page-not-found">
-  <p>
-    Just kidding. This page doesn't exist. Please <a href="/">go home</a>.
-  </p>
-  <p class="disclaimer">Error 404</p>
+
+<section class="flex-1 w-100 flex justify-center">
+  <div class="w-full xl:max-w-screen-xl px-4 flex flex-col justify-center">
+    <div class="mb-4">
+      <SectionHeader title="Unlock this page for $4.04" />
+    </div>
+    <p class="mb-8">
+      Just kidding. This page doesn't exist. Please <a
+        href="/"
+        class="text-secondary">go home</a
+      >.
+    </p>
+    <p class="text-subtle text-xs">Error 404</p>
+  </div>
 </section>
-
-<style lang="scss">
-  section#page-not-found {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    .disclaimer {
-      margin-top: 4em;
-    }
-  }
-</style>
