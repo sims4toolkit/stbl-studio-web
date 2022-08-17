@@ -25,8 +25,10 @@
   });
 </script>
 
-<div class="flex justify-between mb-8">
-  <SectionHeader title="My Workspace" />
+<div class="flex justify-between mb-8 flex-col sm:flex-row gap-8">
+  <div>
+    <SectionHeader title="My Workspace" />
+  </div>
   <SelectModeToggle bind:selectionGroup />
 </div>
 

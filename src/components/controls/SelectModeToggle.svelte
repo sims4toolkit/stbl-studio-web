@@ -8,7 +8,7 @@
   $: isInSelectMode = selectionGroup.selectMode;
 </script>
 
-<div class="flex justify-center gap-2 h-10 text-sm">
+<div class="flex justify-center gap-4 h-10 text-sm">
   {#if isInSelectMode}
     <button
       class="select-toggle"
