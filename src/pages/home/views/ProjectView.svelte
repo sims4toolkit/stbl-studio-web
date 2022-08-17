@@ -1,5 +1,7 @@
 <script lang="ts">
   import type Project from "src/lib/models/project";
+  import ProjectMetaDataView from "src/components/views/ProjectMetaDataView.svelte";
+  const { formatResourceInstance } = window.S4TK.formatting;
 
   export let project: Project;
   export let selected = false;
@@ -7,10 +9,18 @@
 
 <button>
   <div
-    class="p-4 rounded-md drop-shadow-md dark:bg-gray-700 bg-gray-50"
+    class="text-left p-4 rounded-md drop-shadow-md dark:bg-gray-700 bg-gray-50"
     class:selected
   >
-    <p>{project}</p>
+    <h2
+      class="font-bold text-lg mb-1 whitespace-nowrap overflow-hidden text-ellipsis"
+    >
+      {project.metaData.name}
+    </h2>
+    <p class="monospace text-subtle text-sm mb-4">
+      {formatResourceInstance(project.metaData.instance)}
+    </p>
+    <ProjectMetaDataView {project} />
   </div>
 </button>
 

@@ -13,6 +13,7 @@
   import type Workspace from "src/lib/models/workspace";
   import { activeWorkspaceStore } from "src/lib/services/stores";
   const { fnv64 } = window.S4TK.hashing;
+  const { StringTableLocale } = window.S4TK.enums;
   const { formatResourceInstance } = window.S4TK.formatting;
 
   export let onComplete: () => void;
@@ -20,7 +21,9 @@
   const uuid = uuidv4();
   let projectName = "";
   let groupHexString = "80000000";
-  let instanceHexString = formatResourceInstance(fnv64(uuid, false));
+  let instanceHexString = formatResourceInstance(
+    StringTableLocale.getInstanceBase(fnv64(uuid, false))
+  );
   let primaryLocale = Settings.defaultLocale;
   let activeWorkspace: Workspace;
   let multipageState: MultipageContentState = {
