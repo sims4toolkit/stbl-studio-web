@@ -1,21 +1,38 @@
 <script lang="ts">
-  import SectionHeader from "src/components/elements/SectionHeader.svelte";
+  import { onDestroy } from "svelte";
   import type Workspace from "src/lib/models/workspace";
+  import type Project from "src/lib/models/project";
+  import SelectionGroup from "src/lib/models/selection-group";
+  import { activeWorkspaceStore } from "src/lib/services/stores";
+  import SelectModeToggle from "src/components/controls/SelectModeToggle.svelte";
+  import SectionHeader from "src/components/elements/SectionHeader.svelte";
   import ProjectView from "./ProjectView.svelte";
 
   export let workspace: Workspace;
+
+  let selectionGroup: SelectionGroup<Project, string>;
+
+  const subscriptions = [
+    activeWorkspaceStore.subscribe((_) => {
+      selectionGroup = new SelectionGroup(workspace.projects, "uuid", () => {
+        selectionGroup = selectionGroup;
+      });
+    }),
+  ];
+
+  onDestroy(() => {
+    subscriptions.forEach((unsub) => unsub());
+  });
 </script>
 
 <div class="flex justify-between mb-8">
   <SectionHeader title="My Workspace" />
-  <div>
-    <p class="text-sm">SELECT</p>
-  </div>
+  <SelectModeToggle bind:selectionGroup />
 </div>
 
 <div class="workspace-view">
   {#each workspace.projects as project, key (key)}
-    <ProjectView {project} />
+    <ProjectView {project} bind:selectionGroup />
   {/each}
 </div>
 
