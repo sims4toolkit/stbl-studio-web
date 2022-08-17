@@ -18,6 +18,10 @@ export default class SelectionGroup<Selectable, KeyType extends string | number>
     return this._selectMode && this._selections.size === 0;
   }
 
+  get numSelected(): number {
+    return this._selections.size;
+  }
+
   constructor(
     public selectables: Selectable[],
     readonly key: string,

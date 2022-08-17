@@ -1,4 +1,6 @@
 <script lang="ts">
+  import type Project from "src/lib/models/project";
+  import type SelectionGroup from "src/lib/models/selection-group";
   import FloatingActionButtonGroup from "src/components/controls/FloatingActionButtonGroup.svelte";
   import BlurOverlay from "src/components/layouts/BlurOverlay.svelte";
   import DeleteProjectView from "./DeleteProjectView.svelte";
@@ -7,8 +9,7 @@
   import NewProjectView from "./NewProjectView.svelte";
   import UploadProjectView from "./UploadProjectView.svelte";
 
-  export let inSelectMode: boolean;
-  export let numSelected: number;
+  export let selectionGroup: SelectionGroup<Project, string>;
 
   const ifNotInModal = (fn: () => void) => {
     return () => {
@@ -20,7 +21,7 @@
   let modalContentComponent: any;
   let modalContentArgs: object;
 
-  $: buttonData = inSelectMode
+  $: buttonData = selectionGroup?.selectMode
     ? [
         {
           color: "#3F9BCC",
@@ -38,7 +39,7 @@
           title: "Merge",
           icon: "git-merge",
           keybinding: "m",
-          disabled: numSelected < 2,
+          disabled: selectionGroup.numSelected < 2,
           onClick: ifNotInModal(() => {
             modalContentComponent = MergeProjectView;
             modalContentArgs = {};
@@ -50,7 +51,7 @@
           title: "Delete",
           icon: "trash",
           keybinding: "d",
-          disabled: numSelected < 1,
+          disabled: selectionGroup.numSelected < 1,
           onClick: ifNotInModal(() => {
             modalContentComponent = DeleteProjectView;
             modalContentArgs = {};

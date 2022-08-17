@@ -1,28 +1,13 @@
 <script lang="ts">
-  import { onDestroy } from "svelte";
   import type Workspace from "src/lib/models/workspace";
   import type Project from "src/lib/models/project";
-  import SelectionGroup from "src/lib/models/selection-group";
-  import { activeWorkspaceStore } from "src/lib/services/stores";
+  import type SelectionGroup from "src/lib/models/selection-group";
   import SelectModeToggle from "src/components/controls/SelectModeToggle.svelte";
   import SectionHeader from "src/components/elements/SectionHeader.svelte";
   import ProjectView from "./ProjectView.svelte";
 
   export let workspace: Workspace;
-
-  let selectionGroup: SelectionGroup<Project, string>;
-
-  const subscriptions = [
-    activeWorkspaceStore.subscribe((_) => {
-      selectionGroup = new SelectionGroup(workspace.projects, "uuid", () => {
-        selectionGroup = selectionGroup;
-      });
-    }),
-  ];
-
-  onDestroy(() => {
-    subscriptions.forEach((unsub) => unsub());
-  });
+  export let selectionGroup: SelectionGroup<Project, string>;
 </script>
 
 <div class="flex justify-between mb-8 flex-col sm:flex-row gap-8">

@@ -1,10 +1,12 @@
 <script lang="ts">
   import { onDestroy } from "svelte";
-  import SectionHeader from "src/components/elements/SectionHeader.svelte";
-  import BlurOverlay from "src/components/layouts/BlurOverlay.svelte";
   import Workspace from "src/lib/models/workspace";
+  import type Project from "src/lib/models/project";
+  import SelectionGroup from "src/lib/models/selection-group";
   import Settings from "src/lib/services/settings";
   import { activeWorkspaceStore } from "src/lib/services/stores";
+  import SectionHeader from "src/components/elements/SectionHeader.svelte";
+  import BlurOverlay from "src/components/layouts/BlurOverlay.svelte";
   import HomeActionButtons from "./views/HomeActionButtons.svelte";
   import OnboardingView from "./views/OnboardingView.svelte";
   import WorkspaceView from "./views/WorkspaceView.svelte";
@@ -12,12 +14,16 @@
   let activeWorkspace: Workspace;
   let showingProjects = false;
   let isOnboarding = false;
+  let selectionGroup: SelectionGroup<Project, string>;
 
   const subscriptions = [
     activeWorkspaceStore.subscribe((workspace) => {
       if (workspace) {
         activeWorkspace = workspace;
         showingProjects = workspace.projects.length > 0;
+        selectionGroup = new SelectionGroup(workspace.projects, "uuid", () => {
+          selectionGroup = selectionGroup;
+        });
       }
     }),
   ];
@@ -48,7 +54,7 @@
 <section class="w-100 flex justify-center" class:flex-1={!showingProjects}>
   {#if showingProjects}
     <div class="w-full xl:max-w-screen-xl px-4 py-12">
-      <WorkspaceView bind:workspace={activeWorkspace} />
+      <WorkspaceView bind:workspace={activeWorkspace} bind:selectionGroup />
     </div>
   {:else}
     <div class="w-full xl:max-w-screen-xl px-4 flex flex-col justify-center">
@@ -71,7 +77,9 @@
   {/if}
 </section>
 
-<HomeActionButtons inSelectMode={false} numSelected={0} />
+{#if selectionGroup !== undefined}
+  <HomeActionButtons bind:selectionGroup />
+{/if}
 
 {#if isOnboarding}
   <BlurOverlay>
