@@ -12,6 +12,7 @@
   import LocalizedStringTable from "src/lib/models/localized-stbl";
   import type Workspace from "src/lib/models/workspace";
   import { activeWorkspaceStore } from "src/lib/services/stores";
+  import { subscribeToKey } from "src/lib/utilities/keybindings";
   const { fnv64 } = window.S4TK.hashing;
   const { StringTableLocale } = window.S4TK.enums;
   const { formatResourceInstance } = window.S4TK.formatting;
@@ -51,7 +52,7 @@
     const stbl = new LocalizedStringTable(
       primaryLocale,
       new Set([
-        primaryLocale, // TODO: add chosen locales instead
+        primaryLocale, // FIXME: add chosen locales instead
       ])
     );
 
@@ -61,8 +62,8 @@
         name: projectName,
         group: parseInt(groupHexString),
         instance: BigInt("0x" + instanceHexString),
-        numEntries: 0,
-        numLocales: 0,
+        numEntries: stbl.numEntries,
+        numLocales: stbl.numLocales,
         primaryLocale,
       },
       stbl

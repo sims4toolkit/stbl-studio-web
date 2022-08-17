@@ -22,17 +22,28 @@
 
 <button on:click={handleClick}>
   <div
-    class="text-left p-4 rounded-md drop-shadow-md dark:bg-gray-700 bg-gray-50"
+    class="project-view text-left p-4 rounded-md drop-shadow-md dark:bg-gray-700 bg-gray-50"
     class:selected={projectSelected}
   >
-    <h2
-      class="font-bold text-lg mb-1 whitespace-nowrap overflow-hidden text-ellipsis"
-    >
-      {project.metaData.name}
-    </h2>
-    <p class="monospace text-subtle text-sm mb-4">
-      {formatResourceInstance(project.metaData.instance)}
-    </p>
+    <div class="flex mb-4">
+      {#if isInSelectMode}
+        <div class="flex items-center pr-4">
+          <div
+            class="select-indicator rounded-full h-4 w-4 border border-solid border-gray-500 dark:border-gray-400"
+          />
+        </div>
+      {/if}
+      <div class="overflow-hidden">
+        <h2
+          class="font-bold text-lg mb-1 whitespace-nowrap overflow-hidden text-ellipsis"
+        >
+          {project.metaData.name}
+        </h2>
+        <p class="monospace text-subtle text-sm">
+          {formatResourceInstance(project.metaData.instance)}
+        </p>
+      </div>
+    </div>
     <ProjectMetaDataView {project} />
   </div>
 </button>
@@ -50,12 +61,17 @@
       cursor: pointer;
     }
 
-    div {
+    div.project-view {
       border: 1px solid transparent;
       border-radius: 0.375rem;
 
       &.selected {
         border-color: var(--color-accent-secondary);
+
+        .select-indicator {
+          border-color: var(--color-accent-secondary);
+          background-color: var(--color-accent-secondary);
+        }
       }
     }
   }
