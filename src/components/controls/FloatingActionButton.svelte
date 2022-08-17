@@ -2,6 +2,7 @@
   import { onDestroy } from "svelte";
   import { subscribeToKey } from "src/lib/utilities/keybindings";
   import type { FloatingActionButtonData } from "./types";
+  import { FloatingActionButtonColor } from "./types";
 
   export let data: FloatingActionButtonData;
   export let toggleTitle: (text?: string, color?: string) => void;
@@ -38,8 +39,9 @@
     if (data.disabled) {
       toggleTitle(data.title, "");
     } else {
-      floatingActionButton.style.backgroundColor = data.color;
-      floatingActionButton.style.borderColor = data.color;
+      const color = FloatingActionButtonColor[data.color];
+      floatingActionButton.style.backgroundColor = color;
+      floatingActionButton.style.borderColor = color;
       toggleTitle(data.title, data.color);
     }
   }

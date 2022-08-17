@@ -1,6 +1,7 @@
 <script lang="ts">
   import { fly } from "svelte/transition";
   import Settings from "src/lib/services/settings";
+  import { FloatingActionButtonColor } from "./types";
 
   export let text: string;
   export let color: string;
@@ -15,7 +16,7 @@
       if (useDisabledColor) {
         titleElement.removeAttribute("style");
       } else {
-        titleElement.style.backgroundColor = color;
+        titleElement.style.backgroundColor = FloatingActionButtonColor[color];
       }
     }
   }
