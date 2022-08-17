@@ -1,12 +1,17 @@
 <script lang="ts">
-  import { v4 as uuidv4 } from "uuid";
+  import { onDestroy } from "svelte";
   import { fade } from "svelte/transition";
+  import { v4 as uuidv4 } from "uuid";
   import type { MultipageContentState } from "src/components/layouts/types";
   import MultipageContentGroup from "src/components/layouts/MultipageContentGroup.svelte";
   import MultipageContent from "src/components/layouts/MultipageContent.svelte";
   import TextInput from "src/components/elements/TextInput.svelte";
   import LocaleSelect from "src/components/controls/LocaleSelect.svelte";
   import Settings from "src/lib/services/settings";
+  import Project from "src/lib/models/project";
+  import LocalizedStringTable from "src/lib/models/localized-stbl";
+  import type Workspace from "src/lib/models/workspace";
+  import { activeWorkspaceStore } from "src/lib/services/stores";
   const { fnv64 } = window.S4TK.hashing;
   const { formatResourceInstance } = window.S4TK.formatting;
 
@@ -17,16 +22,52 @@
   let groupHexString = "80000000";
   let instanceHexString = formatResourceInstance(fnv64(uuid, false));
   let primaryLocale = Settings.defaultLocale;
-
+  let activeWorkspace: Workspace;
   let multipageState: MultipageContentState = {
     currentPage: 1,
     nextButtonEnabled: false,
   };
 
+  const subscriptions = [
+    activeWorkspaceStore.subscribe((workspace) => {
+      if (workspace) activeWorkspace = workspace;
+    }),
+  ];
+
+  onDestroy(() => {
+    subscriptions.forEach((unsub) => unsub());
+  });
+
   $: {
     if (multipageState.currentPage === 1) {
       multipageState.nextButtonEnabled = Boolean(projectName);
     }
+  }
+
+  function createProject() {
+    const stbl = new LocalizedStringTable(
+      primaryLocale,
+      new Set([
+        primaryLocale, // TODO: add chosen locales instead
+      ])
+    );
+
+    const project = new Project(
+      uuid,
+      {
+        name: projectName,
+        group: parseInt(groupHexString),
+        instance: BigInt("0x" + instanceHexString),
+        numEntries: 0,
+        numLocales: 0,
+        primaryLocale,
+      },
+      stbl
+    );
+
+    activeWorkspace.addProject(project);
+
+    onComplete();
   }
 </script>
 
@@ -38,7 +79,7 @@
   centerVertically={true}
   bind:state={multipageState}
   completeButton="Create"
-  onLastPageComplete={onComplete}
+  onLastPageComplete={createProject}
 >
   <div slot="content" class="w-full">
     <MultipageContent pageNumber={1} bind:state={multipageState}>
@@ -81,7 +122,11 @@
             fillWidth={true}
             bind:value={instanceHexString}
           />
-          <LocaleSelect bind:selected={primaryLocale} fillWidth={true} />
+          <LocaleSelect
+            label="primary locale"
+            bind:selected={primaryLocale}
+            fillWidth={true}
+          />
         </div>
         <div>
           <p class="text-subtle text-xs mb-2">

@@ -1,21 +1,35 @@
 <script lang="ts">
+  import { onDestroy } from "svelte";
   import SectionHeader from "src/components/elements/SectionHeader.svelte";
   import BlurOverlay from "src/components/layouts/BlurOverlay.svelte";
   import Workspace from "src/lib/models/workspace";
   import Settings from "src/lib/services/settings";
+  import { activeWorkspaceStore } from "src/lib/services/stores";
   import HomeActionButtons from "./views/HomeActionButtons.svelte";
   import OnboardingView from "./views/OnboardingView.svelte";
   import WorkspaceView from "./views/WorkspaceView.svelte";
 
-  let workspace: Workspace;
+  let activeWorkspace: Workspace;
   let showingProjects = false;
   let isOnboarding = false;
 
+  const subscriptions = [
+    activeWorkspaceStore.subscribe((workspace) => {
+      if (workspace) {
+        activeWorkspace = workspace;
+        showingProjects = workspace.projects.length > 0;
+      }
+    }),
+  ];
+
+  onDestroy(() => {
+    subscriptions.forEach((unsub) => unsub());
+  });
+
   if (Settings.hasWorkspace) {
     Workspace.fromStorage()
-      .then((wk) => {
-        workspace = wk;
-        showingProjects = wk.projects.length > 0;
+      .then((workspace) => {
+        activeWorkspaceStore.set(workspace);
       })
       .catch((err) => {
         console.error(err);
@@ -25,20 +39,20 @@
   }
 
   function onOnboardingComplete() {
-    workspace = new Workspace();
+    activeWorkspaceStore.set(new Workspace());
     Settings.hasWorkspace = true;
     isOnboarding = false;
   }
 </script>
 
 <div class="w-100 flex justify-center" class:flex-1={!showingProjects}>
-  {#if showingProjects || true}
+  {#if showingProjects}
     <div class="w-full xl:max-w-screen-xl px-4 py-12">
-      <WorkspaceView />
+      <WorkspaceView bind:workspace={activeWorkspace} />
     </div>
   {:else}
     <div class="w-full xl:max-w-screen-xl px-4 flex flex-col justify-center">
-      {#if Boolean(workspace)}
+      {#if Boolean(activeWorkspace)}
         <div class="mb-8">
           <SectionHeader title="Your workspace is empty" />
         </div>

@@ -1,5 +1,7 @@
 <script lang="ts">
-  export let project: string;
+  import type Project from "src/lib/models/project";
+
+  export let project: Project;
   export let selected = false;
 </script>
 

@@ -1,8 +1,9 @@
 <script lang="ts">
   import SectionHeader from "src/components/elements/SectionHeader.svelte";
+  import type Workspace from "src/lib/models/workspace";
   import ProjectView from "./ProjectView.svelte";
 
-  const projects = ["first", "second"];
+  export let workspace: Workspace;
 </script>
 
 <div class="flex justify-between mb-8">
@@ -13,7 +14,7 @@
 </div>
 
 <div class="workspace-view">
-  {#each projects as project, key (key)}
+  {#each workspace.projects as project, key (key)}
     <ProjectView {project} />
   {/each}
 </div>
