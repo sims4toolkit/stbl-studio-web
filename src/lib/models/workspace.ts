@@ -1,5 +1,6 @@
 import DatabaseService from "../services/database.js";
 import Settings from "../services/settings.js";
+import { activeWorkspaceStore } from "../services/stores.js";
 import LocalizedStringTable from "./localized-stbl.js";
 import Project from "./project.js";
 
@@ -86,6 +87,19 @@ export default class Workspace {
   //#region Public Methods
 
   /**
+   * Adds a project to the workspace, saves it and its STBL to the DB, and
+   * updates all subscribers to the workspace.
+   * 
+   * @param project Project to add
+   */
+  addProject(project: Project) {
+    this.projects.push(project);
+    project.saveToStorage();
+    project.stbl.saveToStorage(project.uuid);
+    this._updateSubscribers();
+  }
+
+  /**
    * Returns a JSON representation of this workspace.
    */
   async toJson(): Promise<WorkspaceJson> {
@@ -120,6 +134,10 @@ export default class Workspace {
       if (name1 > name2) return 1;
       return 0;
     });
+  }
+
+  private _updateSubscribers() {
+    activeWorkspaceStore.set(this); // FIXME: is this right?
   }
 
   //#endregion Private Methods

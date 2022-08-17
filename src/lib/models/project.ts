@@ -1,6 +1,6 @@
 import type { StringTableLocale } from "@s4tk/models/enums";
-import DatabaseService from "../services/database.js";
-import LocalizedStringTable from "./localized-stbl.js";
+import DatabaseService from "src/lib/services/database.js";
+import LocalizedStringTable from "src/lib/models/localized-stbl.js";
 const { encoding, enums } = window.S4TK;
 const { Buffer } = window.S4TK.Node;
 
@@ -110,6 +110,13 @@ export default class Project {
           reject(err);
         });
     });
+  }
+
+  /**
+   * Writes this project's meta data to the DB.
+   */
+  async saveToStorage() {
+    DatabaseService.setItem("metadata", this.uuid, this.serializeMetaData());
   }
 
   /**

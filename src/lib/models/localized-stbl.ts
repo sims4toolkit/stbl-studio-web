@@ -1,5 +1,6 @@
 import type { StringTableResource } from "@s4tk/models";
 import type { StringTableLocale } from "@s4tk/models/enums";
+import DatabaseService from "src/lib/services/database";
 const { models, encoding } = window.S4TK;
 const { Buffer } = window.S4TK.Node;
 
@@ -155,9 +156,9 @@ export default class LocalizedStringTable {
   }
 
   /**
-   * TODO:
+   * Returns true if the given locale is in this project.
    * 
-   * @param locale TODO:
+   * @param locale Locale to check for
    */
   hasLocale(locale: StringTableLocale): boolean {
     return this._allLocales.has(locale);
@@ -317,6 +318,13 @@ export default class LocalizedStringTable {
     });
 
     this._clearLocalesCache();
+  }
+
+  /**
+   * Writes this string table to storage.
+   */
+  async saveToStorage(uuid: string) {
+    DatabaseService.setItem("stbls", uuid, this.serialize());
   }
 
   /**
