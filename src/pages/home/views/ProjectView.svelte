@@ -7,7 +7,7 @@
   export let selected = false;
 </script>
 
-<button>
+<a class="no-underline" href="#/project/{project.uuid}">
   <div
     class="text-left p-4 rounded-md drop-shadow-md dark:bg-gray-700 bg-gray-50"
     class:selected
@@ -22,10 +22,10 @@
     </p>
     <ProjectMetaDataView {project} />
   </div>
-</button>
+</a>
 
 <style lang="scss">
-  button {
+  a {
     min-width: 300px;
     max-width: 100%;
     position: relative;
