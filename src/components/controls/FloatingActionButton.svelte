@@ -74,7 +74,12 @@
   on:blur={handleLeaveOrBlur}
   on:click={onButtonClick}
 >
-  <img class="svg" src="./assets/{data.icon}.svg" alt={data.title} />
+  <img
+    class="svg h-6"
+    class:invert={Settings.disableToolbarColors}
+    src="./assets/{data.icon}.svg"
+    alt={data.title}
+  />
 </button>
 
 <style lang="scss">
@@ -110,11 +115,11 @@
 
       img {
         filter: var(--filter-light);
-      }
-    }
 
-    img {
-      height: 24px;
+        &.invert {
+          filter: var(--filter-svg-invert);
+        }
+      }
     }
   }
 </style>

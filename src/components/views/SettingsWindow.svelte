@@ -13,19 +13,36 @@
 
 <MovableWindow title="Settings" {onClose}>
   <div class="flex flex-col gap-4">
-    <div class="flex flex-col gap-2">
-      <h4 class="text-subtle uppercase text-sm font-bold">Accessibility</h4>
-      <Switch label="Disable Blur Effect" bind:checked={Settings.disableBlur} />
-      <Switch label="Reduce Animations" bind:checked={Settings.reduceMotion} />
-      <Switch
-        label="Single Toolbar Color"
-        bind:checked={Settings.disableToolbarColors}
-      />
+    <div class="flex flex-col gap-4">
+      <div>
+        <Switch
+          label="Disable Blur Effect"
+          bind:checked={Settings.disableBlur}
+        />
+        <p class="text-subtle text-xs mt-2">
+          Make blurred backgrounds appear opaque.
+        </p>
+      </div>
+      <div>
+        <Switch label="Reduce Motion" bind:checked={Settings.reduceMotion} />
+        <p class="text-subtle text-xs mt-2">
+          Disable fly, fade, and transition animations.
+        </p>
+      </div>
+      <div>
+        <Switch
+          label="Single Toolbar Color"
+          bind:checked={Settings.disableToolbarColors}
+        />
+        <p class="text-subtle text-xs mt-2">
+          Disable color-coding of bottom-right toolbar.
+        </p>
+      </div>
     </div>
     <hr class="border-gray-500 dark:border-gray-900" />
     <div class="flex flex-col gap-2">
       <LocaleSelect
-        label="default locale"
+        label="default primary locale"
         fillWidth={true}
         bind:selected={Settings.defaultLocale}
       />
