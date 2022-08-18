@@ -70,6 +70,7 @@
       bind:instanceHexString
       bind:primaryLocale
       bind:localeChoices
+      localeChoicesDetail="Add or remove locales from this project. Removing locales will permanently delete any and all translations associated with them."
     />
   </div>
 </MultipageContentGroup>

@@ -11,6 +11,9 @@
   export let startingPageNumber = 1;
   export let multipageState: MultipageContentState;
   export let firstPageValid: boolean;
+  export let tgiChoicesDetail: string = null;
+  export let localeChoicesDetail: string = null;
+
   export let projectName: string;
   export let groupHexString: string;
   export let instanceHexString: string;
@@ -100,10 +103,9 @@
       />
     </div>
     <div class="mt-2">
-      <p class="text-subtle text-xs mb-2">
-        The instance is the hash of the UUID by default, but it can be changed
-        manually.
-      </p>
+      {#if Boolean(tgiChoicesDetail)}
+        <p class="text-subtle text-xs mb-2">{tgiChoicesDetail}</p>
+      {/if}
       <p class="text-subtle text-xs">
         The 2-digit locale code will automatically be prepended to the instance.
       </p>
@@ -115,12 +117,10 @@
   bind:state={multipageState}
 >
   <div in:fade class="w-full">
-    <p>
-      Select additional locales to include in this project. Strings added to
-      your primary locale (English) will automatically be added to these ones as
-      well.
-    </p>
-    <div class="mt-4">
+    {#if Boolean(localeChoicesDetail)}
+      <p class="mb-4">{localeChoicesDetail}</p>
+    {/if}
+    <div>
       <div class="flex gap-4 mb-3">
         <button
           class="uppercase text-sm text-subtle hover:text-black dark:hover:text-white"
