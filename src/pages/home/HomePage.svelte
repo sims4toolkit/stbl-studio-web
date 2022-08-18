@@ -52,15 +52,15 @@
 </script>
 
 <section
-  class="pt-10 w-full flex justify-center"
+  class="pt-10 px-4 w-full flex justify-center"
   class:flex-1={!showingProjects}
 >
   {#if showingProjects}
-    <div class="w-full xl:max-w-screen-xl px-4 py-12">
+    <div class="w-full xl:max-w-screen-xl py-12">
       <WorkspaceView bind:workspace={activeWorkspace} bind:selectionGroup />
     </div>
   {:else}
-    <div class="w-full xl:max-w-screen-xl px-4 flex flex-col justify-center">
+    <div class="w-full xl:max-w-screen-xl flex flex-col justify-center">
       {#if Boolean(activeWorkspace)}
         <div class="mb-8">
           <SectionHeader title="Your workspace is empty" />

@@ -3,7 +3,7 @@
   import type Project from "src/lib/models/project";
   import type SelectionGroup from "src/lib/models/selection-group";
   import ProjectMetaDataView from "src/components/views/ProjectMetaDataView.svelte";
-  const { formatResourceInstance } = window.S4TK.formatting;
+  const { formatAsHexString } = window.S4TK.formatting;
 
   export let project: Project;
   export let selectionGroup: SelectionGroup<Project, string>;
@@ -52,7 +52,7 @@
           {project.metaData.name}
         </h2>
         <p class="monospace text-subtle text-sm">
-          {formatResourceInstance(project.metaData.instance)}
+          {formatAsHexString(project.metaData.instance, 14, false)}
         </p>
       </div>
     </div>

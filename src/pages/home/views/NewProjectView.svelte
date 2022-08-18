@@ -15,15 +15,17 @@
   import { subscribeToKey } from "src/lib/utilities/keybindings";
   const { fnv64 } = window.S4TK.hashing;
   const { StringTableLocale } = window.S4TK.enums;
-  const { formatResourceInstance } = window.S4TK.formatting;
+  const { formatAsHexString } = window.S4TK.formatting;
 
   export let onComplete: () => void;
 
   const uuid = uuidv4();
   let projectName = "";
   let groupHexString = "80000000";
-  let instanceHexString = formatResourceInstance(
-    StringTableLocale.getInstanceBase(fnv64(uuid, false))
+  let instanceHexString = formatAsHexString(
+    StringTableLocale.getInstanceBase(fnv64(uuid, false)),
+    14,
+    false
   );
   let primaryLocale = Settings.defaultLocale;
   let activeWorkspace: Workspace;
@@ -60,7 +62,7 @@
       uuid,
       {
         name: projectName,
-        group: parseInt(groupHexString),
+        group: parseInt(groupHexString, 16),
         instance: BigInt("0x" + instanceHexString),
         numEntries: stbl.numEntries,
         numLocales: stbl.numLocales,
