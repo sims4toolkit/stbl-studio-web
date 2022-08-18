@@ -127,7 +127,9 @@
       </div>
       <div class="checkboxes-wrapper">
         {#each localeChoices as choice, key (key)}
-          <Checkbox label={choice.displayName} bind:checkable={choice} />
+          {#if choice.locale !== primaryLocale}
+            <Checkbox label={choice.displayName} bind:checkable={choice} />
+          {/if}
         {/each}
       </div>
     </div>

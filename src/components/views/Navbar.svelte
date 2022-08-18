@@ -21,13 +21,13 @@
 >
   <a
     class="flex gap-2 items-center no-underline tint-on-hover whitespace-nowrap"
-    href="/"
+    href="/#"
   >
     <img src="./assets/s4tk-transparent.png" alt="S4TK" class="h-5" />
     <h2 class="font-bold">STBL Studio</h2>
   </a>
   <div class="flex gap-3 items-center">
-    <a href="/">
+    <a href="/#">
       <img
         src="./assets/home-outline.svg"
         alt="Home"

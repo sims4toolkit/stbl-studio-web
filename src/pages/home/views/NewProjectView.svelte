@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onDestroy } from "svelte";
   import { v4 as uuidv4 } from "uuid";
+  import type { StringTableLocale } from "@s4tk/models/enums";
   import { getDisplayName } from "src/lib/utilities/localization";
   import Settings from "src/lib/services/settings";
   import Project from "src/lib/models/project";
@@ -25,17 +26,22 @@
     false
   );
   let primaryLocale = Settings.defaultLocale;
-  let localeChoices = enums.StringTableLocale.all().map((locale) => ({
-    checked: false,
-    displayName: getDisplayName(locale),
-    locale,
-  }));
+  let localeChoices: {
+    checked: boolean;
+    displayName: string;
+    locale: StringTableLocale;
+  }[];
 
   let activeWorkspace: Workspace;
   let multipageState: MultipageContentState = {
     currentPage: 1,
     nextButtonEnabled: false,
   };
+
+  $: {
+    primaryLocale;
+    refreshLocaleOptions();
+  }
 
   const subscriptions = [
     activeWorkspaceStore.subscribe((workspace) => {
@@ -73,6 +79,14 @@
     activeWorkspace.addProject(project);
 
     onComplete();
+  }
+
+  function refreshLocaleOptions() {
+    localeChoices = enums.StringTableLocale.all().map((locale) => ({
+      checked: locale === primaryLocale,
+      displayName: getDisplayName(locale),
+      locale,
+    }));
   }
 </script>
 
