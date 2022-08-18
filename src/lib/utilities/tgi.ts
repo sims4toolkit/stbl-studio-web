@@ -1,5 +1,3 @@
-const { fnv64 } = window.S4TK.hashing;
-
 /**
  * Returns true if the given string is a hex number with the given length.
  * 

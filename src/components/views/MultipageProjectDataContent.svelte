@@ -5,14 +5,24 @@
   import MultipageContent from "src/components/layouts/MultipageContent.svelte";
   import TextInput from "src/components/elements/TextInput.svelte";
   import LocaleSelect from "src/components/controls/LocaleSelect.svelte";
+  import { validateHexString } from "src/lib/utilities/tgi";
 
   export let startingPageNumber = 1;
   export let multipageState: MultipageContentState;
+  export let firstPageValid: boolean;
   export let projectName: string;
   export let groupHexString: string;
   export let instanceHexString: string;
   export let primaryLocale: StringTableLocale;
   export let otherLocales: Set<StringTableLocale>;
+
+  let nameValid = false;
+  let groupValid = false;
+  let instanceValid = false;
+
+  $: {
+    firstPageValid = nameValid && groupValid && instanceValid;
+  }
 </script>
 
 <MultipageContent pageNumber={startingPageNumber} bind:state={multipageState}>
@@ -23,6 +33,7 @@
       placeholder="Project name..."
       fillWidth={true}
       bind:value={projectName}
+      bind:isValid={nameValid}
       focusOnMount={true}
       validators={[
         {
@@ -47,6 +58,13 @@
         placeholder="Group"
         fillWidth={true}
         bind:value={groupHexString}
+        bind:isValid={groupValid}
+        validators={[
+          {
+            test: (value) => validateHexString(value, 8),
+            message: "Must be 8-digit hex",
+          },
+        ]}
       />
       <TextInput
         label="instance"
@@ -54,6 +72,13 @@
         placeholder="Instance"
         fillWidth={true}
         bind:value={instanceHexString}
+        bind:isValid={instanceValid}
+        validators={[
+          {
+            test: (value) => validateHexString(value, 14),
+            message: "Must be 14-digit hex",
+          },
+        ]}
       />
       <LocaleSelect
         label="primary locale"

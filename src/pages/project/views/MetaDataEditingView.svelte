@@ -55,6 +55,7 @@
   <div slot="content" class="w-full">
     <MultipageProjectDataContent
       bind:multipageState
+      bind:firstPageValid={multipageState.nextButtonEnabled}
       bind:projectName
       bind:groupHexString
       bind:instanceHexString

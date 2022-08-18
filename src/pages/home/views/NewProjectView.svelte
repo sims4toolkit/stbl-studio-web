@@ -43,12 +43,6 @@
     subscriptions.forEach((unsub) => unsub());
   });
 
-  $: {
-    if (multipageState.currentPage === 1) {
-      multipageState.nextButtonEnabled = Boolean(projectName);
-    }
-  }
-
   function createProject() {
     // primary locale is automatically added to other locales by const
     const stbl = new LocalizedStringTable(primaryLocale, otherLocales);
@@ -85,6 +79,7 @@
   <div slot="content" class="w-full">
     <MultipageProjectDataContent
       bind:multipageState
+      bind:firstPageValid={multipageState.nextButtonEnabled}
       bind:projectName
       bind:groupHexString
       bind:instanceHexString
