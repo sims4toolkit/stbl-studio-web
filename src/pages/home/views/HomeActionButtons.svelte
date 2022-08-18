@@ -67,7 +67,9 @@
             disabled: selectionGroup.numSelected < 1,
             onClick: ifNotInModal(() => {
               modalContentComponent = DeleteProjectView;
-              modalContentArgs = {};
+              modalContentArgs = {
+                projects: selectionGroup.allSelectedItems,
+              };
               inModal = true;
             }),
           },

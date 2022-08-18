@@ -69,11 +69,11 @@
 <div>
   <div in:fly={{ y: -15, duration: animationDuration }}>
     {#if title}
-      <h2 class="font-bold text-2xl mb-2 text-gradient drop-shadow">
+      <h2 class="font-bold text-2xl text-gradient drop-shadow">
         {title}
       </h2>
       {#if subtitle}
-        <p class="text-sm text-subtle">{subtitle}</p>
+        <p class="text-sm mt-2 text-subtle">{subtitle}</p>
       {/if}
     {:else}
       <slot name="header" />

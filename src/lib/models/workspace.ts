@@ -25,7 +25,7 @@ export default class Workspace {
 
   //#region Initialization
 
-  constructor(readonly projects: Project[] = []) {
+  constructor(public projects: Project[] = []) {
     this._sortProjects();
   }
 
@@ -96,6 +96,24 @@ export default class Workspace {
     this.projects.push(project);
     project.saveToStorage();
     project.stbl.saveToStorage(project.uuid);
+    this._updateSubscribers();
+  }
+
+  /**
+   * Removes projects from the workspace, deletes them from storage, and
+   * updates all subscribers to the workspace.
+   * 
+   * @param projects Projects to delete
+   */
+  deleteProjects(projects: Project[]) {
+    const uuids = new Set(projects.map(p => p.uuid));
+    this.projects = this.projects.filter(project => !uuids.has(project.uuid));
+
+    uuids.forEach(uuid => {
+      DatabaseService.removeItem("metadata", uuid);
+      DatabaseService.removeItem("stbls", uuid);
+    });
+
     this._updateSubscribers();
   }
 
