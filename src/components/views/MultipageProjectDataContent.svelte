@@ -6,6 +6,7 @@
   import TextInput from "src/components/elements/TextInput.svelte";
   import LocaleSelect from "src/components/controls/LocaleSelect.svelte";
 
+  export let startingPageNumber = 1;
   export let multipageState: MultipageContentState;
   export let projectName: string;
   export let groupHexString: string;
@@ -14,7 +15,7 @@
   export let otherLocales: Set<StringTableLocale>;
 </script>
 
-<MultipageContent pageNumber={1} bind:state={multipageState}>
+<MultipageContent pageNumber={startingPageNumber} bind:state={multipageState}>
   <div class="w-full flex flex-col gap-4">
     <TextInput
       label="project name"
@@ -71,7 +72,10 @@
     </div>
   </div>
 </MultipageContent>
-<MultipageContent pageNumber={2} bind:state={multipageState}>
+<MultipageContent
+  pageNumber={startingPageNumber + 1}
+  bind:state={multipageState}
+>
   <div in:fade>
     <!-- FIXME: actually let user choose -->
     <p>{otherLocales}</p>

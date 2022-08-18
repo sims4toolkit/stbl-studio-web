@@ -23,8 +23,21 @@
     nextButtonEnabled: true,
   };
 
-  function saveEdits() {
-    // TODO:
+  async function saveEdits() {
+    project.stbl.replaceLocales([...otherLocales]);
+    project.metaData.numLocales = project.stbl.numLocales;
+    project.metaData.numEntries = project.stbl.numEntries;
+    await project.stbl.saveToStorage(project.uuid);
+
+    project.metaData.name = projectName;
+    project.metaData.group = parseInt(groupHexString, 16);
+    project.metaData.instance = BigInt("0x" + instanceHexString);
+    project.metaData.primaryLocale = primaryLocale;
+    await project.saveToStorage();
+
+    project = project;
+    // FIXME: how to refresh properly?
+
     onComplete();
   }
 </script>

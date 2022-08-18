@@ -295,10 +295,8 @@ export default class LocalizedStringTable {
    * @param locales New locales to use
    */
   replaceLocales(locales: StringTableLocale[]) {
-    if (!locales.includes(this.primaryLocale))
-      throw new Error("Locale list must include primary locale.");
-
     const newLocaleSet = new Set(locales);
+    newLocaleSet.add(this.primaryLocale); // just to make sure
 
     // delete existing locales that are not in new set
     this.allLocales.forEach(locale => {
