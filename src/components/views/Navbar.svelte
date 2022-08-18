@@ -1,5 +1,10 @@
 <script lang="ts">
   import Settings from "src/lib/services/settings";
+  import HelpWindow from "src/components/views/HelpWindow.svelte";
+  import SettingsWindow from "src/components/views/SettingsWindow.svelte";
+
+  let showSettingsWindow = false;
+  let showHelpWindow = false;
 
   // redundant so icon can react without accessing settings
   let isLightTheme = Settings.isLightTheme;
@@ -36,20 +41,20 @@
         class="svg tint-on-hover h-5"
       />
     </a>
-    <a href="/">
+    <button on:click={() => (showHelpWindow = !showHelpWindow)}>
       <img
         src="./assets/help-circle-outline.svg"
         alt="Help"
         class="svg tint-on-hover h-6"
       />
-    </a>
-    <a href="/">
+    </button>
+    <button on:click={() => (showSettingsWindow = !showSettingsWindow)}>
       <img
         src="./assets/settings-outline.svg"
         alt="Settings"
         class="svg tint-on-hover h-5"
       />
-    </a>
+    </button>
     <button on:click={toggleTheme}>
       <img
         src="./assets/{themeIcon}-outline.svg"
@@ -59,3 +64,11 @@
     </button>
   </div>
 </nav>
+
+{#if showHelpWindow}
+  <HelpWindow onClose={() => (showHelpWindow = false)} />
+{/if}
+
+{#if showSettingsWindow}
+  <SettingsWindow onClose={() => (showSettingsWindow = false)} />
+{/if}

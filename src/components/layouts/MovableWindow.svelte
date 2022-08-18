@@ -100,7 +100,6 @@
       >
         {title}
       </p>
-      <p class="my-0 text-sm text-gray-200 dark:text-gray-400">(Draggable)</p>
     </div>
     <button on:click={onClose}>
       <img src="./assets/x.svg" class="svg-light" alt="Close" />
