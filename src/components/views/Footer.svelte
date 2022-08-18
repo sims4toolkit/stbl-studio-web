@@ -1,4 +1,6 @@
-<footer class="w-full py-12 flex justify-center bg-gray-200 dark:bg-gray-900">
+<footer
+  class="w-full py-12 px-4 flex justify-center bg-gray-200 dark:bg-gray-900"
+>
   <div class="w-full xl:max-w-screen-xl text-center flex flex-col gap-10">
     <div class="flex flex-col gap-4">
       <p>

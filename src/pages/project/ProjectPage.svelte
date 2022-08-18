@@ -61,7 +61,7 @@
           >
             {project.metaData.name}
           </h2>
-          <p class="text-sm mt-2 text-subtle monospace">
+          <p class="text-xs mt-1 text-subtle monospace">
             {formatAsHexString(project.metaData.instance, 14, false)}
           </p>
         </div>
