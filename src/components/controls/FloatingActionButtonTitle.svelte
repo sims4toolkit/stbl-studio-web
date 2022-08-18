@@ -16,7 +16,11 @@
       if (useDisabledColor) {
         titleElement.removeAttribute("style");
       } else {
-        titleElement.style.backgroundColor = FloatingActionButtonColor[color];
+        const colorToUse = Settings.disableToolbarColors
+          ? "var(--color-toolbar-fallback)"
+          : FloatingActionButtonColor[color];
+
+        titleElement.style.backgroundColor = colorToUse;
       }
     }
   }

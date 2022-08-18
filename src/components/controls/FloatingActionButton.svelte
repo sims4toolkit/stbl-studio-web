@@ -3,6 +3,7 @@
   import { subscribeToKey } from "src/lib/utilities/keybindings";
   import type { FloatingActionButtonData } from "./types";
   import { FloatingActionButtonColor } from "./types";
+  import Settings from "src/lib/services/settings";
 
   export let data: FloatingActionButtonData;
   export let toggleTitle: (text?: string, color?: string) => void;
@@ -39,7 +40,10 @@
     if (data.disabled) {
       toggleTitle(data.title, "");
     } else {
-      const color = FloatingActionButtonColor[data.color];
+      const color = Settings.disableToolbarColors
+        ? "var(--color-toolbar-fallback)"
+        : FloatingActionButtonColor[data.color];
+
       floatingActionButton.style.backgroundColor = color;
       floatingActionButton.style.borderColor = color;
       toggleTitle(data.title, data.color);

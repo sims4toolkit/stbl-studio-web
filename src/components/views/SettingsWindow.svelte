@@ -17,6 +17,10 @@
       <h4 class="text-subtle uppercase text-sm font-bold">Accessibility</h4>
       <Switch label="Disable Blur Effect" bind:checked={Settings.disableBlur} />
       <Switch label="Reduce Animations" bind:checked={Settings.reduceMotion} />
+      <Switch
+        label="Single Toolbar Color"
+        bind:checked={Settings.disableToolbarColors}
+      />
     </div>
     <hr class="border-gray-500 dark:border-gray-900" />
     <div class="flex flex-col gap-2">

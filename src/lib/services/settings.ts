@@ -97,6 +97,7 @@ interface UserSettings {
   entriesPerPage: number;
   hasWorkspace: boolean;
   disableBlur: boolean;
+  disableToolbarColors: boolean;
   isLightTheme: boolean;
   reduceMotion: boolean;
   showAllStrings: boolean;
@@ -154,6 +155,9 @@ const Settings = getSettingsProxy({
     callbacks: [
       DocumentUtils.toggleBlurEffect
     ]
+  },
+  disableToolbarColors: {
+    cls: StoredBoolean,
   },
   isLightTheme: {
     cls: StoredBoolean,
