@@ -37,7 +37,7 @@
         on:click={() => (resettingWorkspace = true)}
       >
         <img class="svg h-4" src="./assets/trash.svg" alt="Trash" />
-        Reset Workspace
+        Delete Website Data
       </button>
     </div>
   </div>

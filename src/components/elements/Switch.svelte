@@ -30,11 +30,11 @@
         background-color: var(--color-accent-secondary);
       }
 
-      &:focus + .slider {
-        box-shadow: 0 0 1px var(--color-accent-secondary);
+      &:focus + .slider::before {
+        box-shadow: 0 0 4px black;
       }
 
-      &:checked + .slider:before {
+      &:checked + .slider::before {
         -webkit-transform: translateX($slider-width);
         -ms-transform: translateX($slider-width);
         transform: translateX($slider-width);
@@ -54,7 +54,6 @@
         content: "";
         height: $slider-width;
         width: $slider-width;
-
         left: $offset;
         bottom: $offset;
         background-color: var(--color-bg);
