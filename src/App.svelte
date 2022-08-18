@@ -4,9 +4,11 @@
   import Footer from "src/components/views/Footer.svelte";
   import NotFoundPage from "src/pages/NotFoundPage.svelte";
   import HomePage from "src/pages/home/HomePage.svelte";
+  import ProjectPage from "src/pages/project/ProjectPage.svelte";
 
   const routes = {
     "/": HomePage,
+    "/project/:uuid": ProjectPage,
     "*": NotFoundPage,
   };
 
@@ -21,7 +23,7 @@
 </script>
 
 <Navbar />
-<main class="min-h-screen pt-10 flex flex-col">
+<main class="min-h-screen flex flex-col">
   <Router {routes} restoreScrollState={true} on:routeLoaded={routeLoaded} />
 </main>
 <Footer />

@@ -51,7 +51,10 @@
   }
 </script>
 
-<section class="w-100 flex justify-center" class:flex-1={!showingProjects}>
+<section
+  class="pt-10 w-full flex justify-center"
+  class:flex-1={!showingProjects}
+>
   {#if showingProjects}
     <div class="w-full xl:max-w-screen-xl px-4 py-12">
       <WorkspaceView bind:workspace={activeWorkspace} bind:selectionGroup />
@@ -68,7 +71,7 @@
         <p>Need help? Check out the help page for more information.</p>
       {:else}
         <h1
-          class="text-2xl font-bold text-center text-gray-400 dark:text-gray-500"
+          class="text-2xl font-bold text-center drop-shadow text-gray-400 dark:text-gray-500"
         >
           Loading workspace...
         </h1>

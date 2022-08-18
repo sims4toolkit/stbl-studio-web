@@ -6,7 +6,7 @@
   <title>Page Not Found</title>
 </svelte:head>
 
-<section class="flex-1 w-100 flex justify-center">
+<section class="pt-10 flex-1 w-full flex justify-center">
   <div class="w-full xl:max-w-screen-xl px-4 flex flex-col justify-center">
     <div class="mb-4">
       <SectionHeader title="Unlock this page for $4.04" />
