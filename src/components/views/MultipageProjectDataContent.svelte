@@ -121,7 +121,7 @@
       well.
     </p>
     <div class="mt-4">
-      <div class="flex gap-4 mb-2">
+      <div class="flex gap-4 mb-3">
         <button
           class="uppercase text-sm text-subtle hover:text-black dark:hover:text-white"
           on:click={() => toggleOtherLocales(true)}>select all</button
