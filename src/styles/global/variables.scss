@@ -12,12 +12,8 @@
   $gray-900: #1F2227;
 
   // filters
-  --filter-dark: invert(13%) sepia(3%) saturate(427%) hue-rotate(314deg)
-    brightness(105%) contrast(84%);
-  --filter-light: invert(99%) sepia(74%) saturate(352%) hue-rotate(196deg)
-    brightness(121%) contrast(100%);
-  --filter-purple: invert(52%) sepia(75%) saturate(3699%) hue-rotate(241deg)
-    brightness(89%) contrast(92%);
+  --filter-dark: invert(13%) sepia(3%) saturate(427%) hue-rotate(314deg) brightness(105%) contrast(84%);
+  --filter-light: invert(99%) sepia(74%) saturate(352%) hue-rotate(196deg) brightness(121%) contrast(100%);
 
   &.dark {
     // colors
@@ -35,6 +31,7 @@
     // filters
     --filter-svg: var(--filter-light);
     --filter-svg-invert: var(--filter-dark);
+    --filter-svg-accent: invert(69%) sepia(58%) saturate(256%) hue-rotate(114deg) brightness(95%) contrast(95%);
     --filter-bg-blur: blur(12px) brightness(55%);
   }
 
@@ -54,6 +51,7 @@
     // filters
     --filter-svg: var(--filter-dark);
     --filter-svg-invert: var(--filter-light);
+    --filter-svg-accent: invert(52%) sepia(99%) saturate(377%) hue-rotate(115deg) brightness(86%) contrast(86%);
     --filter-bg-blur: blur(12px) brightness(96%);
   }
 }

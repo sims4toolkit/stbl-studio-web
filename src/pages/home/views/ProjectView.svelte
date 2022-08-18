@@ -30,7 +30,7 @@
       src="./assets/pin.svg"
       alt="Pin"
       title="Pinned"
-      class="svg-purple h-4 w-4 z-10 absolute top-2 right-2 -scale-x-100"
+      class="svg-accent h-4 w-4 z-10 absolute top-2 right-2 -scale-x-100"
     />
   {/if}
   <div

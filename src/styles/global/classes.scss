@@ -4,6 +4,10 @@
   filter: var(--filter-svg);
 }
 
+.svg-invert {
+  filter: var(--filter-svg-invert);
+}
+
 .svg-dark {
   filter: var(--filter-dark);
 }
@@ -12,8 +16,8 @@
   filter: var(--filter-light);
 }
 
-.svg-purple {
-  filter: var(--filter-purple);
+.svg-accent {
+  filter: var(--filter-svg-accent);
 }
 
 //#endregion SVG
