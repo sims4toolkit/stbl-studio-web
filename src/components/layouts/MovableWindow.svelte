@@ -1,6 +1,8 @@
 <script lang="ts">
   import { onDestroy, onMount } from "svelte";
+  import { fade, fly } from "svelte/transition";
   import { numMovableWindowsStore } from "src/lib/services/stores";
+  import Settings from "src/lib/services/settings";
 
   export let title: string;
   export let onClose: () => void;
@@ -89,6 +91,8 @@
 <div
   bind:this={movableWindow}
   class="z-30 movable-window rounded drop-shadow border border-solid border-gray-500 dark:border-gray-900 bg-gray-200 dark:bg-gray-700"
+  in:fly={{ x: 35, duration: Settings.reduceMotion ? 0 : 350 }}
+  out:fade={{ duration: Settings.reduceMotion ? 0 : 200 }}
 >
   <div
     bind:this={movableWindowHeader}
