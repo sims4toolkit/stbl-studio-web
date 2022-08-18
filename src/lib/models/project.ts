@@ -13,6 +13,7 @@ interface ProjectMetaData {
   name: string;
   numEntries: number; // view only; use stbl for logic
   numLocales: number; // view only; use stbl for logic
+  pinned?: boolean;
   primaryLocale: StringTableLocale; // view only; use stbl for logic
 }
 
@@ -66,6 +67,7 @@ export default class Project {
     const fullInstance = decoder.uint64();
     metaData.primaryLocale = enums.StringTableLocale.getLocale(fullInstance);
     metaData.instance = enums.StringTableLocale.getInstanceBase(fullInstance);
+    metaData.pinned = decoder.boolean();
     metaData.numLocales = decoder.uint8();
     metaData.numEntries = decoder.uint32();
     metaData.name = decoder.string();
@@ -123,11 +125,11 @@ export default class Project {
    * Serializes the meta data for this project into a Base64-encoded string.
    */
   serializeMetaData(): string {
-    // version, numLocales == 1 byte each (2 total)
+    // version, numLocales, pinned == 1 byte each (3 total)
     // group, numEntries == 4 bytes each (8 total)
     // instance + primary locale == 8 bytes
     // string terminator == 1 byte
-    const size = 19 + Buffer.byteLength(this.metaData.name);
+    const size = 20 + Buffer.byteLength(this.metaData.name);
     const buffer = Buffer.alloc(size);
     const encoder = new encoding.BinaryEncoder(buffer);
 
@@ -139,6 +141,7 @@ export default class Project {
     encoder.uint8(Project.META_DATA_VERSION);
     encoder.uint32(this.metaData.group);
     encoder.uint64(fullInstance);
+    encoder.boolean(this.metaData.pinned);
     encoder.uint8(this.metaData.numLocales);
     encoder.uint32(this.metaData.numEntries);
     encoder.charsUtf8(this.metaData.name);

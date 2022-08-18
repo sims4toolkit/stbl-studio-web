@@ -20,7 +20,18 @@
   }
 </script>
 
-<button on:click={handleClick}>
+<button
+  class="relative"
+  class:-order-1={project.metaData.pinned}
+  on:click={handleClick}
+>
+  {#if project.metaData.pinned}
+    <img
+      src="./assets/pin.svg"
+      alt="Pin"
+      class="svg-purple h-4 w-4 z-10 absolute top-2 right-2 -scale-x-100"
+    />
+  {/if}
   <div
     class="project-view text-left p-4 rounded-md drop-shadow-md dark:bg-gray-700 bg-gray-50"
     class:selected={projectSelected}

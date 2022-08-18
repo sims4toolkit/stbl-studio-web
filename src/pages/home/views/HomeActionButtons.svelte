@@ -1,8 +1,11 @@
 <script lang="ts">
+  import { onDestroy } from "svelte";
+  import { activeWorkspaceStore } from "src/lib/services/stores";
+  import type Workspace from "src/lib/models/workspace";
   import type Project from "src/lib/models/project";
   import type SelectionGroup from "src/lib/models/selection-group";
-  import FloatingActionButtonGroup from "src/components/controls/FloatingActionButtonGroup.svelte";
   import type { FloatingActionButtonData } from "src/components/controls/types";
+  import FloatingActionButtonGroup from "src/components/controls/FloatingActionButtonGroup.svelte";
   import BlurOverlay from "src/components/layouts/BlurOverlay.svelte";
   import DeleteProjectView from "./DeleteProjectView.svelte";
   import DownloadProjectView from "./DownloadProjectView.svelte";
@@ -22,6 +25,17 @@
   let modalContentComponent: any;
   let modalContentArgs: object;
   let buttonData: FloatingActionButtonData[];
+  let workspace: Workspace;
+
+  const subscriptions = [
+    activeWorkspaceStore.subscribe((wk) => {
+      if (wk) workspace = wk;
+    }),
+  ];
+
+  onDestroy(() => {
+    subscriptions.forEach((unsub) => unsub());
+  });
 
   $: {
     buttonData = selectionGroup?.selectMode
@@ -39,12 +53,12 @@
           },
           {
             color: "Purple",
-            title: "Pin to Top",
+            title: "Toggle Pin",
             icon: "pin",
             keybinding: "p",
             disabled: selectionGroup.numSelected < 1,
             onClick: ifNotInModal(() => {
-              alert("pin");
+              workspace.toggleProjectPins(selectionGroup.allSelectedItems);
             }),
           },
           {

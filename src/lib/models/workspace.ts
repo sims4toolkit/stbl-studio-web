@@ -118,6 +118,23 @@ export default class Workspace {
   }
 
   /**
+   * Toggles the pins for the given projects. If at least one project is
+   * unpinned, all will be pinned. Otherwise, all will be unpinned.
+   * 
+   * @param projects Projects to toggle pins for
+   */
+  toggleProjectPins(projects: Project[]) {
+    const pinning = projects.some(p => !p.metaData.pinned);
+
+    projects.forEach(project => {
+      project.metaData.pinned = pinning
+      project.saveToStorage();
+    });
+
+    this._updateSubscribers();
+  }
+
+  /**
    * Returns a JSON representation of this workspace.
    */
   async toJson(): Promise<WorkspaceJson> {
