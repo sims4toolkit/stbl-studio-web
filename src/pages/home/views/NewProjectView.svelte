@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onDestroy } from "svelte";
   import { v4 as uuidv4 } from "uuid";
-  import type { StringTableLocale } from "@s4tk/models/enums";
+  import { getDisplayName } from "src/lib/utilities/localization";
   import Settings from "src/lib/services/settings";
   import Project from "src/lib/models/project";
   import LocalizedStringTable from "src/lib/models/localized-stbl";
@@ -25,7 +25,11 @@
     false
   );
   let primaryLocale = Settings.defaultLocale;
-  let otherLocales = new Set<StringTableLocale>();
+  let localeChoices = enums.StringTableLocale.all().map((locale) => ({
+    checked: false,
+    displayName: getDisplayName(locale),
+    locale,
+  }));
 
   let activeWorkspace: Workspace;
   let multipageState: MultipageContentState = {
@@ -44,8 +48,14 @@
   });
 
   function createProject() {
-    // primary locale is automatically added to other locales by const
-    const stbl = new LocalizedStringTable(primaryLocale, otherLocales);
+    const stbl = new LocalizedStringTable(
+      primaryLocale,
+      new Set(
+        localeChoices
+          .filter((choice) => choice.checked)
+          .map((choice) => choice.locale)
+      )
+    );
 
     const project = new Project(
       uuid,
@@ -84,7 +94,7 @@
       bind:groupHexString
       bind:instanceHexString
       bind:primaryLocale
-      bind:otherLocales
+      bind:localeChoices
     />
   </div>
 </MultipageContentGroup>

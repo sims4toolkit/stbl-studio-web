@@ -1,11 +1,12 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
   import type { StringTableLocale } from "@s4tk/models/enums";
+  import { validateHexString } from "src/lib/utilities/tgi";
   import type { MultipageContentState } from "src/components/layouts/types";
   import MultipageContent from "src/components/layouts/MultipageContent.svelte";
   import TextInput from "src/components/elements/TextInput.svelte";
   import LocaleSelect from "src/components/controls/LocaleSelect.svelte";
-  import { validateHexString } from "src/lib/utilities/tgi";
+  import Checkbox from "src/components/elements/Checkbox.svelte";
 
   export let startingPageNumber = 1;
   export let multipageState: MultipageContentState;
@@ -14,7 +15,11 @@
   export let groupHexString: string;
   export let instanceHexString: string;
   export let primaryLocale: StringTableLocale;
-  export let otherLocales: Set<StringTableLocale>;
+  export let localeChoices: {
+    checked: boolean;
+    displayName: string;
+    locale: StringTableLocale;
+  }[];
 
   let nameValid = false;
   let groupValid = false;
@@ -22,6 +27,14 @@
 
   $: {
     firstPageValid = nameValid && groupValid && instanceValid;
+  }
+
+  function toggleOtherLocales(checked: boolean) {
+    localeChoices.forEach((choice) => {
+      choice.checked = checked;
+    });
+
+    localeChoices = localeChoices;
   }
 </script>
 
@@ -101,8 +114,22 @@
   pageNumber={startingPageNumber + 1}
   bind:state={multipageState}
 >
-  <div in:fade>
-    <!-- FIXME: actually let user choose -->
-    <p>{otherLocales}</p>
+  <div in:fade class="w-full">
+    <p>
+      Select additional locales to include in this project. Strings added to
+      your primary locale (English) will automatically be added to these ones as
+      well.
+    </p>
+    <div class="">
+      <div class="">
+        <button on:click={() => toggleOtherLocales(true)}>select all</button>
+        <button on:click={() => toggleOtherLocales(false)}>deselect all</button>
+      </div>
+      <div class="checkboxes-wrapper">
+        {#each localeChoices as choice, key (key)}
+          <Checkbox label={choice.displayName} bind:checkable={choice} />
+        {/each}
+      </div>
+    </div>
   </div>
 </MultipageContent>

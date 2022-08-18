@@ -1,8 +1,10 @@
 <script lang="ts">
   import type Project from "src/lib/models/project";
+  import { getDisplayName } from "src/lib/utilities/localization";
   import MultipageContentGroup from "src/components/layouts/MultipageContentGroup.svelte";
   import MultipageProjectDataContent from "src/components/views/MultipageProjectDataContent.svelte";
   const { formatAsHexString } = window.S4TK.formatting;
+  const { enums } = window.S4TK;
 
   export let project: Project;
   export let onComplete: () => void;
@@ -15,8 +17,11 @@
     false
   );
   let primaryLocale = project.metaData.primaryLocale;
-  let otherLocales = new Set(project.stbl.allLocales);
-  otherLocales.delete(primaryLocale);
+  let localeChoices = enums.StringTableLocale.all().map((locale) => ({
+    checked: project.stbl.hasLocale(locale),
+    displayName: getDisplayName(locale),
+    locale,
+  }));
 
   let multipageState = {
     currentPage: 1,
@@ -24,7 +29,11 @@
   };
 
   async function saveEdits() {
-    project.stbl.replaceLocales([...otherLocales]);
+    const newLocales = localeChoices
+      .filter((choice) => choice.checked)
+      .map((choice) => choice.locale);
+
+    project.stbl.replaceLocales(newLocales);
     project.metaData.numLocales = project.stbl.numLocales;
     project.metaData.numEntries = project.stbl.numEntries;
     await project.stbl.saveToStorage(project.uuid);
@@ -60,7 +69,7 @@
       bind:groupHexString
       bind:instanceHexString
       bind:primaryLocale
-      bind:otherLocales
+      bind:localeChoices
     />
   </div>
 </MultipageContentGroup>
