@@ -120,12 +120,18 @@
       your primary locale (English) will automatically be added to these ones as
       well.
     </p>
-    <div class="">
-      <div class="">
-        <button on:click={() => toggleOtherLocales(true)}>select all</button>
-        <button on:click={() => toggleOtherLocales(false)}>deselect all</button>
+    <div class="mt-4">
+      <div class="flex gap-4 mb-2">
+        <button
+          class="uppercase text-sm text-subtle hover:text-black dark:hover:text-white"
+          on:click={() => toggleOtherLocales(true)}>select all</button
+        >
+        <button
+          class="uppercase text-sm text-subtle hover:text-black dark:hover:text-white"
+          on:click={() => toggleOtherLocales(false)}>deselect all</button
+        >
       </div>
-      <div class="checkboxes-wrapper">
+      <div class="flex flex-wrap gap-3 text-sm">
         {#each localeChoices as choice, key (key)}
           {#if choice.locale !== primaryLocale}
             <Checkbox label={choice.displayName} bind:checkable={choice} />
