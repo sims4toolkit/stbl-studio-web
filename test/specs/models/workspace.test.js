@@ -139,6 +139,24 @@ describe("Workspace", () => {
     });
   });
 
+  describe("#deleteProjects()", () => {
+    it("should remove the projects from the workspace", () => {
+      // TODO:
+    });
+
+    it("should delete the meta data for each project from storage", () => {
+      // TODO:
+    });
+
+    it("should delete the STBL for each project from storage", () => {
+      // TODO:
+    });
+
+    it("should update the workspace subscribers", () => {
+      // TODO:
+    });
+  });
+
   describe("#toJson()", () => {
     it("should write the version", async () => {
       await DatabaseService.setItem("metadata", uuid, metaDataString);
