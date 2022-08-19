@@ -1,9 +1,12 @@
 <script lang="ts">
-  import CopyStringEntryButtons from "src/components/controls/CopyStringEntryButtons.svelte";
   import type { LocalizedStringEntry } from "src/lib/models/localized-stbl";
+  import type SelectionGroup from "src/lib/models/selection-group";
+  import CopyStringEntryButtons from "src/components/controls/CopyStringEntryButtons.svelte";
+
   const { formatStringKey } = window.S4TK.formatting;
 
   export let entry: LocalizedStringEntry;
+  export let selectionGroup: SelectionGroup<LocalizedStringEntry, number>;
 
   let keyValue = formatStringKey(entry.key);
   let stringValue = entry.values.get(0); // FIXME: figure out how to get primary locale
@@ -12,7 +15,9 @@
 <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded hacker-border-gray">
   <div class="w-full flex justify-between mb-4">
     <h4 class="text-sm text-primary monospace">{keyValue}</h4>
-    <CopyStringEntryButtons key={keyValue} string={stringValue} />
+    {#if !selectionGroup.selectMode}
+      <CopyStringEntryButtons key={keyValue} string={stringValue} />
+    {/if}
   </div>
 
   <input

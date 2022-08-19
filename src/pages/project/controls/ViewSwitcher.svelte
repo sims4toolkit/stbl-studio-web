@@ -74,6 +74,7 @@
     <svelte:component
       this={chosenView.component}
       bind:project
+      bind:selectionGroup
       {...chosenViewArgs}
     />
   </div>
