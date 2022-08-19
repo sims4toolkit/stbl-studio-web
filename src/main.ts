@@ -7,8 +7,12 @@ const app = new App({
 });
 
 window.addEventListener("load", () => {
-	DocumentUtils.toggleLightTheme(Settings.isLightTheme, false);
-	DocumentUtils.toggleBooleanAttribute("data-hacker-theme", Settings.mainframeHacked);
+	if (Settings.mainframeHacked) {
+		DocumentUtils.toggleBooleanAttribute("data-hacker-theme", true);
+	} else {
+		DocumentUtils.toggleLightTheme(Settings.isLightTheme, false);
+	}
+
 	DocumentUtils.toggleBooleanAttribute("data-monochrome-toolbar", Settings.disableToolbarColors);
 	DocumentUtils.toggleBooleanAttribute("data-allow-blur", !Settings.disableBlur);
 });
