@@ -38,14 +38,16 @@
       <p class="text-subtle text-sm uppercase font-bold">
         {chosenView.name} VIEW
       </p>
-      <div class="flex gap-4">
+      <div class="flex gap-2">
         {#each viewOptions as option, index (index)}
           <button
-            class="flex items-center justify-center p-1 rounded-full border border-gray-400 dark:border-gray-500"
+            class="flex items-center justify-center p-2 rounded-full border border-gray-400 dark:border-gray-500 hover:bg-gray-300 hover:dark:bg-gray-700"
+            title={option.name}
+            class:active={index === chosenViewIndex}
             on:click={() => (chosenViewIndex = index)}
           >
             <img
-              class="svg h-5"
+              class="svg h-4"
               src="./assets/{option.icon}.svg"
               alt={option.name}
             />
@@ -65,3 +67,16 @@
     />
   </div>
 </div>
+
+<style lang="scss">
+  button.active {
+    border-color: var(--color-accent-secondary);
+    background-color: var(--color-accent-secondary);
+    pointer-events: none;
+    cursor: default;
+
+    img {
+      filter: var(--filter-svg-invert);
+    }
+  }
+</style>
