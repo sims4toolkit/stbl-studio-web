@@ -29,7 +29,10 @@
     on:blur={handleBlur}
   >
     <img class="svg h-5" src="./assets/key-outline.svg" alt="Key" />
-    <div class="bg-gray-300 dark:bg-gray-900" style="left: -8px;">
+    <div
+      class="bg-gray-300 dark:bg-gray-900 hacker-border-gray"
+      style="left: -8px;"
+    >
       {showCopiedConfirmation ? "Copied!" : "Copy Key"}
     </div>
   </button>
@@ -39,7 +42,10 @@
     on:blur={handleBlur}
   >
     <img class="svg h-5" src="./assets/text-outline.svg" alt="Text" />
-    <div class="bg-gray-300 dark:bg-gray-900" style="left: -36px;">
+    <div
+      class="bg-gray-300 dark:bg-gray-900 hacker-border-gray"
+      style="left: -36px;"
+    >
       {showCopiedConfirmation ? "Copied!" : "Copy Text"}
     </div>
   </button>
@@ -49,7 +55,10 @@
     on:blur={handleBlur}
   >
     <img class="svg h-5" src="./assets/code-outline.svg" alt="Code" />
-    <div class="bg-gray-300 dark:bg-gray-900" style="left: -64px;">
+    <div
+      class="bg-gray-300 dark:bg-gray-900 hacker-border-gray"
+      style="left: -64px;"
+    >
       {showCopiedConfirmation ? "Copied!" : "Copy XML"}
     </div>
   </button>
