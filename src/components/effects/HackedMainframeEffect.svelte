@@ -2,46 +2,36 @@
   import { onDestroy, onMount } from "svelte";
 
   let spawningInterval: any;
-  let movingIntervals: Set<any> = new Set();
   let hackedMainframeOverlay: HTMLDivElement;
 
-  function createBinaryElement(): HTMLParagraphElement {
+  function createBinaryElement() {
     const element = document.createElement("p");
     element.classList.add("fixed", "monospace");
-    element.innerText = Math.random() < 0.5 ? "01" : "10";
+    element.innerText = Math.random() < 0.5 ? "1" : "0";
     element.style.left = `${Math.random() * window.innerWidth}px`;
-    element.style.top = "0";
-    element.style.fontSize = Math.round(10 + Math.random() * 8) + "px";
 
-    let y = 0;
-    const increment = Math.round(10 + Math.random() * 15);
-    let movingInterval = setInterval(() => {
-      if (y > window.innerHeight) {
-        clearInterval(movingInterval);
-        movingIntervals.delete(movingInterval);
-        hackedMainframeOverlay.removeChild(element);
-      } else {
-        y += increment;
-        element.style.top = y + "px";
-      }
-    }, 85);
-    movingIntervals.add(movingInterval);
+    const speedAndSizeRandom = Math.random();
+    const speed = Math.round(1000 + (1 - speedAndSizeRandom) * 2500);
+    element.style.fontSize = Math.round(12 + speedAndSizeRandom * 8) + "px";
+    element.style.transition = `top ${speed}ms`;
+    element.style.transitionTimingFunction = "linear";
 
-    return element;
+    element.style.top = "-20px";
+    hackedMainframeOverlay.appendChild(element);
+    setTimeout(() => {
+      element.style.top = window.innerHeight + "px";
+      setTimeout(() => {
+        hackedMainframeOverlay?.removeChild(element);
+      }, speed + 50);
+    }, 50);
   }
 
   onMount(() => {
-    spawningInterval = setInterval(() => {
-      const element = createBinaryElement();
-      hackedMainframeOverlay.appendChild(element);
-    }, 175);
+    spawningInterval = setInterval(createBinaryElement, 50);
   });
 
   onDestroy(() => {
     clearInterval(spawningInterval);
-    movingIntervals.forEach((i) => {
-      clearInterval(i);
-    });
   });
 </script>
 
