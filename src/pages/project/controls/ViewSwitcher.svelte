@@ -1,7 +1,7 @@
 <script lang="ts">
   import type Project from "src/lib/models/project";
-  import StringListView from "src/pages/project/views/StringListView.svelte";
-  import StringGridView from "src/pages/project/views/StringGridView.svelte";
+  import StblListViewCell from "src/pages/project/views/StblListView.svelte";
+  import StblGridView from "src/pages/project/views/StblGridView.svelte";
 
   export let project: Project;
 
@@ -18,13 +18,13 @@
     {
       name: "List",
       icon: "list-outline",
-      component: StringListView,
+      component: StblListViewCell,
       getArgs: () => emptyArgs,
     },
     {
       name: "Grid",
       icon: "grid-outline",
-      component: StringGridView,
+      component: StblGridView,
       getArgs: () => emptyArgs,
     },
   ];

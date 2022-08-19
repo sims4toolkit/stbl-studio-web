@@ -1,6 +1,6 @@
 <script lang="ts">
   import type Project from "src/lib/models/project";
-  import StringGridViewCell from "./StringGridViewCell.svelte";
+  import StblGridViewCell from "./StblGridViewCell.svelte";
 
   export let project: Project;
 
@@ -9,7 +9,7 @@
 
 <div>
   {#each entries as entry, key (key)}
-    <StringGridViewCell bind:entry />
+    <StblGridViewCell bind:entry />
   {/each}
 </div>
 
