@@ -34,7 +34,7 @@
     />
   {/if}
   <div
-    class="project-view text-left p-4 rounded-md drop-shadow-md dark:bg-gray-700 bg-gray-50"
+    class="project-view text-left p-4 rounded-md drop-shadow-md dark:bg-gray-700 bg-gray-50 hacker-border-gray"
     class:selected={projectSelected}
   >
     <div class="flex mb-4">
@@ -78,7 +78,8 @@
       border-radius: 0.375rem;
 
       &.selected {
-        border-color: var(--color-accent-secondary);
+        // !important only needed b/c hacker theme
+        border-color: var(--color-accent-secondary) !important;
 
         .select-indicator {
           border-color: var(--color-accent-secondary);

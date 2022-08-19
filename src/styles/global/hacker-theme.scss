@@ -1,0 +1,65 @@
+// This is an easter egg. Do not take it seriously.
+:root[data-hacker-theme="true"] {
+  $dark-gray: #212121;
+
+  // colors
+  --color-text: lime;
+  --color-text-subtle: green;
+  --color-bg: black;
+  --color-accent: green;
+  --color-accent-secondary: lime;
+  --color-shadow: rgba(64, 64, 64, 0.15);
+  --color-shadow: rgba(0, 0, 0, 0.2);
+  --color-scrollbar-bg: black;
+  --color-scrollbar-fg: lime;
+  --color-scrollbar-hover: green;
+  --color-blur-fallback: rgba(255, 255, 255, 0.8);
+  --color-toolbar-fallback: lime;
+
+  // filters
+  --filter-svg: invert(68%) sepia(85%) saturate(1334%) hue-rotate(67deg) brightness(90%) contrast(87%);
+  --filter-svg-invert: var(--filter-dark);
+  --filter-svg-accent: invert(68%) sepia(85%) saturate(1334%) hue-rotate(67deg) brightness(90%) contrast(87%);
+  --filter-bg-blur: blur(12px) brightness(55%);
+
+  *,
+  *::before,
+  *::after {
+    font-family: var(--font-mono), monospace;
+  }
+
+  div,
+  section,
+  footer,
+  body {
+    background-color: black;
+  }
+
+  .hacker-border-gray {
+    border: 1px solid $dark-gray !important;
+  }
+
+  nav,
+  .hacker-border-b-gray {
+    border-bottom: 1px solid $dark-gray !important;
+  }
+
+  footer,
+  .hacker-border-t-gray {
+    border-top: 1px solid $dark-gray !important;
+  }
+
+  .hacker-bg-gray {
+    background-color: $dark-gray !important;
+  }
+
+  nav,
+  .hacker-bg-black {
+    background-color: black !important;
+  }
+
+  input,
+  textarea {
+    background-color: rgb(14, 14, 14) !important;
+  }
+}

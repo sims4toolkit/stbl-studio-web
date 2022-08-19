@@ -12,7 +12,7 @@
 
 <button title="Edit Project" on:click={() => (editingProject = true)}>
   <div
-    class="pt-10 px-4 w-full flex justify-center bg-gray-200 dark:bg-gray-900 bottom-shadow"
+    class="pt-10 px-4 w-full flex justify-center bg-gray-200 dark:bg-gray-900 bottom-shadow hacker-border-b-gray"
   >
     <div
       class="w-full xl:max-w-screen-xl py-6 flex justify-between flex-wrap lg:flex-nowrap gap-8"

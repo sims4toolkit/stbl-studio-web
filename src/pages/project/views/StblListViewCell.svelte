@@ -10,7 +10,7 @@
 </script>
 
 <div
-  class="flex items-center px-4 py-1 first:rounded-t last:rounded-b gap-4 bg-gray-50 dark:bg-gray-700 border-t first:border-none border-t-gray-100 dark:border-t-gray-800"
+  class="flex items-center px-4 py-1 first:rounded-t last:rounded-b gap-4 bg-gray-50 dark:bg-gray-700 border-t first:border-none border-t-gray-100 dark:border-t-gray-800 hacker-border-gray"
 >
   <h4 class="text-sm text-primary monospace">{keyValue}</h4>
   <input
