@@ -17,7 +17,7 @@ type StringTableJson = {
 /**
  * An entry in a LocalizedStringTable.
  */
-interface LocalizedStringEntry {
+export interface LocalizedStringEntry {
   readonly id: number;
   key: number;
   readonly values: Map<StringTableLocale, string>;
