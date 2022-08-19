@@ -29,7 +29,7 @@
     on:blur={handleBlur}
   >
     <img class="svg h-5" src="./assets/key-outline.svg" alt="Key" />
-    <div>
+    <div class="bg-gray-300 dark:bg-gray-900" style="left: -8px;">
       {showCopiedConfirmation ? "Copied!" : "Copy Key"}
     </div>
   </button>
@@ -39,7 +39,7 @@
     on:blur={handleBlur}
   >
     <img class="svg h-5" src="./assets/text-outline.svg" alt="Text" />
-    <div class="second-offset">
+    <div class="bg-gray-300 dark:bg-gray-900" style="left: -36px;">
       {showCopiedConfirmation ? "Copied!" : "Copy Text"}
     </div>
   </button>
@@ -49,7 +49,7 @@
     on:blur={handleBlur}
   >
     <img class="svg h-5" src="./assets/code-outline.svg" alt="Code" />
-    <div class="third-offset">
+    <div class="bg-gray-300 dark:bg-gray-900" style="left: -64px;">
       {showCopiedConfirmation ? "Copied!" : "Copy XML"}
     </div>
   </button>
@@ -64,20 +64,12 @@
       position: absolute;
       top: -2rem;
       white-space: nowrap;
-      background-color: var(--color-shadow);
+      opacity: 0.85;
       text-align: center;
       border-radius: 4px;
-      width: 5rem;
+      width: 6rem;
       padding: 0.25rem 0.5rem;
       font-size: 0.875rem;
-
-      &.second-offset {
-        left: -28px;
-      }
-
-      &.third-offset {
-        left: -56px;
-      }
     }
 
     &:hover > div,
