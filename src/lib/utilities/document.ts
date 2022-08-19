@@ -20,6 +20,14 @@ namespace DocumentUtils {
       blurDisabled ? "false" : "true"
     );
   }
+
+  // FIXME: use setting and pass in
+  export function toggleHackerTheme() {
+    document.documentElement.setAttribute(
+      "data-hacker-theme",
+      "true"
+    );
+  }
 }
 
 export default DocumentUtils;

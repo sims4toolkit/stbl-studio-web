@@ -1,6 +1,7 @@
 // This is an easter egg. Do not take it seriously.
 :root[data-hacker-theme="true"] {
   $dark-gray: #212121;
+  $darker-gray: rgb(14, 14, 14);
 
   // colors
   --color-text: lime;
@@ -8,12 +9,11 @@
   --color-bg: black;
   --color-accent: green;
   --color-accent-secondary: lime;
-  --color-shadow: rgba(64, 64, 64, 0.15);
-  --color-shadow: rgba(0, 0, 0, 0.2);
-  --color-scrollbar-bg: black;
+  --color-shadow: transparent;
+  --color-scrollbar-bg: #{$darker-gray};
   --color-scrollbar-fg: lime;
   --color-scrollbar-hover: green;
-  --color-blur-fallback: rgba(255, 255, 255, 0.8);
+  --color-blur-fallback: rgba(0, 0, 0, 0.8);
   --color-toolbar-fallback: lime;
 
   // filters
@@ -60,6 +60,6 @@
 
   input,
   textarea {
-    background-color: rgb(14, 14, 14) !important;
+    background-color: $darker-gray !important;
   }
 }
