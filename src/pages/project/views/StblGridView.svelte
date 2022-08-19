@@ -7,7 +7,7 @@
   let entries = project.stbl.entries;
 </script>
 
-<div>
+<div class="grid gap-4 drop-shadow-md">
   {#each entries as entry, key (key)}
     <StblGridViewCell bind:entry />
   {/each}
@@ -15,8 +15,6 @@
 
 <style lang="scss">
   div {
-    display: grid;
-    gap: 16px;
     grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
   }
 </style>

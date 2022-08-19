@@ -29,7 +29,7 @@
       getArgs: () => emptyArgs,
     },
     {
-      name: "Json",
+      name: "JSON",
       icon: "curly-braces",
       component: StblJsonView,
       getArgs: () => emptyArgs,
