@@ -40,10 +40,7 @@
     if (data.disabled) {
       toggleTitle(data.title, "");
     } else {
-      const color = Settings.disableToolbarColors
-        ? "var(--color-toolbar-fallback)"
-        : FloatingActionButtonColor[data.color];
-
+      const color = FloatingActionButtonColor[data.color];
       floatingActionButton.style.backgroundColor = color;
       floatingActionButton.style.borderColor = color;
       toggleTitle(data.title, data.color);
@@ -74,12 +71,7 @@
   on:blur={handleLeaveOrBlur}
   on:click={onButtonClick}
 >
-  <img
-    class="svg h-6"
-    class:invert={Settings.disableToolbarColors}
-    src="./assets/{data.icon}.svg"
-    alt={data.title}
-  />
+  <img class="svg h-6" src="./assets/{data.icon}.svg" alt={data.title} />
 </button>
 
 <style lang="scss">
@@ -114,11 +106,7 @@
       cursor: pointer;
 
       img {
-        filter: var(--filter-light);
-
-        &.invert {
-          filter: var(--filter-svg-invert);
-        }
+        filter: var(--toolbar-hover-filter);
       }
     }
   }

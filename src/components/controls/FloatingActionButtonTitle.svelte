@@ -16,11 +16,7 @@
       if (useDisabledColor) {
         titleElement.removeAttribute("style");
       } else {
-        const colorToUse = Settings.disableToolbarColors
-          ? "var(--color-toolbar-fallback)"
-          : FloatingActionButtonColor[color];
-
-        titleElement.style.backgroundColor = colorToUse;
+        titleElement.style.backgroundColor = FloatingActionButtonColor[color];
       }
     }
   }
@@ -28,10 +24,8 @@
 
 <div
   bind:this={titleElement}
-  class="mb-2 text-center text-sm uppercase py-1 text-white"
-  class:dark:text-gray-900={Settings.disableToolbarColors}
-  class:bg-gray-400={useDisabledColor}
-  class:dark:bg-gray-600={useDisabledColor}
+  class="mb-2 text-center text-sm uppercase py-1"
+  class:disabled={useDisabledColor}
   transition:fly={{ y: 12, duration: Settings.reduceMotion ? 0 : 350 }}
 >
   {text}
@@ -42,5 +36,11 @@
     border-radius: 4px;
     transition: background-color 200ms;
     transition-delay: 0ms;
+    color: var(--toolbar-hover-fg);
+
+    &.disabled {
+      color: var(--toolbar-disabled-fg);
+      background-color: var(--toolbar-disabled-bg);
+    }
   }
 </style>

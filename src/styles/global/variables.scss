@@ -15,7 +15,6 @@
   $accent-secondary-dark: #49c6e6;
   $accent-primary-light: #18ac87;
   $accent-secondary-light: #0095eb;
-  
 
   // filters
   --filter-dark: invert(13%) sepia(3%) saturate(427%) hue-rotate(314deg) brightness(105%) contrast(84%);
@@ -33,7 +32,6 @@
     --color-scrollbar-fg: #{$gray-500};
     --color-scrollbar-hover: #{$gray-400};
     --color-blur-fallback: rgba(0, 0, 0, 0.8);
-    --color-toolbar-fallback: #{$accent-secondary-dark};
 
     // filters
     --filter-svg: var(--filter-light);
@@ -54,7 +52,6 @@
     --color-scrollbar-fg: #{$gray-400};
     --color-scrollbar-hover: #{$gray-500};
     --color-blur-fallback: rgba(255, 255, 255, 0.8);
-    --color-toolbar-fallback: #{$accent-secondary-light};
 
     // filters
     --filter-svg: var(--filter-dark);

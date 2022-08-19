@@ -26,3 +26,43 @@
     {/each}
   </div>
 </div>
+
+<style lang="scss" global>
+  :root {
+    --toolbar-green: #68a768;
+    --toolbar-cyan: #5391c7;
+    --toolbar-azure: #4970c7;
+    --toolbar-red: #c16262;
+    --toolbar-pink: #c46db4;
+    --toolbar-purple: #845bb5;
+    --toolbar-orange: #d3975c;
+
+    &.dark {
+      --toolbar-hover-fg: white;
+      --toolbar-hover-filter: var(--filter-light);
+      --toolbar-disabled-fg: black;
+      --toolbar-disabled-bg: gray;
+    }
+
+    &:not(.dark) {
+      --toolbar-hover-fg: white;
+      --toolbar-hover-filter: var(--filter-light);
+      --toolbar-disabled-fg: white;
+      --toolbar-disabled-bg: gray;
+    }
+
+    &[data-hacker-theme="true"] {
+      --toolbar-green: lime;
+      --toolbar-cyan: lime;
+      --toolbar-azure: lime;
+      --toolbar-red: lime;
+      --toolbar-pink: lime;
+      --toolbar-purple: lime;
+      --toolbar-orange: lime;
+      --toolbar-hover-fg: black;
+      --toolbar-hover-filter: var(--filter-dark);
+      --toolbar-disabled-fg: black;
+      --toolbar-disabled-bg: green;
+    }
+  }
+</style>
