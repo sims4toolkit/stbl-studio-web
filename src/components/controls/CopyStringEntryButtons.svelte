@@ -22,13 +22,13 @@
   const copyXml = () => copy(`${key}<!--${string}-->`);
 </script>
 
-<div class="flex gap-4">
+<div class="flex gap-3">
   <button
     on:click={copyKey}
     on:mouseleave={handleMouseLeave}
     on:blur={handleBlur}
   >
-    <img class="svg h-4" src="./assets/key-outline.svg" alt="Key" />
+    <img class="svg h-5" src="./assets/key-outline.svg" alt="Key" />
     <div>
       {showCopiedConfirmation ? "Copied!" : "Copy Key"}
     </div>
@@ -38,7 +38,7 @@
     on:mouseleave={handleMouseLeave}
     on:blur={handleBlur}
   >
-    <img class="svg h-4" src="./assets/text-outline.svg" alt="Text" />
+    <img class="svg h-5" src="./assets/text-outline.svg" alt="Text" />
     <div class="second-offset">
       {showCopiedConfirmation ? "Copied!" : "Copy Text"}
     </div>
@@ -48,7 +48,7 @@
     on:mouseleave={handleMouseLeave}
     on:blur={handleBlur}
   >
-    <img class="svg h-4" src="./assets/code-outline.svg" alt="Code" />
+    <img class="svg h-5" src="./assets/code-outline.svg" alt="Code" />
     <div class="third-offset">
       {showCopiedConfirmation ? "Copied!" : "Copy XML"}
     </div>
@@ -72,11 +72,11 @@
       font-size: 0.875rem;
 
       &.second-offset {
-        left: -30px;
+        left: -28px;
       }
 
       &.third-offset {
-        left: -60px;
+        left: -56px;
       }
     }
 
