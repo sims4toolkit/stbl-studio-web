@@ -6,7 +6,7 @@
   import { activeWorkspaceStore } from "src/lib/services/stores";
   import Settings from "src/lib/services/settings";
   import ProjectPageHeader from "./views/ProjectPageHeader.svelte";
-  import StringListView from "./views/StringListView.svelte";
+  import ViewSwitcher from "./controls/ViewSwitcher.svelte";
 
   export let params: { uuid: string };
 
@@ -46,7 +46,7 @@
     <ProjectPageHeader {project} />
     <div class="w-full flex justify-center px-4 py-12">
       <div class="w-full xl:max-w-screen-xl">
-        <StringListView bind:project />
+        <ViewSwitcher bind:project />
       </div>
     </div>
   {:else}
