@@ -22,36 +22,38 @@
   const copyXml = () => copy(`${key}<!--${string}-->`);
 </script>
 
-<button
-  on:click={copyKey}
-  on:mouseleave={handleMouseLeave}
-  on:blur={handleBlur}
->
-  <img class="svg h-4" src="./assets/key-outline.svg" alt="Key" />
-  <div>
-    {showCopiedConfirmation ? "Copied!" : "Copy Key"}
-  </div>
-</button>
-<button
-  on:click={copyText}
-  on:mouseleave={handleMouseLeave}
-  on:blur={handleBlur}
->
-  <img class="svg h-4" src="./assets/text-outline.svg" alt="Text" />
-  <div class="second-offset">
-    {showCopiedConfirmation ? "Copied!" : "Copy Text"}
-  </div>
-</button>
-<button
-  on:click={copyXml}
-  on:mouseleave={handleMouseLeave}
-  on:blur={handleBlur}
->
-  <img class="svg h-4" src="./assets/code-outline.svg" alt="Code" />
-  <div class="third-offset">
-    {showCopiedConfirmation ? "Copied!" : "Copy XML"}
-  </div>
-</button>
+<div class="flex gap-4">
+  <button
+    on:click={copyKey}
+    on:mouseleave={handleMouseLeave}
+    on:blur={handleBlur}
+  >
+    <img class="svg h-4" src="./assets/key-outline.svg" alt="Key" />
+    <div>
+      {showCopiedConfirmation ? "Copied!" : "Copy Key"}
+    </div>
+  </button>
+  <button
+    on:click={copyText}
+    on:mouseleave={handleMouseLeave}
+    on:blur={handleBlur}
+  >
+    <img class="svg h-4" src="./assets/text-outline.svg" alt="Text" />
+    <div class="second-offset">
+      {showCopiedConfirmation ? "Copied!" : "Copy Text"}
+    </div>
+  </button>
+  <button
+    on:click={copyXml}
+    on:mouseleave={handleMouseLeave}
+    on:blur={handleBlur}
+  >
+    <img class="svg h-4" src="./assets/code-outline.svg" alt="Code" />
+    <div class="third-offset">
+      {showCopiedConfirmation ? "Copied!" : "Copy XML"}
+    </div>
+  </button>
+</div>
 
 <style lang="scss">
   button {
