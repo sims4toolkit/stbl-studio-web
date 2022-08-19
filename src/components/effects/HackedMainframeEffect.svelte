@@ -12,7 +12,7 @@
 
     const speedAndSizeRandom = Math.random();
     const speed = Math.round(1000 + (1 - speedAndSizeRandom) * 2500);
-    element.style.fontSize = Math.round(12 + speedAndSizeRandom * 8) + "px";
+    element.style.fontSize = Math.round(12 + speedAndSizeRandom * 12) + "px";
     element.style.transition = `top ${speed}ms`;
     element.style.transitionTimingFunction = "linear";
 
