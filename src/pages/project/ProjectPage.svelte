@@ -21,14 +21,6 @@
           replace("/");
         } else {
           await project.loadStringTable();
-          // project.stbl.addEntry(0x12345678, "hello"); // FIXME:
-          // project.stbl.addEntry(0x87654321, "goodbye"); // FIXME:
-          // project.stbl.addEntry(0x12345678, "hello"); // FIXME:
-          // project.stbl.addEntry(0x87654321, "goodbye"); // FIXME:
-          // project.stbl.addEntry(0x12345678, "hello"); // FIXME:
-          // project.stbl.addEntry(0x87654321, "goodbye"); // FIXME:
-          // project.stbl.addEntry(0x12345678, "hello"); // FIXME:
-          // project.stbl.addEntry(0x87654321, "goodbye"); // FIXME:
           projectLoaded = true;
         }
       } else if (!Settings.hasWorkspace) {

@@ -38,7 +38,7 @@
   on:blur={handleBlur}
 >
   <img class="svg h-4" src="./assets/text-outline.svg" alt="Text" />
-  <div class="-left-8">
+  <div class="second-offset">
     {showCopiedConfirmation ? "Copied!" : "Copy Text"}
   </div>
 </button>
@@ -48,7 +48,7 @@
   on:blur={handleBlur}
 >
   <img class="svg h-4" src="./assets/code-outline.svg" alt="Code" />
-  <div class="-left-16">
+  <div class="third-offset">
     {showCopiedConfirmation ? "Copied!" : "Copy XML"}
   </div>
 </button>
@@ -68,6 +68,14 @@
       width: 5rem;
       padding: 0.25rem 0.5rem;
       font-size: 0.875rem;
+
+      &.second-offset {
+        left: -30px;
+      }
+
+      &.third-offset {
+        left: -60px;
+      }
     }
 
     &:hover > div,
