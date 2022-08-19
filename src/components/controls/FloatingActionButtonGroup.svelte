@@ -51,6 +51,20 @@
       --toolbar-disabled-bg: gray;
     }
 
+    &[data-monochrome-toolbar="true"] {
+      --toolbar-green: var(--color-accent-secondary);
+      --toolbar-cyan: var(--color-accent-secondary);
+      --toolbar-azure: var(--color-accent-secondary);
+      --toolbar-red: var(--color-accent-secondary);
+      --toolbar-pink: var(--color-accent-secondary);
+      --toolbar-purple: var(--color-accent-secondary);
+      --toolbar-orange: var(--color-accent-secondary);
+      --toolbar-hover-fg: var(--color-bg);
+      --toolbar-hover-filter: var(--filter-svg-invert);
+      --toolbar-disabled-fg: black;
+      --toolbar-disabled-bg: gray;
+    }
+
     &[data-hacker-theme="true"] {
       --toolbar-green: lime;
       --toolbar-cyan: lime;

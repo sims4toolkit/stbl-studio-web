@@ -7,9 +7,9 @@ const app = new App({
 });
 
 window.addEventListener("load", () => {
-	DocumentUtils.toggleBlurEffect(Settings.disableBlur);
 	DocumentUtils.toggleLightTheme(Settings.isLightTheme, false);
-	DocumentUtils.toggleHackerTheme(Settings.mainframeHacked);
+	DocumentUtils.toggleBooleanAttribute("data-allow-blur", !Settings.disableBlur);
+	DocumentUtils.toggleBooleanAttribute("data-monochrome-toolbar", Settings.disableToolbarColors);
 });
 
 export default app;

@@ -154,11 +154,14 @@ const Settings = getSettingsProxy({
   disableBlur: {
     cls: StoredBoolean,
     callbacks: [
-      DocumentUtils.toggleBlurEffect
+      (value) => DocumentUtils.toggleBooleanAttribute("data-allow-blur", !value)
     ]
   },
   disableToolbarColors: {
     cls: StoredBoolean,
+    callbacks: [
+      (value) => DocumentUtils.toggleBooleanAttribute("data-monochrome-toolbar", value)
+    ]
   },
   isLightTheme: {
     cls: StoredBoolean,
@@ -178,7 +181,7 @@ const Settings = getSettingsProxy({
   mainframeHacked: {
     cls: StoredBoolean,
     callbacks: [
-      (value) => DocumentUtils.toggleHackerTheme(value)
+      (value) => DocumentUtils.toggleBooleanAttribute("data-hacker-theme", value)
     ]
   }
 });

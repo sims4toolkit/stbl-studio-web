@@ -14,17 +14,10 @@ namespace DocumentUtils {
     }
   }
 
-  export function toggleBlurEffect(blurDisabled: boolean) {
+  export function toggleBooleanAttribute(attr: string, value: boolean) {
     document.documentElement.setAttribute(
-      "data-allow-blur",
-      blurDisabled ? "false" : "true"
-    );
-  }
-
-  export function toggleHackerTheme(enabled: boolean) {
-    document.documentElement.setAttribute(
-      "data-hacker-theme",
-      enabled ? "true" : "false"
+      attr,
+      value ? "true" : "false"
     );
   }
 }
