@@ -11,6 +11,7 @@
   $: themeIcon = isLightTheme ? "sunny" : "moon";
 
   function toggleTheme() {
+    if (Settings.mainframeHacked) return;
     Settings.isLightTheme = !Settings.isLightTheme;
     isLightTheme = Settings.isLightTheme;
   }

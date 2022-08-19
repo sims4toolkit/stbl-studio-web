@@ -181,7 +181,14 @@ const Settings = getSettingsProxy({
   mainframeHacked: {
     cls: StoredBoolean,
     callbacks: [
-      (value) => DocumentUtils.toggleBooleanAttribute("data-hacker-theme", value)
+      (value) => {
+        DocumentUtils.toggleBooleanAttribute("data-hacker-theme", value);
+        if (value) {
+          DocumentUtils.toggleLightTheme(false, false);
+        } else {
+          DocumentUtils.toggleLightTheme(Settings.isLightTheme, false);
+        }
+      }
     ]
   }
 });

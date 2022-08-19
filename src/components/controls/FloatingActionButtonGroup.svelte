@@ -40,15 +40,15 @@
     &.dark {
       --toolbar-hover-fg: white;
       --toolbar-hover-filter: var(--filter-light);
-      --toolbar-disabled-fg: black;
-      --toolbar-disabled-bg: gray;
+      --toolbar-disabled-fg: white;
+      --toolbar-disabled-bg: #474c56;
     }
 
     &:not(.dark) {
       --toolbar-hover-fg: white;
       --toolbar-hover-filter: var(--filter-light);
-      --toolbar-disabled-fg: white;
-      --toolbar-disabled-bg: gray;
+      --toolbar-disabled-fg: black;
+      --toolbar-disabled-bg: #c9c9c9;
     }
 
     &[data-monochrome-toolbar="true"] {
@@ -61,8 +61,6 @@
       --toolbar-orange: var(--color-accent-secondary);
       --toolbar-hover-fg: var(--color-bg);
       --toolbar-hover-filter: var(--filter-svg-invert);
-      --toolbar-disabled-fg: black;
-      --toolbar-disabled-bg: gray;
     }
 
     &[data-hacker-theme="true"] {
