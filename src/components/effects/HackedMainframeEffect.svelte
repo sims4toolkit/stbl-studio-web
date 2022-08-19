@@ -4,10 +4,10 @@
   let spawningInterval: any;
   let hackedMainframeOverlay: HTMLDivElement;
 
-  function createBinaryElement() {
+  function createBinaryElement(seed: number) {
     const element = document.createElement("p");
     element.classList.add("fixed", "monospace");
-    element.innerText = Math.random() < 0.5 ? "1" : "0";
+    element.innerText = (seed % 2).toString();
     element.style.left = `${Math.random() * window.innerWidth}px`;
 
     const speedAndSizeRandom = Math.random();
@@ -28,7 +28,7 @@
 
   onMount(() => {
     spawningInterval = setInterval(() => {
-      for (let i = 0; i < 6; ++i) createBinaryElement();
+      for (let i = 0; i < 6; ++i) createBinaryElement(i);
     }, 200);
   });
 
