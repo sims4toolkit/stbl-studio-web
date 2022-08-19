@@ -1,3 +1,4 @@
+import { writable } from "svelte/store";
 import type { StringTableLocale } from "@s4tk/models/enums";
 import DocumentUtils from "src/lib/utilities/document.js";
 import StorageService from "src/lib/services/storage.js";
@@ -188,6 +189,9 @@ const Settings = getSettingsProxy({
         } else {
           DocumentUtils.toggleLightTheme(Settings.isLightTheme, false);
         }
+      },
+      (value) => {
+        mainframeHackedStore.set(value);
       }
     ]
   }
@@ -196,3 +200,9 @@ const Settings = getSettingsProxy({
 export default Settings;
 
 //#endregion Settings
+
+//#region Stores
+
+export const mainframeHackedStore = writable(Settings.mainframeHacked);
+
+//#endregion Stores
