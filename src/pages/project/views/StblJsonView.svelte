@@ -10,7 +10,15 @@
   );
 </script>
 
-<textarea
-  class="w-full rounded monospace text-sm border bg-gray-50 border-gray-400 dark:bg-gray-700 dark:border-gray-900"
-  bind:value={jsonContent}
-/>
+<div class="w-full flex flex-col gap-4">
+  <div class="w-full flex justify-between">
+    <p class="text-xs">
+      <span class="font-bold text-red-600 dark:text-red-500">WARNING:</span>
+      Do not edit in JSON mode unless you know what you are doing.
+    </p>
+  </div>
+  <textarea
+    class="w-full rounded monospace text-sm border bg-gray-50 border-gray-400 dark:bg-gray-700 dark:border-gray-900"
+    bind:value={jsonContent}
+  />
+</div>
