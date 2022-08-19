@@ -9,6 +9,7 @@ const app = new App({
 window.addEventListener("load", () => {
 	DocumentUtils.toggleBlurEffect(Settings.disableBlur);
 	DocumentUtils.toggleLightTheme(Settings.isLightTheme, false);
+	DocumentUtils.toggleHackerTheme(Settings.mainframeHacked);
 });
 
 export default app;

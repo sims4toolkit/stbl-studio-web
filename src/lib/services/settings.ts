@@ -102,6 +102,7 @@ interface UserSettings {
   reduceMotion: boolean;
   showAllStrings: boolean;
   showTranslateKeys: boolean;
+  mainframeHacked: boolean;
 }
 
 type StoredUserSettings = {
@@ -174,6 +175,12 @@ const Settings = getSettingsProxy({
   showTranslateKeys: {
     cls: StoredBoolean
   },
+  mainframeHacked: {
+    cls: StoredBoolean,
+    callbacks: [
+      (value) => DocumentUtils.toggleHackerTheme(value)
+    ]
+  }
 });
 
 export default Settings;

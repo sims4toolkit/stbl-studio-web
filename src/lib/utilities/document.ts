@@ -21,11 +21,10 @@ namespace DocumentUtils {
     );
   }
 
-  // FIXME: use setting and pass in
-  export function toggleHackerTheme() {
+  export function toggleHackerTheme(enabled: boolean) {
     document.documentElement.setAttribute(
       "data-hacker-theme",
-      "true"
+      enabled ? "true" : "false"
     );
   }
 }
