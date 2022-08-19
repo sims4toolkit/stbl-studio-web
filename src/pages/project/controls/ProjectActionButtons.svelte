@@ -5,6 +5,8 @@
   import type { FloatingActionButtonData } from "src/components/controls/types";
   import FloatingActionButtonGroup from "src/components/controls/FloatingActionButtonGroup.svelte";
   import BlurOverlay from "src/components/layouts/BlurOverlay.svelte";
+  import DimmerOverlay from "src/components/layouts/DimmerOverlay.svelte";
+  import NewStringModal from "src/pages/project/views/NewStringModal.svelte";
 
   export let selectionGroup: SelectionGroup<LocalizedStringEntry, number>;
   export let project: Project;
@@ -15,13 +17,13 @@
     };
   };
 
-  let usingBlurOverlay = false;
-  let usingTransparentOverlay = false;
+  let usingBlur = false;
+  let usingDimmer = false;
   let modalContentComponent: any;
   let modalContentArgs: object;
   let buttonData: FloatingActionButtonData[];
 
-  $: inModal = usingBlurOverlay || usingTransparentOverlay;
+  $: inModal = usingBlur || usingDimmer;
 
   $: {
     buttonData = selectionGroup?.selectMode
@@ -70,15 +72,17 @@
             icon: "plus",
             keybinding: "n",
             onClick: ifNotInModal(() => {
-              alert("create");
+              modalContentArgs = {};
+              modalContentComponent = NewStringModal;
+              usingDimmer = true;
             }),
           },
         ];
   }
 
   function onModalClose() {
-    usingBlurOverlay = false;
-    usingTransparentOverlay = false;
+    usingBlur = false;
+    usingDimmer = false;
     modalContentComponent = undefined;
     modalContentArgs = undefined;
   }
@@ -86,7 +90,7 @@
 
 <FloatingActionButtonGroup {buttonData} />
 
-{#if usingBlurOverlay}
+{#if usingBlur}
   <BlurOverlay onClose={onModalClose}>
     <svelte:component
       this={modalContentComponent}
@@ -95,6 +99,13 @@
       {...modalContentArgs}
     />
   </BlurOverlay>
-{:else if usingTransparentOverlay}
-  <p>TODO:</p>
+{:else if usingDimmer}
+  <DimmerOverlay>
+    <svelte:component
+      this={modalContentComponent}
+      onComplete={onModalClose}
+      bind:project
+      {...modalContentArgs}
+    />
+  </DimmerOverlay>
 {/if}
