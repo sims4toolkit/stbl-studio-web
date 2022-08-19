@@ -118,6 +118,8 @@ export default class Project {
    * Writes this project's meta data to the DB.
    */
   async saveToStorage() {
+    this.metaData.numLocales = this.stbl.numLocales;
+    this.metaData.numEntries = this.stbl.numEntries;
     DatabaseService.setItem("metadata", this.uuid, this.serializeMetaData());
   }
 
