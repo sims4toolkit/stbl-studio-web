@@ -1,10 +1,14 @@
 <script lang="ts">
   import type Project from "src/lib/models/project";
+  import type SelectionGroup from "src/lib/models/selection-group";
+  import type { LocalizedStringEntry } from "src/lib/models/localized-stbl";
   import StblListViewCell from "src/pages/project/views/StblListView.svelte";
   import StblGridView from "src/pages/project/views/StblGridView.svelte";
   import StblJsonView from "../views/StblJsonView.svelte";
+  import SelectModeToggle from "src/components/controls/SelectModeToggle.svelte";
 
   export let project: Project;
+  export let selectionGroup: SelectionGroup<LocalizedStringEntry, number>;
 
   const emptyArgs = {};
   let chosenViewIndex = 0;
@@ -63,7 +67,7 @@
       </div>
     </div>
     <div>
-      <button>select</button>
+      <SelectModeToggle bind:selectionGroup />
     </div>
   </div>
   <div class="w-full">

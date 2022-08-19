@@ -41,7 +41,7 @@
     buttonData = selectionGroup?.selectMode
       ? [
           {
-            color: "Azure",
+            color: "Cyan",
             title: "Download",
             icon: "download",
             keybinding: "s",
@@ -52,7 +52,7 @@
             }),
           },
           {
-            color: "Cyan",
+            color: "Orange",
             title: "Toggle Pin",
             icon: "pin",
             keybinding: "p",

@@ -47,7 +47,7 @@
         ]
       : [
           {
-            color: "Azure",
+            color: "Cyan",
             title: "Download",
             icon: "download",
             keybinding: "s",
