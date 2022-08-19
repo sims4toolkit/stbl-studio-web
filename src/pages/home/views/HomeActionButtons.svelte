@@ -52,7 +52,7 @@
             }),
           },
           {
-            color: "Purple",
+            color: "Cyan",
             title: "Toggle Pin",
             icon: "pin",
             keybinding: "p",
@@ -99,7 +99,7 @@
             }),
           },
           {
-            color: "Cyan",
+            color: "Purple",
             title: "Upload Project",
             icon: "upload",
             keybinding: "u",
