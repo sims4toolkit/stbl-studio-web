@@ -7,7 +7,7 @@
   import { activeWorkspaceStore } from "src/lib/services/stores";
   import SectionHeader from "src/components/elements/SectionHeader.svelte";
   import BlurOverlay from "src/components/layouts/BlurOverlay.svelte";
-  import HomeActionButtons from "./views/HomeActionButtons.svelte";
+  import HomeActionButtons from "./controls/HomeActionButtons.svelte";
   import OnboardingView from "./views/OnboardingView.svelte";
   import WorkspaceView from "./views/WorkspaceView.svelte";
 

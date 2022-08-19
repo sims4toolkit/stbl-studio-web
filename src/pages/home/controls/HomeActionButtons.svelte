@@ -7,11 +7,11 @@
   import type { FloatingActionButtonData } from "src/components/controls/types";
   import FloatingActionButtonGroup from "src/components/controls/FloatingActionButtonGroup.svelte";
   import BlurOverlay from "src/components/layouts/BlurOverlay.svelte";
-  import DeleteProjectView from "./DeleteProjectView.svelte";
-  import DownloadProjectView from "./DownloadProjectView.svelte";
-  import MergeProjectView from "./MergeProjectView.svelte";
-  import NewProjectView from "./NewProjectView.svelte";
-  import UploadProjectView from "./UploadProjectView.svelte";
+  import DeleteProjectView from "src/pages/home/views/DeleteProjectView.svelte";
+  import DownloadProjectView from "src/pages/home/views/DownloadProjectView.svelte";
+  import MergeProjectView from "src/pages/home/views/MergeProjectView.svelte";
+  import NewProjectView from "src/pages/home/views/NewProjectView.svelte";
+  import UploadProjectView from "src/pages/home/views/UploadProjectView.svelte";
 
   export let selectionGroup: SelectionGroup<Project, string>;
 
