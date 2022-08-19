@@ -49,7 +49,7 @@
 </script>
 
 <section
-  class="w-full flex flex-col justify-center"
+  class="w-full flex flex-col justify-center overflow-x-hidden"
   class:flex-1={!projectLoaded}
 >
   {#if projectLoaded}
