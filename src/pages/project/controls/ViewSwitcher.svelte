@@ -2,6 +2,7 @@
   import type Project from "src/lib/models/project";
   import StblListViewCell from "src/pages/project/views/StblListView.svelte";
   import StblGridView from "src/pages/project/views/StblGridView.svelte";
+  import StblJsonView from "../views/StblJsonView.svelte";
 
   export let project: Project;
 
@@ -25,6 +26,12 @@
       name: "Grid",
       icon: "grid-outline",
       component: StblGridView,
+      getArgs: () => emptyArgs,
+    },
+    {
+      name: "Json",
+      icon: "curly-braces",
+      component: StblJsonView,
       getArgs: () => emptyArgs,
     },
   ];

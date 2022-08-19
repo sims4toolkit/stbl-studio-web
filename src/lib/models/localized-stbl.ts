@@ -1,7 +1,7 @@
 import type { StringTableResource } from "@s4tk/models";
 import type { StringTableLocale } from "@s4tk/models/enums";
 import DatabaseService from "src/lib/services/database";
-const { models, encoding } = window.S4TK;
+const { models, encoding, formatting } = window.S4TK;
 const { Buffer } = window.S4TK.Node;
 
 const UNTRANSLATED_PLACEHOLDER = "[UNTRANSLATED]";
@@ -9,8 +9,8 @@ const UNTRANSLATED_PLACEHOLDER = "[UNTRANSLATED]";
 /**
  * A JSON representation of a single-locale string table.
  */
-type StringTableJson = {
-  key: number;
+type StringTableJson<KeyType extends number | string = number | string> = {
+  key: KeyType;
   value: string;
 }[];
 
@@ -178,12 +178,16 @@ export default class LocalizedStringTable {
    * locale.
    * 
    * @param locale Locale to create JSON for (primary locale by default)
+   * @param hex Whether or not the key should be formatted as a hex string
    */
-  getJson(locale = this.primaryLocale): StringTableJson {
+  getJson<T extends number | string = number | string>(
+    locale = this.primaryLocale,
+    hex = false
+  ): StringTableJson<T> {
     return this.entries.map(entry => ({
-      key: entry.key,
+      key: hex ? formatting.formatStringKey(entry.key) : entry.key,
       value: this.getValueWithFallback(entry.id, locale)
-    }));
+    })) as StringTableJson<T>;
   }
 
   /**
@@ -192,7 +196,7 @@ export default class LocalizedStringTable {
    * @param locale Locale to create STBL for (primary locale by default)
    */
   getStringTable(locale = this.primaryLocale): StringTableResource {
-    return new models.StringTableResource(this.getJson(locale));
+    return new models.StringTableResource(this.getJson<number>(locale));
   }
 
   /**
@@ -241,7 +245,7 @@ export default class LocalizedStringTable {
    * @param entries Entries to import
    * @param locale Locale to import entries to (primary locale by default)
    */
-  importEntries(entries: StringTableJson, locale = this.primaryLocale) {
+  importEntries(entries: StringTableJson<number>, locale = this.primaryLocale) {
     // FIXME: let user choose to overwrite or not
     if (locale === this.primaryLocale) {
       entries.forEach(entry => this.addEntry(entry.key, entry.value));
@@ -268,7 +272,7 @@ export default class LocalizedStringTable {
    * 
    * @param entries Entries to use
    */
-  replaceEntries(entries: StringTableJson) {
+  replaceEntries(entries: StringTableJson<number>) {
     const newEntries = new Map<number, string>();
     entries.forEach(({ key, value }) => newEntries.set(key, value));
 
