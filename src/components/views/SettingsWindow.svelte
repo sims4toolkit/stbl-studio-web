@@ -9,11 +9,19 @@
   export let onClose: () => void;
 
   let resettingWorkspace = false;
+  let doRickRoll = false;
+
+  $: {
+    if (doRickRoll) {
+      window.location.href = "https://youtu.be/a3Z7zEc7AXQ?t=45";
+    }
+  }
 </script>
 
 <MovableWindow title="Settings" {onClose}>
   <div class="flex flex-col gap-4">
     <div class="flex flex-col gap-4">
+      <p class="uppercase text-sm font-bold">Accessibility</p>
       <div>
         <Switch
           label="Disable Blur Effect"
@@ -40,12 +48,17 @@
       </div>
     </div>
     <hr class="border-gray-500 dark:border-gray-900" />
-    <div class="flex flex-col gap-2">
+    <div class="flex flex-col gap-4">
+      <p class="uppercase text-sm font-bold">Other</p>
       <LocaleSelect
         label="default primary locale"
         fillWidth={true}
         bind:selected={Settings.defaultLocale}
       />
+      <div>
+        <Switch label="Disable Downloading" bind:checked={doRickRoll} />
+        <p class="text-subtle text-xs mt-2">Never lets you download.</p>
+      </div>
     </div>
     <hr class="border-gray-500 dark:border-gray-900" />
     <div class="flex flex-col gap-2">
