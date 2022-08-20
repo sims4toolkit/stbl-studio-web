@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onDestroy } from "svelte";
+  import { fly } from "svelte/transition";
   import Settings, {
     mainframeHackedStore,
     rickGifStore,
@@ -32,5 +33,6 @@
     class="fixed bottom-0 left-6 h-48 z-50"
     src="https://c.tenor.com/CHc0B6gKHqUAAAAi/deadserver.gif"
     alt="Rick"
+    transition:fly={{ y: 200, duration: 5000 }}
   />
 {/if}
