@@ -25,7 +25,8 @@
 
   function updateKeyAndString() {
     keyValue = formatStringKey(entry.key);
-    stringValue = project.stbl.getValue(entry.id);
+    const rawValue = project.stbl.getValue(entry.id);
+    stringValue = rawValue.replace(/\\n/g, "\n");
   }
 
   function toggleSelection() {
