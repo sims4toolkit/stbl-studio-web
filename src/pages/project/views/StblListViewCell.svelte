@@ -1,14 +1,21 @@
 <script lang="ts">
+  import type Project from "src/lib/models/project";
   import type { LocalizedStringEntry } from "src/lib/models/localized-stbl";
   import type SelectionGroup from "src/lib/models/selection-group";
   import CopyStringEntryButtons from "src/components/controls/CopyStringEntryButtons.svelte";
   const { formatStringKey } = window.S4TK.formatting;
 
+  export let project: Project;
   export let entry: LocalizedStringEntry;
   export let selectionGroup: SelectionGroup<LocalizedStringEntry, number>;
 
-  let keyValue = formatStringKey(entry.key);
-  let stringValue = entry.values.get(0); // FIXME: figure out how to get primary locale
+  let keyValue: string;
+  let stringValue: string;
+
+  $: {
+    keyValue = formatStringKey(entry.key);
+    stringValue = project.stbl.getValue(entry.id);
+  }
 
   function toggleSelection() {
     if (selectionGroup.selectMode) {

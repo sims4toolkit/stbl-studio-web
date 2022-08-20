@@ -1,84 +1,74 @@
 <script lang="ts">
+  import { v4 as uuidv4 } from "uuid";
   import type Project from "src/lib/models/project";
   import type { LocalizedStringEntry } from "src/lib/models/localized-stbl";
   import type SelectionGroup from "src/lib/models/selection-group";
   import MultipageContent from "src/components/layouts/MultipageContent.svelte";
   import MultipageContentGroup from "src/components/layouts/MultipageContentGroup.svelte";
-  import TextInput from "src/components/elements/TextInput.svelte";
+  const { fnv32 } = window.S4TK.hashing;
   const { formatStringKey } = window.S4TK.formatting;
 
   export let onComplete: () => void;
   export let project: Project;
   export let selectionGroup: SelectionGroup<LocalizedStringEntry, number>;
 
-  const entriesToDelete = selectionGroup.allSelectedItems.map((item) => {
+  const updatedKeys = selectionGroup.allSelectedItems.map((item) => {
+    const newKey = fnv32(`${project.uuid}:${uuidv4()}`);
     return {
-      key: formatStringKey(item.key),
+      id: item.id,
+      oldKeyString: formatStringKey(item.key),
+      newKey: newKey,
+      newKeyString: formatStringKey(newKey),
       string: item.values.get(project.metaData.primaryLocale),
     };
   });
 
-  let inputValue = "";
   let multipageState = {
     currentPage: 1,
-    nextButtonEnabled: false,
+    nextButtonEnabled: true,
   };
 
-  function deleteStrings() {
-    project.deleteStrings(selectionGroup.allSelectedKeys);
+  function rehashKeys() {
+    project.updateKeys(updatedKeys);
     project = project;
     onComplete();
   }
 </script>
 
 <MultipageContentGroup
-  title="Delete Strings"
+  title="Rehash Keys"
   numPages={1}
   centerVertically={true}
   bind:state={multipageState}
-  completeButton="Delete"
-  onLastPageComplete={deleteStrings}
+  completeButton="Rehash"
+  onLastPageComplete={rehashKeys}
 >
   <div slot="content" class="w-full">
     <MultipageContent pageNumber={1} bind:state={multipageState}>
       <div>
-        <p class="mb-4">
-          Are you sure you want to permanently delete the following strings?
-        </p>
-        <div class="max-h-24 overflow-x-hidden overflow-y-auto">
+        <p>Are you sure you want to rehash the following strings?</p>
+        <div class="my-4 max-h-24 overflow-x-hidden overflow-y-auto">
           <ul class="list-disc pl-8 flex flex-col">
-            {#each entriesToDelete as entry, key (key)}
+            {#each updatedKeys as update, key (key)}
               <li class="px-2 max-w-max">
                 <p class="whitespace-nowrap text-ellipsis overflow-x-hidden">
                   <span
                     class="text-accent-primary-light dark:text-accent-primary-dark hacker-text-lime monospace"
-                    >{entry.key}</span
+                    >{update.oldKeyString}</span
                   >
-                  = {entry.string}
+                  &rarr;
+                  <span
+                    class="text-accent-primary-light dark:text-accent-primary-dark hacker-text-lime monospace"
+                    >{update.newKeyString}</span
+                  >
+                  ({update.string})
                 </p>
               </li>
             {/each}
           </ul>
         </div>
-        <div class="my-6">
-          <TextInput
-            label={'type "delete" to confirm'}
-            name="deletion-confirmation-input"
-            bind:value={inputValue}
-            bind:isValid={multipageState.nextButtonEnabled}
-            placeholder="Delete"
-            focusOnMount={true}
-            fillWidth={true}
-            validators={[
-              {
-                test: (value) => value.toLowerCase().trim() === "delete",
-                message: 'Value must be "Delete"',
-              },
-            ]}
-          />
-        </div>
         <p class="text-subtle text-xs">
-          Deleted strings cannot be recovered. Once they're gone, they're gone.
+          This action cannot be undone. You'll have to update keys in tuning.
         </p>
       </div>
     </MultipageContent>

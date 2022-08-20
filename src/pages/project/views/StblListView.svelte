@@ -11,5 +11,5 @@
 </script>
 
 {#each entries as entry (entry.id)}
-  <StblListViewCell bind:entry bind:selectionGroup />
+  <StblListViewCell bind:project bind:entry bind:selectionGroup />
 {/each}

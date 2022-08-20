@@ -129,6 +129,19 @@ export default class Project {
   }
 
   /**
+   * Updates the keys in this project's STBL and then saves it to storage.
+   * 
+   * @param newKeys Array containing new keys
+   */
+  updateKeys(newKeys: { id: number; newKey: number; }[]) {
+    newKeys.forEach(({ id, newKey }) => {
+      this.stbl.getEntry(id).key = newKey;
+    });
+
+    this.stbl.saveToStorage(this.uuid);
+  }
+
+  /**
    * Loads the STBL for this project from storage.
    */
   async loadStringTable(): Promise<void> {

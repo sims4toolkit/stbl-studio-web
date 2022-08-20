@@ -55,7 +55,7 @@
         <p class="mb-4">
           Are you sure you want to permanently delete the following projects?
         </p>
-        <div class="max-h-20 overflow-x-hidden overflow-y-auto">
+        <div class="max-h-24 overflow-x-hidden overflow-y-auto">
           <ul class="list-disc pl-8 flex flex-col">
             {#each projects as project, key (key)}
               <li class="pl-2">

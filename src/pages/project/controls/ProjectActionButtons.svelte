@@ -9,7 +9,8 @@
   import BlurOverlay from "src/components/layouts/BlurOverlay.svelte";
   import DimmerOverlay from "src/components/layouts/DimmerOverlay.svelte";
   import NewStringModal from "src/pages/project/views/NewStringModal.svelte";
-  import DeleteStringsModal from "../views/DeleteStringsModal.svelte";
+  import DeleteStringsModal from "src/pages/project/views/DeleteStringsModal.svelte";
+  import RehashStringsModal from "src/pages/project/views/RehashStringsModal.svelte";
 
   export let selectionGroup: SelectionGroup<LocalizedStringEntry, number>;
   export let project: Project;
@@ -38,7 +39,11 @@
             keybinding: "h",
             disabled: selectionGroup.numSelected < 1,
             onClick: ifNotInModal(() => {
-              alert("rehash");
+              modalContentArgs = {
+                selectionGroup,
+              };
+              modalContentComponent = RehashStringsModal;
+              usingBlur = true;
             }),
           },
           {
