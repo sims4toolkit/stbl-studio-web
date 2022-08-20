@@ -1,25 +1,11 @@
 <script lang="ts">
-  import { onDestroy } from "svelte";
   import Router, { replace } from "svelte-spa-router";
-  import Settings, { mainframeHackedStore } from "src/lib/services/settings";
   import Navbar from "src/components/views/Navbar.svelte";
   import Footer from "src/components/views/Footer.svelte";
-  import HackedMainframeEffect from "src/components/effects/HackedMainframeEffect.svelte";
   import NotFoundPage from "src/pages/NotFoundPage.svelte";
   import HomePage from "src/pages/home/HomePage.svelte";
   import ProjectPage from "src/pages/project/ProjectPage.svelte";
-
-  let mainframeHacked = Settings.mainframeHacked;
-
-  const subscriptions = [
-    mainframeHackedStore.subscribe((value) => {
-      mainframeHacked = value;
-    }),
-  ];
-
-  onDestroy(() => {
-    subscriptions.forEach((unsub) => unsub());
-  });
+  import EasterEggs from "./components/views/EasterEggs.svelte";
 
   const routes = {
     "/": HomePage,
@@ -43,6 +29,4 @@
 </main>
 <Footer />
 
-{#if mainframeHacked}
-  <HackedMainframeEffect />
-{/if}
+<EasterEggs />

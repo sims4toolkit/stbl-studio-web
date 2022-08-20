@@ -124,6 +124,7 @@ interface UserSettings {
   showAllStrings: boolean;
   showTranslateKeys: boolean;
   mainframeHacked: boolean;
+  rickGif: boolean;
   foundEasterEggs: EasterEgg[];
 }
 
@@ -216,6 +217,25 @@ const Settings = getSettingsProxy({
       }
     ]
   },
+  rickGif: {
+    cls: StoredBoolean,
+    callbacks: [
+      (value) => {
+        if (value) {
+          const foundList = Settings.foundEasterEggs;
+          if (!foundList.includes("rickroll")) {
+            foundList.push("rickroll");
+            Settings.foundEasterEggs = foundList;
+          }
+        } else {
+          window.location.href = "https://youtu.be/a3Z7zEc7AXQ";
+        }
+      },
+      (value) => {
+        rickGifStore.set(value);
+      }
+    ]
+  },
   foundEasterEggs: {
     cls: StoredJson,
     defaultValue: []
@@ -229,5 +249,6 @@ export default Settings;
 //#region Stores
 
 export const mainframeHackedStore = writable(Settings.mainframeHacked);
+export const rickGifStore = writable(Settings.rickGif);
 
 //#endregion Stores

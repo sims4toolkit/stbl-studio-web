@@ -9,19 +9,6 @@
   export let onClose: () => void;
 
   let resettingWorkspace = false;
-  let doRickRoll = false;
-
-  $: {
-    if (doRickRoll) {
-      const foundList = Settings.foundEasterEggs;
-      if (!foundList.includes("rickroll")) {
-        foundList.push("rickroll");
-        Settings.foundEasterEggs = foundList;
-      }
-
-      window.location.href = "https://youtu.be/a3Z7zEc7AXQ?t=45";
-    }
-  }
 </script>
 
 <MovableWindow title="Settings" {onClose}>
@@ -62,7 +49,7 @@
         bind:selected={Settings.defaultLocale}
       />
       <div>
-        <Switch label="Disable Downloading" bind:checked={doRickRoll} />
+        <Switch label="Disable Downloading" bind:checked={Settings.rickGif} />
         <p class="text-subtle text-xs mt-2">Never lets you download.</p>
       </div>
     </div>

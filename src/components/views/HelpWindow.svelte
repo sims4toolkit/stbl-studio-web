@@ -20,6 +20,9 @@
   <!-- FIXME: temporary easter egg trigger -->
   <div class="flex flex-col gap-4">
     <div>
+      <p>Found {Settings.foundEasterEggs.length} of 2 easter eggs.</p>
+    </div>
+    <div>
       <Switch
         label="Hack the Mainframe"
         bind:checked={Settings.mainframeHacked}
