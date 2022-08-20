@@ -19,30 +19,32 @@
 </script>
 
 <button
-  class="w-full flex items-center px-4 py-1 first:rounded-t last:rounded-b gap-4 bg-gray-50 dark:bg-gray-700 border border-gray-100 dark:border-gray-800 hacker-border-gray hacker-bg-black"
+  class="w-full flex flex-wrap sm:flex-nowrap justify-between items-center px-4 py-2 sm:py-1 first:rounded-t last:rounded-b gap-2 sm:gap-4 bg-gray-50 dark:bg-gray-700 border border-gray-100 dark:border-gray-800 hacker-border-gray hacker-bg-black"
   class:selected={selectionGroup.isSelected(entry)}
   class:selectable={selectionGroup.selectMode}
-  class:pr-1={selectionGroup.selectMode}
+  class:sm:pr-1={selectionGroup.selectMode}
   tabindex={selectionGroup.selectMode ? 0 : -1}
   on:click={toggleSelection}
 >
   {#if selectionGroup.selectMode}
-    <div class="flex items-center">
+    <div class="flex items-center -order-1">
       <div
         class="select-indicator rounded-full h-4 w-4 border border-solid border-gray-500 dark:border-gray-400"
       />
     </div>
   {/if}
-  <h4 class="text-sm text-primary monospace">{keyValue}</h4>
+  <h4 class="text-sm text-primary monospace -order-1 sm:order-1">{keyValue}</h4>
   <input
-    class="bg-gray-75 dark:bg-gray-675 rounded w-full px-2 py-1 placeholder:text-gray-400 dark:placeholder:text-gray-500"
+    class="bg-gray-75 dark:bg-gray-675 rounded w-full px-2 py-1 order-1 placeholder:text-gray-400 dark:placeholder:text-gray-500"
     placeholder="Empty String"
     type="text"
     bind:value={stringValue}
     tabindex={selectionGroup.selectMode ? -1 : 0}
   />
   {#if !selectionGroup.selectMode}
-    <CopyStringEntryButtons key={keyValue} string={stringValue} />
+    <div class="-order-1 sm:order-1 min-w-fit">
+      <CopyStringEntryButtons key={keyValue} string={stringValue} />
+    </div>
   {/if}
 </button>
 
