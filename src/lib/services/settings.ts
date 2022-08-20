@@ -112,7 +112,7 @@ class StoredJson<T extends object> extends StoredSetting<T> {
 
 //#region Settings
 
-type EasterEgg = "rickroll" | "hacker";
+type EasterEgg = "rickroll" | "hacker" | "pride";
 
 interface UserSettings {
   defaultLocale: StringTableLocale;
@@ -207,13 +207,6 @@ const Settings = getSettingsProxy({
     cls: StoredBoolean,
     callbacks: [
       (value) => {
-        const foundList = Settings.foundEasterEggs;
-        if (!foundList.includes("hacker")) {
-          foundList.push("hacker");
-          Settings.foundEasterEggs = foundList;
-        }
-      },
-      (value) => {
         DocumentUtils.toggleBooleanAttribute("data-hacker-theme", value);
         if (value) {
           DocumentUtils.toggleLightTheme(false, false);
@@ -229,17 +222,6 @@ const Settings = getSettingsProxy({
   rickGif: {
     cls: StoredBoolean,
     callbacks: [
-      (value) => {
-        if (value) {
-          const foundList = Settings.foundEasterEggs;
-          if (!foundList.includes("rickroll")) {
-            foundList.push("rickroll");
-            Settings.foundEasterEggs = foundList;
-          }
-        } else if (!Settings.disableEasterEggs) {
-          window.location.href = constants.links.rickRoll;
-        }
-      },
       (value) => {
         rickGifStore.set(value);
       }
@@ -260,7 +242,25 @@ export default Settings;
 
 //#region Stores
 
+function easterEggFoundCallback(easterEgg: EasterEgg) {
+  return (value: boolean) => {
+    if (value) {
+      const foundList = Settings.foundEasterEggs;
+      if (!foundList.includes(easterEgg)) {
+        foundList.push(easterEgg);
+        Settings.foundEasterEggs = foundList;
+      }
+    }
+  };
+}
+
 export const mainframeHackedStore = writable(Settings.mainframeHacked);
+mainframeHackedStore.subscribe(easterEggFoundCallback("hacker"));
+
 export const rickGifStore = writable(Settings.rickGif);
+rickGifStore.subscribe(easterEggFoundCallback("rickroll"));
+
+export const prideFlagOverlayStore = writable(false);
+prideFlagOverlayStore.subscribe(easterEggFoundCallback("pride"));
 
 //#endregion Stores

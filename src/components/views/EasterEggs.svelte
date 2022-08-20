@@ -3,13 +3,16 @@
   import { fly } from "svelte/transition";
   import Settings, {
     mainframeHackedStore,
+    prideFlagOverlayStore,
     rickGifStore,
   } from "src/lib/services/settings";
   import constants from "src/data/constants.json";
   import HackedMainframeEffect from "src/components/effects/HackedMainframeEffect.svelte";
+  import PrideFlagEffect from "../effects/PrideFlagEffect.svelte";
 
   let mainframeHacked = Settings.mainframeHacked;
   let rickGif = Settings.rickGif;
+  let prideFlagOverlay = false;
 
   const subscriptions = [
     mainframeHackedStore.subscribe((value) => {
@@ -17,6 +20,9 @@
     }),
     rickGifStore.subscribe((value) => {
       rickGif = value;
+    }),
+    prideFlagOverlayStore.subscribe((value) => {
+      prideFlagOverlay = value;
     }),
   ];
 
@@ -42,4 +48,8 @@
       alt="Rick"
     />
   </a>
+{/if}
+
+{#if prideFlagOverlay}
+  <PrideFlagEffect />
 {/if}

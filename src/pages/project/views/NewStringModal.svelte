@@ -2,7 +2,10 @@
   import { onDestroy } from "svelte";
   import { fly } from "svelte/transition";
   import type Project from "src/lib/models/project";
-  import Settings, { rickGifStore } from "src/lib/services/settings";
+  import Settings, {
+    prideFlagOverlayStore,
+    rickGifStore,
+  } from "src/lib/services/settings";
   import Switch from "src/components/elements/Switch.svelte";
   import ResizableTextArea from "src/components/elements/ResizableTextArea.svelte";
 
@@ -18,19 +21,33 @@
   onDestroy(() => {
     Settings.mainframeHacked = mainframeWasHacked;
     rickGifStore.set(Settings.rickGif);
+    prideFlagOverlayStore.set(false);
   });
 
   $: {
-    if (!Settings.disableEasterEggs) {
-      if (/(^|\s)+(hack|mainframe|i'?m\s+in)$/i.test(value)) {
-        Settings.mainframeHacked = true;
-      } else if (Settings.mainframeHacked && !mainframeWasHacked) {
-        Settings.mainframeHacked = false;
-      } else if (/(^|\s)+(give\s*\S*\s*up|let\s*\S*\s*down)$/i.test(value)) {
-        rickGifStore.set(true);
-      } else if (!wasShowingRick) {
-        rickGifStore.set(false);
-      }
+    if (!Settings.disableEasterEggs) runEasterEggs(value);
+  }
+
+  function runEasterEggs(value: string) {
+    if (/(^|\s)+(hack|mainframe|i'?m\s+in)$/i.test(value)) {
+      Settings.mainframeHacked = true;
+      return;
+    } else if (Settings.mainframeHacked && !mainframeWasHacked) {
+      Settings.mainframeHacked = false;
+    }
+
+    if (/(^|\s)+(give\s*\S*\s*up|let\s*\S*\s*down)$/i.test(value)) {
+      rickGifStore.set(true);
+      return;
+    } else if (!wasShowingRick) {
+      rickGifStore.set(false);
+    }
+
+    if (/(^|\s)+(gay|lgbt|lesbian|trans|bisexual)$/i.test(value)) {
+      prideFlagOverlayStore.set(true);
+      return;
+    } else {
+      prideFlagOverlayStore.set(false);
     }
   }
 

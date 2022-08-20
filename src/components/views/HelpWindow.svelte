@@ -9,7 +9,7 @@
   <!-- FIXME: temporary easter egg trigger -->
   <div class="flex flex-col gap-4">
     <div>
-      <p>Found {Settings.foundEasterEggs.length} of 2 easter eggs.</p>
+      <p>Found {Settings.foundEasterEggs.length} of 3 easter eggs.</p>
     </div>
   </div>
 </MovableWindow>
