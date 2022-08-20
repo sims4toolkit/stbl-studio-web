@@ -54,7 +54,7 @@
       <div class="flex gap-2">
         {#each viewOptions as option, index (index)}
           <button
-            class="flex items-center justify-center p-2 rounded-full border border-gray-400 dark:border-gray-500 hacker-border-gray hover:bg-gray-300 hover:dark:bg-gray-700"
+            class="flex items-center justify-center p-2 rounded-full border border-gray-400 dark:border-gray-500 hacker-border-gray hover:bg-gray-300 hover:dark:bg-gray-700 hover:hacker-bg-gray"
             title={option.name}
             class:active={index === chosenViewIndex}
             on:click={() => (chosenViewIndex = index)}

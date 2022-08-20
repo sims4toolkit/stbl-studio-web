@@ -236,7 +236,7 @@ const Settings = getSettingsProxy({
             foundList.push("rickroll");
             Settings.foundEasterEggs = foundList;
           }
-        } else {
+        } else if (!Settings.disableEasterEggs) {
           window.location.href = constants.links.rickRoll;
         }
       },

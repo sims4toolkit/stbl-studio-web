@@ -48,7 +48,8 @@
     border-top: 1px solid $dark-gray !important;
   }
 
-  .hacker-bg-gray {
+  .hacker-bg-gray,
+  .hover\:hacker-bg-gray:hover {
     background-color: $dark-gray !important;
   }
 

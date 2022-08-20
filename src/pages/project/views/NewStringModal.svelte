@@ -21,7 +21,7 @@
 
   $: {
     if (!Settings.disableEasterEggs) {
-      if (/(^|\s)+(hack|mainframe)$/i.test(value)) {
+      if (/(^|\s)+(hack|mainframe|i'?m\s+in)$/i.test(value)) {
         Settings.mainframeHacked = true;
       } else if (Settings.mainframeHacked && !mainframeWasHacked) {
         Settings.mainframeHacked = false;
