@@ -90,7 +90,7 @@
 
 <div
   bind:this={movableWindow}
-  class="z-30 movable-window rounded drop-shadow border border-solid border-gray-500 dark:border-gray-900 bg-gray-200 dark:bg-gray-700 hacker-bg-black"
+  class="flex flex-col z-30 movable-window rounded drop-shadow border border-solid border-gray-500 dark:border-gray-900 bg-gray-200 dark:bg-gray-700 hacker-bg-black"
   in:fly={{ x: 35, duration: Settings.reduceMotion ? 0 : 350 }}
   out:fade={{ duration: Settings.reduceMotion ? 0 : 200 }}
 >
@@ -106,10 +106,10 @@
       </p>
     </div>
     <button on:click={onClose}>
-      <img src="./assets/x.svg" class="svg-light" alt="Close" />
+      <img src="./assets/x.svg" class="svg-light hacker-svg" alt="Close" />
     </button>
   </div>
-  <div class="p-2 window-content">
+  <div class="p-2 window-content flex flex-col flex-1">
     <slot />
   </div>
 </div>
