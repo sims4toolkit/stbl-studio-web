@@ -22,6 +22,7 @@
   }
 
   function refreshSelectionGroup() {
+    // FIXME: might be an issue with importing strings
     if (project.stbl.numEntries !== selectionGroup?.selectables.length) {
       selectionGroup = new SelectionGroup<LocalizedStringEntry, number>(
         project.stbl.entries,
