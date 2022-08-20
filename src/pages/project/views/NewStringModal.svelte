@@ -29,21 +29,21 @@
   }
 
   function runEasterEggs(value: string) {
-    if (/(^|\s)+(hack|mainframe|i'?m\s+in)$/i.test(value)) {
+    if (/(^|\s)+(hack|mainframe|matrix|i'?m\s+in)\s*$/i.test(value)) {
       Settings.mainframeHacked = true;
       return;
     } else if (Settings.mainframeHacked && !mainframeWasHacked) {
       Settings.mainframeHacked = false;
     }
 
-    if (/(^|\s)+(give\s*\S*\s*up|let\s*\S*\s*down)$/i.test(value)) {
+    if (/(^|\s)+(give\s*\S*\s*up|let\s*\S*\s*down)\s*$/i.test(value)) {
       rickGifStore.set(true);
       return;
     } else if (!wasShowingRick) {
       rickGifStore.set(false);
     }
 
-    if (/(^|\s)+(gay|lgbt|lesbian|trans|bisexual)$/i.test(value)) {
+    if (/(^|\s)+(gay|lgbt|lesbian|trans|bisexual)\s*$/i.test(value)) {
       prideFlagOverlayStore.set(true);
       return;
     } else {

@@ -37,7 +37,7 @@
 
 {#if rickGif}
   <a
-    class="fixed bottom-0 left-4 z-50"
+    class="fixed bottom-0 left-0 z-50"
     href={constants.links.rickRoll}
     target="_blank"
     transition:fly={{ y: 200, duration: 3500 }}
