@@ -7,7 +7,7 @@
   export let project: Project;
   export let selectionGroup: SelectionGroup<LocalizedStringEntry, number>;
 
-  $: entries = project.stbl.entries; // FIXME:
+  $: entries = project.stbl.entries;
 </script>
 
 {#each entries as entry, key (key)}

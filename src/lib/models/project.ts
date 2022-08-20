@@ -33,6 +33,10 @@ export default class Project {
     throw new Error("Project STBL was accessed before being loaded.");
   }
 
+  get hasStbl() {
+    return this._stbl != undefined;
+  }
+
   //#endregion Getters / Setters
 
   //#region Initialization

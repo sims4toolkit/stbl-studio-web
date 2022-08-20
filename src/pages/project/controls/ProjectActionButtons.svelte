@@ -34,7 +34,7 @@
             color: "Orange",
             title: "Rehash",
             icon: "refresh",
-            keybinding: "r",
+            keybinding: "h",
             onClick: ifNotInModal(() => {
               alert("rehash");
             }),

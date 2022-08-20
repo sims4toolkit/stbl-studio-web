@@ -15,13 +15,23 @@
 
   let project: Project;
   let projectLoaded = false;
-  let selectionGroup = new SelectionGroup<LocalizedStringEntry, number>(
-    [],
-    "key",
-    () => {
-      selectionGroup = selectionGroup;
+  let selectionGroup: SelectionGroup<LocalizedStringEntry, number>;
+
+  $: {
+    if (project?.hasStbl) refreshSelectionGroup();
+  }
+
+  function refreshSelectionGroup() {
+    if (project.stbl.numEntries !== selectionGroup?.selectables.length) {
+      selectionGroup = new SelectionGroup<LocalizedStringEntry, number>(
+        project.stbl.entries,
+        "id",
+        () => {
+          selectionGroup = selectionGroup;
+        }
+      );
     }
-  ); // FIXME:
+  }
 
   const subscriptions = [
     activeWorkspaceStore.subscribe(async (workspace) => {
@@ -31,6 +41,7 @@
           replace("/");
         } else {
           await project.loadStringTable();
+          refreshSelectionGroup();
           projectLoaded = true;
         }
       } else if (!Settings.hasWorkspace) {
