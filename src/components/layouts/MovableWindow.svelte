@@ -90,17 +90,17 @@
 
 <div
   bind:this={movableWindow}
-  class="z-30 movable-window rounded drop-shadow border border-solid border-gray-500 dark:border-gray-900 bg-gray-200 dark:bg-gray-700"
+  class="z-30 movable-window rounded drop-shadow border border-solid border-gray-500 dark:border-gray-900 bg-gray-200 dark:bg-gray-700 hacker-bg-black"
   in:fly={{ x: 35, duration: Settings.reduceMotion ? 0 : 350 }}
   out:fade={{ duration: Settings.reduceMotion ? 0 : 200 }}
 >
   <div
     bind:this={movableWindowHeader}
-    class="movable-window-header rounded-t-sm flex justify-between items-center p-2 grabbable bg-gray-500 dark:bg-gray-900"
+    class="movable-window-header rounded-t-sm flex justify-between items-center p-2 grabbable bg-gray-500 dark:bg-gray-900 hacker-bg-black hacker-border-b-gray"
   >
     <div class="flex justify-center items-center gap-2">
       <p
-        class="my-0 text-sm uppercase font-bold text-gray-200 dark:text-gray-400"
+        class="my-0 text-sm uppercase font-bold text-gray-200 dark:text-gray-400 hacker-text-lime"
       >
         {title}
       </p>

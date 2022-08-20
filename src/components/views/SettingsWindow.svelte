@@ -31,7 +31,7 @@
       </div>
       <div>
         <Switch
-          label="Single Toolbar Color"
+          label="Monochrome Toolbar"
           bind:checked={Settings.disableToolbarColors}
         />
         <p class="text-subtle text-xs mt-2">
@@ -43,7 +43,9 @@
           label="Disable Easter Eggs"
           bind:checked={Settings.disableEasterEggs}
         />
-        <p class="text-subtle text-xs mt-2">May improve website performance.</p>
+        <p class="text-subtle text-xs mt-2">
+          If you hate fun or want better performance.
+        </p>
       </div>
       <div>
         <Switch
@@ -51,6 +53,10 @@
           bind:checked={Settings.mainframeHacked}
         />
         <p class="text-subtle text-xs mt-2">1010 0100 0101 0101</p>
+      </div>
+      <div>
+        <Switch label="Disable Downloading" bind:checked={Settings.rickGif} />
+        <p class="text-subtle text-xs mt-2">Never lets you download.</p>
       </div>
     </div>
     <hr class="border-gray-500 dark:border-gray-900" />
@@ -61,11 +67,6 @@
         fillWidth={true}
         bind:selected={Settings.defaultLocale}
       />
-
-      <div>
-        <Switch label="Disable Downloading" bind:checked={Settings.rickGif} />
-        <p class="text-subtle text-xs mt-2">Never lets you download.</p>
-      </div>
     </div>
     <hr class="border-gray-500 dark:border-gray-900" />
     <div class="flex flex-col gap-2">

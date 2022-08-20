@@ -34,7 +34,7 @@
     />
   {/if}
   <div
-    class="project-view text-left p-4 rounded-md drop-shadow-md dark:bg-gray-700 bg-gray-50 hacker-border-gray"
+    class="project-view text-left p-4 rounded-md drop-shadow-md dark:bg-gray-700 bg-gray-50 hacker-border-gray hacker-bg-black"
     class:selected={projectSelected}
   >
     <div class="flex mb-4">

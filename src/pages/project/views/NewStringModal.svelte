@@ -39,11 +39,9 @@
   }
 </script>
 
-<div
-  class="fixed left-0 right-0 bottom-0 pb-12 flex justify-center hacker-no-bg"
->
+<div class="fixed left-0 right-0 bottom-0 pb-12 flex justify-center">
   <div
-    class="flex flex-col gap-4 w-full rounded p-4 max-w-6xl mx-4 bg-gray-200 dark:bg-gray-700"
+    class="flex flex-col gap-4 w-full rounded p-4 max-w-6xl mx-4 bg-gray-200 dark:bg-gray-700 hacker-bg-black"
     in:fly={{ y: 20, duration: Settings.reduceMotion ? 0 : 350 }}
   >
     <div class="w-full flex justify-between">

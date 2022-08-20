@@ -2,6 +2,7 @@
 :root[data-hacker-theme="true"] {
   $dark-gray: #212121;
   $darker-gray: rgb(14, 14, 14);
+  $lime-filter: invert(68%) sepia(85%) saturate(1334%) hue-rotate(67deg) brightness(90%) contrast(87%);
 
   // colors
   --color-text: lime;
@@ -16,24 +17,21 @@
   --color-blur-fallback: rgba(0, 0, 0, 0.8);
 
   // filters
-  --filter-svg: invert(68%) sepia(85%) saturate(1334%) hue-rotate(67deg) brightness(90%) contrast(87%);
+  --filter-light: #{$lime-filter};
+  --filter-svg: #{$lime-filter};
   --filter-svg-invert: var(--filter-dark);
-  --filter-svg-accent: invert(68%) sepia(85%) saturate(1334%) hue-rotate(67deg) brightness(90%) contrast(87%);
+  --filter-svg-accent: #{$lime-filter};
   --filter-bg-blur: blur(12px) brightness(55%);
 
   *,
   *::before,
-  *::after {
-    font-family: var(--font-mono), monospace;
+  *::after,
+  *::placeholder {
+    font-family: var(--font-mono), monospace !important;
   }
 
-  div,
-  section,
-  footer,
-  body {
-    &:not(.hacker-no-bg) {
-      background-color: black;
-    }
+  .hacker-text-lime {
+    color: var(--color-text) !important;
   }
 
   .hacker-border-gray {
@@ -55,6 +53,8 @@
   }
 
   nav,
+  footer,
+  body,
   .hacker-bg-black {
     background-color: black !important;
   }
