@@ -34,7 +34,13 @@
         />
       </div>
     {/if}
-    <h4 class="text-sm text-primary monospace">{keyValue}</h4>
+    <input
+      class="bg-transparent text-primary placeholder:text-gray-400 dark:placeholder:text-gray-500 monospace rounded p-1 text-sm w-24"
+      placeholder="0x00000000"
+      type="text"
+      bind:value={keyValue}
+      tabindex={selectionGroup.selectMode ? -1 : 0}
+    />
     {#if !selectionGroup.selectMode}
       <CopyStringEntryButtons key={keyValue} string={stringValue} />
     {/if}

@@ -33,7 +33,13 @@
       />
     </div>
   {/if}
-  <h4 class="text-sm text-primary monospace -order-1 sm:order-1">{keyValue}</h4>
+  <input
+    class="bg-transparent text-primary placeholder:text-gray-400 dark:placeholder:text-gray-500 monospace rounded p-1 -order-1 sm:order-1 text-sm w-24"
+    placeholder="0x00000000"
+    type="text"
+    bind:value={keyValue}
+    tabindex={selectionGroup.selectMode ? -1 : 0}
+  />
   <input
     class="bg-gray-75 dark:bg-gray-675 rounded w-full px-2 py-1 order-1 placeholder:text-gray-400 dark:placeholder:text-gray-500"
     placeholder="Empty String"
