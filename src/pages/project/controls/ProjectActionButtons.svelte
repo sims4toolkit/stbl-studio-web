@@ -35,6 +35,7 @@
             title: "Rehash",
             icon: "refresh",
             keybinding: "h",
+            disabled: selectionGroup.numSelected < 1,
             onClick: ifNotInModal(() => {
               alert("rehash");
             }),
@@ -44,6 +45,7 @@
             title: "Delete",
             icon: "trash",
             keybinding: "d",
+            disabled: selectionGroup.numSelected < 1,
             onClick: ifNotInModal(() => {
               alert("delete");
             }),
