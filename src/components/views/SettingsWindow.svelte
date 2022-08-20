@@ -13,6 +13,12 @@
 
   $: {
     if (doRickRoll) {
+      const foundList = Settings.foundEasterEggs;
+      if (!foundList.includes("rickroll")) {
+        foundList.push("rickroll");
+        Settings.foundEasterEggs = foundList;
+      }
+
       window.location.href = "https://youtu.be/a3Z7zEc7AXQ?t=45";
     }
   }

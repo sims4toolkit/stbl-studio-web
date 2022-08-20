@@ -4,6 +4,16 @@
   import Switch from "src/components/elements/Switch.svelte";
 
   export let onClose: () => void;
+
+  $: {
+    if (Settings.mainframeHacked) {
+      const foundList = Settings.foundEasterEggs;
+      if (!foundList.includes("hacker")) {
+        foundList.push("hacker");
+        Settings.foundEasterEggs = foundList;
+      }
+    }
+  }
 </script>
 
 <MovableWindow title="Help" {onClose}>

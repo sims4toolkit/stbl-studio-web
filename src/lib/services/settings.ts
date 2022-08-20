@@ -89,9 +89,29 @@ class StoredInteger extends StoredSetting<number> {
   }
 }
 
+class StoredJson<T extends object> extends StoredSetting<T> {
+  constructor(
+    name: string,
+    defaultValue?: T,
+    callbacks?: OnChangeCallback<T>[]
+  ) {
+    super(name, defaultValue, callbacks);
+  }
+
+  protected _parseValue(value: string): T {
+    return JSON.parse(value);
+  }
+
+  protected _stringifyValue(value: T): string {
+    return JSON.stringify(value);
+  }
+}
+
 //#endregion Classes
 
 //#region Settings
+
+type EasterEgg = "rickroll" | "hacker";
 
 interface UserSettings {
   defaultLocale: StringTableLocale;
@@ -104,6 +124,7 @@ interface UserSettings {
   showAllStrings: boolean;
   showTranslateKeys: boolean;
   mainframeHacked: boolean;
+  foundEasterEggs: EasterEgg[];
 }
 
 type StoredUserSettings = {
@@ -194,6 +215,10 @@ const Settings = getSettingsProxy({
         mainframeHackedStore.set(value);
       }
     ]
+  },
+  foundEasterEggs: {
+    cls: StoredJson,
+    defaultValue: []
   }
 });
 
