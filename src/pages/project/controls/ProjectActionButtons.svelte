@@ -7,6 +7,7 @@
   import BlurOverlay from "src/components/layouts/BlurOverlay.svelte";
   import DimmerOverlay from "src/components/layouts/DimmerOverlay.svelte";
   import NewStringModal from "src/pages/project/views/NewStringModal.svelte";
+  import Settings from "src/lib/services/settings";
 
   export let selectionGroup: SelectionGroup<LocalizedStringEntry, number>;
   export let project: Project;
@@ -54,7 +55,11 @@
             icon: "download",
             keybinding: "s",
             onClick: ifNotInModal(() => {
-              alert("download");
+              if (Settings.rickGif) {
+                window.location.href = "https://youtu.be/a3Z7zEc7AXQ";
+              } else {
+                alert("download");
+              }
             }),
           },
           {
@@ -100,7 +105,7 @@
     />
   </BlurOverlay>
 {:else if usingDimmer}
-  <DimmerOverlay>
+  <DimmerOverlay onClose={onModalClose}>
     <svelte:component
       this={modalContentComponent}
       onComplete={onModalClose}

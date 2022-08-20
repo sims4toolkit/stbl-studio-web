@@ -31,7 +31,9 @@
   section,
   footer,
   body {
-    background-color: black;
+    &:not(.hacker-no-bg) {
+      background-color: black;
+    }
   }
 
   .hacker-border-gray {
@@ -58,7 +60,8 @@
   }
 
   input,
-  textarea {
+  textarea,
+  select {
     background-color: $darker-gray !important;
   }
 }

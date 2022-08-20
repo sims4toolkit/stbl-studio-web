@@ -4,7 +4,7 @@
 </script>
 
 <div class="w-full flex items-center justify-between">
-  <p class="text-sm">{label}</p>
+  <p class="text-sm mr-4">{label}</p>
   <label class="switch relative inline-block">
     <input bind:checked type="checkbox" class="opacity-0 w-0 h-0" />
     <span
