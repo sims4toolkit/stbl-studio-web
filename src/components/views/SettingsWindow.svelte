@@ -113,7 +113,7 @@
         </div>
         <div class="flex flex-col gap-4">
           <button
-            class="hover:bg-red-500 focus:bg-red-500 border border-red-500 h-10 flex items-center justify-center gap-4 rounded"
+            class="setting hover:bg-red-500 focus:bg-red-500 border border-red-500 h-10 flex items-center justify-center gap-4 rounded"
             on:click={() => (resettingWorkspace = true)}
           >
             <img class="svg h-4" src="./assets/trash.svg" alt="Trash" />
@@ -132,8 +132,8 @@
 {/if}
 
 <style lang="scss">
-  button:hover,
-  button:focus {
+  button.setting:hover,
+  button.setting:focus {
     color: white;
 
     img {
