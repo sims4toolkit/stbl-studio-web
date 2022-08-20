@@ -5,6 +5,7 @@
   import type Project from "src/lib/models/project";
   import type SelectionGroup from "src/lib/models/selection-group";
   import Settings from "src/lib/services/settings";
+  import constants from "src/data/constants.json";
   import type { FloatingActionButtonData } from "src/components/controls/types";
   import FloatingActionButtonGroup from "src/components/controls/FloatingActionButtonGroup.svelte";
   import BlurOverlay from "src/components/layouts/BlurOverlay.svelte";
@@ -48,7 +49,7 @@
             keybinding: "s",
             onClick: ifNotInModal(() => {
               if (Settings.rickGif) {
-                window.location.href = "https://youtu.be/a3Z7zEc7AXQ";
+                window.location.href = constants.links.rickRoll;
               } else {
                 modalContentComponent = DownloadProjectView;
                 modalContentArgs = {};
@@ -101,7 +102,7 @@
             keybinding: "s",
             onClick: ifNotInModal(() => {
               if (Settings.rickGif) {
-                window.location.href = "https://youtu.be/a3Z7zEc7AXQ";
+                window.location.href = constants.links.rickRoll;
               } else {
                 alert("save");
               }

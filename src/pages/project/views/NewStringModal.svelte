@@ -2,7 +2,7 @@
   import { onDestroy } from "svelte";
   import { fly } from "svelte/transition";
   import type Project from "src/lib/models/project";
-  import Settings from "src/lib/services/settings";
+  import Settings, { rickGifStore } from "src/lib/services/settings";
   import Switch from "src/components/elements/Switch.svelte";
 
   export let project: Project;
@@ -10,17 +10,26 @@
 
   let value = "";
   let promptUntilCancel = false;
+
   const mainframeWasHacked = Settings.mainframeHacked;
+  const wasShowingRick = Settings.rickGif;
 
   onDestroy(() => {
     Settings.mainframeHacked = mainframeWasHacked;
+    rickGifStore.set(Settings.rickGif);
   });
 
   $: {
-    if (value.endsWith("mainframe")) {
-      Settings.mainframeHacked = true; // FIXME:
-    } else if (value.endsWith("mainfram")) {
-      Settings.mainframeHacked = false;
+    if (!Settings.disableEasterEggs) {
+      if (/(^|\s)+(hack|mainframe)$/i.test(value)) {
+        Settings.mainframeHacked = true;
+      } else if (Settings.mainframeHacked && !mainframeWasHacked) {
+        Settings.mainframeHacked = false;
+      } else if (/(^|\s)+(give\s*\S*\s*up|let\s*\S*\s*down)$/i.test(value)) {
+        rickGifStore.set(true);
+      } else if (!wasShowingRick) {
+        rickGifStore.set(false);
+      }
     }
   }
 

@@ -14,7 +14,6 @@
 <MovableWindow title="Settings" {onClose}>
   <div class="flex flex-col gap-4">
     <div class="flex flex-col gap-4">
-      <p class="uppercase text-sm font-bold">Accessibility</p>
       <div>
         <Switch
           label="Disable Blur Effect"
@@ -39,6 +38,20 @@
           Disable color-coding of bottom-right toolbar.
         </p>
       </div>
+      <div>
+        <Switch
+          label="Disable Easter Eggs"
+          bind:checked={Settings.disableEasterEggs}
+        />
+        <p class="text-subtle text-xs mt-2">May improve website performance.</p>
+      </div>
+      <div>
+        <Switch
+          label="Hack the Mainframe"
+          bind:checked={Settings.mainframeHacked}
+        />
+        <p class="text-subtle text-xs mt-2">1010 0100 0101 0101</p>
+      </div>
     </div>
     <hr class="border-gray-500 dark:border-gray-900" />
     <div class="flex flex-col gap-4">
@@ -48,16 +61,7 @@
         fillWidth={true}
         bind:selected={Settings.defaultLocale}
       />
-      <div>
-        <Switch
-          label="Hack the Mainframe"
-          bind:checked={Settings.mainframeHacked}
-        />
-        <p class="text-subtle text-xs mt-2">
-          Contrary to popular belief, hacking the mainframe is actually quite
-          simple. Just turn on the toggle.
-        </p>
-      </div>
+
       <div>
         <Switch label="Disable Downloading" bind:checked={Settings.rickGif} />
         <p class="text-subtle text-xs mt-2">Never lets you download.</p>

@@ -2,6 +2,7 @@ import { writable } from "svelte/store";
 import type { StringTableLocale } from "@s4tk/models/enums";
 import DocumentUtils from "src/lib/utilities/document.js";
 import StorageService from "src/lib/services/storage.js";
+import constants from "src/data/constants.json";
 
 //#region Abstract Types
 
@@ -126,6 +127,7 @@ interface UserSettings {
   mainframeHacked: boolean;
   rickGif: boolean;
   foundEasterEggs: EasterEgg[];
+  disableEasterEggs: boolean;
 }
 
 type StoredUserSettings = {
@@ -235,7 +237,7 @@ const Settings = getSettingsProxy({
             Settings.foundEasterEggs = foundList;
           }
         } else {
-          window.location.href = "https://youtu.be/a3Z7zEc7AXQ";
+          window.location.href = constants.links.rickRoll;
         }
       },
       (value) => {
@@ -246,6 +248,9 @@ const Settings = getSettingsProxy({
   foundEasterEggs: {
     cls: StoredJson,
     defaultValue: []
+  },
+  disableEasterEggs: {
+    cls: StoredBoolean
   }
 });
 
