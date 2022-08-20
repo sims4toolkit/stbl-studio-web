@@ -117,6 +117,18 @@ export default class Project {
   }
 
   /**
+   * Deletes entries from the project and removes them from storage.
+   * 
+   * @param ids IDs of entries to delete
+   */
+  deleteStrings(ids: number[]) {
+    ids.forEach(id => this.stbl.deleteEntry(id));
+    this.metaData.numEntries = this.stbl.numEntries;
+    this.saveToStorage();
+    this.stbl.saveToStorage(this.uuid);
+  }
+
+  /**
    * Loads the STBL for this project from storage.
    */
   async loadStringTable(): Promise<void> {

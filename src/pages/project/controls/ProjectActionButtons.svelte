@@ -9,6 +9,7 @@
   import BlurOverlay from "src/components/layouts/BlurOverlay.svelte";
   import DimmerOverlay from "src/components/layouts/DimmerOverlay.svelte";
   import NewStringModal from "src/pages/project/views/NewStringModal.svelte";
+  import DeleteStringsModal from "../views/DeleteStringsModal.svelte";
 
   export let selectionGroup: SelectionGroup<LocalizedStringEntry, number>;
   export let project: Project;
@@ -47,7 +48,11 @@
             keybinding: "d",
             disabled: selectionGroup.numSelected < 1,
             onClick: ifNotInModal(() => {
-              alert("delete");
+              modalContentArgs = {
+                selectionGroup,
+              };
+              modalContentComponent = DeleteStringsModal;
+              usingBlur = true;
             }),
           },
         ]
