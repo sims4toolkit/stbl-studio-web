@@ -33,7 +33,8 @@
     filter: var(--filter-svg) !important;
   }
 
-  .hacker-text-lime {
+  .hacker-text-lime,
+  .hover\:hacker-text-lime:hover {
     color: var(--color-text) !important;
   }
 
@@ -61,6 +62,10 @@
   body,
   .hacker-bg-black {
     background-color: black !important;
+  }
+
+  .hacker-bg-black-trans {
+    background-color: rgba(8, 12, 8, 0.6) !important;
   }
 
   input,

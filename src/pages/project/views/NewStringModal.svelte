@@ -48,7 +48,9 @@
   }
 </script>
 
-<div class="fixed left-0 right-0 bottom-0 pb-20 flex justify-center">
+<div
+  class="fixed left-0 right-0 bottom-0 pb-20 flex justify-center drop-shadow"
+>
   <div
     class="flex flex-col gap-4 w-full rounded p-4 max-w-6xl mx-4 bg-gray-100 dark:bg-gray-800 hacker-bg-black"
     in:fly={{ y: 20, duration: Settings.reduceMotion ? 0 : 350 }}
@@ -70,9 +72,13 @@
       <p class="text-subtle text-xs">
         Press <mark
           class="keystroke bg-gray-200 dark:bg-gray-700 hacker-bg-gray"
+          >esc</mark
+        >
+        to cancel,
+        <mark class="keystroke bg-gray-200 dark:bg-gray-700 hacker-bg-gray"
           >enter</mark
         >
-        to save. Use
+        to save, and
         <mark class="keystroke bg-gray-200 dark:bg-gray-700 hacker-bg-gray"
           >shift</mark
         >
@@ -83,7 +89,7 @@
       </p>
       <div class="flex gap-2">
         <button
-          class="text-sm border-gray-400 dark:border-gray-600 hover:bg-gray-400 dark:hover:bg-gray-600 focus:bg-gray-400 dark:focus:bg-gray-600 hover:text-white dark:hover:text-white focus:text-white focus:hover:text-white hacker-border-gray hover:hacker-bg-gray"
+          class="text-sm border-gray-400 dark:border-gray-600 hover:bg-gray-400 dark:hover:bg-gray-600 focus:bg-gray-400 dark:focus:bg-gray-600 hover:text-white dark:hover:text-white focus:text-white focus:hover:text-white hacker-border-gray hover:hacker-bg-gray hover:hacker-text-lime"
           on:click={onComplete}>Cancel</button
         >
         <button class="save text-sm" on:click={addString}>Save</button>
@@ -107,5 +113,9 @@
         color: var(--color-bg);
       }
     }
+  }
+
+  mark {
+    font-size: 0.675rem;
   }
 </style>

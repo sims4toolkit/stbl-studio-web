@@ -67,7 +67,7 @@
   bind:this={overlay}
   in:fade={{ duration: Settings.reduceMotion ? 0 : 350 }}
   out:fade={{ duration: Settings.reduceMotion ? 0 : 200 }}
-  class="fixed top-0 right-0 bottom-0 left-0 z-40 bg-gray-400 bg-opacity-60 dark:bg-gray-900 dark:bg-opacity-60"
+  class="fixed top-0 right-0 bottom-0 left-0 z-40 bg-gray-400 bg-opacity-60 dark:bg-gray-900 dark:bg-opacity-60 hacker-bg-black-trans"
 >
   <slot />
 </div>
