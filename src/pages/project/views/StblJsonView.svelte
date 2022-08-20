@@ -18,7 +18,7 @@
     </p>
   </div>
   <textarea
-    class="w-full resize-none h-80 rounded monospace text-sm border bg-gray-50 border-gray-400 dark:bg-gray-700 dark:border-gray-900 hacker-border-gray placeholder:text-gray-400 dark:placeholder:text-gray-500"
+    class="w-full resize-none h-80 p-2 rounded monospace text-sm border bg-gray-50 border-gray-400 dark:bg-gray-700 dark:border-gray-900 hacker-border-gray placeholder:text-gray-400 dark:placeholder:text-gray-500"
     placeholder="Enter JSON content"
     bind:value={jsonContent}
   />
