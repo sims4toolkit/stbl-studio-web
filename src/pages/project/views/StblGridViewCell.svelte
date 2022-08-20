@@ -50,8 +50,7 @@
 
   function saveString() {
     if (stringValue !== project.stbl.getValue(entry.id)) {
-      project.stbl.setValue(entry.id, stringValue);
-      project.stbl.saveToStorage(project.uuid);
+      project.setValue(entry.id, stringValue);
       project = project;
     }
   }

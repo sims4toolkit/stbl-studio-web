@@ -117,6 +117,19 @@ export default class Project {
   }
 
   /**
+   * Updates the value for the entry with the given ID, then saves the STBL to
+   * storage. This will replace newlines with literal "\n".
+   * 
+   * @param id ID of entry to update
+   * @param rawValue New value of entry
+   */
+  setValue(id: number, rawValue: string) {
+    const value = rawValue.replace(/(?:\r\n|\r|\n)/g, "\\n");
+    this.stbl.setValue(id, value);
+    this.stbl.saveToStorage(this.uuid);
+  }
+
+  /**
    * Deletes entries from the project and removes them from storage.
    * 
    * @param ids IDs of entries to delete
