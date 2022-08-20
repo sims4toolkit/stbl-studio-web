@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import type { StringTableLocale } from "@s4tk/models/enums";
 import DatabaseService from "src/lib/services/database.js";
 import LocalizedStringTable from "src/lib/models/localized-stbl.js";
@@ -98,13 +99,13 @@ export default class Project {
   /**
    * Adds the given string to this project. All returns and newlines will be
    * replaced with literal "\n". The key will be the FNV-32 hash of this
-   * project's UUID and the formatted value.
+   * project's UUID and another random UUID.
    * 
    * @param rawValue String value to add
    */
   addString(rawValue: string) {
     const value = rawValue.replace(/(?:\r\n|\r|\n)/g, "\\n");
-    const key = hashing.fnv32(`${this.uuid}:${value}`);
+    const key = hashing.fnv32(`${this.uuid}:${uuidv4()}`);
     this.stbl.addEntry(key, value);
     this.metaData.numEntries = this.stbl.numEntries;
     this.saveToStorage();
