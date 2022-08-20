@@ -36,7 +36,13 @@
 
   function addString() {
     // FIXME: generate key and replace newlines
-    project.stbl.addEntry(0, value);
+    // project.stbl.addEntry(0, value);
+    console.log(value);
+    if (promptUntilCancel) {
+      value = "";
+    } else {
+      onComplete();
+    }
   }
 </script>
 
@@ -47,15 +53,16 @@
   >
     <div class="w-full flex justify-between">
       <p class="text-subtle text-sm uppercase font-bold">new string</p>
-      <button on:click={onComplete}>
-        <img class="svg h-4" src="./assets/x.svg" alt="X" />
-      </button>
+      <div class="max-w-min whitespace-nowrap">
+        <Switch label="Prompt Until Cancel" bind:checked={promptUntilCancel} />
+      </div>
     </div>
     <ResizableTextArea
       placeholder="New string"
       fillWidth={true}
       focusOnMount={true}
       bind:value
+      onEnter={addString}
     />
     <div class="w-full flex flex-wrap gap-2 justify-between items-center">
       <p class="text-subtle text-xs">
@@ -72,9 +79,31 @@
           >enter</mark
         > for newlines.
       </p>
-      <div class="max-w-min whitespace-nowrap">
-        <Switch label="Prompt Until Cancel" bind:checked={promptUntilCancel} />
+      <div class="flex gap-2">
+        <button
+          class="text-sm border-gray-400 dark:border-gray-600 hover:bg-gray-400 dark:hover:bg-gray-600 focus:bg-gray-400 dark:focus:bg-gray-600 hover:text-white dark:hover:text-white focus:text-white focus:hover:text-white hacker-border-gray hover:hacker-bg-gray"
+          on:click={onComplete}>Cancel</button
+        >
+        <button class="save text-sm" on:click={addString}>Save</button>
       </div>
     </div>
   </div>
 </div>
+
+<style lang="scss">
+  button {
+    border-width: 1px;
+    border-radius: 0.25rem;
+    padding: 0.25rem 0.5rem;
+
+    &.save {
+      border-color: var(--color-accent-secondary);
+
+      &:hover,
+      &:focus {
+        background-color: var(--color-accent-secondary);
+        color: var(--color-bg);
+      }
+    }
+  }
+</style>
