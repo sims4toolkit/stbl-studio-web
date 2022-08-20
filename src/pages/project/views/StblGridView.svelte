@@ -7,7 +7,7 @@
   export let project: Project;
   export let selectionGroup: SelectionGroup<LocalizedStringEntry, number>;
 
-  let entries = project.stbl.entries;
+  $: entries = project.stbl.entries;
 </script>
 
 <div class="grid gap-4 drop-shadow-md">
