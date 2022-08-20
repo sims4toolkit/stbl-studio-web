@@ -1,25 +1,25 @@
 <script lang="ts">
+  import Settings from "src/lib/services/settings";
   import type Project from "src/lib/models/project";
   import type SelectionGroup from "src/lib/models/selection-group";
   import type { LocalizedStringEntry } from "src/lib/models/localized-stbl";
+  import SelectModeToggle from "src/components/controls/SelectModeToggle.svelte";
   import StblListViewCell from "src/pages/project/views/StblListView.svelte";
   import StblGridView from "src/pages/project/views/StblGridView.svelte";
-  import StblJsonView from "../views/StblJsonView.svelte";
-  import SelectModeToggle from "src/components/controls/SelectModeToggle.svelte";
+  import StblJsonView from "src/pages/project/views/StblJsonView.svelte";
 
   export let project: Project;
   export let selectionGroup: SelectionGroup<LocalizedStringEntry, number>;
 
-  const emptyArgs = {};
-  let chosenViewIndex = 0;
-  let chosenViewArgs: object = emptyArgs;
-
-  const viewOptions: {
+  interface ViewOption {
     name: string;
     icon: string;
-    component: any; // idk what type to use for components, all cause errors...
+    component: any;
     getArgs: () => object;
-  }[] = [
+  }
+
+  const emptyArgs = {};
+  const viewOptions: ViewOption[] = [
     {
       name: "List",
       icon: "list-outline",
@@ -40,7 +40,14 @@
     },
   ];
 
-  $: chosenView = viewOptions[chosenViewIndex];
+  let chosenViewIndex = Math.min(Settings.projectView, viewOptions.length - 1);
+  let chosenViewArgs: object = emptyArgs;
+  let chosenView = viewOptions[chosenViewIndex];
+
+  $: {
+    chosenView = viewOptions[chosenViewIndex];
+    Settings.projectView = chosenViewIndex;
+  }
 </script>
 
 <div class="flex flex-col gap-8">

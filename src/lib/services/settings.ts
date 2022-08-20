@@ -82,7 +82,8 @@ class StoredInteger extends StoredSetting<number> {
   }
 
   protected _parseValue(value: string): number {
-    return parseInt(value);
+    const number = parseInt(value);
+    return Number.isNaN(number) ? this.defaultValue : number;
   }
 
   protected _stringifyValue(value: number): string {
@@ -128,6 +129,7 @@ interface UserSettings {
   rickGif: boolean;
   foundEasterEggs: EasterEgg[];
   disableEasterEggs: boolean;
+  projectView: number;
 }
 
 type StoredUserSettings = {
@@ -233,6 +235,9 @@ const Settings = getSettingsProxy({
   },
   disableEasterEggs: {
     cls: StoredBoolean
+  },
+  projectView: {
+    cls: StoredInteger
   }
 });
 
