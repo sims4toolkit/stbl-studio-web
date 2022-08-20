@@ -171,7 +171,7 @@ const Settings = getSettingsProxy({
   },
   entriesPerPage: {
     cls: StoredInteger,
-    defaultValue: 12
+    defaultValue: 9
   },
   hasWorkspace: {
     cls: StoredBoolean
