@@ -11,7 +11,7 @@
 </script>
 
 <div class="grid gap-4 drop-shadow-md">
-  {#each entries as entry, key (key)}
+  {#each entries as entry (entry.id)}
     <StblGridViewCell bind:entry bind:selectionGroup />
   {/each}
 </div>

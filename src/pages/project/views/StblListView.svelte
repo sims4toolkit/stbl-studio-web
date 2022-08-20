@@ -10,6 +10,6 @@
   $: entries = project.stbl.entries;
 </script>
 
-{#each entries as entry, key (key)}
+{#each entries as entry (entry.id)}
   <StblListViewCell bind:entry bind:selectionGroup />
 {/each}
