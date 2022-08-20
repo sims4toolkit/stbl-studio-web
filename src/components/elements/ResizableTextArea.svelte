@@ -6,6 +6,8 @@
   export let fillWidth = false;
   export let focusOnMount = false;
   export let onEnter: () => void = null;
+  export let onBlur: () => void = null;
+  export let tabindex: number = 0;
 
   let textarea: HTMLTextAreaElement;
 
@@ -36,7 +38,9 @@
   {placeholder}
   rows="1"
   class="w-full whitespace-pre-wrap break-words rounded p-2 resize-none overflow-x-hidden overflow-y-hidden bg-gray-75 dark:bg-gray-675 placeholder-gray-500 dark:placeholder-gray-500"
-  class:w-100={fillWidth}
+  class:w-full={fillWidth}
   on:input={onInput}
   on:keydown={onKeyDown}
+  on:blur={() => onBlur?.()}
+  {tabindex}
 />

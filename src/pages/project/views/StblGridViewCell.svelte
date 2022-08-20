@@ -3,6 +3,7 @@
   import type { LocalizedStringEntry } from "src/lib/models/localized-stbl";
   import type SelectionGroup from "src/lib/models/selection-group";
   import CopyStringEntryButtons from "src/components/controls/CopyStringEntryButtons.svelte";
+  import ResizableTextArea from "src/components/elements/ResizableTextArea.svelte";
   const { formatStringKey } = window.S4TK.formatting;
 
   export let project: Project;
@@ -13,6 +14,11 @@
   let stringValue: string;
 
   $: {
+    project;
+    updateKeyAndString();
+  }
+
+  function updateKeyAndString() {
     keyValue = formatStringKey(entry.key);
     stringValue = project.stbl.getValue(entry.id);
   }
@@ -23,10 +29,18 @@
       selectionGroup = selectionGroup;
     }
   }
+
+  function saveString() {
+    if (stringValue !== project.stbl.getValue(entry.id)) {
+      project.stbl.setValue(entry.id, stringValue);
+      project.stbl.saveToStorage(project.uuid);
+      project = project;
+    }
+  }
 </script>
 
 <button
-  class="p-4 bg-gray-50 dark:bg-gray-700 rounded hacker-border-gray border border-gray-50 dark:border-gray-700 hacker-bg-black"
+  class="flex flex-col justify-start p-4 bg-gray-50 dark:bg-gray-700 rounded hacker-border-gray border border-gray-50 dark:border-gray-700 hacker-bg-black"
   class:selected={selectionGroup.isSelected(entry)}
   class:selectable={selectionGroup.selectMode}
   tabindex={selectionGroup.selectMode ? 0 : -1}
@@ -51,12 +65,12 @@
       <CopyStringEntryButtons key={keyValue} string={stringValue} />
     {/if}
   </div>
-  <input
-    class="bg-gray-75 dark:bg-gray-675 rounded w-full px-2 py-1 placeholder:text-gray-400 dark:placeholder:text-gray-500"
-    placeholder="Empty String"
-    type="text"
+  <ResizableTextArea
     bind:value={stringValue}
+    placeholder="Empty string"
+    fillWidth={true}
     tabindex={selectionGroup.selectMode ? -1 : 0}
+    onBlur={saveString}
   />
 </button>
 
