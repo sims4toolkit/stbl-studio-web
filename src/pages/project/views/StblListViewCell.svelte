@@ -1,5 +1,6 @@
 <script lang="ts">
   import type Project from "src/lib/models/project";
+  import { validateHexString } from "src/lib/utilities/tgi";
   import type { LocalizedStringEntry } from "src/lib/models/localized-stbl";
   import type SelectionGroup from "src/lib/models/selection-group";
   import CopyStringEntryButtons from "src/components/controls/CopyStringEntryButtons.svelte";
@@ -11,8 +12,17 @@
 
   let keyValue: string;
   let stringValue: string;
+  let keyInput: HTMLInputElement;
+
+  $: keyValueValid =
+    keyValue != undefined ? validateHexString(keyValue, 8) : true;
 
   $: {
+    project;
+    updateKeyAndString();
+  }
+
+  function updateKeyAndString() {
     keyValue = formatStringKey(entry.key);
     stringValue = project.stbl.getValue(entry.id);
   }
@@ -21,6 +31,27 @@
     if (selectionGroup.selectMode) {
       selectionGroup.toggleValue(entry);
       selectionGroup = selectionGroup;
+    }
+  }
+
+  function onKeyInputBlur() {
+    keyValue = keyValue.trim();
+
+    if (keyValueValid) {
+      const newKey = parseInt(keyValue, 16);
+      project.stbl.setKey(entry.id, newKey);
+      project.stbl.saveToStorage(project.uuid);
+      project = project;
+    } else {
+      keyInput.focus();
+    }
+  }
+
+  function saveString() {
+    if (stringValue !== project.stbl.getValue(entry.id)) {
+      project.stbl.setValue(entry.id, stringValue);
+      project.stbl.saveToStorage(project.uuid);
+      project = project;
     }
   }
 </script>
@@ -41,17 +72,21 @@
     </div>
   {/if}
   <input
-    class="bg-transparent text-primary placeholder:text-gray-400 dark:placeholder:text-gray-500 monospace rounded p-1 -order-1 sm:order-1 text-sm w-24"
+    bind:this={keyInput}
+    class="bg-transparent text-red-600 dark:text-red-500 placeholder:text-gray-400 dark:placeholder:text-gray-500 monospace rounded p-1 -order-1 sm:order-1 text-sm w-24"
+    class:valid={keyValueValid}
     placeholder="0x00000000"
     type="text"
     bind:value={keyValue}
+    on:blur={onKeyInputBlur}
     tabindex={selectionGroup.selectMode ? -1 : 0}
   />
   <input
     class="bg-gray-75 dark:bg-gray-675 rounded w-full px-2 py-1 order-1 placeholder:text-gray-400 dark:placeholder:text-gray-500"
-    placeholder="Empty String"
+    placeholder="Empty string"
     type="text"
     bind:value={stringValue}
+    on:blur={saveString}
     tabindex={selectionGroup.selectMode ? -1 : 0}
   />
   {#if !selectionGroup.selectMode}
@@ -73,6 +108,10 @@
         pointer-events: none;
       }
     }
+  }
+
+  input.valid {
+    color: var(--color-accent);
   }
 
   .selected {

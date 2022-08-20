@@ -1,10 +1,10 @@
 <script lang="ts">
   import type Project from "src/lib/models/project";
+  import { validateHexString } from "src/lib/utilities/tgi";
   import type { LocalizedStringEntry } from "src/lib/models/localized-stbl";
   import type SelectionGroup from "src/lib/models/selection-group";
   import CopyStringEntryButtons from "src/components/controls/CopyStringEntryButtons.svelte";
   import ResizableTextArea from "src/components/elements/ResizableTextArea.svelte";
-  import { validateHexString } from "src/lib/utilities/tgi";
   const { formatStringKey } = window.S4TK.formatting;
 
   export let project: Project;
