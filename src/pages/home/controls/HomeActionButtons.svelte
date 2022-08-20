@@ -4,6 +4,7 @@
   import type Workspace from "src/lib/models/workspace";
   import type Project from "src/lib/models/project";
   import type SelectionGroup from "src/lib/models/selection-group";
+  import Settings from "src/lib/services/settings";
   import type { FloatingActionButtonData } from "src/components/controls/types";
   import FloatingActionButtonGroup from "src/components/controls/FloatingActionButtonGroup.svelte";
   import BlurOverlay from "src/components/layouts/BlurOverlay.svelte";
@@ -46,9 +47,13 @@
             icon: "download",
             keybinding: "s",
             onClick: ifNotInModal(() => {
-              modalContentComponent = DownloadProjectView;
-              modalContentArgs = {};
-              inModal = true;
+              if (Settings.rickGif) {
+                window.location.href = "https://youtu.be/a3Z7zEc7AXQ";
+              } else {
+                modalContentComponent = DownloadProjectView;
+                modalContentArgs = {};
+                inModal = true;
+              }
             }),
           },
           {
@@ -95,7 +100,11 @@
             icon: "desktop-download",
             keybinding: "s",
             onClick: ifNotInModal(() => {
-              alert("save");
+              if (Settings.rickGif) {
+                window.location.href = "https://youtu.be/a3Z7zEc7AXQ";
+              } else {
+                alert("save");
+              }
             }),
           },
           {
