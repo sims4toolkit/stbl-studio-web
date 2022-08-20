@@ -205,6 +205,13 @@ const Settings = getSettingsProxy({
     cls: StoredBoolean,
     callbacks: [
       (value) => {
+        const foundList = Settings.foundEasterEggs;
+        if (!foundList.includes("hacker")) {
+          foundList.push("hacker");
+          Settings.foundEasterEggs = foundList;
+        }
+      },
+      (value) => {
         DocumentUtils.toggleBooleanAttribute("data-hacker-theme", value);
         if (value) {
           DocumentUtils.toggleLightTheme(false, false);

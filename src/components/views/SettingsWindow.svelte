@@ -49,6 +49,16 @@
         bind:selected={Settings.defaultLocale}
       />
       <div>
+        <Switch
+          label="Hack the Mainframe"
+          bind:checked={Settings.mainframeHacked}
+        />
+        <p class="text-subtle text-xs mt-2">
+          Contrary to popular belief, hacking the mainframe is actually quite
+          simple. Just turn on the toggle.
+        </p>
+      </div>
+      <div>
         <Switch label="Disable Downloading" bind:checked={Settings.rickGif} />
         <p class="text-subtle text-xs mt-2">Never lets you download.</p>
       </div>
