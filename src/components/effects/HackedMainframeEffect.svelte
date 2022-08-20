@@ -51,7 +51,7 @@
   onMount(() => {
     spawningInterval = setInterval(() => {
       for (let i = 0; i < 5; ++i) createBinaryElement(i);
-    }, 200);
+    }, 250);
   });
 
   onDestroy(() => {
