@@ -35,9 +35,11 @@
   }
 
   function addString() {
-    // FIXME: generate key and replace newlines
-    // project.stbl.addEntry(0, value);
-    console.log(value);
+    if (value.trim().length > 0) {
+      project.addString(value);
+      project = project;
+    }
+
     if (promptUntilCancel) {
       value = "";
     } else {
