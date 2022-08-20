@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { fade } from "svelte/transition";
   import MovableWindow from "src/components/layouts/MovableWindow.svelte";
   import Settings from "src/lib/services/settings";
   import Switch from "src/components/elements/Switch.svelte";
@@ -89,19 +88,9 @@
               label="Disable Networking"
               bind:checked={Settings.rickGif}
             />
-            <div class="flex items-center gap-1">
-              <p class="text-subtle text-xs mt-2">
-                This will never let you download.
-              </p>
-              {#if Settings.rickGif}
-                <p
-                  transition:fade
-                  class="text-red-600 dark:text-red-500 text-xs mt-2"
-                >
-                  ...Gotcha :)
-                </p>
-              {/if}
-            </div>
+            <p class="text-subtle text-xs mt-2">
+              This will never let you download.
+            </p>
           </div>
           <div>
             <Switch
