@@ -3,7 +3,6 @@
 
   let spawningInterval: any;
   let hackedMainframeOverlay: HTMLDivElement;
-  const allNodes = new Set<HTMLParagraphElement>();
   let recycledNodes: {
     element: HTMLParagraphElement;
     speed: number;
@@ -23,7 +22,6 @@
       element.hidden = false;
     } else {
       element = document.createElement("p");
-      allNodes.add(element);
       element.classList.add("fixed", "monospace");
       element.innerText = (seed % 2).toString();
       element.style.left = `${Math.random() * window.innerWidth}px`;
