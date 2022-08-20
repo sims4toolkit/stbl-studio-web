@@ -14,7 +14,7 @@
   const entriesToDelete = selectionGroup.allSelectedItems.map((item) => {
     return {
       key: formatStringKey(item.key),
-      string: item.values.get(project.metaData.primaryLocale),
+      string: project.stbl.getValue(item.id),
     };
   });
 

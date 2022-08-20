@@ -19,7 +19,7 @@
       oldKeyString: formatStringKey(item.key),
       newKey: newKey,
       newKeyString: formatStringKey(newKey),
-      string: item.values.get(project.metaData.primaryLocale),
+      string: project.stbl.getValue(item.id),
     };
   });
 
