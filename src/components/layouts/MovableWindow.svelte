@@ -10,6 +10,7 @@
   let movableWindow: HTMLDivElement;
   let movableWindowHeader: HTMLDivElement;
   let numWindows = 0;
+  let isMinimized = false;
 
   const unsub = numMovableWindowsStore.subscribe((numWindowsOpen) => {
     numWindows = numWindowsOpen;
@@ -86,17 +87,22 @@
     unsub();
     numMovableWindowsStore.set(numWindows - 1);
   });
+
+  function toggleMinimized() {
+    isMinimized = !isMinimized;
+  }
 </script>
 
 <div
   bind:this={movableWindow}
   class="flex flex-col z-30 movable-window rounded drop-shadow border border-solid border-gray-500 dark:border-gray-900 bg-gray-200 dark:bg-gray-700 hacker-bg-black"
+  class:minimized={isMinimized}
   in:fly={{ x: 35, duration: Settings.reduceMotion ? 0 : 350 }}
   out:fade={{ duration: Settings.reduceMotion ? 0 : 200 }}
 >
   <div
     bind:this={movableWindowHeader}
-    class="movable-window-header rounded-t-sm flex justify-between items-center p-2 grabbable bg-gray-500 dark:bg-gray-900 hacker-bg-black hacker-border-b-gray"
+    class="movable-window-header z-10 rounded-t-sm flex justify-between items-center p-2 grabbable bg-gray-500 dark:bg-gray-900 hacker-bg-black hacker-border-b-gray"
   >
     <div class="flex justify-center items-center gap-2">
       <p
@@ -105,11 +111,23 @@
         {title}
       </p>
     </div>
-    <button on:click={onClose}>
-      <img src="./assets/x.svg" class="svg-light hacker-svg" alt="Close" />
-    </button>
+    <div class="flex gap-2">
+      <button on:click={toggleMinimized}>
+        <img
+          src="./assets/{isMinimized ? 'plus' : 'remove'}.svg"
+          class="svg-light hacker-svg"
+          alt="Minimize"
+        />
+      </button>
+      <button on:click={onClose}>
+        <img src="./assets/x.svg" class="svg-light hacker-svg" alt="Close" />
+      </button>
+    </div>
   </div>
-  <div class="p-2 window-content flex flex-col flex-1">
+  <div
+    class="p-2 z-0 window-content flex flex-col flex-1"
+    class:minimized={isMinimized}
+  >
     <slot />
   </div>
 </div>
@@ -117,17 +135,32 @@
 <style lang="scss">
   .movable-window {
     $height: 400px;
+    $transition-time: 500ms;
+
     position: fixed;
     width: 360px;
     height: $height;
     right: 20px;
     bottom: 20px;
+    overflow-y: hidden;
+
+    transition: height $transition-time;
+    &.minimized {
+      height: 38px;
+    }
 
     .window-content {
       overflow-y: auto;
       max-width: 100%;
       overflow-x: hidden;
       max-height: $height - 40;
+
+      margin-top: 0;
+      transition: margin-top $transition-time;
+      &.minimized {
+        overflow-y: hidden;
+        margin-top: -400px;
+      }
     }
 
     .movable-window-header {
