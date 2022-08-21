@@ -95,7 +95,7 @@
 
 <div
   bind:this={movableWindow}
-  class="flex flex-col z-30 movable-window rounded drop-shadow border border-solid border-gray-500 dark:border-gray-900 bg-gray-200 dark:bg-gray-700 hacker-bg-black"
+  class="flex flex-col z-30 movable-window rounded drop-shadow border border-solid border-gray-500 dark:border-gray-900"
   class:minimized={isMinimized}
   in:fly={{ x: 35, duration: Settings.reduceMotion ? 0 : 350 }}
   out:fade={{ duration: Settings.reduceMotion ? 0 : 200 }}
@@ -125,7 +125,7 @@
     </div>
   </div>
   <div
-    class="p-2 z-0 window-content flex flex-col flex-1"
+    class="p-2 z-0 window-content flex flex-col flex-1 bg-gray-200 dark:bg-gray-700 hacker-bg-black"
     class:minimized={isMinimized}
   >
     <slot />
@@ -156,7 +156,7 @@
       max-height: $height - 40;
 
       margin-top: 0;
-      transition: margin-top $transition-time;
+      transition: all $transition-time;
       &.minimized {
         overflow-y: hidden;
         margin-top: -400px;
