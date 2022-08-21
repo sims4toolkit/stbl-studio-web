@@ -26,7 +26,7 @@
   title="Download Project"
   completeButton="Download"
 >
-  <div slot="content">
+  <div slot="content" class="w-full py-2">
     <MultipageContent pageNumber={1} bind:state={multipageState}>
       <StblDownloadView projects={[project]} />
     </MultipageContent>

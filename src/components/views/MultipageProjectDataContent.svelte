@@ -118,7 +118,7 @@
 >
   <div in:fade class="w-full">
     {#if Boolean(localeChoicesDetail)}
-      <p class="mb-4">{localeChoicesDetail}</p>
+      <p class="mb-6">{localeChoicesDetail}</p>
     {/if}
     <div>
       <div class="flex gap-4 mb-3">

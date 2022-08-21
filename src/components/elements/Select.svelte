@@ -29,3 +29,13 @@
     {/each}
   </select>
 </div>
+
+<style lang="scss">
+  select:disabled {
+    opacity: 0.6;
+
+    &:hover {
+      cursor: not-allowed;
+    }
+  }
+</style>

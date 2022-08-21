@@ -111,9 +111,7 @@
       bind:localeChoices
       tgiChoicesDetail="The instance is the hash of the UUID by default, but it can be changed
       manually."
-      localeChoicesDetail="Select additional locales to include in this project. Strings added to
-      your primary locale (English) will automatically be added to these ones as
-      well."
+      localeChoicesDetail="Select any locales you want to track translations for. You can still download locales that are not included, but they will contain the same text as your primary locale."
     />
   </div>
 </MultipageContentGroup>
