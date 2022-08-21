@@ -156,6 +156,10 @@
       height: 38px;
     }
 
+    &:hover {
+      z-index: 5000;
+    }
+
     .window-content {
       overflow-y: auto;
       max-width: 100%;
