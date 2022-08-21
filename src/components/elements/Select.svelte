@@ -3,9 +3,9 @@
   export let label: string = null;
   export let name: string;
   export let fillWidth = false;
-  export let selected: number | bigint;
+  export let selected: number | bigint | string;
   export let options: {
-    value: number | bigint;
+    value: number | bigint | string;
     text: string;
   }[];
 </script>

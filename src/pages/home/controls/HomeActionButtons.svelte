@@ -14,6 +14,7 @@
   import MergeProjectView from "src/pages/home/views/MergeProjectView.svelte";
   import NewProjectView from "src/pages/home/views/NewProjectView.svelte";
   import UploadProjectView from "src/pages/home/views/UploadProjectView.svelte";
+  import { saveAs } from "file-saver";
 
   export let selectionGroup: SelectionGroup<Project, string>;
 
@@ -104,7 +105,10 @@
               if (Settings.rickGif) {
                 window.location.href = constants.links.rickRoll;
               } else {
-                alert("save");
+                workspace.toJson().then((json) => {
+                  const blob = new Blob([JSON.stringify(json)]);
+                  saveAs(blob, "StblStudioWorkspace.json");
+                });
               }
             }),
           },

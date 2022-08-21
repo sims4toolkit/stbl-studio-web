@@ -124,7 +124,6 @@ interface UserSettings {
   isLightTheme: boolean;
   reduceMotion: boolean;
   showAllStrings: boolean;
-  showTranslateKeys: boolean;
   mainframeHacked: boolean;
   rickGif: boolean;
   foundEasterEggs: EasterEgg[];
@@ -200,9 +199,6 @@ const Settings = getSettingsProxy({
     cls: StoredBoolean
   },
   showAllStrings: {
-    cls: StoredBoolean
-  },
-  showTranslateKeys: {
     cls: StoredBoolean
   },
   mainframeHacked: {
