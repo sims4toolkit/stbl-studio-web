@@ -89,13 +89,20 @@
   });
 
   function toggleMinimized() {
+    if (movableWindow.offsetTop > window.innerHeight - 200) {
+      // anchor to bottom
+      const bottom = movableWindow.offsetTop + movableWindow.offsetHeight;
+      movableWindow.style.bottom = window.innerHeight - bottom + "px";
+      movableWindow.style.removeProperty("top");
+    }
+
     isMinimized = !isMinimized;
   }
 </script>
 
 <div
   bind:this={movableWindow}
-  class="flex flex-col z-30 movable-window rounded drop-shadow border border-solid border-gray-500 dark:border-gray-900"
+  class="flex flex-col z-30 movable-window rounded drop-shadow border border-solid border-gray-500 dark:border-gray-900 bg-gray-200 dark:bg-gray-700 hacker-bg-black"
   class:minimized={isMinimized}
   in:fly={{ x: 35, duration: Settings.reduceMotion ? 0 : 350 }}
   out:fade={{ duration: Settings.reduceMotion ? 0 : 200 }}
