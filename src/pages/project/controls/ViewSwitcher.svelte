@@ -7,15 +7,19 @@
   import StblListViewCell from "src/pages/project/views/StblListView.svelte";
   import StblGridView from "src/pages/project/views/StblGridView.svelte";
   import StblJsonView from "src/pages/project/views/StblJsonView.svelte";
+  import LocaleSelect from "src/components/controls/LocaleSelect.svelte";
 
   export let project: Project;
   export let selectionGroup: SelectionGroup<LocalizedStringEntry, number>;
+
+  type UtilitiesType = "selectable" | "json" | "translate";
 
   interface ViewOption {
     name: string;
     icon: string;
     component: any;
     getArgs: () => object;
+    utilities: UtilitiesType;
   }
 
   const emptyArgs = {};
@@ -25,24 +29,28 @@
       icon: "list-outline",
       component: StblListViewCell,
       getArgs: () => emptyArgs,
+      utilities: "selectable",
     },
     {
       name: "Grid",
       icon: "grid-outline",
       component: StblGridView,
       getArgs: () => emptyArgs,
+      utilities: "selectable",
     },
     {
       name: "JSON",
       icon: "curly-braces",
       component: StblJsonView,
       getArgs: () => emptyArgs,
+      utilities: "json",
     },
   ];
 
   let chosenViewIndex = Math.min(Settings.projectView, viewOptions.length - 1);
   let chosenViewArgs: object = emptyArgs;
   let chosenView = viewOptions[chosenViewIndex];
+  let translatingTo = 0;
 
   $: {
     chosenView = viewOptions[chosenViewIndex];
@@ -76,7 +84,13 @@
       </div>
     </div>
     <div>
-      <SelectModeToggle bind:selectionGroup />
+      {#if chosenView.utilities === "selectable"}
+        <SelectModeToggle bind:selectionGroup />
+      {:else if chosenView.utilities === "json"}
+        <button>Save</button>
+      {:else if chosenView.utilities === "translate"}
+        <LocaleSelect label="translate to" bind:selected={translatingTo} />
+      {/if}
     </div>
   </div>
   <div class="w-full">
