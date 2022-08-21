@@ -1,10 +1,12 @@
 <script lang="ts">
   import Settings from "src/lib/services/settings";
-  import HelpWindow from "src/components/views/HelpWindow.svelte";
-  import SettingsWindow from "src/components/views/SettingsWindow.svelte";
+  import HelpWindow from "src/components/windows/HelpWindow.svelte";
+  import SettingsWindow from "src/components/windows/SettingsWindow.svelte";
+  import HasherWindow from "../windows/HasherWindow.svelte";
 
   let showSettingsWindow = false;
   let showHelpWindow = false;
+  let showHasherWindow = false;
 
   // redundant so icon can react without accessing settings
   let isLightTheme = Settings.isLightTheme;
@@ -47,7 +49,7 @@
       >
         <button
           class="py-1 w-full rounded-t hover:bg-gray-300 hover:dark:bg-gray-700 hover:hacker-bg-gray"
-          >First</button
+          on:click={() => (showHasherWindow = true)}>Hasher</button
         >
         <hr class="border-gray-300 dark:border-gray-800 hacker-border-gray" />
         <button class="py-1 w-full">Second</button>
@@ -84,6 +86,10 @@
 
 {#if showSettingsWindow}
   <SettingsWindow onClose={() => (showSettingsWindow = false)} />
+{/if}
+
+{#if showHasherWindow}
+  <HasherWindow onClose={() => (showHasherWindow = false)} />
 {/if}
 
 <style lang="scss">
