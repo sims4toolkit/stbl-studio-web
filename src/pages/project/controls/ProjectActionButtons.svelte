@@ -11,6 +11,7 @@
   import NewStringModal from "src/pages/project/views/NewStringModal.svelte";
   import DeleteStringsModal from "src/pages/project/views/DeleteStringsModal.svelte";
   import RehashStringsModal from "src/pages/project/views/RehashStringsModal.svelte";
+  import StblDownloadModal from "../views/StblDownloadModal.svelte";
 
   export let selectionGroup: SelectionGroup<LocalizedStringEntry, number>;
   export let project: Project;
@@ -71,7 +72,9 @@
               if (Settings.rickGif) {
                 window.location.href = constants.links.rickRoll;
               } else {
-                alert("download");
+                modalContentArgs = {};
+                modalContentComponent = StblDownloadModal;
+                usingBlur = true;
               }
             }),
           },
