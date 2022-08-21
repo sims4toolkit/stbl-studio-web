@@ -10,6 +10,7 @@
   const { enums } = window.S4TK;
 
   export let title: string;
+  export let detail: string = null;
   export let onComplete: () => void;
   export let project: Project = null;
   export let projects: Project[] = null;
@@ -108,6 +109,9 @@
   <div slot="content" class="w-full py-2">
     <MultipageContent pageNumber={1} bind:state={multipageState}>
       <div class="flex flex-col gap-6">
+        {#if detail}
+          <p>{detail}</p>
+        {/if}
         <div class="w-full flex flex-wrap sm:flex-nowrap gap-4">
           <Select
             label="download as"

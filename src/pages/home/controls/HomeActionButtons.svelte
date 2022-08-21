@@ -48,12 +48,15 @@
             title: "Download",
             icon: "download",
             keybinding: "s",
+            disabled: selectionGroup.numSelected < 1,
             onClick: ifNotInModal(() => {
               if (Settings.rickGif) {
                 window.location.href = constants.links.rickRoll;
               } else {
                 modalContentComponent = DownloadProjectView;
-                modalContentArgs = {};
+                modalContentArgs = {
+                  selectionGroup,
+                };
                 inModal = true;
               }
             }),
