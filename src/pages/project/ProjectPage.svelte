@@ -66,7 +66,7 @@
 >
   {#if projectLoaded}
     <ProjectPageHeader {project} />
-    <div class="w-full flex justify-center px-4 py-12">
+    <div class="w-full flex justify-center px-4 py-8">
       <div class="w-full xl:max-w-screen-xl">
         <ViewSwitcher bind:project bind:selectionGroup />
       </div>

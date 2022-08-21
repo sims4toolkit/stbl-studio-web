@@ -58,14 +58,14 @@
 </script>
 
 <button
-  class="flex flex-col justify-start p-4 bg-gray-50 dark:bg-gray-700 rounded hacker-border-gray border border-gray-50 dark:border-gray-700 hacker-bg-black"
+  class="flex flex-col justify-start px-3 py-2 bg-gray-50 dark:bg-gray-700 rounded hacker-border-gray border border-gray-50 dark:border-gray-700 hacker-bg-black"
   class:selected={selectionGroup.isSelected(entry)}
   class:selectable={selectionGroup.selectMode}
   tabindex={selectionGroup.selectMode ? 0 : -1}
   on:click={toggleSelection}
 >
   <div class="w-full">
-    <div class="w-full flex justify-between mb-4">
+    <div class="w-full flex justify-between mb-2">
       {#if selectionGroup.selectMode}
         <div class="flex items-center">
           <div
