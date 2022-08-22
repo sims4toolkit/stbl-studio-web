@@ -63,14 +63,6 @@
           class="p-2 w-full text-sm rounded-b no-underline block hover:bg-gray-300 hover:dark:bg-gray-950 hover:hacker-bg-gray"
           href="#/tools/pronouns">Pronoun Batch Fix</a
         >
-        <a
-          class="p-2 w-full text-sm rounded-b no-underline block hover:bg-gray-300 hover:dark:bg-gray-950 hover:hacker-bg-gray"
-          href="#/tools/pronouns">STBL Editor</a
-        >
-        <a
-          class="p-2 w-full text-sm rounded-b no-underline block hover:bg-gray-300 hover:dark:bg-gray-950 hover:hacker-bg-gray"
-          href="#/tools/merger">STBL Merger</a
-        >
         <hr class="border-gray-300 dark:border-gray-800 hacker-border-gray" />
         <p class="px-2 pt-2 pb-1 text-xs text-subtle uppercase font-bold">
           External Links
