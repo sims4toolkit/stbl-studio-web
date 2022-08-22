@@ -1,5 +1,6 @@
 <script lang="ts">
   import { saveAs } from "file-saver";
+  import Settings from "src/lib/services/settings";
   import type Project from "src/lib/models/project";
   import { getDisplayName } from "src/lib/utilities/localization";
   import { generateBlobForProjects } from "src/lib/utilities/downloading";
@@ -7,6 +8,7 @@
   import MultipageContentGroup from "src/components/layouts/MultipageContentGroup.svelte";
   import MultipageContent from "src/components/layouts/MultipageContent.svelte";
   import Select from "src/components/elements/Select.svelte";
+  import constants from "src/data/constants.json";
   const { enums } = window.S4TK;
 
   export let title: string;
@@ -16,16 +18,11 @@
   export let projects: Project[] = null;
 
   const projectsToDownload = projects ?? [project];
-  const allLocalesValue = 100;
 
-  let fileType: "package" | "stbl" | "json" = "package";
-  let localeValue = allLocalesValue;
-  let namingConvention: "s4s" | "s4pi" | "project" = "project";
-
-  $: namingConventionDisabled = fileType === "package";
+  $: namingConventionDisabled = Settings.downloadFileType === "package";
 
   $: {
-    if (namingConventionDisabled) namingConvention = "project";
+    if (namingConventionDisabled) Settings.downloadNamingConvention = "project";
   }
 
   const fileTypeOptions = [
@@ -45,7 +42,7 @@
 
   const localeOptions = [
     {
-      value: allLocalesValue,
+      value: constants.specialValues.allLocales,
       text: "All Locales",
     },
     ...enums.StringTableLocale.all().map((locale) => {
@@ -79,11 +76,11 @@
   async function downloadStbls() {
     generateBlobForProjects(
       projectsToDownload,
-      localeValue === allLocalesValue
+      Settings.downloadLocales === constants.specialValues.allLocales
         ? enums.StringTableLocale.all()
-        : [localeValue],
-      fileType,
-      namingConvention
+        : [Settings.downloadLocales],
+      Settings.downloadFileType,
+      Settings.downloadNamingConvention
     )
       .then(({ filename, data }) => {
         saveAs(data, filename);

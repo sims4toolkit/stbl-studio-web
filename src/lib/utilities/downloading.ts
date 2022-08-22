@@ -4,9 +4,6 @@ import type { ResourceKey } from "@s4tk/models/types";
 import type Project from "src/lib/models/project";
 const { models, enums, formatting } = window.S4TK;
 
-type FileDownloadType = "package" | "stbl" | "json";
-type FileNamingConvention = "s4s" | "s4pi" | "project";
-
 interface DownloadInfo {
   filename: string;
   data: Blob;

@@ -91,6 +91,24 @@ class StoredInteger extends StoredSetting<number> {
   }
 }
 
+class StoredString<T extends string = string> extends StoredSetting<T> {
+  constructor(
+    name: string,
+    defaultValue?: T,
+    callbacks?: OnChangeCallback<string>[]
+  ) {
+    super(name, defaultValue, callbacks);
+  }
+
+  protected _parseValue(value: string): T {
+    return value as T;
+  }
+
+  protected _stringifyValue(value: T): string {
+    return value;
+  }
+}
+
 class StoredJson<T extends object> extends StoredSetting<T> {
   constructor(
     name: string,
@@ -129,6 +147,9 @@ interface UserSettings {
   foundEasterEggs: EasterEgg[];
   disableEasterEggs: boolean;
   projectView: number;
+  downloadFileType: FileDownloadType;
+  downloadLocales: number;
+  downloadNamingConvention: FileNamingConvention;
 }
 
 type StoredUserSettings = {
@@ -237,6 +258,18 @@ const Settings = getSettingsProxy({
   },
   projectView: {
     cls: StoredInteger
+  },
+  downloadFileType: {
+    cls: StoredString,
+    defaultValue: "package"
+  },
+  downloadNamingConvention: {
+    cls: StoredString,
+    defaultValue: "project"
+  },
+  downloadLocales: {
+    cls: StoredInteger,
+    defaultValue: constants.specialValues.allLocales
   }
 });
 
