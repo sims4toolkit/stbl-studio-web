@@ -17,11 +17,11 @@
   export let project: Project = null;
   export let projects: Project[] = null;
 
+  let namingConventionDisabled = false;
   const projectsToDownload = projects ?? [project];
 
-  $: namingConventionDisabled = Settings.downloadFileType === "package";
-
   $: {
+    namingConventionDisabled = Settings.downloadFileType === "package";
     if (namingConventionDisabled) Settings.downloadNamingConvention = "project";
   }
 
@@ -114,14 +114,14 @@
             label="download as"
             name="file-type-select"
             fillWidth={true}
-            bind:selected={fileType}
+            bind:selected={Settings.downloadFileType}
             options={fileTypeOptions}
           />
           <Select
             label="locales"
             name="locales-select"
             fillWidth={true}
-            bind:selected={localeValue}
+            bind:selected={Settings.downloadLocales}
             options={localeOptions}
           />
           <Select
@@ -129,7 +129,7 @@
             name="naming-convention-select"
             disabled={namingConventionDisabled}
             fillWidth={true}
-            bind:selected={namingConvention}
+            bind:selected={Settings.downloadNamingConvention}
             options={namingConventionOptions}
           />
         </div>
