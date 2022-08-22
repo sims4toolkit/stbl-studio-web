@@ -3,6 +3,7 @@ import type { ResourceKey } from "@s4tk/models/types";
 import Settings from "src/lib/services/settings";
 import { normalizeJson } from "./json";
 const { enums, models } = window.S4TK;
+const { Buffer } = window.S4TK.Node;
 
 //#region Types
 
@@ -16,7 +17,7 @@ interface ParsedStringTable {
   stbl: StringTableJson;
 }
 
-interface ParsedFilesResult {
+export interface ParsedFilesResult {
   errors: ParsedFilesError[];
   stbls: ParsedStringTable[];
 }

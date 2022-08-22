@@ -38,6 +38,11 @@
     color: var(--color-text) !important;
   }
 
+  .hacker-text-green,
+  .hover\:hacker-text-green:hover {
+    color: var(--color-text-subtle) !important;
+  }
+
   .hacker-border-gray {
     border: 1px solid $dark-gray !important;
   }

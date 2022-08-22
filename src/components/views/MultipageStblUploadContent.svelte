@@ -2,19 +2,44 @@
   import { fade } from "svelte/transition";
   import Settings from "src/lib/services/settings";
   import type { MultipageContentState } from "src/components/layouts/types";
+  import type { ParsedFilesResult } from "src/lib/utilities/uploading";
   import MultipageContent from "src/components/layouts/MultipageContent.svelte";
   import FileInput from "src/components/elements/FileInput.svelte";
+  import { parseFiles } from "src/lib/utilities/uploading";
 
   export let startingPageNumber = 1;
   export let multipageState: MultipageContentState;
-  export let firstPageValid: boolean;
+  export let onValidUpload: (result: ParsedFilesResult) => void;
 
+  let uploadError: string;
   let files: FileList;
 
   $: {
-    if (files) {
-      firstPageValid = true; // TODO: validate files
+    if (files) parseUploadedFiles();
+  }
+
+  async function parseUploadedFiles() {
+    uploadError = undefined;
+
+    if (files.length < 1) {
+      uploadError = "No files to read";
+      return;
     }
+
+    parseFiles(files)
+      .then((result) => {
+        // TODO:
+        if (result.stbls.length >= 1) {
+          multipageState.currentPage++;
+          // onValidUpload(result);
+        } else {
+          uploadError = "No valid STBLs found";
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        uploadError = "Something went wrong";
+      });
   }
 </script>
 

@@ -42,7 +42,7 @@
       <div class="flex justify-between items-center">
         <p class="text-subtle text-xs font-bold">ENTER TEXT TO HASH</p>
         <button
-          class="text-xs text-accent-secondary-light dark:text-accent-secondary-dark underline hover:no-underline"
+          class="text-xs text-accent-secondary-light dark:text-accent-secondary-dark hacker-text-lime underline hover:no-underline"
           on:click={() => (value = "")}>CLEAR</button
         >
       </div>
@@ -59,14 +59,14 @@
         <div class="flex justify-between items-center">
           <p class="text-xs">Decimal</p>
           <button
-            class="monospace hover:text-accent-primary-light dark:hover:text-accent-primary-dark"
+            class="monospace hover:text-accent-primary-light dark:hover:text-accent-primary-dark hover:hacker-text-green"
             on:click={copyText}>{hash32}</button
           >
         </div>
         <div class="flex justify-between items-center">
           <p class="text-xs">Hexadecimal</p>
           <button
-            class="monospace hover:text-accent-primary-light dark:hover:text-accent-primary-dark"
+            class="monospace hover:text-accent-primary-light dark:hover:text-accent-primary-dark hover:hacker-text-green"
             on:click={copyText}>{hash32hex}</button
           >
         </div>
@@ -76,14 +76,14 @@
         <div class="flex justify-between items-center">
           <p class="text-xs">Decimal</p>
           <button
-            class="monospace hover:text-accent-primary-light dark:hover:text-accent-primary-dark"
+            class="monospace hover:text-accent-primary-light dark:hover:text-accent-primary-dark hover:hacker-text-green"
             on:click={copyText}>{hash64}</button
           >
         </div>
         <div class="flex justify-between items-center">
           <p class="text-xs">Hexadecimal</p>
           <button
-            class="monospace hover:text-accent-primary-light dark:hover:text-accent-primary-dark"
+            class="monospace hover:text-accent-primary-light dark:hover:text-accent-primary-dark hover:hacker-text-green"
             on:click={copyText}>{hash64hex}</button
           >
         </div>
