@@ -24,13 +24,21 @@
 
 <MovableWindow title="Hasher" {onClose}>
   <div class="flex-1 flex flex-col justify-between">
-    <TextInput
-      label="Enter text to hash"
-      name="hasher-input"
-      placeholder="Something..."
-      bind:value
-      fillWidth={true}
-    />
+    <div class="flex flex-col gap-2">
+      <div class="flex justify-between items-center">
+        <p class="text-subtle text-xs font-bold">ENTER TEXT TO HASH</p>
+        <button
+          class="text-xs text-accent-secondary-light dark:text-accent-secondary-dark underline hover:no-underline"
+          on:click={() => (value = "")}>CLEAR</button
+        >
+      </div>
+      <TextInput
+        name="hasher-input"
+        placeholder="Something..."
+        bind:value
+        fillWidth={true}
+      />
+    </div>
     <div class="flex flex-col gap-2">
       <div>
         <p class="text-sm text-subtle uppercase font-bold">32-bit</p>
