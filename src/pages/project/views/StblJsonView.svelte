@@ -13,7 +13,7 @@
 <div class="w-full flex flex-col gap-4">
   <div class="w-full flex justify-between">
     <p class="text-xs">
-      <span class="font-bold text-red-600 dark:text-red-500">WARNING:</span>
+      <span class="font-bold text-red-600 dark:text-red-400">WARNING:</span>
       Do not edit in JSON mode unless you know what you are doing.
     </p>
   </div>
