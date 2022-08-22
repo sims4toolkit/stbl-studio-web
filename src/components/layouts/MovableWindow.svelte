@@ -157,7 +157,7 @@
     }
 
     &:hover {
-      z-index: 5000;
+      z-index: 40;
     }
 
     .window-content {
