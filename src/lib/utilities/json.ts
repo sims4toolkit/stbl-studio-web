@@ -1,7 +1,7 @@
-import type { StringTableResource } from "@s4tk/models";
-import { validateHexString } from "./tgi";
-const { models } = window.S4TK;
-
+/**
+ * NOTE: This is different from the global StringTableJson type, which is used
+ * internally. This is meant to be more flexible, as it handles user input.
+ */
 type StblJson = {
   key: string | number;
   value?: string;
@@ -9,24 +9,41 @@ type StblJson = {
 }[];
 
 /**
- * Parses JSON content as a STBL.
+ * Parses an arbitrary JSON in a more flexible format and forces it into the
+ * internal StringTableJson<number> format.
  * 
  * @param content String or Buffer content to parse as JSON STBL
  */
-export function parseStblJson(content: string | Buffer): StringTableResource {
+export function normalizeJson(content: string | Buffer): StringTableJson<number> {
   const stringContent = typeof content === "string" ? content : content.toString();
   const json: StblJson = JSON.parse(stringContent);
-  return new models.StringTableResource(json.map((entry) => {
-    const key = typeof entry.key === "number"
-      ? entry.key
-      : (validateHexString(entry.key, 8) ? parseInt(entry.key, 16) : null);
+  return json.map((entry, i) => {
+    let key: number, value: string;
 
-    if (key == null || key > 0xFFFFFFFF)
-      throw new Error(`Key "${entry.key}" could not be parsed as a 32-bit number.`);
+    for (const prop in entry) {
+      const lowerProp = prop.toLowerCase();
+      if (lowerProp === "key") {
+        const keyValue = entry[prop];
+        if (typeof keyValue === "string") {
+          key = parseInt(entry[prop], 16);
+        } else if (typeof keyValue === "number") {
+          key = entry[prop];
+        }
+      } else if (lowerProp === "value" || lowerProp === "string") {
+        value = entry[prop];
+      }
+    }
 
-    //@ts-ignore
-    const value = (entry.value ?? entry.string ?? "").replaceAll("\n", "\\n");
+    if (key === undefined) {
+      throw new Error(`Entry at index ${i} does not have a key.`);
+    } else if (key < 0 || key > 0xFFFFFFFF) {
+      throw new Error(`Key of entry at index ${i} is out of bounds (${key}).`);
+    }
+
+    if (value === undefined) {
+      throw new Error(`Entry at index ${i} does not have a string value.`);
+    }
 
     return { key, value };
-  }));
+  });
 }

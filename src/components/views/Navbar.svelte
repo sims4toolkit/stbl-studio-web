@@ -3,10 +3,12 @@
   import HelpWindow from "src/components/windows/HelpWindow.svelte";
   import SettingsWindow from "src/components/windows/SettingsWindow.svelte";
   import HasherWindow from "../windows/HasherWindow.svelte";
+  import TokenAssistantWindow from "../windows/TokenAssistantWindow.svelte";
 
   let showSettingsWindow = false;
   let showHelpWindow = false;
   let showHasherWindow = false;
+  let showTokenAssistWindow = false;
 
   // redundant so icon can react without accessing settings
   let isLightTheme = Settings.isLightTheme;
@@ -51,6 +53,11 @@
           class="py-1 w-full rounded-t hover:bg-gray-300 hover:dark:bg-gray-700 hover:hacker-bg-gray"
           on:click={() => (showHasherWindow = true)}>Hasher</button
         >
+        <button
+          class="py-1 w-full rounded-t hover:bg-gray-300 hover:dark:bg-gray-700 hover:hacker-bg-gray"
+          on:click={() => (showTokenAssistWindow = true)}
+          >Token Assistant</button
+        >
         <hr class="border-gray-300 dark:border-gray-800 hacker-border-gray" />
         <button class="py-1 w-full">Second</button>
         <button class="py-1 w-full rounded-b">Last</button>
@@ -90,6 +97,10 @@
 
 {#if showHasherWindow}
   <HasherWindow onClose={() => (showHasherWindow = false)} />
+{/if}
+
+{#if showTokenAssistWindow}
+  <TokenAssistantWindow onClose={() => (showTokenAssistWindow = false)} />
 {/if}
 
 <style lang="scss">

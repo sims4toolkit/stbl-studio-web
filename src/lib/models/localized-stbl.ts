@@ -7,14 +7,6 @@ const { Buffer } = window.S4TK.Node;
 const UNTRANSLATED_PLACEHOLDER = "[UNTRANSLATED]";
 
 /**
- * A JSON representation of a single-locale string table.
- */
-type StringTableJson<KeyType extends number | string = number | string> = {
-  key: KeyType;
-  value: string;
-}[];
-
-/**
  * An entry in a LocalizedStringTable.
  */
 export interface LocalizedStringEntry {

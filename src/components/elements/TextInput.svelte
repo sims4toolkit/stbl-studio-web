@@ -66,10 +66,12 @@
     {placeholder}
     type="text"
     autocomplete="off"
-    class="block h-10 px-2 rounded text-sm placeholder-gray-500 dark:placeholder-gray-500 bg-transparent border border-gray-700 dark:border-gray-300"
+    class="block h-10 px-2 rounded text-sm placeholder-gray-500 dark:placeholder-gray-500 bg-transparent border"
     class:monospace
     class:mt-2={Boolean(label)}
     class:w-full={fillWidth}
+    class:border-gray-700={isValid}
+    class:dark:border-gray-300={isValid}
     class:border-red-600={!isValid}
     class:dark:border-red-400={!isValid}
   />
