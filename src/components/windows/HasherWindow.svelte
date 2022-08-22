@@ -6,6 +6,9 @@
 
   export let onClose: () => void;
 
+  let hintTimeout: any;
+  let hintPara: HTMLParagraphElement;
+
   let value: string = "";
   let useHighBit = false;
   let removeLocaleCode = false;
@@ -20,6 +23,17 @@
     ? enums.StringTableLocale.getInstanceBase(hash64raw)
     : hash64raw;
   $: hash64hex = formatting.formatAsHexString(hash64, bit64digits, usePrefix);
+
+  function copyText(event: MouseEvent) {
+    const btn = event.target as HTMLButtonElement;
+    navigator.clipboard.writeText(btn.innerText);
+    hintPara.innerText = "Copied!";
+    if (hintTimeout) clearTimeout(hintTimeout);
+    hintTimeout = setTimeout(() => {
+      hintPara.innerText = "Click number to copy.";
+      hintTimeout = undefined;
+    }, 1500);
+  }
 </script>
 
 <MovableWindow title="Hasher" {onClose}>
@@ -44,24 +58,39 @@
         <p class="text-sm text-subtle uppercase font-bold">32-bit</p>
         <div class="flex justify-between items-center">
           <p class="text-xs">Decimal</p>
-          <p class="monospace">{hash32}</p>
+          <button
+            class="monospace hover:text-accent-primary-light dark:hover:text-accent-primary-dark"
+            on:click={copyText}>{hash32}</button
+          >
         </div>
         <div class="flex justify-between items-center">
           <p class="text-xs">Hexadecimal</p>
-          <p class="monospace">{hash32hex}</p>
+          <button
+            class="monospace hover:text-accent-primary-light dark:hover:text-accent-primary-dark"
+            on:click={copyText}>{hash32hex}</button
+          >
         </div>
       </div>
       <div>
         <p class="text-sm text-subtle uppercase font-bold">64-bit</p>
         <div class="flex justify-between items-center">
           <p class="text-xs">Decimal</p>
-          <p class="monospace">{hash64}</p>
+          <button
+            class="monospace hover:text-accent-primary-light dark:hover:text-accent-primary-dark"
+            on:click={copyText}>{hash64}</button
+          >
         </div>
         <div class="flex justify-between items-center">
           <p class="text-xs">Hexadecimal</p>
-          <p class="monospace">{hash64hex}</p>
+          <button
+            class="monospace hover:text-accent-primary-light dark:hover:text-accent-primary-dark"
+            on:click={copyText}>{hash64hex}</button
+          >
         </div>
       </div>
+      <p bind:this={hintPara} class="text-xs text-subtle text-right">
+        Click number to copy.
+      </p>
     </div>
     <div class="flex flex-col gap-2">
       <Switch label="Force high bit" bind:checked={useHighBit} />
