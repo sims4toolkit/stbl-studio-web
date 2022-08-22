@@ -5,8 +5,9 @@
   export let files: FileList = undefined;
   export let label = "";
   export let multiple = false;
-  export let filesInvalid = false;
   export let errorMessage = "";
+
+  $: filesInvalid = Boolean(errorMessage);
 </script>
 
 <div>
@@ -16,10 +17,7 @@
         >{label}</label
       >
       {#if filesInvalid}
-        <p
-          in:fade
-          class="uppercase text-sm text-red-600 dark:text-red-400 my-0 ml-2"
-        >
+        <p in:fade class="text-sm text-red-600 dark:text-red-400 my-0 ml-2">
           • {errorMessage}
         </p>
       {/if}

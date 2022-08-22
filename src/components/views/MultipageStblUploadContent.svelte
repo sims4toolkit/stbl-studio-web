@@ -9,7 +9,7 @@
 
   export let startingPageNumber = 1;
   export let multipageState: MultipageContentState;
-  export let onValidUpload: (result: ParsedFilesResult) => void;
+  export let parseResult: ParsedFilesResult;
 
   let uploadError: string;
   let files: FileList;
@@ -28,10 +28,14 @@
 
     parseFiles(files)
       .then((result) => {
-        // TODO:
+        parseResult = result;
         if (result.stbls.length >= 1) {
-          multipageState.currentPage++;
-          // onValidUpload(result);
+          if (result.errors.length >= 1) {
+            multipageState.currentPage++;
+            multipageState.nextButtonEnabled = true;
+          } else {
+            multipageState.currentPage = 3;
+          }
         } else {
           uploadError = "No valid STBLs found";
         }
@@ -55,7 +59,7 @@
       label="upload files"
       bind:files
       multiple={true}
-      errorMessage="Test"
+      errorMessage={uploadError}
     />
     <div>
       <p class="text-xs text-subtle mb-2">
@@ -77,7 +81,30 @@
   bind:state={multipageState}
 >
   <div in:fade={{ duration: Settings.reduceMotion ? 0 : 500 }} class="w-full">
-    <!-- TODO: implement -->
-    <p>File summary</p>
+    <p class="mb-3">
+      Found {parseResult.stbls.length} valid string table(s) in {files.length -
+        parseResult.errors.length} file(s).
+    </p>
+    {#if parseResult.errors.length === 0}
+      <p>No uploaded files had errors.</p>
+    {:else}
+      <p class="mb-1">
+        {parseResult.errors.length} file(s) either could not be read or did not contain
+        any string tables.
+      </p>
+      <div class="max-h-24 overflow-x-hidden overflow-y-auto">
+        <ul class="list-disc pl-8 flex flex-col">
+          {#each parseResult.errors as err, key (key)}
+            <li class="pl-2">
+              <span
+                class="text-accent-primary-light dark:text-accent-primary-dark hacker-text-lime"
+                >{err.filename}</span
+              >
+              = {err.message}
+            </li>
+          {/each}
+        </ul>
+      </div>
+    {/if}
   </div>
 </MultipageContent>

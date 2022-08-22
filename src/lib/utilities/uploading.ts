@@ -20,6 +20,7 @@ interface ParsedStringTable {
 export interface ParsedFilesResult {
   errors: ParsedFilesError[];
   stbls: ParsedStringTable[];
+  instances: bigint[];
 }
 
 //#endregion Types
@@ -33,10 +34,8 @@ export interface ParsedFilesResult {
  */
 export async function parseFiles(files: FileList): Promise<ParsedFilesResult> {
   return new Promise(async (resolve, reject) => {
-    const result: ParsedFilesResult = {
-      errors: [],
-      stbls: []
-    };
+    const errors: ParsedFilesError[] = [];
+    const stbls: ParsedStringTable[] = [];
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
@@ -45,20 +44,26 @@ export async function parseFiles(files: FileList): Promise<ParsedFilesResult> {
         const buffer = Buffer.from(await file.arrayBuffer());
         const parsed = parseFile(file.name, buffer);
         if (parsed.length) {
-          result.stbls.push(...parsed);
+          stbls.push(...parsed);
         } else {
           throw new Error("No string tables found.");
         }
       } catch (err) {
         console.error(`Error while reading "${file.name}"\n${err}`);
-        result.errors.push({
+        errors.push({
           filename: file.name,
           message: err
         });
       }
     }
 
-    resolve(result);
+    const instances = new Set<bigint>();
+    stbls.forEach(({ key }) => {
+      const inst14 = enums.StringTableLocale.getInstanceBase(key.instance);
+      instances.add(inst14);
+    });
+
+    resolve({ errors, stbls, instances: [...instances] });
   });
 }
 
