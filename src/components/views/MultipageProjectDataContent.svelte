@@ -7,6 +7,7 @@
   import TextInput from "src/components/elements/TextInput.svelte";
   import LocaleSelect from "src/components/controls/LocaleSelect.svelte";
   import Checkbox from "src/components/elements/Checkbox.svelte";
+  import Settings from "src/lib/services/settings";
 
   export let startingPageNumber = 1;
   export let multipageState: MultipageContentState;
@@ -116,7 +117,7 @@
   pageNumber={startingPageNumber + 1}
   bind:state={multipageState}
 >
-  <div in:fade class="w-full">
+  <div in:fade={{ duration: Settings.reduceMotion ? 0 : 500 }} class="w-full">
     {#if Boolean(localeChoicesDetail)}
       <p class="mb-6">{localeChoicesDetail}</p>
     {/if}

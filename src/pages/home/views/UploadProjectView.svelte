@@ -13,6 +13,7 @@
   import MultipageContentGroup from "src/components/layouts/MultipageContentGroup.svelte";
   import MultipageContent from "src/components/layouts/MultipageContent.svelte";
   import FileInput from "src/components/elements/FileInput.svelte";
+  import MultipageStblUploadContent from "src/components/views/MultipageStblUploadContent.svelte";
   const { enums } = window.S4TK;
   const { fnv64 } = window.S4TK.hashing;
   const { formatAsHexString } = window.S4TK.formatting;
@@ -39,6 +40,14 @@
     currentPage: 1,
     nextButtonEnabled: false,
   };
+
+  let validFilesUploaded = false;
+
+  $: {
+    if (multipageState.currentPage === 1 && validFilesUploaded) {
+      multipageState.nextButtonEnabled = true;
+    }
+  }
 
   $: {
     primaryLocale;
@@ -74,44 +83,18 @@
   title="Upload Project"
   subtitle="UUID: {uuid}"
   numPages={4}
-  minimumContentHeight="220"
+  minimumContentHeight="230"
   centerVertically={true}
   bind:state={multipageState}
   completeButton="Create"
   onLastPageComplete={createProject}
 >
   <div slot="content" class="w-full">
-    <MultipageContent pageNumber={1} bind:state={multipageState}>
-      <div class="flex flex-col gap-6">
-        <p>
-          Upload the string table(s) you'd like to include in this project. They
-          can be binary, JSON, or in packages. Feel free to upload all of the
-          packages for your mod, unneeded files will be ignored.
-        </p>
-        <FileInput
-          accept=".package,.stbl,.binary,.json"
-          label="upload files"
-          multiple={true}
-          errorMessage="Test"
-        />
-        <div>
-          <p class="text-sm text-subtle mb-2">
-            If there are multiple tables for the same language, they will be
-            merged. The best way to ensure that multiple languages are handled
-            properly is by uploading them in packages.
-          </p>
-          <p class="text-sm text-subtle">
-            Using JSON? Read about the expected structure <span
-              class="underline text-accent-secondary-light dark:text-accent-secondary-dark"
-              >here</span
-            >.
-          </p>
-        </div>
-      </div>
-    </MultipageContent>
-    <MultipageContent pageNumber={2} bind:state={multipageState}>
-      <p>Second</p>
-    </MultipageContent>
+    <MultipageStblUploadContent
+      startingPageNumber={1}
+      bind:multipageState
+      bind:firstPageValid={validFilesUploaded}
+    />
     <MultipageProjectDataContent
       startingPageNumber={3}
       bind:multipageState
