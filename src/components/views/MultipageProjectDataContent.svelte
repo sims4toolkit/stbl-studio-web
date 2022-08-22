@@ -1,13 +1,15 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
   import type { StringTableLocale } from "@s4tk/models/enums";
+  import Settings from "src/lib/services/settings";
+  import { getDisplayName } from "src/lib/utilities/localization";
   import { validateHexString } from "src/lib/utilities/tgi";
   import type { MultipageContentState } from "src/components/layouts/types";
   import MultipageContent from "src/components/layouts/MultipageContent.svelte";
   import TextInput from "src/components/elements/TextInput.svelte";
   import LocaleSelect from "src/components/controls/LocaleSelect.svelte";
   import Checkbox from "src/components/elements/Checkbox.svelte";
-  import Settings from "src/lib/services/settings";
+  const { enums } = window.S4TK;
 
   export let startingPageNumber = 1;
   export let multipageState: MultipageContentState;
@@ -33,12 +35,25 @@
     firstPageValid = nameValid && groupValid && instanceValid;
   }
 
+  $: {
+    primaryLocale;
+    refreshLocaleOptions();
+  }
+
   function toggleOtherLocales(checked: boolean) {
     localeChoices.forEach((choice) => {
       choice.checked = checked;
     });
 
     localeChoices = localeChoices;
+  }
+
+  function refreshLocaleOptions() {
+    localeChoices = enums.StringTableLocale.all().map((locale) => ({
+      checked: locale === primaryLocale,
+      displayName: getDisplayName(locale),
+      locale,
+    }));
   }
 </script>
 

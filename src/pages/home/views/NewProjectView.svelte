@@ -38,11 +38,6 @@
     nextButtonEnabled: false,
   };
 
-  $: {
-    primaryLocale;
-    refreshLocaleOptions();
-  }
-
   const subscriptions = [
     activeWorkspaceStore.subscribe((workspace) => {
       if (workspace) activeWorkspace = workspace;
@@ -79,14 +74,6 @@
     activeWorkspace.addProject(project);
 
     onComplete();
-  }
-
-  function refreshLocaleOptions() {
-    localeChoices = enums.StringTableLocale.all().map((locale) => ({
-      checked: locale === primaryLocale,
-      displayName: getDisplayName(locale),
-      locale,
-    }));
   }
 </script>
 
