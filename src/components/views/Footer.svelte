@@ -1,5 +1,19 @@
+<script lang="ts">
+  import { wompWompStore } from "src/lib/services/settings";
+  import { fade } from "svelte/transition";
+
+  let showWompWomp = false;
+
+  function revealWompWomp(event: MouseEvent) {
+    const btn = event.target as HTMLButtonElement;
+    btn.remove();
+    showWompWomp = true;
+    wompWompStore.set(true);
+  }
+</script>
+
 <footer
-  class="w-full py-12 px-4 flex justify-center bg-gray-200 dark:bg-gray-900"
+  class="relative w-full py-12 px-4 flex justify-center bg-gray-200 dark:bg-gray-900"
 >
   <div class="w-full xl:max-w-screen-xl text-center flex flex-col gap-10">
     <div class="flex flex-col gap-4">
@@ -69,4 +83,17 @@
       <p class="text-subtle">2022 © Frank Kulak</p>
     </div>
   </div>
+  <button
+    class="absolute flex items-center justify-center bg-gray-200 dark:bg-gray-900 hacker-bg-black w-10 h-10 left-4 bottom-4"
+    on:click={revealWompWomp}
+    tabindex="-1"
+  />
+  {#if showWompWomp}
+    <div
+      in:fade
+      class="absolute flex items-center justify-center w-10 h-10 left-4 bottom-4"
+    >
+      <img class="h-6" src="./assets/wompwomp.png" alt="Womp Womp" />
+    </div>
+  {/if}
 </footer>

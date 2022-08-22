@@ -131,7 +131,7 @@ class StoredJson<T extends object> extends StoredSetting<T> {
 
 //#region Settings
 
-type EasterEgg = "rickroll" | "hacker" | "pride";
+type EasterEgg = "rickroll" | "hacker" | "pride" | "womp";
 
 interface UserSettings {
   defaultLocale: StringTableLocale;
@@ -299,5 +299,8 @@ rickGifStore.subscribe(easterEggFoundCallback("rickroll"));
 
 export const prideFlagOverlayStore = writable(false);
 prideFlagOverlayStore.subscribe(easterEggFoundCallback("pride"));
+
+export const wompWompStore = writable(false);
+wompWompStore.subscribe(easterEggFoundCallback("womp"));
 
 //#endregion Stores
