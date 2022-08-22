@@ -58,6 +58,6 @@
 </script>
 
 <div
-  class="fixed top-0 right-0 bottom-0 left-0 pointer-events-none opacity-10 z-50"
+  class="fixed top-0 right-0 bottom-0 left-0 pointer-events-none opacity-20 z-50"
   bind:this={hackedMainframeOverlay}
 />
