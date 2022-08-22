@@ -47,20 +47,39 @@
       />
       <div class="dropdown-bridge" />
       <div
-        class="dropdown-content drop-shadow-md rounded bg-gray-200 dark:bg-gray-900 hacker-border-gray hacker-bg-black"
+        class="dropdown-content drop-shadow-md rounded text-left bg-gray-200 dark:bg-gray-900 hacker-border-gray hacker-bg-black"
       >
         <button
-          class="py-1 w-full rounded-t hover:bg-gray-300 hover:dark:bg-gray-950 hover:hacker-bg-gray"
+          class="p-2 w-full text-sm text-left rounded-t hover:bg-gray-300 hover:dark:bg-gray-950 hover:hacker-bg-gray"
           on:click={() => (showHasherWindow = !showHasherWindow)}>Hasher</button
         >
         <button
-          class="py-1 w-full hover:bg-gray-300 hover:dark:bg-gray-950 hover:hacker-bg-gray"
+          class="p-2 w-full text-sm text-left hover:bg-gray-300 hover:dark:bg-gray-950 hover:hacker-bg-gray"
           on:click={() => (showTokenAssistWindow = !showTokenAssistWindow)}
           >Token Assistant</button
         >
         <hr class="border-gray-300 dark:border-gray-800 hacker-border-gray" />
-        <button class="py-1 w-full">Second</button>
-        <button class="py-1 w-full rounded-b">Last</button>
+        <a
+          class="p-2 w-full text-sm rounded-b no-underline block hover:bg-gray-300 hover:dark:bg-gray-950 hover:hacker-bg-gray"
+          href="#/tools/pronouns">Pronoun Batch Fix</a
+        >
+        <a
+          class="p-2 w-full text-sm rounded-b no-underline block hover:bg-gray-300 hover:dark:bg-gray-950 hover:hacker-bg-gray"
+          href="#/tools/pronouns">STBL Editor</a
+        >
+        <a
+          class="p-2 w-full text-sm rounded-b no-underline block hover:bg-gray-300 hover:dark:bg-gray-950 hover:hacker-bg-gray"
+          href="#/tools/merger">STBL Merger</a
+        >
+        <hr class="border-gray-300 dark:border-gray-800 hacker-border-gray" />
+        <p class="px-2 pt-2 pb-1 text-xs text-subtle uppercase font-bold">
+          External Links
+        </p>
+        <a
+          class="p-2 w-full text-sm rounded-b no-underline block hover:bg-gray-300 hover:dark:bg-gray-950 hover:hacker-bg-gray"
+          href="https://lot51.cc/tdesc/tools/strings"
+          target="_blank">String Search</a
+        >
       </div>
     </button>
     <button on:click={() => (showHelpWindow = !showHelpWindow)}>
