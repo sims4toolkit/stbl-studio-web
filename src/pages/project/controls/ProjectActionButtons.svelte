@@ -70,7 +70,7 @@
             keybinding: "s",
             onClick: ifNotInModal(() => {
               if (Settings.rickGif) {
-                window.location.href = constants.links.rickRoll;
+                window.open(constants.links.rickRoll, "_blank");
               } else {
                 modalContentArgs = {
                   title: "Download Project",

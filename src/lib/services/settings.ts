@@ -222,6 +222,9 @@ const Settings = getSettingsProxy({
     callbacks: [
       (value) => {
         rickGifStore.set(value);
+      },
+      (value) => {
+        if (value) window.open(constants.links.rickRoll, "_blank");
       }
     ]
   },

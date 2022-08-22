@@ -51,7 +51,7 @@
             disabled: selectionGroup.numSelected < 1,
             onClick: ifNotInModal(() => {
               if (Settings.rickGif) {
-                window.location.href = constants.links.rickRoll;
+                window.open(constants.links.rickRoll, "_blank");
               } else {
                 modalContentComponent = DownloadProjectView;
                 modalContentArgs = {
@@ -106,7 +106,7 @@
             keybinding: "s",
             onClick: ifNotInModal(() => {
               if (Settings.rickGif) {
-                window.location.href = constants.links.rickRoll;
+                window.open(constants.links.rickRoll, "_blank");
               } else {
                 workspace.toJson().then((json) => {
                   const blob = new Blob([JSON.stringify(json)]);
