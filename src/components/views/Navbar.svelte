@@ -50,12 +50,12 @@
         class="dropdown-content drop-shadow-md rounded bg-gray-200 dark:bg-gray-900 hacker-border-gray hacker-bg-black"
       >
         <button
-          class="py-1 w-full rounded-t hover:bg-gray-300 hover:dark:bg-gray-700 hover:hacker-bg-gray"
-          on:click={() => (showHasherWindow = true)}>Hasher</button
+          class="py-1 w-full rounded-t hover:bg-gray-300 hover:dark:bg-gray-950 hover:hacker-bg-gray"
+          on:click={() => (showHasherWindow = !showHasherWindow)}>Hasher</button
         >
         <button
-          class="py-1 w-full rounded-t hover:bg-gray-300 hover:dark:bg-gray-700 hover:hacker-bg-gray"
-          on:click={() => (showTokenAssistWindow = true)}
+          class="py-1 w-full hover:bg-gray-300 hover:dark:bg-gray-950 hover:hacker-bg-gray"
+          on:click={() => (showTokenAssistWindow = !showTokenAssistWindow)}
           >Token Assistant</button
         >
         <hr class="border-gray-300 dark:border-gray-800 hacker-border-gray" />
