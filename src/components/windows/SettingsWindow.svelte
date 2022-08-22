@@ -102,7 +102,7 @@
         </div>
         <div class="flex flex-col gap-4">
           <button
-            class="setting hover:bg-red-500 focus:bg-red-500 border border-red-500 h-10 flex items-center justify-center gap-4 rounded"
+            class="setting hover:bg-red-600 focus:bg-red-600 dark:hover:bg-red-500 dark:focus:bg-red-500 border border-red-600 dark:border-red-500 h-10 flex items-center justify-center gap-4 rounded"
             on:click={() => (resettingWorkspace = true)}
           >
             <img class="svg h-4" src="./assets/trash.svg" alt="Trash" />
