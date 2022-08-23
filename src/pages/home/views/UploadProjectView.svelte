@@ -66,7 +66,33 @@
   });
 
   function createProject() {
-    // TODO:
+    const stbl = new LocalizedStringTable(
+      primaryLocale,
+      new Set(
+        localeChoices
+          .filter((choice) => choice.checked)
+          .map((choice) => choice.locale)
+      )
+    );
+
+    const project = new Project(
+      uuid,
+      {
+        name: projectName,
+        group: parseInt(groupHexString, 16),
+        instance: BigInt(
+          instanceHexString.startsWith("0x")
+            ? instanceHexString
+            : `0x${instanceHexString}`
+        ),
+        numEntries: stbl.numEntries,
+        numLocales: stbl.numLocales,
+        primaryLocale,
+      },
+      stbl
+    );
+
+    activeWorkspace.addProject(project);
 
     onComplete();
   }
@@ -85,8 +111,6 @@
       const [locale] = parseResult.locales;
       primaryLocale = locale;
     }
-
-    // TODO: other locale options
   }
 
   function onNextButtonClick(page: number) {
@@ -162,6 +186,7 @@
       bind:instanceHexString
       bind:primaryLocale
       bind:localeChoices
+      checkedLocales={parseResult?.locales}
       tgiChoicesDetail="The instance is the hash of the UUID by default, but it can be changed
       manually."
       localeChoicesDetail="Select any locales you want to track translations for. You can still download locales that are not included, but they will contain the same text as your primary locale."

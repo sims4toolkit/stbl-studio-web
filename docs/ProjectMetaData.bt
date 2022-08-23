@@ -15,6 +15,7 @@ byte version;
 uint32 group <format=hex>;
 uint64 instance : 56 <format=hex>;
 uint64 primaryLocale : 8 <format=hex>;
+byte pinned;
 byte numLocales;
 uint32 numEntries;
 string name;

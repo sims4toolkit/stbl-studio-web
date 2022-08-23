@@ -26,6 +26,7 @@
   export let groupHexString: string;
   export let instanceHexString: string;
   export let primaryLocale: StringTableLocale;
+  export let checkedLocales = new Set<StringTableLocale>();
   export let localeChoices: {
     checked: boolean;
     displayName: string;
@@ -67,7 +68,7 @@
 
   function refreshLocaleOptions() {
     localeChoices = enums.StringTableLocale.all().map((locale) => ({
-      checked: locale === primaryLocale,
+      checked: checkedLocales.has(locale) || locale === primaryLocale,
       displayName: getDisplayName(locale),
       locale,
     }));
