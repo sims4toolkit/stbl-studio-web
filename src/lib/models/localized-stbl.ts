@@ -166,6 +166,38 @@ export default class LocalizedStringTable {
   }
 
   /**
+   * Returns a list of issues found in this stbl.
+   */
+  getIssues(): { idList: number[]; message: string; }[] {
+    const issues: { idList: number[]; message: string; }[] = [];
+
+    // maps keys to list of IDs
+    const foundKeys = new Map<number, number[]>();
+    this._entryMap.forEach((entry, id) => {
+      if (foundKeys.has(entry.key)) {
+        foundKeys.get(entry.key).push(id);
+      } else {
+        foundKeys.set(entry.key, [id]);
+      }
+    });
+
+    // TODO: strings that are in translated stbl but not primary
+    // TODO: strings that are the same with different keys
+
+    foundKeys.forEach((idList, key) => {
+      if (idList.length > 1) {
+        const formattedKey = formatting.formatStringKey(key);
+        issues.push({
+          idList,
+          message: `Repeated key: ${key}`
+        });
+      }
+    });
+
+    return issues;
+  }
+
+  /**
    * Returns a JSON structure containing the key/value pairs for the given
    * locale.
    * 
