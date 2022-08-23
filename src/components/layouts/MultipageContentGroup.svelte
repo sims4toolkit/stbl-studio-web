@@ -8,6 +8,7 @@
   export let numPages: number;
   export let state: MultipageContentState;
   export let onLastPageComplete: () => void;
+  export let onPageComplete: (page: number) => void = null;
 
   export let title: string = null;
   export let subtitle: string = null;
@@ -49,6 +50,8 @@
 
   function onNextButtonClick() {
     if (!state.nextButtonEnabled) return;
+
+    onPageComplete?.(state.currentPage);
 
     if (state.currentPage === numPages) {
       onLastPageComplete();

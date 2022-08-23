@@ -15,6 +15,7 @@
   import MultipageStblUploadContent from "src/components/views/MultipageStblUploadContent.svelte";
   import MultipageContent from "src/components/layouts/MultipageContent.svelte";
   import Select from "src/components/elements/Select.svelte";
+  import Switch from "src/components/elements/Switch.svelte";
   const { enums } = window.S4TK;
   const { fnv64 } = window.S4TK.hashing;
   const { formatAsHexString } = window.S4TK.formatting;
@@ -42,8 +43,9 @@
     nextButtonEnabled: false,
   };
 
-  let parseResult: ParsedFilesResult;
+  let parseResult: ParsedFilesResult = null;
   let chosenInstanceOption = 0;
+  let useUuidForInst = false;
   $: instanceOptions = parseResult?.instances.map((inst, i) => {
     return {
       value: i,
@@ -66,6 +68,20 @@
 
     onComplete();
   }
+
+  function onNextButtonClick(page: number) {
+    if (page === 3) {
+      multipageState.nextButtonEnabled = false;
+
+      if (!useUuidForInst) {
+        instanceHexString = formatAsHexString(
+          parseResult.instances[chosenInstanceOption],
+          14,
+          false
+        );
+      }
+    }
+  }
 </script>
 
 <MultipageContentGroup
@@ -78,6 +94,7 @@
   completeButton="Create"
   canClickBack={false}
   onLastPageComplete={createProject}
+  onPageComplete={onNextButtonClick}
 >
   <div slot="content" class="w-full">
     <MultipageStblUploadContent
@@ -86,13 +103,33 @@
       bind:parseResult
     />
     <MultipageContent pageNumber={3} bind:state={multipageState}>
-      <div in:fade={{ duration: Settings.reduceMotion ? 0 : 500 }}>
+      <div
+        class="flex flex-col gap-6"
+        in:fade={{ duration: Settings.reduceMotion ? 0 : 500 }}
+      >
+        {#if instanceOptions.length > 1}
+          <p>
+            There are {instanceOptions.length} instance bases in the uploaded STBLs.
+            Which should this project use?
+          </p>
+        {:else}
+          <p>There is 1 instance base in the uploaded STBL(s).</p>
+        {/if}
         <Select
           name="instance-select"
           label="existing instances"
+          disabled={useUuidForInst}
+          fillWidth={true}
           bind:selected={chosenInstanceOption}
           options={instanceOptions}
         />
+        <Switch
+          label="Alternatively, you can hash this project's UUID:"
+          bind:checked={useUuidForInst}
+        />
+        <p class="text-subtle text-xs">
+          ...or, you can set it manually on the next page.
+        </p>
       </div>
     </MultipageContent>
     <MultipageProjectDataContent

@@ -32,10 +32,11 @@
         if (result.stbls.length >= 1) {
           if (result.errors.length >= 1) {
             multipageState.currentPage++;
-            multipageState.nextButtonEnabled = true;
           } else {
             multipageState.currentPage = 3;
           }
+
+          multipageState.nextButtonEnabled = true;
         } else {
           uploadError = "No valid STBLs found";
         }

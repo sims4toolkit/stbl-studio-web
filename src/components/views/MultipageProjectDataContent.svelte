@@ -91,6 +91,7 @@
         fillWidth={true}
         bind:value={groupHexString}
         bind:isValid={groupValid}
+        monospace={true}
         validators={[
           {
             test: (value) => validateHexString(value, 8),
@@ -105,6 +106,7 @@
         fillWidth={true}
         bind:value={instanceHexString}
         bind:isValid={instanceValid}
+        monospace={true}
         validators={[
           {
             test: (value) => validateHexString(value, 14),
