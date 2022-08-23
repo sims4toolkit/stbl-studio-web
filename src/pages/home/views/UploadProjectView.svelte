@@ -133,6 +133,7 @@
       </div>
     </MultipageContent>
     <MultipageProjectDataContent
+      {uuid}
       startingPageNumber={4}
       bind:multipageState
       bind:firstPageValid={multipageState.nextButtonEnabled}

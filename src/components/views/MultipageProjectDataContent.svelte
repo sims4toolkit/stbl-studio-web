@@ -1,6 +1,8 @@
 <script lang="ts">
+  import { onDestroy } from "svelte";
   import { fade } from "svelte/transition";
   import type { StringTableLocale } from "@s4tk/models/enums";
+  import type Workspace from "src/lib/models/workspace";
   import Settings from "src/lib/services/settings";
   import { getDisplayName } from "src/lib/utilities/localization";
   import { validateHexString } from "src/lib/utilities/tgi";
@@ -9,6 +11,8 @@
   import TextInput from "src/components/elements/TextInput.svelte";
   import LocaleSelect from "src/components/controls/LocaleSelect.svelte";
   import Checkbox from "src/components/elements/Checkbox.svelte";
+  import { activeWorkspaceStore } from "src/lib/services/stores";
+  import { formatAsHexString } from "@s4tk/hashing/formatting";
   const { enums } = window.S4TK;
 
   export let startingPageNumber = 1;
@@ -17,6 +21,7 @@
   export let tgiChoicesDetail: string = null;
   export let localeChoicesDetail: string = null;
 
+  export let uuid: string;
   export let projectName: string;
   export let groupHexString: string;
   export let instanceHexString: string;
@@ -30,6 +35,18 @@
   let nameValid = false;
   let groupValid = false;
   let instanceValid = false;
+
+  let workspace: Workspace;
+
+  const subscriptions = [
+    activeWorkspaceStore.subscribe((wk) => {
+      workspace = wk;
+    }),
+  ];
+
+  onDestroy(() => {
+    subscriptions.forEach((unsub) => unsub());
+  });
 
   $: {
     firstPageValid = nameValid && groupValid && instanceValid;
@@ -76,11 +93,13 @@
           test: (value) => value.trim().length <= 30,
           message: "Cannot exceed 30 characters",
         },
-        // TODO: cannot reuse names
-        // {
-        //   test: (value) => value.trim().length <= 30,
-        //   message: "Cannot exceed 30 characters",
-        // },
+        {
+          test: (value) =>
+            !workspace.projects.some((project) => {
+              return project.uuid !== uuid && project.metaData.name === value;
+            }),
+          message: "Names must be unique",
+        },
       ]}
     />
     <div class="flex gap-4 flex-wrap sm:flex-nowrap">
@@ -116,6 +135,17 @@
             test: (value) =>
               BigInt(value.startsWith("0x") ? value : `0x${value}`) !== 0n,
             message: "Must be non-zero",
+          },
+          {
+            test: (value) =>
+              !workspace.projects.some((project) => {
+                return (
+                  project.uuid !== uuid &&
+                  formatAsHexString(project.metaData.instance, 14, false) ===
+                    value.replace("0x", "").toUpperCase()
+                );
+              }),
+            message: "Instances must be unique",
           },
         ]}
       />

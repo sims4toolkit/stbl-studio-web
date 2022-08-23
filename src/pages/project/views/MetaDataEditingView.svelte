@@ -40,7 +40,11 @@
 
     project.metaData.name = projectName;
     project.metaData.group = parseInt(groupHexString, 16);
-    project.metaData.instance = BigInt("0x" + instanceHexString);
+    project.metaData.instance = BigInt(
+      instanceHexString.startsWith("0x")
+        ? instanceHexString
+        : `0x${instanceHexString}`
+    );
     project.metaData.primaryLocale = primaryLocale;
     await project.saveToStorage();
 
@@ -63,6 +67,7 @@
 >
   <div slot="content" class="w-full">
     <MultipageProjectDataContent
+      uuid={project.uuid}
       bind:multipageState
       bind:firstPageValid={multipageState.nextButtonEnabled}
       bind:projectName

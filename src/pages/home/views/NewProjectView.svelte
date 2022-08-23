@@ -63,7 +63,11 @@
       {
         name: projectName,
         group: parseInt(groupHexString, 16),
-        instance: BigInt("0x" + instanceHexString),
+        instance: BigInt(
+          instanceHexString.startsWith("0x")
+            ? instanceHexString
+            : `0x${instanceHexString}`
+        ),
         numEntries: stbl.numEntries,
         numLocales: stbl.numLocales,
         primaryLocale,
@@ -89,6 +93,7 @@
 >
   <div slot="content" class="w-full">
     <MultipageProjectDataContent
+      {uuid}
       bind:multipageState
       bind:firstPageValid={multipageState.nextButtonEnabled}
       bind:projectName
