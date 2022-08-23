@@ -1,4 +1,5 @@
 import type { StringTableResource } from "@s4tk/models";
+import type { StringTableLocale } from "@s4tk/models/enums";
 import type { ResourceKey } from "@s4tk/models/types";
 import Settings from "src/lib/services/settings";
 import { normalizeJson } from "./json";
@@ -21,6 +22,7 @@ export interface ParsedFilesResult {
   errors: ParsedFilesError[];
   stbls: ParsedStringTable[];
   instances: bigint[];
+  locales: Set<StringTableLocale>;
 }
 
 //#endregion Types
@@ -58,12 +60,15 @@ export async function parseFiles(files: FileList): Promise<ParsedFilesResult> {
     }
 
     const instances = new Set<bigint>();
+    const locales = new Set<StringTableLocale>();
     stbls.forEach(({ key }) => {
+      const locale = enums.StringTableLocale.getLocale(key.instance);
+      locales.add(locale);
       const inst14 = enums.StringTableLocale.getInstanceBase(key.instance);
       instances.add(inst14);
     });
 
-    resolve({ errors, stbls, instances: [...instances] });
+    resolve({ errors, stbls, instances: [...instances], locales });
   });
 }
 

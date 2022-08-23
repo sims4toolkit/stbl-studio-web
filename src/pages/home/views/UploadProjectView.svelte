@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onDestroy } from "svelte";
   import { fade } from "svelte/transition";
-  import { v4 as uuidv4 } from "uuid";
+  import { parse, v4 as uuidv4 } from "uuid";
   import type { StringTableLocale } from "@s4tk/models/enums";
   import type { ParsedFilesResult } from "src/lib/utilities/uploading";
   import Settings from "src/lib/services/settings";
@@ -46,12 +46,14 @@
   let parseResult: ParsedFilesResult = null;
   let chosenInstanceOption = 0;
   let useUuidForInst = false;
-  $: instanceOptions = parseResult?.instances.map((inst, i) => {
-    return {
-      value: i,
-      text: formatAsHexString(inst, 14, false),
-    };
-  });
+  let instanceOptions: {
+    value: number;
+    text: string;
+  }[];
+
+  $: {
+    if (parseResult) handleParseResult();
+  }
 
   const subscriptions = [
     activeWorkspaceStore.subscribe((workspace) => {
@@ -67,6 +69,24 @@
     // TODO:
 
     onComplete();
+  }
+
+  function handleParseResult() {
+    instanceOptions = parseResult.instances.map((inst, i) => {
+      return {
+        value: i,
+        text: formatAsHexString(inst, 14, false),
+      };
+    });
+
+    if (parseResult.locales.has(Settings.defaultLocale)) {
+      primaryLocale = Settings.defaultLocale;
+    } else {
+      const [locale] = parseResult.locales;
+      primaryLocale = locale;
+    }
+
+    // TODO: other locale options
   }
 
   function onNextButtonClick(page: number) {
