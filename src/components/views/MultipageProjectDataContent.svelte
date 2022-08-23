@@ -112,6 +112,11 @@
             test: (value) => validateHexString(value, 14),
             message: "Must be 14-digit hex",
           },
+          {
+            test: (value) =>
+              BigInt(value.startsWith("0x") ? value : `0x${value}`) !== 0n,
+            message: "Must be non-zero",
+          },
         ]}
       />
       <LocaleSelect

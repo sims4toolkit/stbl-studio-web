@@ -45,7 +45,11 @@
   }
 
   function circleClickable(index: number) {
-    return canClickBack && index + 1 < state.currentPage;
+    return canClickBack && circleBeforeCurrent(index);
+  }
+
+  function circleBeforeCurrent(index: number) {
+    return index + 1 < state.currentPage;
   }
 
   function onNextButtonClick() {
@@ -99,6 +103,7 @@
         <button
           class="progress-circle h-5 w-5 rounded-full border border-gray-500"
           class:clickable={circleClickable(i)}
+          class:before-current={circleBeforeCurrent(i)}
           class:filled={circleFilledIn(i)}
           class:opacity-20={circleTransparent(i)}
           tabindex={circleClickable(i) ? 0 : -1}
@@ -125,6 +130,10 @@
 
       &.clickable:hover {
         cursor: pointer;
+      }
+
+      &.before-current:not(.clickable):hover {
+        cursor: not-allowed;
       }
     }
   }
