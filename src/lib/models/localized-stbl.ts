@@ -181,15 +181,22 @@ export default class LocalizedStringTable {
       }
     });
 
+    // TODO: string === ""
     // TODO: strings that are in translated stbl but not primary
     // TODO: strings that are the same with different keys
 
     foundKeys.forEach((idList, key) => {
-      if (idList.length > 1) {
-        const formattedKey = formatting.formatStringKey(key);
+      if (key === 0) {
         issues.push({
           idList,
-          message: `Repeated key: ${key}`
+          message: `Key is 0x00000000`
+        });
+      }
+
+      if (idList.length > 1) {
+        issues.push({
+          idList,
+          message: `Repeated key: ${formatting.formatStringKey(key)}`
         });
       }
     });
