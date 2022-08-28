@@ -40,7 +40,6 @@ function getOptionsForEnum(enumObj: object): { value: number; text: string; }[] 
 }
 
 export const sortOrderOptions = getOptionsForEnum(SortOrder);
-console.log(sortOrderOptions);
 
 export const filterTypeOptions = getOptionsForEnum(FilterType);
 
