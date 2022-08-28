@@ -9,6 +9,7 @@
   import StblJsonView from "src/pages/project/views/StblJsonView.svelte";
   import LocaleSelect from "src/components/controls/LocaleSelect.svelte";
   import PaginationController from "src/components/controls/PaginationController.svelte";
+  import DisplayOptionsWindow from "src/components/windows/DisplayOptionsWindow.svelte";
 
   export let project: Project;
   export let selectionGroup: SelectionGroup<LocalizedStringEntry, number>;
@@ -62,6 +63,7 @@
   let chosenViewIndex = Math.min(Settings.projectView, viewOptions.length - 1);
   let chosenView = viewOptions[chosenViewIndex];
   let translatingTo = 0;
+  let showDisplayWindow = false;
 
   $: {
     chosenView = viewOptions[chosenViewIndex];
@@ -96,7 +98,14 @@
     </div>
     <div>
       {#if chosenView.utilities === "selectable"}
-        <SelectModeToggle bind:selectionGroup />
+        <div class="flex justify-center gap-4">
+          <button
+            class="text-sm hover:text-subtle"
+            on:click={() => (showDisplayWindow = !showDisplayWindow)}
+            >DISPLAY</button
+          >
+          <SelectModeToggle bind:selectionGroup />
+        </div>
       {:else if chosenView.utilities === "json"}
         <button>Save</button>
       {:else if chosenView.utilities === "translate"}
@@ -123,6 +132,10 @@
     }}
   />
 </div>
+
+{#if showDisplayWindow}
+  <DisplayOptionsWindow onClose={() => (showDisplayWindow = false)} />
+{/if}
 
 <style lang="scss">
   button.active {

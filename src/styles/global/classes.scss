@@ -64,7 +64,8 @@
   color: var(--color-accent-secondary);
 }
 
-.text-subtle {
+.text-subtle,
+.hover\:text-subtle:hover {
   color: var(--color-text-subtle);
 }
 
