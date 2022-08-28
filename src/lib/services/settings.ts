@@ -152,6 +152,7 @@ interface UserSettings {
   downloadFileType: FileDownloadType;
   downloadLocales: number;
   downloadNamingConvention: FileNamingConvention;
+  sortOrder: number;
 }
 
 type StoredUserSettings = {
@@ -273,6 +274,10 @@ const Settings = getSettingsProxy({
   downloadLocales: {
     cls: StoredInteger,
     defaultValue: constants.specialValues.allLocales
+  },
+  sortOrder: {
+    cls: StoredInteger,
+    defaultValue: 0
   }
 });
 

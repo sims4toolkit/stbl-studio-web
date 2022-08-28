@@ -1,5 +1,8 @@
 <script lang="ts">
-  import Settings from "src/lib/services/settings";
+  import { onDestroy } from "svelte";
+  import Settings, {
+    SettingsSubscriptionManager,
+  } from "src/lib/services/settings";
   import type Project from "src/lib/models/project";
   import type SelectionGroup from "src/lib/models/selection-group";
   import type { LocalizedStringEntry } from "src/lib/models/localized-stbl";
@@ -17,8 +20,44 @@
   let entries = project.stbl.entries;
   let sliceToRender: LocalizedStringEntry[] = [];
 
+  const subscriptions = [
+    SettingsSubscriptionManager.subscribe("sortOrder", () => {
+      project = project;
+    }),
+  ];
+
+  onDestroy(() => {
+    subscriptions.forEach((unsub) => unsub());
+  });
+
   $: {
-    entries = project.stbl.entries;
+    project;
+    refreshEntries();
+  }
+
+  function refreshEntries() {
+    entries = (() => {
+      switch (Settings.sortOrder) {
+        case 1:
+          return [...project.stbl.entries].sort((a, b) => {
+            const aValue = project.stbl.getValue(a.id).toLowerCase();
+            const bValue = project.stbl.getValue(b.id).toLowerCase();
+            if (aValue < bValue) return -1;
+            if (aValue > bValue) return 1;
+            return 0;
+          });
+        case 2:
+          return [...project.stbl.entries].sort((a, b) => {
+            const aValue = project.stbl.getValue(a.id).toLowerCase();
+            const bValue = project.stbl.getValue(b.id).toLowerCase();
+            if (aValue < bValue) return 1;
+            if (aValue > bValue) return -1;
+            return 0;
+          });
+        default:
+          return project.stbl.entries;
+      }
+    })();
   }
 
   type UtilitiesType = "selectable" | "json" | "translate";

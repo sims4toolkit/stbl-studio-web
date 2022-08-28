@@ -17,21 +17,19 @@
   let nextButtonValue: number;
   let showSecondDots = false;
   let lastButtonValue: number;
+  let itemsPerPage: number;
 
-  let itemsPerPage = Settings.showAllStrings
-    ? items.length
-    : Settings.entriesPerPage;
+  function updateItemsPerPage() {
+    itemsPerPage = Settings.showAllStrings
+      ? Number.MAX_SAFE_INTEGER
+      : Settings.entriesPerPage;
+  }
+
+  updateItemsPerPage();
 
   const subscriptions = [
-    SettingsSubscriptionManager.subscribe(
-      "showAllStrings",
-      (value: boolean) => {
-        itemsPerPage = value ? items.length : Settings.entriesPerPage;
-      }
-    ),
-    SettingsSubscriptionManager.subscribe("entriesPerPage", (value: number) => {
-      itemsPerPage = Settings.showAllStrings ? items.length : value;
-    }),
+    SettingsSubscriptionManager.subscribe("showAllStrings", updateItemsPerPage),
+    SettingsSubscriptionManager.subscribe("entriesPerPage", updateItemsPerPage),
     subscribeToKey(
       "ArrowRight",
       () => {
