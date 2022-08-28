@@ -13,12 +13,17 @@
   import LocaleSelect from "src/components/controls/LocaleSelect.svelte";
   import PaginationController from "src/components/controls/PaginationController.svelte";
   import DisplayOptionsWindow from "src/components/windows/DisplayOptionsWindow.svelte";
+  import {
+    FilterTerm,
+    getEntriesToShow,
+  } from "src/lib/utilities/string-display";
 
   export let project: Project;
   export let selectionGroup: SelectionGroup<LocalizedStringEntry, number>;
 
   let entries = project.stbl.entries;
   let sliceToRender: LocalizedStringEntry[] = [];
+  let filters: FilterTerm[] = [];
 
   const subscriptions = [
     SettingsSubscriptionManager.subscribe("sortOrder", () => {
@@ -32,32 +37,13 @@
 
   $: {
     project;
-    refreshEntries();
-  }
-
-  function refreshEntries() {
-    entries = (() => {
-      switch (Settings.sortOrder) {
-        case 1:
-          return [...project.stbl.entries].sort((a, b) => {
-            const aValue = project.stbl.getValue(a.id).toLowerCase();
-            const bValue = project.stbl.getValue(b.id).toLowerCase();
-            if (aValue < bValue) return -1;
-            if (aValue > bValue) return 1;
-            return 0;
-          });
-        case 2:
-          return [...project.stbl.entries].sort((a, b) => {
-            const aValue = project.stbl.getValue(a.id).toLowerCase();
-            const bValue = project.stbl.getValue(b.id).toLowerCase();
-            if (aValue < bValue) return 1;
-            if (aValue > bValue) return -1;
-            return 0;
-          });
-        default:
-          return project.stbl.entries;
-      }
-    })();
+    filters;
+    entries = getEntriesToShow(
+      project.stbl.primaryLocale,
+      project.stbl.entries,
+      Settings.sortOrder,
+      filters
+    );
   }
 
   type UtilitiesType = "selectable" | "json" | "translate";
@@ -173,7 +159,10 @@
 </div>
 
 {#if showDisplayWindow}
-  <DisplayOptionsWindow onClose={() => (showDisplayWindow = false)} />
+  <DisplayOptionsWindow
+    bind:filters
+    onClose={() => (showDisplayWindow = false)}
+  />
 {/if}
 
 <style lang="scss">

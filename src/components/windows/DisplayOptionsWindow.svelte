@@ -1,10 +1,16 @@
 <script lang="ts">
   import Settings from "src/lib/services/settings";
+  import {
+    FilterTerm,
+    filterTypeOptions,
+  } from "src/lib/utilities/string-display";
   import MovableWindow from "src/components/layouts/MovableWindow.svelte";
   import Switch from "src/components/elements/Switch.svelte";
-  import Select from "../elements/Select.svelte";
+  import Select from "src/components/elements/Select.svelte";
+  import TextInput from "src/components/elements/TextInput.svelte";
 
   export let onClose: () => void;
+  export let filters: FilterTerm[] = [];
 
   let entriesPerPage = Settings.entriesPerPage;
 
@@ -12,6 +18,11 @@
     if (entriesPerPage < 1) entriesPerPage = 1;
     else if (entriesPerPage > 100) entriesPerPage = 100;
     Settings.entriesPerPage = entriesPerPage;
+  }
+
+  function deleteFilter(index: number) {
+    filters.splice(index, 1);
+    filters = filters;
   }
 </script>
 
@@ -71,7 +82,25 @@
       />
     </div>
     <div>
-      <p class="uppercase text-subtle text-xs font-bold">Filters</p>
+      <p class="uppercase text-subtle text-xs font-bold">Filter / Search</p>
+      {#each filters as filter, key (key)}
+        <div class="flex items-center gap-2">
+          <Select
+            name="filter-select-{key}"
+            bind:selected={filter.type}
+            options={filterTypeOptions}
+          />
+          <TextInput
+            name="filter-input-{key}"
+            placeholder="Text..."
+            fillWidth={true}
+            bind:value={filter.text}
+          />
+          <button class="font-bold" on:click={() => deleteFilter(key)}
+            >&times;</button
+          >
+        </div>
+      {/each}
     </div>
   </div>
 </MovableWindow>
