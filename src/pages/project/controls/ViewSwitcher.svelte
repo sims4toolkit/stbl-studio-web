@@ -73,7 +73,7 @@
 
 <div class="flex flex-col gap-8">
   <div
-    class="w-full flex justify-between items-center flex-wrap sm:flex-nowrap"
+    class="w-full flex justify-between sm:items-center flex-wrap sm:flex-nowrap flex-col sm:flex-row"
   >
     <div class="flex flex-col gap-2">
       <p class="text-subtle text-sm uppercase font-bold">
