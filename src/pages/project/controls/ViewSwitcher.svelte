@@ -24,6 +24,8 @@
   let entries = project.stbl.entries;
   let sliceToRender: LocalizedStringEntry[] = [];
   let filters: FilterTerm[] = [];
+  let saveJson: () => boolean;
+  let jsonSavedCooldown = false;
 
   const subscriptions = [
     SettingsSubscriptionManager.subscribe("sortOrder", () => {
@@ -52,18 +54,15 @@
     name: string;
     icon: string;
     component: any;
-    getArgs: () => object;
     utilities: UtilitiesType;
     pagination: boolean;
   }
 
-  const emptyArgs = {};
   const viewOptions: ViewOption[] = [
     {
       name: "List",
       icon: "list-outline",
       component: StblListViewCell,
-      getArgs: () => emptyArgs,
       utilities: "selectable",
       pagination: true,
     },
@@ -71,7 +70,6 @@
       name: "Grid",
       icon: "grid-outline",
       component: StblGridView,
-      getArgs: () => emptyArgs,
       utilities: "selectable",
       pagination: true,
     },
@@ -79,7 +77,6 @@
       name: "JSON",
       icon: "curly-braces",
       component: StblJsonView,
-      getArgs: () => emptyArgs,
       utilities: "json",
       pagination: false,
     },
@@ -93,6 +90,16 @@
   $: {
     chosenView = viewOptions[chosenViewIndex];
     Settings.projectView = chosenViewIndex;
+    if (chosenView.utilities !== "json") saveJson = undefined;
+  }
+
+  function handleSaveJsonClick() {
+    if (saveJson()) {
+      jsonSavedCooldown = true;
+      setTimeout(() => {
+        jsonSavedCooldown = false;
+      }, 1000);
+    }
   }
 </script>
 
@@ -132,20 +139,37 @@
           <SelectModeToggle bind:selectionGroup />
         </div>
       {:else if chosenView.utilities === "json"}
-        <button>Save</button>
+        <button
+          disabled={jsonSavedCooldown}
+          class="flex justify-center items-center text-sm gap-2 rounded py-1 w-24 default-button border border-black dark:border-white"
+          class:cursor-not-allowed={jsonSavedCooldown}
+          on:click={handleSaveJsonClick}
+          ><img
+            class="h-4"
+            src="./assets/save-outline.svg"
+            alt="Save"
+          />{jsonSavedCooldown ? "Saved!" : "Save"}</button
+        >
       {:else if chosenView.utilities === "translate"}
         <LocaleSelect label="translate to" bind:selected={translatingTo} />
       {/if}
     </div>
   </div>
   <div class="w-full">
-    <svelte:component
-      this={chosenView.component}
-      bind:project
-      bind:selectionGroup
-      bind:sliceToRender
-      {...chosenView.getArgs()}
-    />
+    {#if chosenView.utilities === "selectable"}
+      <svelte:component
+        this={chosenView.component}
+        bind:project
+        bind:selectionGroup
+        bind:sliceToRender
+      />
+    {:else if chosenView.utilities === "json"}
+      <svelte:component
+        this={chosenView.component}
+        bind:project
+        bind:saveJson
+      />
+    {/if}
   </div>
 </div>
 

@@ -1,7 +1,24 @@
 <script lang="ts">
   import type Project from "src/lib/models/project";
+  import { normalizeJson } from "src/lib/utilities/json";
 
   export let project: Project;
+  export const saveJson = () => {
+    try {
+      const json = normalizeJson(jsonContent);
+      project.replaceEntries(json);
+      project = project;
+      return true;
+    } catch (err) {
+      console.error(err);
+
+      alert(
+        "Your JSON appears to be malformed and could not be saved. Check the console for error details."
+      );
+
+      return false;
+    }
+  };
 
   let jsonContent = JSON.stringify(
     project.stbl.getJson<string>(undefined, true),

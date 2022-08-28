@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import type { StringTableLocale } from "@s4tk/models/enums";
 import DatabaseService from "src/lib/services/database.js";
-import LocalizedStringTable from "src/lib/models/localized-stbl.js";
+import LocalizedStringTable, { LocalizedStringEntry } from "src/lib/models/localized-stbl.js";
 const { encoding, enums, hashing } = window.S4TK;
 const { Buffer } = window.S4TK.Node;
 
@@ -136,6 +136,18 @@ export default class Project {
    */
   deleteStrings(ids: number[]) {
     ids.forEach(id => this.stbl.deleteEntry(id));
+    this.metaData.numEntries = this.stbl.numEntries;
+    this.saveToStorage();
+    this.stbl.saveToStorage(this.uuid);
+  }
+
+  /**
+   * Replaces the entries in this project and saves it to storage.
+   * 
+   * @param entries Entries to use
+   */
+  replaceEntries(entries: StringTableJson<number>) {
+    this.stbl.replaceEntries(entries);
     this.metaData.numEntries = this.stbl.numEntries;
     this.saveToStorage();
     this.stbl.saveToStorage(this.uuid);

@@ -117,7 +117,7 @@ button.default-button {
     filter: var(--filter-svg);
   }
 
-  &:hover {
+  &:not(:disabled):hover {
     color: var(--color-bg);
     border-color: var(--color-accent-secondary);
     background-color: var(--color-accent-secondary);
