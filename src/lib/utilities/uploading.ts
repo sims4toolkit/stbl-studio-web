@@ -1,6 +1,7 @@
 import type { StringTableResource } from "@s4tk/models";
 import type { StringTableLocale } from "@s4tk/models/enums";
 import type { ResourceKey } from "@s4tk/models/types";
+import LocalizedStringTable from "src/lib/models/localized-stbl";
 import Settings from "src/lib/services/settings";
 import { normalizeJson } from "./json";
 const { enums, models } = window.S4TK;
@@ -14,14 +15,15 @@ interface ParsedFilesError {
 }
 
 interface ParsedStringTable {
-  key: ResourceKey;
-  stbl: StringTableJson;
+  locale: StringTableLocale;
+  instanceBase: bigint;
+  stbl: StringTableJson<number>;
 }
 
 export interface ParsedFilesResult {
   errors: ParsedFilesError[];
   stbls: ParsedStringTable[];
-  instances: bigint[];
+  instances: Set<bigint>;
   locales: Set<StringTableLocale>;
 }
 
@@ -35,7 +37,7 @@ export interface ParsedFilesResult {
  * @param files FileList to extract stbls from
  */
 export async function parseFiles(files: FileList): Promise<ParsedFilesResult> {
-  return new Promise(async (resolve, reject) => {
+  return new Promise(async (resolve) => {
     const errors: ParsedFilesError[] = [];
     const stbls: ParsedStringTable[] = [];
 
@@ -61,14 +63,80 @@ export async function parseFiles(files: FileList): Promise<ParsedFilesResult> {
 
     const instances = new Set<bigint>();
     const locales = new Set<StringTableLocale>();
-    stbls.forEach(({ key }) => {
-      const locale = enums.StringTableLocale.getLocale(key.instance);
+    stbls.forEach(({ locale, instanceBase }) => {
       locales.add(locale);
-      const inst14 = enums.StringTableLocale.getInstanceBase(key.instance);
-      instances.add(inst14);
+      instances.add(instanceBase);
     });
 
-    resolve({ errors, stbls, instances: [...instances], locales });
+    resolve({ errors, stbls, instances, locales });
+  });
+}
+
+/**
+ * Resolves the given string tables by combining ones that have the same locale
+ * and ensuring that the primary locale has an entry for every key.
+ * 
+ * @param primaryLocale Primary locale of project
+ * @param stbls String tables to resolve
+ */
+export async function resolveStringTables(
+  primaryLocale: StringTableLocale,
+  stbls: ParsedStringTable[]
+): Promise<ParsedStringTable[]> {
+  return new Promise(async (resolve, reject) => {
+    const stblMap = new Map<StringTableLocale, ParsedStringTable[]>();
+
+    stbls.forEach(stbl => {
+      const arr = stblMap.get(stbl.locale) ?? [];
+      if (!stblMap.has(stbl.locale)) stblMap.set(stbl.locale, arr);
+      arr.push(stbl);
+    });
+
+    const primaryLocaleKeys = new Set<number>();
+    const otherLocaleKeys = new Set<number>();
+    const resolvedStbls: ParsedStringTable[] = [];
+    stblMap.forEach((stblArr, locale) => {
+      const entries = new Map<number, Set<string>>();
+
+      stblArr.forEach(({ stbl }) => {
+        stbl.forEach(({ key, value }) => {
+          if (!entries.get(key)?.has(value)) {
+            const stringMap = entries.get(key) ?? new Set<string>();
+            if (!entries.has(key)) entries.set(key, stringMap);
+            stringMap.add(value);
+          }
+
+          if (locale === primaryLocale) {
+            primaryLocaleKeys.add(key);
+          } else {
+            otherLocaleKeys.add(key);
+          }
+        });
+      });
+
+      const stblJson: StringTableJson<number> = [];
+      entries.forEach((values, key) => {
+        values.forEach(value => {
+          stblJson.push({ key, value });
+        });
+      });
+
+      resolvedStbls.push({
+        locale,
+        instanceBase: 0n, // not important
+        stbl: stblJson
+      });
+    });
+
+    const primaryLocaleStbl = resolvedStbls
+      .find(({ locale }) => locale === primaryLocale);
+
+    otherLocaleKeys.forEach(key => {
+      if (!primaryLocaleKeys.has(key))
+        primaryLocaleStbl.stbl.push({ key, value: "" });
+    });
+
+    resolve(resolvedStbls);
   });
 }
 
@@ -90,6 +158,7 @@ function parseFile(filename: string, buffer: Buffer): ParsedStringTable[] {
   } else {
     const key = getResourceKey(filename);
 
+    const instanceBase = enums.StringTableLocale.getInstanceBase(key.instance);
     const locale = enums.StringTableLocale.getLocale(key.instance);
     if (!(locale in enums.StringTableLocale)) {
       key.instance = enums.StringTableLocale.setHighByte(
@@ -109,7 +178,7 @@ function parseFile(filename: string, buffer: Buffer): ParsedStringTable[] {
         .toJsonObject(false, false);
     }
 
-    return [{ key, stbl }];
+    return [{ locale, instanceBase, stbl: stbl as StringTableJson<number> }];
   }
 }
 
@@ -123,9 +192,10 @@ function parsePackage(buffer: Buffer): ParsedStringTable[] {
     .extractResources<StringTableResource>(buffer, {
       resourceFilter: type => type === enums.BinaryResourceType.StringTable,
     })
-    .map(entry => ({
-      key: entry.key,
-      stbl: entry.value.toJsonObject(false, false)
+    .map(({ key, value }) => ({
+      locale: enums.StringTableLocale.getLocale(key.instance),
+      instanceBase: enums.StringTableLocale.getInstanceBase(key.instance),
+      stbl: value.toJsonObject(false, false) as StringTableJson<number>
     }));
 }
 

@@ -3,7 +3,10 @@
   import { fade } from "svelte/transition";
   import { parse, v4 as uuidv4 } from "uuid";
   import type { StringTableLocale } from "@s4tk/models/enums";
-  import type { ParsedFilesResult } from "src/lib/utilities/uploading";
+  import {
+    ParsedFilesResult,
+    resolveStringTables,
+  } from "src/lib/utilities/uploading";
   import Settings from "src/lib/services/settings";
   import Project from "src/lib/models/project";
   import LocalizedStringTable from "src/lib/models/localized-stbl";
@@ -65,7 +68,12 @@
     subscriptions.forEach((unsub) => unsub());
   });
 
-  function createProject() {
+  async function createProject() {
+    const localizedStbls = await resolveStringTables(
+      primaryLocale,
+      parseResult.stbls
+    );
+
     const stbl = new LocalizedStringTable(
       primaryLocale,
       new Set(
@@ -73,6 +81,7 @@
           .filter((choice) => choice.checked)
           .map((choice) => choice.locale)
       )
+      // TODO:
     );
 
     const project = new Project(
@@ -98,7 +107,9 @@
   }
 
   function handleParseResult() {
-    instanceOptions = parseResult.instances.map((inst, i) => {
+    const instances = [...parseResult.instances];
+
+    instanceOptions = instances.map((inst, i) => {
       return {
         value: i,
         text: formatAsHexString(inst, 14, false),
@@ -119,7 +130,7 @@
 
       if (!useUuidForInst) {
         instanceHexString = formatAsHexString(
-          parseResult.instances[chosenInstanceOption],
+          [...parseResult.instances][chosenInstanceOption],
           14,
           false
         );
