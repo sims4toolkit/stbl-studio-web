@@ -315,6 +315,9 @@ export const SettingsSubscriptionManager = new _SettingsSubscriptionManager();
 
 //#region Stores
 
+// Using stores instead of subscription because sometimes the settings aren't
+// actually used, such as during string creation input
+
 function easterEggFoundCallback(easterEgg: EasterEgg) {
   return (value: boolean) => {
     if (value) {
