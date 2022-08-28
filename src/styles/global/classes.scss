@@ -110,4 +110,22 @@ mark.keystroke {
   };
 }
 
+button.default-button {
+  color: var(--color-text);
+
+  img {
+    filter: var(--filter-svg);
+  }
+
+  &:hover {
+    color: var(--color-bg);
+    border-color: var(--color-accent-secondary);
+    background-color: var(--color-accent-secondary);
+
+    img {
+      filter: var(--filter-svg-invert);
+    }
+  }
+}
+
 //#region Semantics

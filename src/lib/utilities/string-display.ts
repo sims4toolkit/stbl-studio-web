@@ -29,17 +29,19 @@ export interface FilterTerm {
 
 function getOptionsForEnum(enumObj: object): { value: number; text: string; }[] {
   return Object
-    .keys(enumObj)
-    .filter(key => typeof key === "number")
+    .values(enumObj)
+    .filter(value => typeof value === "number")
     .map(value => {
       return {
         value,
-        text: enumObj[value].replace(/[^^][A-Z]/g, " $1")
+        text: enumObj[value].replace(/([A-Z])/g, " $1").trim()
       };
     }) as unknown as { value: number; text: string; }[];
 }
 
 export const sortOrderOptions = getOptionsForEnum(SortOrder);
+console.log(sortOrderOptions);
+
 export const filterTypeOptions = getOptionsForEnum(FilterType);
 
 //#endregion Options

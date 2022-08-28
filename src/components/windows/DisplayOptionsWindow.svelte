@@ -3,6 +3,7 @@
   import {
     FilterTerm,
     filterTypeOptions,
+    sortOrderOptions,
   } from "src/lib/utilities/string-display";
   import MovableWindow from "src/components/layouts/MovableWindow.svelte";
   import Switch from "src/components/elements/Switch.svelte";
@@ -18,6 +19,11 @@
     if (entriesPerPage < 1) entriesPerPage = 1;
     else if (entriesPerPage > 100) entriesPerPage = 100;
     Settings.entriesPerPage = entriesPerPage;
+  }
+
+  function addFilter() {
+    filters.push({ type: 0, text: "" });
+    filters = filters;
   }
 
   function deleteFilter(index: number) {
@@ -65,26 +71,15 @@
         name="entries-sort-order-select"
         fillWidth={true}
         bind:selected={Settings.sortOrder}
-        options={[
-          {
-            value: 0,
-            text: "Chronological",
-          },
-          {
-            value: 1,
-            text: "Alphanumeric",
-          },
-          {
-            value: 2,
-            text: "Reverse Alphanumeric",
-          },
-        ]}
+        options={sortOrderOptions}
       />
     </div>
     <div>
-      <p class="uppercase text-subtle text-xs font-bold">Filter / Search</p>
+      <p class="uppercase text-subtle text-xs font-bold mb-2">
+        Filter / Search
+      </p>
       {#each filters as filter, key (key)}
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 mb-2">
           <Select
             name="filter-select-{key}"
             bind:selected={filter.type}
@@ -101,6 +96,17 @@
           >
         </div>
       {/each}
+      <div class="w-full flex justify-center">
+        <button
+          class="flex justify-center items-center gap-2 py-2 px-4 text-sm rounded default-button"
+          on:click={addFilter}
+          ><img
+            src="./assets/plus.svg"
+            class="svg hover:svg-invert h-4"
+            alt="+"
+          />Add Filter</button
+        >
+      </div>
     </div>
   </div>
 </MovableWindow>
