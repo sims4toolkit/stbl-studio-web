@@ -133,6 +133,8 @@ class StoredJson<T extends object> extends StoredSetting<T> {
 
 type EasterEgg = "rickroll" | "hacker" | "pride" | "womp";
 
+type SettingName = keyof UserSettings;
+
 interface UserSettings {
   defaultLocale: StringTableLocale;
   entriesPerPage: number;
@@ -182,6 +184,7 @@ function getSettingsProxy(settingsBuilder: StoredUserSettingsBuilder): UserSetti
     },
     set(target, prop, value) {
       target[prop].set(prop, value);
+      SettingsSubscriptionManager.notifySubscribers(prop as SettingName, value);
       return true;
     }
   }) as unknown as UserSettings;
@@ -276,6 +279,39 @@ const Settings = getSettingsProxy({
 export default Settings;
 
 //#endregion Settings
+
+//#region Subscriptions
+
+interface SettingsSubscription {
+  setting: SettingName;
+  fn: (value: any) => void;
+}
+
+type SettingsUnsubscriber = () => void;
+
+class _SettingsSubscriptionManager {
+  private _nextId = 0;
+  private readonly _subscriptions = new Map<number, SettingsSubscription>();
+
+  subscribe(
+    setting: SettingName,
+    fn: (value: any) => void
+  ): SettingsUnsubscriber {
+    const id = this._nextId++;
+    this._subscriptions.set(id, { setting, fn });
+    return () => this._subscriptions.delete(id);
+  }
+
+  notifySubscribers(setting: SettingName, value: any) {
+    this._subscriptions.forEach(subscription => {
+      if (subscription.setting === setting) subscription.fn(value);
+    });
+  }
+}
+
+export const SettingsSubscriptionManager = new _SettingsSubscriptionManager();
+
+//#endregion Subscriptions
 
 //#region Stores
 
