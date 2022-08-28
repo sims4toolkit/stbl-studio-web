@@ -28,10 +28,18 @@
 </script>
 
 <div class="w-full flex flex-col gap-4">
-  <div class="w-full flex justify-between">
-    <p class="text-xs">
+  <div class="w-full flex flex-col gap-2">
+    <p class="text-xs text-subtle">
       <span class="font-bold text-red-600 dark:text-red-400">WARNING:</span>
-      Do not edit in JSON mode unless you know what you are doing.
+      Do not edit in JSON mode unless you know what you are doing. (1) You will not
+      be asked to confirm if you want to delete strings, and there is no way to recover
+      them if you do. (2) Changing an entry's key will delete ALL of its translations.
+      (3) This mode does not autosave; you must click the "Save" button manually.
+    </p>
+    <p class="text-xs text-subtle">
+      Confused about the syntax? Read about it <button
+        class="text-secondary underline hover:no-underline">here</button
+      >.
     </p>
   </div>
   <textarea
