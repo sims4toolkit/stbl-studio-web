@@ -24,6 +24,11 @@
     if (uploadedFiles?.length) restoreWorkspace();
   }
 
+  async function createNewWorkspace() {
+    activeWorkspaceStore.set(new Workspace());
+    onOnboardingComplete();
+  }
+
   async function restoreWorkspace() {
     try {
       const [file] = uploadedFiles;
@@ -73,7 +78,7 @@
     bind:state={multipageState}
     minimumContentHeight="180"
     centerVertically={true}
-    onLastPageComplete={onOnboardingComplete}
+    onLastPageComplete={createNewWorkspace}
     completeButton="Get Started"
   >
     <div slot="header">

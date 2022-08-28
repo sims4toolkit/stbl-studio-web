@@ -45,7 +45,6 @@
   }
 
   function onOnboardingComplete() {
-    activeWorkspaceStore.set(new Workspace());
     Settings.hasWorkspace = true;
     isOnboarding = false;
   }
