@@ -31,9 +31,7 @@
     displayName: string;
     locale: StringTableLocale;
   }[];
-  export let checkedLocales = new Set<StringTableLocale>(
-    localeChoices.filter((c) => c.checked).map((c) => c.locale)
-  );
+  export let checkedLocales = new Set<StringTableLocale>();
 
   let nameValid = false;
   let groupValid = false;
@@ -80,6 +78,10 @@
       displayName: getDisplayName(locale),
       locale,
     }));
+
+    checkedLocales = new Set(
+      localeChoices.filter((c) => c.checked).map((c) => c.locale)
+    );
   }
 </script>
 

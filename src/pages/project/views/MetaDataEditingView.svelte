@@ -22,6 +22,9 @@
     displayName: getDisplayName(locale),
     locale,
   }));
+  let checkedLocales = new Set(
+    localeChoices.filter((c) => c.checked).map((c) => c.locale)
+  );
 
   let multipageState = {
     currentPage: 1,
@@ -75,6 +78,7 @@
       bind:instanceHexString
       bind:primaryLocale
       bind:localeChoices
+      bind:checkedLocales
       localeChoicesDetail="Add or remove locales from this project. Removing locales will permanently delete any and all translations associated with them."
     />
   </div>

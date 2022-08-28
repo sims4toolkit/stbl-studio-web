@@ -5,6 +5,8 @@
   import MultipageContentGroup from "src/components/layouts/MultipageContentGroup.svelte";
   import type { MultipageContentState } from "src/components/layouts/types";
   import FileInput from "src/components/elements/FileInput.svelte";
+  import Workspace from "src/lib/models/workspace";
+  import { activeWorkspaceStore } from "src/lib/services/stores";
 
   export let onOnboardingComplete: () => void;
 
@@ -17,6 +19,24 @@
     currentPage: 1,
     nextButtonEnabled: true,
   };
+
+  $: {
+    if (uploadedFiles?.length) restoreWorkspace();
+  }
+
+  async function restoreWorkspace() {
+    try {
+      const [file] = uploadedFiles;
+      const buffer = window.S4TK.Node.Buffer.from(await file.arrayBuffer());
+      const json = JSON.parse(buffer.toString());
+      const wk = await Workspace.restoreFromJson(json);
+      activeWorkspaceStore.set(wk);
+      onOnboardingComplete();
+    } catch (err) {
+      console.error(err);
+      uploadError = "Not a valid workspace";
+    }
+  }
 
   function handleWorkspaceButtonClick(event: MouseEvent) {
     isUploadingWorkspace = !isUploadingWorkspace;
