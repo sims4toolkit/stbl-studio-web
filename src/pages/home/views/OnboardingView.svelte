@@ -40,11 +40,19 @@
           String Table Studio is a web app that makes it easy to create, edit,
           and translate string tables for Sims 4 mods. View the <a
             class="text-secondary"
-            href="/"
+            href="https://frankkmods.com"
             target="_blank">feature list</a
           > to learn more about what it can do.
         </p>
-        <p>TODO</p>
+        <!-- TODO: update links -->
+        <p>
+          Not sure where to start? Read <a
+            class="text-secondary"
+            href="https://frankkmods.com"
+            target="_blank">this guide</a
+          > to learn how to migrate your string tables to a STBL Studio project.
+        </p>
+        <!-- TODO: note for translators and people just using web tools -->
       </div>
     </MultipageContent>
     <MultipageContent pageNumber={2} bind:state={multipageState}>
@@ -68,3 +76,25 @@
     </MultipageContent>
   </div>
 </MultipageContentGroup>
+
+<div class="w-full flex justify-center">
+  <button
+    class="flex gap-2 items-center fixed bottom-10 rounded py-2 px-4 text-sm border border-black dark:border-white hover:text-white focus:text-white hover:dark:text-black focus:dark:text-black"
+    ><img src="./assets/upload.svg" class="svg h-4" alt="Upload" />Upload
+    Workspace</button
+  >
+</div>
+
+<style lang="scss">
+  button {
+    &:hover,
+    &:focus {
+      background-color: var(--color-accent-secondary);
+      border-color: var(--color-accent-secondary);
+
+      img {
+        filter: var(--filter-svg-invert);
+      }
+    }
+  }
+</style>
