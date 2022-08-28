@@ -48,6 +48,10 @@
     Settings.hasWorkspace = true;
     isOnboarding = false;
   }
+
+  function launchHelpWindow() {
+    // TODO: use window manager
+  }
 </script>
 
 <section
@@ -67,7 +71,12 @@
         <p class="mb-4">
           Create a new project with the toolbar in the bottom-right corner.
         </p>
-        <p>Need help? Check out the help page for more information.</p>
+        <p>
+          Need help? Check out the <button
+            class="underline hover:no-underline text-secondary"
+            on:click={launchHelpWindow}>help window</button
+          > for more information.
+        </p>
       {:else}
         <h1
           class="text-2xl font-bold text-center drop-shadow text-gray-400 dark:text-gray-500"
