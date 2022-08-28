@@ -69,20 +69,7 @@
   });
 
   async function createProject() {
-    const localizedStbls = await resolveStringTables(
-      primaryLocale,
-      parseResult.stbls
-    );
-
-    const stbl = new LocalizedStringTable(
-      primaryLocale,
-      new Set(
-        localeChoices
-          .filter((choice) => choice.checked)
-          .map((choice) => choice.locale)
-      )
-      // TODO:
-    );
+    const stbl = await resolveStringTables(primaryLocale, parseResult.stbls);
 
     const project = new Project(
       uuid,

@@ -1,7 +1,7 @@
 import type { StringTableResource } from "@s4tk/models";
 import type { StringTableLocale } from "@s4tk/models/enums";
 import type { ResourceKey } from "@s4tk/models/types";
-import LocalizedStringTable from "src/lib/models/localized-stbl";
+import LocalizedStringTable, { LocalizedStringEntry } from "src/lib/models/localized-stbl";
 import Settings from "src/lib/services/settings";
 import { normalizeJson } from "./json";
 const { enums, models } = window.S4TK;
@@ -82,28 +82,39 @@ export async function parseFiles(files: FileList): Promise<ParsedFilesResult> {
 export async function resolveStringTables(
   primaryLocale: StringTableLocale,
   stbls: ParsedStringTable[]
-): Promise<ParsedStringTable[]> {
+): Promise<LocalizedStringTable> {
   return new Promise(async (resolve, reject) => {
-    const stblMap = new Map<StringTableLocale, ParsedStringTable[]>();
+    // mapping locales to their stbl instances
+    const localeMap = new Map<StringTableLocale, ParsedStringTable[]>();
 
     stbls.forEach(stbl => {
-      const arr = stblMap.get(stbl.locale) ?? [];
-      if (!stblMap.has(stbl.locale)) stblMap.set(stbl.locale, arr);
+      const arr = localeMap.get(stbl.locale) ?? [];
+      if (!localeMap.has(stbl.locale)) localeMap.set(stbl.locale, arr);
       arr.push(stbl);
     });
 
+    if (!localeMap.has(primaryLocale)) localeMap.set(primaryLocale, [
+      {
+        locale: primaryLocale,
+        instanceBase: 0n, // not important, this info is in project
+        stbl: []
+      }
+    ]);
+
+    // finding all keys
     const primaryLocaleKeys = new Set<number>();
     const otherLocaleKeys = new Set<number>();
     const resolvedStbls: ParsedStringTable[] = [];
-    stblMap.forEach((stblArr, locale) => {
+    localeMap.forEach((stblArr, locale) => {
+      // mapping keys to all of their values
       const entries = new Map<number, Set<string>>();
 
       stblArr.forEach(({ stbl }) => {
         stbl.forEach(({ key, value }) => {
           if (!entries.get(key)?.has(value)) {
-            const stringMap = entries.get(key) ?? new Set<string>();
-            if (!entries.has(key)) entries.set(key, stringMap);
-            stringMap.add(value);
+            const stringSet = entries.get(key) ?? new Set<string>();
+            if (!entries.has(key)) entries.set(key, stringSet);
+            stringSet.add(value);
           }
 
           if (locale === primaryLocale) {
@@ -123,11 +134,12 @@ export async function resolveStringTables(
 
       resolvedStbls.push({
         locale,
-        instanceBase: 0n, // not important
+        instanceBase: 0n, // not important, this info is in project
         stbl: stblJson
       });
     });
 
+    // making sure primary stbl is filled out
     const primaryLocaleStbl = resolvedStbls
       .find(({ locale }) => locale === primaryLocale);
 
@@ -136,7 +148,34 @@ export async function resolveStringTables(
         primaryLocaleStbl.stbl.push({ key, value: "" });
     });
 
-    resolve(resolvedStbls);
+    // localized entries to fill up
+    const localizedEntries: Omit<LocalizedStringEntry, "id">[] = [];
+    const keyIndices = new Map<number, number>();
+    primaryLocaleStbl.stbl.forEach(({ key, value }, i) => {
+      keyIndices.set(key, i);
+      localizedEntries.push({
+        key,
+        values: new Map([[primaryLocale, value]])
+      })
+    });
+
+    resolvedStbls.forEach(({ locale, stbl }) => {
+      stbl.forEach(({ key, value }) => {
+        if (!value) return;
+        const index = keyIndices.get(key);
+        const entry = localizedEntries[index];
+        if (value === entry.values.get(primaryLocale)) return;
+        entry.values.set(locale, value);
+      });
+    });
+
+    const localizedStbl = new LocalizedStringTable(
+      primaryLocale,
+      new Set(localeMap.keys()),
+      localizedEntries
+    );
+
+    resolve(localizedStbl);
   });
 }
 
