@@ -63,7 +63,7 @@
 
 <button
   bind:this={floatingActionButton}
-  class="floating-action-button flex justify-center items-center"
+  class="floating-action-button flex justify-center items-center drop-shadow"
   class:disabled={data.disabled}
   on:mouseenter={handleEnterOrFocus}
   on:focus={handleEnterOrFocus}

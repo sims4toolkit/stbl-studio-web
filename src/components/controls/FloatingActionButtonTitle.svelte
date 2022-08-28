@@ -24,7 +24,7 @@
 
 <div
   bind:this={titleElement}
-  class="mb-2 text-center text-sm uppercase py-1"
+  class="mb-2 text-center text-sm uppercase py-1 drop-shadow"
   class:disabled={useDisabledColor}
   transition:fly={{ y: 12, duration: Settings.reduceMotion ? 0 : 350 }}
 >
