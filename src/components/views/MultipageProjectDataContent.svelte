@@ -26,12 +26,14 @@
   export let groupHexString: string;
   export let instanceHexString: string;
   export let primaryLocale: StringTableLocale;
-  export let checkedLocales = new Set<StringTableLocale>();
   export let localeChoices: {
     checked: boolean;
     displayName: string;
     locale: StringTableLocale;
   }[];
+  export let checkedLocales = new Set<StringTableLocale>(
+    localeChoices.filter((c) => c.checked).map((c) => c.locale)
+  );
 
   let nameValid = false;
   let groupValid = false;
@@ -56,6 +58,12 @@
   $: {
     primaryLocale;
     refreshLocaleOptions();
+  }
+
+  $: {
+    if (multipageState.currentPage >= startingPageNumber + 1) {
+      refreshLocaleOptions();
+    }
   }
 
   function toggleOtherLocales(checked: boolean) {
