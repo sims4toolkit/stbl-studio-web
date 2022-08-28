@@ -89,7 +89,7 @@
   });
 
   function toggleMinimized() {
-    if (movableWindow.offsetTop > window.innerHeight - 200) {
+    if (movableWindow.offsetTop > window.innerHeight - 450) {
       // anchor to bottom
       const bottom = movableWindow.offsetTop + movableWindow.offsetHeight;
       movableWindow.style.bottom = window.innerHeight - bottom + "px";
