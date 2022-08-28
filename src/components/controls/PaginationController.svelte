@@ -1,9 +1,9 @@
 <script lang="ts">
   import { onDestroy } from "svelte";
   import { subscribeToKey } from "src/lib/utilities/keybindings";
+  import Settings from "src/lib/services/settings";
 
   export let items: any[];
-  export let itemsPerPage: number;
   export let onSliceUpdate: (slice: any[]) => void;
 
   let pageInput: HTMLInputElement;
@@ -59,11 +59,11 @@
     keySubscriptions.forEach((unsubscribe) => unsubscribe());
   });
 
-  $: numPages = Math.ceil(items.length / itemsPerPage);
+  $: numPages = Math.ceil(items.length / Settings.entriesPerPage);
 
   $: {
     items;
-    itemsPerPage;
+    Settings.entriesPerPage;
     currentPage;
     update();
   }
@@ -105,8 +105,11 @@
     }
 
     // slice
-    const sliceStart = (currentPage - 1) * itemsPerPage;
-    const sliceEnd = Math.min(sliceStart + itemsPerPage, items.length + 1);
+    const sliceStart = (currentPage - 1) * Settings.entriesPerPage;
+    const sliceEnd = Math.min(
+      sliceStart + Settings.entriesPerPage,
+      items.length + 1
+    );
     const slice = items.slice(sliceStart, sliceEnd);
     onSliceUpdate(slice);
   }

@@ -118,7 +118,6 @@
 <div hidden={!chosenView.pagination}>
   <PaginationController
     bind:items={entries}
-    itemsPerPage={10}
     onSliceUpdate={(slice) => {
       sliceToRender = slice;
     }}
