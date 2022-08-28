@@ -8,9 +8,17 @@
   import StblGridView from "src/pages/project/views/StblGridView.svelte";
   import StblJsonView from "src/pages/project/views/StblJsonView.svelte";
   import LocaleSelect from "src/components/controls/LocaleSelect.svelte";
+  import PaginationController from "src/components/controls/PaginationController.svelte";
 
   export let project: Project;
   export let selectionGroup: SelectionGroup<LocalizedStringEntry, number>;
+
+  let entries = project.stbl.entries;
+  let sliceToRender: LocalizedStringEntry[] = [];
+
+  $: {
+    entries = project.stbl.entries;
+  }
 
   type UtilitiesType = "selectable" | "json" | "translate";
 
@@ -20,6 +28,7 @@
     component: any;
     getArgs: () => object;
     utilities: UtilitiesType;
+    pagination: boolean;
   }
 
   const emptyArgs = {};
@@ -30,6 +39,7 @@
       component: StblListViewCell,
       getArgs: () => emptyArgs,
       utilities: "selectable",
+      pagination: true,
     },
     {
       name: "Grid",
@@ -37,6 +47,7 @@
       component: StblGridView,
       getArgs: () => emptyArgs,
       utilities: "selectable",
+      pagination: true,
     },
     {
       name: "JSON",
@@ -44,11 +55,11 @@
       component: StblJsonView,
       getArgs: () => emptyArgs,
       utilities: "json",
+      pagination: false,
     },
   ];
 
   let chosenViewIndex = Math.min(Settings.projectView, viewOptions.length - 1);
-  let chosenViewArgs: object = emptyArgs;
   let chosenView = viewOptions[chosenViewIndex];
   let translatingTo = 0;
 
@@ -98,9 +109,20 @@
       this={chosenView.component}
       bind:project
       bind:selectionGroup
-      {...chosenViewArgs}
+      bind:sliceToRender
+      {...chosenView.getArgs()}
     />
   </div>
+</div>
+
+<div hidden={!chosenView.pagination}>
+  <PaginationController
+    bind:items={entries}
+    itemsPerPage={10}
+    onSliceUpdate={(slice) => {
+      sliceToRender = slice;
+    }}
+  />
 </div>
 
 <style lang="scss">

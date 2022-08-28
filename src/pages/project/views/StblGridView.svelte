@@ -6,12 +6,11 @@
 
   export let project: Project;
   export let selectionGroup: SelectionGroup<LocalizedStringEntry, number>;
-
-  $: entries = project.stbl.entries;
+  export let sliceToRender: LocalizedStringEntry[];
 </script>
 
 <div class="grid gap-4 drop-shadow-md">
-  {#each entries as entry (entry.id)}
+  {#each sliceToRender as entry (entry.id)}
     <StblGridViewCell bind:project bind:entry bind:selectionGroup />
   {/each}
 </div>

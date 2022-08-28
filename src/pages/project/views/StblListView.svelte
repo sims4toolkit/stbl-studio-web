@@ -6,10 +6,9 @@
 
   export let project: Project;
   export let selectionGroup: SelectionGroup<LocalizedStringEntry, number>;
-
-  $: entries = project.stbl.entries;
+  export let sliceToRender: LocalizedStringEntry[];
 </script>
 
-{#each entries as entry (entry.id)}
+{#each sliceToRender as entry (entry.id)}
   <StblListViewCell bind:project bind:entry bind:selectionGroup />
 {/each}
