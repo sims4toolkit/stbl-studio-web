@@ -7,8 +7,9 @@
   export let label = "locale";
   export let fillWidth = false;
   export let selected: StringTableLocale;
+  export let localesToChoose = enums.StringTableLocale.all();
 
-  const options = enums.StringTableLocale.all().map((locale) => {
+  const options = localesToChoose.map((locale) => {
     return {
       value: locale,
       text: getDisplayName(locale),

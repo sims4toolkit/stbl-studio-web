@@ -208,9 +208,9 @@
     }
 
     &:hover {
-      background-color: var(--color-accent);
+      background-color: var(--color-accent-secondary);
       color: var(--color-bg);
-      border-color: var(--color-accent);
+      border-color: var(--color-accent-secondary);
       cursor: pointer;
     }
   }

@@ -36,6 +36,12 @@ export default class LocalizedStringTable {
     return this._allLocalesCache ??= [...this._allLocales];
   }
 
+  get otherLocales(): StringTableLocale[] {
+    const otherLocales = new Set(this._allLocales);
+    otherLocales.delete(this.primaryLocale);
+    return [...otherLocales];
+  }
+
   get entries(): LocalizedStringEntry[] {
     return this._entriesCache ??= [...this._entryMap.values()];
   }

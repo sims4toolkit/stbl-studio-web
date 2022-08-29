@@ -10,6 +10,7 @@
   import StblListViewCell from "src/pages/project/views/StblListView.svelte";
   import StblGridView from "src/pages/project/views/StblGridView.svelte";
   import StblJsonView from "src/pages/project/views/StblJsonView.svelte";
+  import TranslateView from "src/pages/project/views/TranslateView.svelte";
   import LocaleSelect from "src/components/controls/LocaleSelect.svelte";
   import PaginationController from "src/components/controls/PaginationController.svelte";
   import DisplayOptionsWindow from "src/components/windows/DisplayOptionsWindow.svelte";
@@ -48,6 +49,14 @@
     );
   }
 
+  $: hidePagination = !(
+    chosenView.pagination &&
+    (chosenView.utilities !== "translate" ||
+      (project.stbl.numLocales > 1 && project.stbl.numEntries > 0))
+  );
+
+  $: otherLocales = project.stbl.otherLocales;
+
   type UtilitiesType = "selectable" | "json" | "translate";
 
   interface ViewOption {
@@ -80,12 +89,25 @@
       utilities: "json",
       pagination: false,
     },
+    {
+      name: "Translate",
+      icon: "language-outline",
+      component: TranslateView,
+      utilities: "translate",
+      pagination: true,
+    },
   ];
 
   let chosenViewIndex = Math.min(Settings.projectView, viewOptions.length - 1);
   let chosenView = viewOptions[chosenViewIndex];
   let translatingTo = 0;
   let showDisplayWindow = false;
+
+  $: {
+    if (otherLocales && !otherLocales.includes(translatingTo)) {
+      translatingTo = otherLocales[0] ?? 0;
+    }
+  }
 
   $: {
     chosenView = viewOptions[chosenViewIndex];
@@ -153,30 +175,40 @@
             alt="Save"
           />{jsonSavedCooldown ? "Saved!" : "Save"}</button
         >
-      {:else if chosenView.utilities === "translate"}
-        <LocaleSelect label="translate to" bind:selected={translatingTo} />
+      {:else if chosenView.utilities === "translate" && project.metaData.numLocales > 1}
+        <LocaleSelect
+          label="translate to"
+          bind:selected={translatingTo}
+          localesToChoose={otherLocales}
+        />
       {/if}
     </div>
   </div>
   <div class="w-full">
-    {#if chosenView.utilities === "selectable"}
+    {#if chosenView.utilities === "json"}
+      <svelte:component
+        this={chosenView.component}
+        bind:project
+        bind:saveJson
+      />
+    {:else if chosenView.utilities === "translate"}
+      <svelte:component
+        this={chosenView.component}
+        bind:project
+        bind:sliceToRender
+      />
+    {:else}
       <svelte:component
         this={chosenView.component}
         bind:project
         bind:selectionGroup
         bind:sliceToRender
       />
-    {:else if chosenView.utilities === "json"}
-      <svelte:component
-        this={chosenView.component}
-        bind:project
-        bind:saveJson
-      />
     {/if}
   </div>
 </div>
 
-<div hidden={!chosenView.pagination}>
+<div hidden={hidePagination}>
   <PaginationController
     bind:items={entries}
     onSliceUpdate={(slice) => {

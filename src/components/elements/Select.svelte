@@ -18,7 +18,7 @@
   <select
     {name}
     bind:value={selected}
-    class="block h-10 px-2 rounded text-sm bg-transparent border border-gray-700 dark:border-gray-300"
+    class="block h-10 pl-2 pr-8 rounded text-sm bg-transparent border border-gray-700 dark:border-gray-300"
     class:w-full={fillWidth}
     {disabled}
   >
