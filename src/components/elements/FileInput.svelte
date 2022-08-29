@@ -27,6 +27,8 @@
     name="file-upload"
     type="file"
     class="w-full border h-10 p-2 rounded hover:cursor-pointer"
+    class:border-gray-700={!filesInvalid}
+    class:dark:border-gray-300={!filesInvalid}
     class:border-red-600={filesInvalid}
     class:dark:border-red-400={filesInvalid}
     {accept}
