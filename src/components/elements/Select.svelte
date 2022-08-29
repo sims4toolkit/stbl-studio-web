@@ -3,6 +3,7 @@
   export let label: string = null;
   export let name: string;
   export let fillWidth = false;
+  export let alignRight = false;
   export let selected: number | bigint | string;
   export let options: {
     value: number | bigint | string;
@@ -10,7 +11,11 @@
   }[];
 </script>
 
-<div class:w-full={fillWidth}>
+<div
+  class:w-full={fillWidth}
+  class="flex flex-col"
+  class:items-end={alignRight}
+>
   {#if Boolean(label)}
     <!-- Not using a label because it doesn't match input -->
     <p class="text-subtle uppercase text-xs font-bold mb-2">{label}</p>

@@ -183,6 +183,7 @@
       {:else if chosenView.utilities === "translate" && project.metaData.numLocales > 1}
         <LocaleSelect
           label="translating to"
+          alignRight={true}
           bind:selected={translatingTo}
           localesToChoose={otherLocales}
         />

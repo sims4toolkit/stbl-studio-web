@@ -6,6 +6,7 @@
 
   export let label = "locale";
   export let fillWidth = false;
+  export let alignRight = false;
   export let selected: StringTableLocale;
   export let localesToChoose = enums.StringTableLocale.all();
 
@@ -17,4 +18,11 @@
   });
 </script>
 
-<Select {label} {fillWidth} bind:selected name="locale-select" {options} />
+<Select
+  {label}
+  {fillWidth}
+  {alignRight}
+  bind:selected
+  name="locale-select"
+  {options}
+/>

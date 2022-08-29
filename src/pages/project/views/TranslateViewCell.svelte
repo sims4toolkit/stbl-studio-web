@@ -48,7 +48,7 @@
     <div class="flex-1 w-full flex items-center">
       <ResizableTextArea
         bind:value={translatedValue}
-        placeholder="Empty string"
+        placeholder="Same as source language"
         fillWidth={true}
         onBlur={saveString}
       />
