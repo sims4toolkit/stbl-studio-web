@@ -172,7 +172,7 @@
       {:else if chosenView.utilities === "json"}
         <button
           disabled={jsonSavedCooldown}
-          class="flex justify-center items-center text-sm gap-2 rounded py-1 w-24 default-button border border-black dark:border-white hacker-border-gray"
+          class="flex mt-4 sm:mt-0 justify-center items-center text-sm gap-2 rounded py-1 w-24 default-button border border-black dark:border-white hacker-border-gray"
           class:cursor-not-allowed={jsonSavedCooldown}
           on:click={handleSaveJsonClick}
           ><img
