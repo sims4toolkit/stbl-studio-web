@@ -10,12 +10,20 @@
   export let selected: StringTableLocale;
   export let localesToChoose = enums.StringTableLocale.all();
 
-  $: options = localesToChoose.map((locale) => {
-    return {
-      value: locale,
-      text: getDisplayName(locale),
-    };
-  });
+  $: options = localesToChoose
+    .map((locale) => {
+      return {
+        value: locale,
+        text: getDisplayName(locale),
+      };
+    })
+    .sort((a, b) => {
+      const aText = a.text.toLowerCase();
+      const bText = b.text.toLowerCase();
+      if (aText < bText) return -1;
+      if (aText > bText) return 1;
+      return 0;
+    });
 </script>
 
 <Select
