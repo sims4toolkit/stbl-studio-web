@@ -6,6 +6,9 @@
   const { formatAsHexString } = window.S4TK.formatting;
 
   export let project: Project;
+  export const onMetaDataEdited = () => {
+    editingProject = false;
+  };
 
   let editingProject = false;
 </script>
@@ -36,9 +39,6 @@
 
 {#if editingProject}
   <BlurOverlay onClose={() => (editingProject = false)}>
-    <MetaDataEditingView
-      bind:project
-      onComplete={() => (editingProject = false)}
-    />
+    <MetaDataEditingView bind:project onComplete={onMetaDataEdited} />
   </BlurOverlay>
 {/if}

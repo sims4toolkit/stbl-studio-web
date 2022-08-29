@@ -53,7 +53,6 @@
     await project.saveToStorage();
 
     project = project;
-    // FIXME: how to refresh properly?
 
     onComplete();
   }
