@@ -125,7 +125,7 @@
   }
 </script>
 
-<div class="flex flex-col gap-8">
+<div>
   <div
     class="w-full flex justify-between sm:items-center flex-wrap sm:flex-nowrap flex-col sm:flex-row"
   >
@@ -184,7 +184,18 @@
       {/if}
     </div>
   </div>
-  <div class="w-full">
+  {#if filters.length > 0}
+    <div class="mt-4">
+      <p class="text-xs text-subtle">
+        Showing {entries.length} of {project.stbl.numEntries} entries.
+        <button
+          class="text-secondary underline hover:no-underline"
+          on:click={() => (filters = [])}>Clear Filters</button
+        >
+      </p>
+    </div>
+  {/if}
+  <div class="w-full mt-8">
     {#if chosenView.utilities === "json"}
       <svelte:component
         this={chosenView.component}
