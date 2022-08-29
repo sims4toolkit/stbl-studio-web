@@ -14,7 +14,7 @@
 <div
   class:w-full={fillWidth}
   class="flex flex-col"
-  class:items-end={alignRight}
+  class:sm:items-end={alignRight}
 >
   {#if Boolean(label)}
     <!-- Not using a label because it doesn't match input -->

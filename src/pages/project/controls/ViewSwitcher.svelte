@@ -18,6 +18,7 @@
     FilterTerm,
     getEntriesToShow,
   } from "src/lib/utilities/string-display";
+  import Switch from "src/components/elements/Switch.svelte";
 
   export let project: Project;
   export let selectionGroup: SelectionGroup<LocalizedStringEntry, number>;
@@ -181,15 +182,27 @@
           />{jsonSavedCooldown ? "Saved!" : "Save"}</button
         >
       {:else if chosenView.utilities === "translate" && project.metaData.numLocales > 1}
-        <LocaleSelect
-          label="translating to"
-          alignRight={true}
-          bind:selected={translatingTo}
-          bind:localesToChoose={otherLocales}
-        />
+        <div class="mt-4 sm:mt-0">
+          <LocaleSelect
+            label="translating to"
+            alignRight={true}
+            bind:selected={translatingTo}
+            bind:localesToChoose={otherLocales}
+          />
+        </div>
       {/if}
     </div>
   </div>
+  {#if chosenView.utilities === "translate" && project.metaData.numLocales > 1}
+    <div class="mt-4 flex flex-wrap sm:flex-nowrap gap-4 sm:gap-8">
+      <div class="max-w-min whitespace-nowrap">
+        <Switch label="Hide String Keys" checked={false} />
+      </div>
+      <div class="max-w-min whitespace-nowrap">
+        <Switch label="Hide Translated Strings" checked={false} />
+      </div>
+    </div>
+  {/if}
   {#if filters.length > 0}
     <div class="mt-4">
       <p class="text-xs text-subtle">
