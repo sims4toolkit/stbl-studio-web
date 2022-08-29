@@ -17,19 +17,21 @@
   $: themeIcon = isLightTheme ? "sunny" : "moon";
 
   const subscriptions = [
-    WindowManager.subscribe((type, args) => {
+    WindowManager.subscribe((type, action, args) => {
+      const show = action === "open";
+
       switch (type) {
         case "help":
-          showHelpWindow = true;
+          showHelpWindow = show;
           break;
         case "hasher":
-          showHasherWindow = true;
+          showHasherWindow = show;
           break;
         case "settings":
-          showSettingsWindow = true;
+          showSettingsWindow = show;
           break;
         case "tokens":
-          showTokenAssistWindow = true;
+          showTokenAssistWindow = show;
           break;
       }
     }),

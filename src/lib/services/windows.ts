@@ -1,5 +1,6 @@
 export type WindowType = "help" | "settings" | "tokens" | "hasher";
-export type WindowSubscription = (type: WindowType, args: object) => void;
+export type WindowAction = "open" | "close";
+export type WindowSubscription = (type: WindowType, action?: WindowAction, args?: object) => void;
 export type WindowUnsubscriber = () => void;
 
 class _WindowManager {
@@ -12,9 +13,9 @@ class _WindowManager {
     return () => this._subscriptions.delete(id);
   }
 
-  request(type: WindowType, args?: object) {
+  request(type: WindowType, action: WindowAction = "open", args?: object) {
     this._subscriptions.forEach(subscription => {
-      subscription(type, args);
+      subscription(type, action, args);
     });
   }
 }
