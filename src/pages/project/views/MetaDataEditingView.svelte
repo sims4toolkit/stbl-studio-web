@@ -36,6 +36,7 @@
       .filter((choice) => choice.checked)
       .map((choice) => choice.locale);
 
+    project.stbl.primaryLocale = primaryLocale;
     project.stbl.replaceLocales(newLocales);
     project.metaData.numLocales = project.stbl.numLocales;
     project.metaData.numEntries = project.stbl.numEntries;

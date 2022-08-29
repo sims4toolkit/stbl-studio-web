@@ -4,7 +4,7 @@ import DatabaseService from "src/lib/services/database";
 const { models, encoding, formatting } = window.S4TK;
 const { Buffer } = window.S4TK.Node;
 
-const UNTRANSLATED_PLACEHOLDER = "[UNTRANSLATED]";
+const UNTRANSLATED_PLACEHOLDER = "";
 
 /**
  * An entry in a LocalizedStringTable.
