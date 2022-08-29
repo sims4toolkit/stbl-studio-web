@@ -10,7 +10,8 @@
   export let entry: LocalizedStringEntry;
 
   const keyValue = formatStringKey(entry.key);
-  const sourceValue = project.stbl.getValue(entry.id);
+  const sourceValue =
+    project.stbl.getValue(entry.id)?.replace(/\\n/g, "\n") ?? "";
   let translatedValue: string;
 
   $: {
@@ -20,7 +21,8 @@
   }
 
   function updateTranslatedValue() {
-    translatedValue = project.stbl.getValue(entry.id, locale) ?? "";
+    translatedValue =
+      project.stbl.getValue(entry.id, locale)?.replace(/\\n/g, "\n") ?? "";
   }
 
   function saveString() {
@@ -35,8 +37,14 @@
   class="w-full flex-0 flex flex-col gap-2 py-2 px-4 first:rounded-t last:rounded-b bg-gray-50 dark:bg-gray-700 hacker-bg-black border border-gray-100 dark:border-gray-800 hacker-border-gray"
 >
   <div class="flex justify-between items-start gap-4">
-    <p class="pt-2 text-primary monospace text-sm">{keyValue}</p>
-    <p class="py-2 flex-1 w-full">{sourceValue}</p>
+    <p class="pt-2 text-primary monospace">{keyValue}</p>
+    <p
+      class="py-2 flex-1 w-full whitespace-pre-wrap"
+      class:text-gray-400={!Boolean(sourceValue)}
+      class:dark:text-gray-500={!Boolean(sourceValue)}
+    >
+      {sourceValue ? sourceValue : "Empty string"}
+    </p>
     <div class="flex-1 w-full flex items-center">
       <ResizableTextArea
         bind:value={translatedValue}
