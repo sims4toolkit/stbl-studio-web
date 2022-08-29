@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onDestroy } from "svelte";
   import { fade } from "svelte/transition";
-  import { parse, v4 as uuidv4 } from "uuid";
+  import { v4 as uuidv4 } from "uuid";
   import type { StringTableLocale } from "@s4tk/models/enums";
   import {
     ParsedFilesResult,
@@ -9,7 +9,6 @@
   } from "src/lib/utilities/uploading";
   import Settings from "src/lib/services/settings";
   import Project from "src/lib/models/project";
-  import LocalizedStringTable from "src/lib/models/localized-stbl";
   import type Workspace from "src/lib/models/workspace";
   import { activeWorkspaceStore } from "src/lib/services/stores";
   import MultipageProjectDataContent from "src/components/views/MultipageProjectDataContent.svelte";
