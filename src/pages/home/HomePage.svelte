@@ -33,16 +33,18 @@
     subscriptions.forEach((unsub) => unsub());
   });
 
-  if (Settings.hasWorkspace) {
-    Workspace.fromStorage()
-      .then((workspace) => {
-        activeWorkspaceStore.set(workspace);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  } else {
-    isOnboarding = true;
+  if (activeWorkspace == undefined) {
+    if (Settings.hasWorkspace) {
+      Workspace.fromStorage()
+        .then((workspace) => {
+          activeWorkspaceStore.set(workspace);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    } else {
+      isOnboarding = true;
+    }
   }
 
   function onOnboardingComplete() {
