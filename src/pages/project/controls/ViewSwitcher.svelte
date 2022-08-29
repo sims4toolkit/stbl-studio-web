@@ -110,6 +110,11 @@
   }
 
   $: {
+    if (chosenView.utilities !== "selectable")
+      selectionGroup.toggleSelectMode(false);
+  }
+
+  $: {
     chosenView = viewOptions[chosenViewIndex];
     Settings.projectView = chosenViewIndex;
     if (chosenView.utilities !== "json") saveJson = undefined;
@@ -206,6 +211,7 @@
       <svelte:component
         this={chosenView.component}
         bind:project
+        bind:locale={translatingTo}
         bind:sliceToRender
       />
     {:else}

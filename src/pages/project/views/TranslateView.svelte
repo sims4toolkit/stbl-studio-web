@@ -1,9 +1,12 @@
 <script lang="ts">
+  import type { StringTableLocale } from "@s4tk/models/enums";
   import type Project from "src/lib/models/project";
   import type { LocalizedStringEntry } from "src/lib/models/localized-stbl";
   import WindowManager from "src/lib/services/windows";
+  import TranslateViewCell from "./TranslateViewCell.svelte";
 
   export let project: Project;
+  export let locale: StringTableLocale;
   export let sliceToRender: LocalizedStringEntry[];
 
   $: translationPossible =
@@ -12,7 +15,7 @@
 
 {#if translationPossible && sliceToRender.length > 0}
   {#each sliceToRender as entry (entry.id)}
-    {entry}
+    <TranslateViewCell bind:project bind:locale bind:entry />
   {/each}
 {:else}
   <div

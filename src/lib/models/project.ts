@@ -122,10 +122,11 @@ export default class Project {
    * 
    * @param id ID of entry to update
    * @param rawValue New value of entry
+   * @param locale Locale to set value for
    */
-  setValue(id: number, rawValue: string) {
+  setValue(id: number, rawValue: string, locale = this.stbl.primaryLocale) {
     const value = rawValue.replace(/(?:\r\n|\r|\n)/g, "\\n");
-    this.stbl.setValue(id, value);
+    this.stbl.setValue(id, value, locale);
     this.stbl.saveToStorage(this.uuid);
   }
 
