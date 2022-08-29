@@ -239,7 +239,7 @@ export default class LocalizedStringTable {
    * @param locale Locale to get value for (primary locale by default)
    */
   getValue(id: number, locale = this.primaryLocale): string {
-    return this._entryMap.get(id).values.get(locale);
+    return this._entryMap.get(id)?.values.get(locale);
   }
 
   /**
