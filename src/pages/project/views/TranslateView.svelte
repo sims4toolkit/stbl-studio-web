@@ -1,13 +1,29 @@
 <script lang="ts">
+  import { onDestroy } from "svelte";
   import type { StringTableLocale } from "@s4tk/models/enums";
   import type Project from "src/lib/models/project";
   import type { LocalizedStringEntry } from "src/lib/models/localized-stbl";
   import WindowManager from "src/lib/services/windows";
   import TranslateViewCell from "./TranslateViewCell.svelte";
+  import Settings, {
+    SettingsSubscriptionManager,
+  } from "src/lib/services/settings";
 
   export let project: Project;
   export let locale: StringTableLocale;
   export let sliceToRender: LocalizedStringEntry[];
+
+  let hideKey = Settings.translateHideKeys;
+
+  const subscriptions = [
+    SettingsSubscriptionManager.subscribe("translateHideKeys", (value) => {
+      hideKey = value;
+    }),
+  ];
+
+  onDestroy(() => {
+    subscriptions.forEach((unsub) => unsub());
+  });
 
   $: translationPossible =
     project.stbl.numLocales > 1 && project.stbl.numEntries > 0;
@@ -15,7 +31,7 @@
 
 {#if translationPossible && sliceToRender.length > 0}
   {#each sliceToRender as entry (entry.id)}
-    <TranslateViewCell bind:project bind:locale bind:entry />
+    <TranslateViewCell bind:project bind:locale bind:entry bind:hideKey />
   {/each}
 {:else}
   <div

@@ -196,11 +196,17 @@
   {#if chosenView.utilities === "translate" && project.metaData.numLocales > 1}
     <div class="mt-4 flex flex-wrap sm:flex-nowrap gap-4 sm:gap-8">
       <div class="max-w-min whitespace-nowrap">
-        <Switch label="Hide String Keys" checked={false} />
+        <Switch
+          label="Hide String Keys"
+          bind:checked={Settings.translateHideKeys}
+        />
       </div>
-      <div class="max-w-min whitespace-nowrap">
-        <Switch label="Hide Translated Strings" checked={false} />
-      </div>
+      <!-- <div class="max-w-min whitespace-nowrap">
+        <Switch
+          label="Hide Translated Strings"
+          bind:checked={Settings.translateHideTranslated}
+        />
+      </div> -->
     </div>
   {/if}
   {#if filters.length > 0}

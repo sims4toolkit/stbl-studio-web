@@ -8,6 +8,7 @@
   export let project: Project;
   export let locale: StringTableLocale;
   export let entry: LocalizedStringEntry;
+  export let hideKey: boolean;
 
   const keyValue = formatStringKey(entry.key);
   const sourceValue =
@@ -37,7 +38,9 @@
   class="w-full flex-0 flex flex-col gap-2 py-2 px-4 first:rounded-t last:rounded-b bg-gray-50 dark:bg-gray-700 hacker-bg-black border border-gray-100 dark:border-gray-800 hacker-border-gray"
 >
   <div class="flex flex-col sm:flex-row justify-between items-start gap-4">
-    <p class="pt-2 text-primary monospace">{keyValue}</p>
+    <p class="pt-2 text-primary monospace" hidden={hideKey}>
+      {keyValue}
+    </p>
     <p
       class="py-2 flex-1 w-full whitespace-pre-wrap"
       class:text-gray-400={!Boolean(sourceValue)}

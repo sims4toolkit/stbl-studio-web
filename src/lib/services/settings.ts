@@ -153,6 +153,7 @@ interface UserSettings {
   downloadLocales: number;
   downloadNamingConvention: FileNamingConvention;
   sortOrder: number;
+  translateHideKeys: boolean;
 }
 
 type StoredUserSettings = {
@@ -278,6 +279,10 @@ const Settings = getSettingsProxy({
   sortOrder: {
     cls: StoredInteger,
     defaultValue: 0
+  },
+  translateHideKeys: {
+    cls: StoredBoolean,
+    defaultValue: false
   }
 });
 
