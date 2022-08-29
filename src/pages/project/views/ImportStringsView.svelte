@@ -101,7 +101,13 @@
               </ul>
             </div>
             <p class="text-subtle text-xs">
-              This action cannot be undone. Are you sure you want to continue?
+              <span class="text-red-600 dark:text-red-400 font-bold"
+                >WARNING:</span
+              >
+              If any strings have keys that are already in use, they will
+              <span class="text-subtle underline"
+                >overwrite existing entries</span
+              >. This action cannot be undone.
             </p>
           </div>
         {:else}
