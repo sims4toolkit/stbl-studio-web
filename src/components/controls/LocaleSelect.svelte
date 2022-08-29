@@ -10,7 +10,7 @@
   export let selected: StringTableLocale;
   export let localesToChoose = enums.StringTableLocale.all();
 
-  const options = localesToChoose.map((locale) => {
+  $: options = localesToChoose.map((locale) => {
     return {
       value: locale,
       text: getDisplayName(locale),

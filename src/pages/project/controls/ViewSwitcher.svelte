@@ -185,7 +185,7 @@
           label="translating to"
           alignRight={true}
           bind:selected={translatingTo}
-          localesToChoose={otherLocales}
+          bind:localesToChoose={otherLocales}
         />
       {/if}
     </div>
