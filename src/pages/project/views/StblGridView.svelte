@@ -18,7 +18,7 @@
   </div>
 {:else}
   <div
-    class="w-full text-center py-12 border-2 border-dashed border-gray-400 dark:border-gray-600 hacker-border-gray"
+    class="w-full text-center py-12 px-4 border-2 border-dashed border-gray-400 dark:border-gray-600 hacker-border-gray"
   >
     {#if project.stbl.numEntries === 0}
       <h2 class="text-xl mb-4 text-subtle font-bold">This Project is Empty</h2>
