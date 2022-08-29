@@ -1,9 +1,11 @@
 <script lang="ts">
+  import { onDestroy } from "svelte";
   import Settings from "src/lib/services/settings";
+  import WindowManager from "src/lib/services/windows";
   import HelpWindow from "src/components/windows/HelpWindow.svelte";
   import SettingsWindow from "src/components/windows/SettingsWindow.svelte";
-  import HasherWindow from "../windows/HasherWindow.svelte";
-  import TokenAssistantWindow from "../windows/TokenAssistantWindow.svelte";
+  import HasherWindow from "src/components/windows/HasherWindow.svelte";
+  import TokenAssistantWindow from "src/components/windows/TokenAssistantWindow.svelte";
 
   let showSettingsWindow = false;
   let showHelpWindow = false;
@@ -13,6 +15,29 @@
   // redundant so icon can react without accessing settings
   let isLightTheme = Settings.isLightTheme;
   $: themeIcon = isLightTheme ? "sunny" : "moon";
+
+  const subscriptions = [
+    WindowManager.subscribe((type, args) => {
+      switch (type) {
+        case "help":
+          showHelpWindow = true;
+          break;
+        case "hasher":
+          showHasherWindow = true;
+          break;
+        case "settings":
+          showSettingsWindow = true;
+          break;
+        case "tokens":
+          showTokenAssistWindow = true;
+          break;
+      }
+    }),
+  ];
+
+  onDestroy(() => {
+    subscriptions.forEach((unsub) => unsub());
+  });
 
   function toggleTheme() {
     if (Settings.mainframeHacked) return;

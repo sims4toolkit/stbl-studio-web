@@ -10,6 +10,7 @@
   import HomeActionButtons from "./controls/HomeActionButtons.svelte";
   import OnboardingView from "./views/OnboardingView.svelte";
   import WorkspaceView from "./views/WorkspaceView.svelte";
+  import WindowManager from "src/lib/services/windows";
 
   let activeWorkspace: Workspace;
   let showingProjects = false;
@@ -50,7 +51,7 @@
   }
 
   function launchHelpWindow() {
-    // TODO: use window manager
+    WindowManager.request("help");
   }
 </script>
 

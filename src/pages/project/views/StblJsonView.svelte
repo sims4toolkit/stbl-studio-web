@@ -1,5 +1,6 @@
 <script lang="ts">
   import type Project from "src/lib/models/project";
+  import WindowManager from "src/lib/services/windows";
   import { normalizeJson } from "src/lib/utilities/json";
 
   export let project: Project;
@@ -38,7 +39,10 @@
     </p>
     <p class="text-xs text-subtle">
       Confused about the syntax? Read about it <button
-        class="text-secondary underline hover:no-underline">here</button
+        class="text-secondary underline hover:no-underline"
+        on:click={() => {
+          WindowManager.request("help");
+        }}>here</button
       >.
     </p>
   </div>
