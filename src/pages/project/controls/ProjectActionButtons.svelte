@@ -12,6 +12,7 @@
   import DeleteStringsModal from "src/pages/project/views/DeleteStringsModal.svelte";
   import RehashStringsModal from "src/pages/project/views/RehashStringsModal.svelte";
   import StblDownloadView from "src/components/views/StblDownloadView.svelte";
+  import ImportStringsView from "src/pages/project/views/ImportStringsView.svelte";
 
   export let selectionGroup: SelectionGroup<LocalizedStringEntry, number>;
   export let project: Project;
@@ -86,7 +87,9 @@
             icon: "upload",
             keybinding: "u",
             onClick: ifNotInModal(() => {
-              alert("upload");
+              modalContentArgs = {};
+              modalContentComponent = ImportStringsView;
+              usingBlur = true;
             }),
           },
           {
