@@ -136,7 +136,10 @@
             on:click={() => (showDisplayWindow = !showDisplayWindow)}
             >DISPLAY</button
           >
-          <SelectModeToggle bind:selectionGroup />
+          <SelectModeToggle
+            disabled={entries.length === 0}
+            bind:selectionGroup
+          />
         </div>
       {:else if chosenView.utilities === "json"}
         <button

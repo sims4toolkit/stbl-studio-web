@@ -44,17 +44,20 @@
   }
 
   .hacker-border-gray {
-    border: 1px solid $dark-gray !important;
+    border-width: 1px;
+    border-color: $dark-gray !important;
   }
 
   nav,
   .hacker-border-b-gray {
-    border-bottom: 1px solid $dark-gray !important;
+    border-bottom-width: 1px;
+    border-bottom-color: $dark-gray !important;
   }
 
   footer,
   .hacker-border-t-gray {
-    border-top: 1px solid $dark-gray !important;
+    border-top-width: 1px;
+    border-top-color: $dark-gray !important;
   }
 
   .hacker-bg-gray,

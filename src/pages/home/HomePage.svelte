@@ -73,9 +73,9 @@
           Create a new project with the toolbar in the bottom-right corner.
         </p>
         <p>
-          Need help? Check out the <button
+          Confused? Check out the <button
             class="underline hover:no-underline text-secondary"
-            on:click={launchHelpWindow}>help window</button
+            on:click={launchHelpWindow}>help menu</button
           > for more information.
         </p>
       {:else}
