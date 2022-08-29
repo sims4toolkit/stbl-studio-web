@@ -8,6 +8,19 @@
 
   export let workspace: Workspace;
   export let selectionGroup: SelectionGroup<Project, string>;
+
+  $: sortedProjects = [...workspace.projects].sort((p1, p2) => {
+    // using ternary b/c pinned can be undefined and undefined !== false
+    const pin1 = p1.metaData.pinned ? true : false;
+    const pin2 = p2.metaData.pinned ? true : false;
+    if (pin1 !== pin2) return pin1 ? -1 : 1;
+
+    const name1 = p1.metaData.name.toLowerCase();
+    const name2 = p2.metaData.name.toLowerCase();
+    if (name1 < name2) return -1;
+    if (name1 > name2) return 1;
+    return 0;
+  });
 </script>
 
 <div class="flex justify-between mb-8 flex-col sm:flex-row gap-8">
@@ -18,7 +31,7 @@
 </div>
 
 <div class="workspace-view">
-  {#each workspace.projects as project, key (key)}
+  {#each sortedProjects as project, key (key)}
     <ProjectView {project} bind:selectionGroup />
   {/each}
 </div>

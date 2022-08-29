@@ -20,11 +20,7 @@
   }
 </script>
 
-<button
-  class="relative"
-  class:-order-1={project.metaData.pinned}
-  on:click={handleClick}
->
+<button class="relative" on:click={handleClick}>
   {#if project.metaData.pinned}
     <img
       src="./assets/pin.svg"

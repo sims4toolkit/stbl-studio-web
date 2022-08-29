@@ -25,9 +25,7 @@ export default class Workspace {
 
   //#region Initialization
 
-  constructor(public projects: Project[] = []) {
-    this._sortProjects();
-  }
+  constructor(public projects: Project[] = []) { }
 
   /**
    * Parses a workspace from the given JSON and overwrites the settings
@@ -161,18 +159,8 @@ export default class Workspace {
 
   //#region Private Methods
 
-  private _sortProjects() {
-    this.projects.sort((p1, p2) => {
-      const name1 = p1.metaData.name.toLowerCase();
-      const name2 = p2.metaData.name.toLowerCase();
-      if (name1 < name2) return -1;
-      if (name1 > name2) return 1;
-      return 0;
-    });
-  }
-
   private _updateSubscribers() {
-    activeWorkspaceStore.set(this); // FIXME: is this right?
+    activeWorkspaceStore.set(this);
   }
 
   //#endregion Private Methods
