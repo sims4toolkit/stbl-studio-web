@@ -5,7 +5,10 @@
   } from "src/lib/services/settings";
   import type Project from "src/lib/models/project";
   import type SelectionGroup from "src/lib/models/selection-group";
-  import type { LocalizedStringEntry } from "src/lib/models/localized-stbl";
+  import type {
+    LocalizedStringEntry,
+    LocalizedStringTableIssue,
+  } from "src/lib/models/localized-stbl";
   import SelectModeToggle from "src/components/controls/SelectModeToggle.svelte";
   import StblListViewCell from "src/pages/project/views/StblListView.svelte";
   import StblGridView from "src/pages/project/views/StblGridView.svelte";
@@ -19,6 +22,7 @@
     getEntriesToShow,
   } from "src/lib/utilities/string-display";
   import Switch from "src/components/elements/Switch.svelte";
+  import WarningsWindow from "src/components/windows/WarningsWindow.svelte";
 
   export let project: Project;
   export let selectionGroup: SelectionGroup<LocalizedStringEntry, number>;
@@ -28,6 +32,8 @@
   let filters: FilterTerm[] = [];
   let saveJson: () => boolean;
   let jsonSavedCooldown = false;
+  let showWarnings = false;
+  let warnings: LocalizedStringTableIssue[] = [];
 
   const subscriptions = [
     SettingsSubscriptionManager.subscribe("sortOrder", () => {
@@ -38,6 +44,11 @@
   onDestroy(() => {
     subscriptions.forEach((unsub) => unsub());
   });
+
+  $: {
+    project;
+    warnings = project.stbl.getIssues();
+  }
 
   $: {
     project;
@@ -156,9 +167,16 @@
         {/each}
       </div>
     </div>
-    <div>
+    <div class="mt-4 sm:mt-4">
       {#if chosenView.utilities === "selectable"}
         <div class="flex justify-center gap-4">
+          {#if warnings.length > 0}
+            <button
+              class="text-sm text-red-600 hover:text-red-500 dark:text-red-400 dark:hover:text-red-300"
+              on:click={() => (showWarnings = !showWarnings)}
+              >WARNINGS ({warnings.length})</button
+            >
+          {/if}
           <button
             class="text-sm hover:text-subtle"
             on:click={() => (showDisplayWindow = !showDisplayWindow)}
@@ -259,6 +277,10 @@
     bind:filters
     onClose={() => (showDisplayWindow = false)}
   />
+{/if}
+
+{#if showWarnings}
+  <WarningsWindow bind:warnings onClose={() => (showWarnings = false)} />
 {/if}
 
 <style lang="scss">

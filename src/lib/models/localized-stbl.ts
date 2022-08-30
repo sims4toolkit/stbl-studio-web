@@ -16,6 +16,15 @@ export interface LocalizedStringEntry {
 }
 
 /**
+ * An issue that may occur in a STBL.
+ */
+export interface LocalizedStringTableIssue {
+  idList: number[];
+  keyList: number[];
+  message: string;
+}
+
+/**
  * A string table that contains data for multiple languages.
  */
 export default class LocalizedStringTable {
@@ -183,27 +192,41 @@ export default class LocalizedStringTable {
   /**
    * Returns a list of issues found in this stbl.
    */
-  getIssues(): { idList: number[]; message: string; }[] {
-    const issues: { idList: number[]; message: string; }[] = [];
+  getIssues(): LocalizedStringTableIssue[] {
+    const issues: LocalizedStringTableIssue[] = [];
 
     // maps keys to list of IDs
     const foundKeys = new Map<number, number[]>();
+
+    // maps strings to list of IDs
+    const foundStrings = new Map<string, number[]>();
+
+    // populating above maps
     this._entryMap.forEach((entry, id) => {
       if (foundKeys.has(entry.key)) {
         foundKeys.get(entry.key).push(id);
       } else {
         foundKeys.set(entry.key, [id]);
       }
+
+      const value = this.getValue(id);
+      if (foundStrings.has(value)) {
+        foundStrings.get(value).push(id);
+      } else {
+        foundStrings.set(value, [id]);
+      }
     });
 
-    // TODO: string === ""
-    // TODO: strings that are in translated stbl but not primary
-    // TODO: strings that are the same with different keys
+    const getKeys: (idList: number[]) => number[] = idList => {
+      const keys = idList.map(id => this.getEntry(id).key);
+      return [...new Set(keys)];
+    };
 
     foundKeys.forEach((idList, key) => {
       if (key === 0) {
         issues.push({
           idList,
+          keyList: getKeys(idList),
           message: `Key is 0x00000000`
         });
       }
@@ -211,7 +234,26 @@ export default class LocalizedStringTable {
       if (idList.length > 1) {
         issues.push({
           idList,
+          keyList: getKeys(idList),
           message: `Repeated key: ${formatting.formatStringKey(key)}`
+        });
+      }
+    });
+
+    foundStrings.forEach((idList, string) => {
+      if (!string) {
+        issues.push({
+          idList,
+          keyList: getKeys(idList),
+          message: "Empty string value"
+        });
+      }
+
+      if (idList.length > 1) {
+        issues.push({
+          idList,
+          keyList: getKeys(idList),
+          message: "Repeated string value"
         });
       }
     });
