@@ -1,0 +1,138 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "Schema for help menu data.",
+  "definitions": {
+    "route": {
+      "type": "object",
+      "required": [
+        "title",
+        "content"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "backButtonLink": {
+          "type": "string"
+        },
+        "content": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/swimLane"
+              },
+              {
+                "$ref": "#/definitions/questionAnswer"
+              },
+              {
+                "$ref": "#/definitions/generalHtml"
+              },
+              {
+                "$ref": "#/definitions/hr"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "swimLane": {
+      "type": "object",
+      "required": [
+        "kind",
+        "title",
+        "description",
+        "link"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "swimLane"
+          ]
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "link": {
+          "type": "string"
+        }
+      }
+    },
+    "questionAnswer": {
+      "type": "object",
+      "required": [
+        "kind",
+        "question",
+        "answer"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "questionAnswer"
+          ]
+        },
+        "question": {
+          "type": "string"
+        },
+        "answer": {
+          "type": "string"
+        },
+        "containsHtml": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "generalHtml": {
+      "type": "object",
+      "required": [
+        "kind",
+        "content"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "generalHtml"
+          ]
+        },
+        "content": {
+          "type": "string"
+        }
+      }
+    },
+    "hr": {
+      "type": "object",
+      "required": [
+        "kind"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "hr"
+          ]
+        }
+      }
+    }
+  },
+  "type": "object",
+  "required": [
+    "routes"
+  ],
+  "properties": {
+    "routes": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "$ref": "#/definitions/route"
+      }
+    }
+  }
+}
