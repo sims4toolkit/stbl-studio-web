@@ -1,0 +1,39 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sims4toolkit/stbl-studio-web/development/docs/help-menu-schema.json",
+  "routes": {
+    "/": {
+      "title": "What do you need help with?",
+      "content": [
+        {
+          "kind": "swimLane",
+          "title": "JSON Format",
+          "description": "Learn about the STBL JSON format.",
+          "link": "/json"
+        }
+      ]
+    },
+    "/json": {
+      "title": "JSON Format",
+      "backButtonLink": "/",
+      "content": [
+        {
+          "kind": "questionAnswer",
+          "question": "What is a JSON?",
+          "answer": "\"JSON\" is a user-friendly syntax commonly used to represent data."
+        },
+        {
+          "kind": "questionAnswer",
+          "question": "How does this website use JSON?",
+          "answer": "STBL Studio offers a JSON syntax to make working with STBLs for importing and exporting string tables. This is because JSON is much more easily readable and editable with a plain text editor than a binary STBL or package would be. In JSON format, you are free to add/edit/remove strings, load them into your own script, or change the order of entries."
+        },
+        {
+          "kind": "hr"
+        },
+        {
+          "kind": "generalHtml",
+          "content": "<h4>Expected JSON Format</h4><p>The JSON format this website uses is very flexible. All string entries should have two properties, one called \"key\" (case insensitive) and another called either \"value\" or \"string\" (also case insensitive). The value for the \"key\" property can either be a plain number, or a string containing an 8-digit hex number, with or without the \"0x\" prefix. This flexible format means that you can paste in the JSON content shown for string tables in S4S, the output of the <a href=\"\" class=\"text-secondary underline hover:no-underline\">old STBL editor</a>, or JSON representations of the <a href=\"\" class=\"text-secondary underline hover:no-underline\">StringTableResource</a> in <a href=\"\" class=\"text-secondary underline hover:no-underline\">@s4tk/models</a>.</p><p>See some examples of valid and invalid JSON formats below:</p><p class=\"text-yellow-400\">TODO</p>"
+        }
+      ]
+    }
+  }
+}

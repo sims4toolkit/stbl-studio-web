@@ -9,6 +9,7 @@
 
   let showSettingsWindow = false;
   let showHelpWindow = false;
+  let helpArgs = {};
   let showHasherWindow = false;
   let showTokenAssistWindow = false;
 
@@ -23,6 +24,7 @@
       switch (type) {
         case "help":
           showHelpWindow = show;
+          helpArgs = args;
           break;
         case "hasher":
           showHasherWindow = show;
@@ -45,6 +47,11 @@
     if (Settings.mainframeHacked) return;
     Settings.isLightTheme = !Settings.isLightTheme;
     isLightTheme = Settings.isLightTheme;
+  }
+
+  function onHelpClose() {
+    showHelpWindow = false;
+    helpArgs = {};
   }
 </script>
 
@@ -126,7 +133,7 @@
 </nav>
 
 {#if showHelpWindow}
-  <HelpWindow onClose={() => (showHelpWindow = false)} />
+  <HelpWindow onClose={onHelpClose} args={helpArgs} />
 {/if}
 
 {#if showSettingsWindow}
