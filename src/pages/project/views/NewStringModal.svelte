@@ -8,12 +8,14 @@
   } from "src/lib/services/settings";
   import Switch from "src/components/elements/Switch.svelte";
   import ResizableTextArea from "src/components/elements/ResizableTextArea.svelte";
+  import TokenAssistantWindow from "src/components/windows/TokenAssistantWindow.svelte";
 
   export let project: Project;
   export let onComplete: () => void;
 
   let value = "";
   let promptUntilCancel = false;
+  let showTokenAssistant = false;
 
   const mainframeWasHacked = Settings.mainframeHacked;
   const wasShowingRick = Settings.rickGif;
@@ -74,8 +76,16 @@
   >
     <div class="w-full flex justify-between">
       <p class="text-subtle text-sm uppercase font-bold">new string</p>
-      <div class="max-w-min whitespace-nowrap">
-        <Switch label="Prompt Until Cancel" bind:checked={promptUntilCancel} />
+      <div class="flex gap-6">
+        <div class="max-w-min whitespace-nowrap">
+          <Switch label="Token Assistant" bind:checked={showTokenAssistant} />
+        </div>
+        <div class="max-w-min whitespace-nowrap">
+          <Switch
+            label="Prompt Until Cancel"
+            bind:checked={promptUntilCancel}
+          />
+        </div>
       </div>
     </div>
     <ResizableTextArea
@@ -114,6 +124,10 @@
     </div>
   </div>
 </div>
+
+{#if showTokenAssistant}
+  <TokenAssistantWindow onClose={() => (showTokenAssistant = false)} />
+{/if}
 
 <style lang="scss">
   button {
