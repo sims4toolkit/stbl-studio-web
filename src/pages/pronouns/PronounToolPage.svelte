@@ -7,6 +7,7 @@
   import PronounToolHeader from "./PronounToolHeader.svelte";
   import ReplacementChoices from "./ReplacementChoices.svelte";
   import PronounBatchResults from "./PronounBatchResults.svelte";
+  import { saveAs } from "file-saver";
 
   const { Package } = window.S4TK.models;
 
@@ -15,7 +16,6 @@
   let batchFixResult: BatchFixResult;
   let possibleReplacements = pronounReplacements;
   let viewChanges = false;
-  let downloadingPackage = false;
 
   function onFilesRead(result: BatchFixResult) {
     setTimeout(() => {
@@ -24,13 +24,16 @@
     }, 500);
   }
 
-  function packageGenerator(): Blob {
+  function downloadPackage() {
     const pkg = new Package();
+
     batchFixResult.forEach(({ stbl }) => {
       pkg.add(stbl.key, stbl.value);
     });
+
     const buffer = pkg.getBuffer();
-    return new Blob([buffer]);
+    const blob = new Blob([buffer]);
+    saveAs(blob, "PronounBatchFix.package");
   }
 </script>
 
@@ -64,15 +67,14 @@
                 class="default-button flex items-center justify-center gap-4 px-4 py-2 text-lg rounded border border-black dark:border-white"
                 on:click={() => (viewChanges = true)}
               >
-                <img class="h-8" src="./assets/eye-outline.svg" alt="Eye" />
+                <img class="h-6" src="./assets/eye-outline.svg" alt="Eye" />
                 View
               </button>
               <button
-                disabled={downloadingPackage}
                 class="default-button flex items-center justify-center gap-4 px-4 py-2 text-lg rounded border border-black dark:border-white"
-                on:click={() => (downloadingPackage = true)}
+                on:click={downloadPackage}
               >
-                <img class="h-8" src="./assets/download.svg" alt="Download" />
+                <img class="h-6" src="./assets/download.svg" alt="Download" />
                 Download
               </button>
             </div>
