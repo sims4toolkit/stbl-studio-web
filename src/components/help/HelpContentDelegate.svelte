@@ -20,7 +20,7 @@
 </script>
 
 {#if data.kind === "hr"}
-  <hr />
+  <hr class="border-black dark:border-white hacker-border-gray" />
 {:else if Boolean(component)}
   <svelte:component this={component} {data} />
 {:else}
