@@ -57,6 +57,10 @@
   }
 </script>
 
+<svelte:head>
+  <title>STBL Studio | Workspace</title>
+</svelte:head>
+
 <section
   class="pt-10 px-4 w-full flex justify-center"
   class:flex-1={!showingProjects}

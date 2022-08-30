@@ -2,19 +2,21 @@
   import Router, { replace } from "svelte-spa-router";
   import Navbar from "src/components/views/Navbar.svelte";
   import Footer from "src/components/views/Footer.svelte";
+  import EasterEggs from "src/components/views/EasterEggs.svelte";
   import NotFoundPage from "src/pages/NotFoundPage.svelte";
   import HomePage from "src/pages/home/HomePage.svelte";
   import ProjectPage from "src/pages/project/ProjectPage.svelte";
-  import EasterEggs from "./components/views/EasterEggs.svelte";
+  import PronounToolPage from "src/pages/pronouns/PronounToolPage.svelte";
 
   const routes = {
     "/": HomePage,
     "/project/:uuid": ProjectPage,
+    "/tools/pronouns": PronounToolPage,
     "*": NotFoundPage,
   };
 
   const redirects = {
-    "/batch-fix/pronounts": "/tools/pronouns",
+    "/batch-fix/pronouns": "/tools/pronouns",
   };
 
   function routeLoaded(event: any) {

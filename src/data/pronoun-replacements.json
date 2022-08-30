@@ -1,0 +1,32 @@
+[
+  {
+    "male": "Him",
+    "female": "Her",
+    "token": "SimPronounObjective",
+    "checked": true
+  },
+  {
+    "male": "His",
+    "female": "Her",
+    "token": "SimPronounPossessiveDependent",
+    "checked": true
+  },
+  {
+    "male": "His",
+    "female": "Hers",
+    "token": "SimPronounPossessiveIndependent",
+    "checked": true
+  },
+  {
+    "male": "He",
+    "female": "She",
+    "token": "SimPronounSubjective",
+    "checked": true
+  },
+  {
+    "male": "Himself",
+    "female": "Herself",
+    "token": "SimPronounReflexive",
+    "checked": true
+  }
+]

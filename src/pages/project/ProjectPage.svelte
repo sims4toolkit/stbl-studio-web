@@ -60,6 +60,10 @@
   });
 </script>
 
+<svelte:head>
+  <title>STBL Studio | {project?.metaData.name ?? "Loading..."}</title>
+</svelte:head>
+
 <section
   class="w-full flex flex-col justify-center overflow-x-hidden"
   class:flex-1={!projectLoaded}
