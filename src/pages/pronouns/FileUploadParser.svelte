@@ -161,12 +161,12 @@
           result = result.replace(regex, newToken);
 
           from = from.replace(regex, (match) => {
-            return `<span class="error-color bold">${match}</span>`;
+            return `<span class="text-red-500 dark:text-red-400 font-bold">${match}</span>`;
           });
 
           to = to.replace(
             regex,
-            `<span class="success-color bold">${newToken}</span>`
+            `<span class="text-emerald-500 dark:text-emerald-400 font-bold">${newToken}</span>`
           );
         });
       });

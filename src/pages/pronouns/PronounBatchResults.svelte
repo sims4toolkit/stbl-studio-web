@@ -49,9 +49,9 @@
   }
 </script>
 
-<div class="pronoun-batch-results flex-center-v w-100">
-  <div class="w-100">
-    <div class="flex-space-between">
+<div class="pronoun-batch-results flex items-center w-full">
+  <div class="w-full">
+    <div class="flex justify-between">
       <NavigationButton
         direction="left"
         text="Previous STBL"
@@ -62,7 +62,7 @@
         <h2 class="font-bold text-2xl text-gradient drop-shadow">
           String Table {currentStblIndex + 1} of {batchFixResult.length}
         </h2>
-        <p class="small-title mb-0">
+        <p class="text-subtle uppercase monospace text-sm mt-4">
           ID: {formatResourceInstance(currentStbl.stbl.key.instance)}
         </p>
       </div>
@@ -73,12 +73,12 @@
         onClick={nextStbl}
       />
     </div>
-    <div class="batch-results-content my-4">
+    <div class="batch-results-content my-8">
       {#if currentSlice.length === 0}
-        <div class="no-changes flex-center text-center">
+        <div class="no-changes flex items-center justify-center text-center">
           <div>
-            <h3>No Changes!</h3>
-            <p>
+            <h3 class="mb-4 text-lg font-bold">No Changes!</h3>
+            <p class="text-subtle">
               This string table does not contain any pronouns that need to be
               batch fixed.
             </p>
@@ -86,18 +86,18 @@
         </div>
       {:else}
         {#each currentSlice as change, key (key)}
-          <div class="change-container mx-4">
-            <h4 class="my-0">{formatStringKey(change.key)}</h4>
-            <div class="comparison flex-space-between flex-gap">
+          <div class="change-container mx-8">
+            <h4 class="mb-4">{formatStringKey(change.key)}</h4>
+            <div class="comparison flex justify-between gap-4">
               <div>
-                <p class="small-title mb-0">Before</p>
-                <p class="subtle-text text-color mt-2 mb-0">
+                <p class="text-sm uppercase font-bold text-subtle">Before</p>
+                <p class="text-subtle mt-2 mb-0">
                   {@html change.from}
                 </p>
               </div>
               <div>
-                <p class="small-title mb-0">After</p>
-                <p class="subtle-text text-color mt-2 mb-0">
+                <p class="text-sm uppercase font-bold text-subtle">After</p>
+                <p class="text-subtle mt-2 mb-0">
                   {@html change.to}
                 </p>
               </div>
@@ -106,14 +106,14 @@
         {/each}
       {/if}
     </div>
-    <div class="flex-space-between">
+    <div class="flex justify-between">
       <NavigationButton
         direction="left"
         text="Previous Strings"
         onClick={previousChunk}
         active={changeIndexStart > 0}
       />
-      <p class="subtle-text my-0">
+      <p class="text-subtle text-sm">
         Showing changes {changeIndexStart + 1} - {changeIndexEnd} of {currentStbl
           .changes.length}
       </p>
@@ -141,7 +141,7 @@
     }
 
     .change-container {
-      border: 1px solid var(--color-divider);
+      border: 1px solid var(--color-text-subtle);
       padding: 1em;
 
       &:first-child {
