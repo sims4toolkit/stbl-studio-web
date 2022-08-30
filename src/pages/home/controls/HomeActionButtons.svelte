@@ -71,18 +71,19 @@
               workspace.toggleProjectPins(selectionGroup.allSelectedItems);
             }),
           },
-          {
-            color: "Pink",
-            title: "Merge",
-            icon: "git-merge",
-            keybinding: "m",
-            disabled: selectionGroup.numSelected < 2,
-            onClick: ifNotInModal(() => {
-              modalContentComponent = MergeProjectView;
-              modalContentArgs = {};
-              inModal = true;
-            }),
-          },
+          // FIXME: implement project merger
+          // {
+          //   color: "Pink",
+          //   title: "Merge",
+          //   icon: "git-merge",
+          //   keybinding: "m",
+          //   disabled: selectionGroup.numSelected < 2,
+          //   onClick: ifNotInModal(() => {
+          //     modalContentComponent = MergeProjectView;
+          //     modalContentArgs = {};
+          //     inModal = true;
+          //   }),
+          // },
           {
             color: "Red",
             title: "Delete",
