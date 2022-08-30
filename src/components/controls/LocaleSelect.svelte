@@ -4,7 +4,7 @@
   import { getDisplayName } from "src/lib/utilities/localization";
   const { enums } = window.S4TK;
 
-  export let label = "locale";
+  export let label: string = null;
   export let fillWidth = false;
   export let alignRight = false;
   export let selected: StringTableLocale;

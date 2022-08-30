@@ -12,7 +12,7 @@ const UNTRANSLATED_PLACEHOLDER = "";
 export interface LocalizedStringEntry {
   readonly id: number;
   key: number;
-  readonly values: Map<StringTableLocale, string>;
+  values: Map<StringTableLocale, string>;
 }
 
 /**
@@ -34,6 +34,15 @@ export default class LocalizedStringTable {
 
   get allLocales(): StringTableLocale[] {
     return this._allLocalesCache ??= [...this._allLocales];
+  }
+
+  /** Map of keys to IDs of the first entries that use it. */
+  get keyMap(): Map<number, number> {
+    const keyMap = new Map<number, number>();
+    this.entries.forEach(({ id, key }) => {
+      if (!keyMap.has(key)) keyMap.set(key, id);
+    });
+    return keyMap;
   }
 
   get otherLocales(): StringTableLocale[] {
@@ -273,28 +282,35 @@ export default class LocalizedStringTable {
   }
 
   /**
-   * Imports all of the given entries to this STBL using the given locale. If
-   * importing to the primary locale, all entries will be added as-is. If 
-   * importing to another locale, any entries with existing keys will have
-   * their translations updated, while ones with new keys will be added with
-   * the text being added to the primary locale.
+   * Adds all entries in the given stbl to this one. If `overwriteKeys` is true,
+   * then any strings being imported that have a key already in use by this
+   * project will overwrite the exisitng ones. If `overwriteKeys` is false, then
+   * the entries will just be added to this stbl's list of entries as-is.
    * 
-   * @param entries Entries to import
-   * @param locale Locale to import entries to (primary locale by default)
+   * @param stbl Stbl containing entries to import
+   * @param overwriteKeys Whether or not to replace entries with repeated keys
    */
-  importEntries(entries: StringTableJson<number>, locale = this.primaryLocale) {
-    // FIXME: let user choose to overwrite or not
-    if (locale === this.primaryLocale) {
-      entries.forEach(entry => this.addEntry(entry.key, entry.value));
-    } else if (!this._allLocales.has(locale)) {
-      throw new Error("Cannot import strings to locale not in this STBL.");
-    } else {
-      entries.forEach(entryToAdd => {
-        const existingEntry = this.entries.find(existingEntry => {
-          return existingEntry.key === entryToAdd.key;
-        }) ?? this.addEntry(entryToAdd.key, UNTRANSLATED_PLACEHOLDER);
+  importEntries(stbl: LocalizedStringTable, overwriteKeys: boolean) {
+    stbl.allLocales.forEach(locale => {
+      if (!this.hasLocale(locale)) this._allLocales.add(locale);
+    });
 
-        existingEntry.values.set(locale, entryToAdd.value);
+    if (overwriteKeys) {
+      const theseKeys = this.keyMap;
+
+      stbl.entries.forEach(({ key, values }) => {
+        if (theseKeys.has(key)) {
+          const existingEntry = this.getEntry(theseKeys.get(key));
+          existingEntry.values = new Map(values);
+        } else {
+          const id = this._nextId++;
+          this._entryMap.set(id, { id, key, values: new Map(values) });
+        }
+      });
+    } else {
+      stbl.entries.forEach(({ key, values }) => {
+        const id = this._nextId++;
+        this._entryMap.set(id, { id, key, values: new Map(values) });
       });
     }
 

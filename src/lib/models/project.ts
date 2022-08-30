@@ -117,6 +117,32 @@ export default class Project {
   }
 
   /**
+   * Deletes entries from the project and removes them from storage.
+   * 
+   * @param ids IDs of entries to delete
+   */
+  deleteStrings(ids: number[]) {
+    ids.forEach(id => this.stbl.deleteEntry(id));
+    this.metaData.numEntries = this.stbl.numEntries;
+    this.saveToStorage();
+    this.stbl.saveToStorage(this.uuid);
+  }
+
+  /**
+   * Imports strings to this project and saves it to storage.
+   * 
+   * @param stbl Stbl of entries to import
+   * @param overwriteKeys Whether or not to overwrite entries with existing keys
+   */
+  importEntries(stbl: LocalizedStringTable, overwriteKeys: boolean) {
+    this.stbl.importEntries(stbl, overwriteKeys);
+    this.metaData.numEntries = this.stbl.numEntries;
+    this.metaData.numLocales = this.stbl.numLocales;
+    this.saveToStorage();
+    this.stbl.saveToStorage(this.uuid);
+  }
+
+  /**
    * Updates the value for the entry with the given ID, then saves the STBL to
    * storage. This will replace newlines with literal "\n".
    * 
@@ -127,18 +153,6 @@ export default class Project {
   setValue(id: number, rawValue: string, locale = this.stbl.primaryLocale) {
     const value = rawValue.replace(/(?:\r\n|\r|\n)/g, "\\n");
     this.stbl.setValue(id, value, locale);
-    this.stbl.saveToStorage(this.uuid);
-  }
-
-  /**
-   * Deletes entries from the project and removes them from storage.
-   * 
-   * @param ids IDs of entries to delete
-   */
-  deleteStrings(ids: number[]) {
-    ids.forEach(id => this.stbl.deleteEntry(id));
-    this.metaData.numEntries = this.stbl.numEntries;
-    this.saveToStorage();
     this.stbl.saveToStorage(this.uuid);
   }
 

@@ -11,11 +11,16 @@
   import MultipageContent from "src/components/layouts/MultipageContent.svelte";
   import type { MultipageContentState } from "src/components/layouts/types";
   import MultipageStblUploadContent from "src/components/views/MultipageStblUploadContent.svelte";
+  import Switch from "src/components/elements/Switch.svelte";
+  import LocaleSelect from "src/components/controls/LocaleSelect.svelte";
   const { formatStringKey } = window.S4TK.formatting;
 
   export let project: Project;
   export let onComplete: () => void;
 
+  let previewingLocale = project.stbl.primaryLocale;
+  let overwriteKeys = false;
+  let numRepeatedKeys = 0;
   let resolvingResult = false;
   let resolvedStbl: LocalizedStringTable;
   let parseResult: ParsedFilesResult = null; // null to silence svelte error
@@ -33,10 +38,30 @@
 
   async function resolveResult() {
     try {
-      resolvedStbl = await resolveStringTables(
+      const stbl = await resolveStringTables(
         project.stbl.primaryLocale,
         parseResult.stbls
       );
+
+      const existingKeys = project.stbl.keyMap;
+      const importedKeys = stbl.keyMap;
+      importedKeys.forEach((_, key) => {
+        if (existingKeys.has(key)) ++numRepeatedKeys;
+      });
+
+      stbl.entries.forEach((entry) => {
+        if (existingKeys.has(entry.key)) {
+          const id = existingKeys.get(entry.key);
+          const existingEntry = project.stbl.getEntry(id);
+          entry.values.forEach((value, locale) => {
+            const existingValue = existingEntry.values.get(locale);
+            if (existingValue && !value)
+              entry.values.set(locale, existingValue);
+          });
+        }
+      });
+
+      resolvedStbl = stbl;
     } catch (err) {
       console.error(err);
 
@@ -49,8 +74,8 @@
   }
 
   function importStrings() {
-    // TODO:
-
+    project.importEntries(resolvedStbl, overwriteKeys);
+    project = project;
     onComplete();
   }
 </script>
@@ -78,11 +103,19 @@
       >
         {#if Boolean(resolvedStbl)}
           <div>
-            <p>
-              You're about to import the following {resolvedStbl.numEntries} string(s)
-              in {resolvedStbl.numLocales}
-              locale(s).
-            </p>
+            <div
+              class="flex flex-col items-start sm:flex-row sm:justify-between sm:items-center gap-4"
+            >
+              <p>
+                Importing {resolvedStbl.numEntries} string(s) in {resolvedStbl.numLocales}
+                locale(s).
+              </p>
+              <LocaleSelect
+                bind:selected={previewingLocale}
+                alignRight={true}
+                localesToChoose={resolvedStbl.allLocales}
+              />
+            </div>
             <div class="my-6 max-h-24 overflow-x-hidden overflow-y-auto">
               <ul class="list-disc pl-8 flex flex-col">
                 {#each resolvedStbl.entries as entry, key (key)}
@@ -94,21 +127,30 @@
                         class="text-accent-primary-light dark:text-accent-primary-dark hacker-text-lime monospace"
                         >{formatStringKey(entry.key)}</span
                       >
-                      = {entry.values.get(resolvedStbl.primaryLocale)}
+                      = {@html (() => {
+                        const value = entry.values.get(previewingLocale);
+
+                        return value
+                          ? value
+                          : '<span class="text-subtle">Empty string.</span>';
+                      })()}
                     </p>
                   </li>
                 {/each}
               </ul>
             </div>
-            <p class="text-subtle text-xs">
-              <span class="text-red-600 dark:text-red-400 font-bold"
-                >WARNING:</span
-              >
-              If any strings have keys that are already in use, they will
-              <span class="text-subtle underline"
-                >overwrite existing entries</span
-              >. This action cannot be undone.
-            </p>
+            {#if numRepeatedKeys > 0}
+              <p class="text-subtle text-xs mb-4">
+                <span class="text-red-600 dark:text-red-400 font-bold"
+                  >WARNING:</span
+                >
+                {numRepeatedKeys} entries have keys that are already in use. You
+                can either add them as-is, or overwrite the existing ones.
+              </p>
+              <div class="whitespace-nowrap max-w-min">
+                <Switch label="Overwrite keys" bind:checked={overwriteKeys} />
+              </div>
+            {/if}
           </div>
         {:else}
           <p>Resolving string tables...</p>
