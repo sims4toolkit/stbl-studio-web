@@ -16,7 +16,7 @@
   let chosenToken = 0;
   let tokenOptionIndex = 0;
   const tokenMap = new Map<number, string>();
-  const tokenOptions = tokenData.map(({ name, tokens }) => {
+  const tokenOptions = tokenData.tokens.map(({ name, tokens }) => {
     return {
       name,
       options: tokens.map((text) => {
@@ -27,8 +27,22 @@
     };
   });
 
+  let chosenSuffix = 0;
+  const tokenSuffixOptions = [
+    {
+      value: 0,
+      text: "None",
+    },
+    ...tokenData.suffixes.map((suffix, i) => ({
+      value: i + 1,
+      text: suffix,
+    })),
+  ];
+
   $: maleFemalePreview = `{M${tokenIndex}.${maleValue}}{F${tokenIndex}.${femaleValue}}`;
-  $: premadeTokenOutput = `{${tokenIndex}.${tokenMap.get(chosenToken)}}`;
+  $: premadeTokenOutput = `{${tokenIndex}.${tokenMap.get(chosenToken)}${
+    chosenSuffix === 0 ? "" : "|" + tokenSuffixOptions[chosenSuffix].text
+  }}`;
 
   function copyText(event: MouseEvent) {
     const btn = event.target as HTMLButtonElement;
@@ -55,15 +69,24 @@
       />
     </div>
     <div>
-      <Select
-        label="Premade Tokens"
-        name="premade-tokens-select"
-        fillWidth={true}
-        bind:selected={chosenToken}
-        optionGroups={tokenOptions}
-      />
+      <div class="flex gap-2 justify-between">
+        <Select
+          label="Token"
+          name="tokens-select"
+          fillWidth={true}
+          bind:selected={chosenToken}
+          optionGroups={tokenOptions}
+        />
+        <Select
+          label="Suffix"
+          name="suffixes-select"
+          fillWidth={true}
+          bind:selected={chosenSuffix}
+          options={tokenSuffixOptions}
+        />
+      </div>
       <button
-        class="monospace hover:text-accent-primary-light dark:hover:text-accent-primary-dark hover:hacker-text-green text-left text-sm mt-2"
+        class="monospace break-all hover:text-accent-primary-light dark:hover:text-accent-primary-dark hover:hacker-text-green text-left text-sm mt-2"
         on:click={copyText}>{premadeTokenOutput}</button
       >
     </div>
@@ -86,7 +109,7 @@
         />
       </div>
       <button
-        class="monospace hover:text-accent-primary-light dark:hover:text-accent-primary-dark hover:hacker-text-green text-left text-sm mt-2"
+        class="monospace break-all hover:text-accent-primary-light dark:hover:text-accent-primary-dark hover:hacker-text-green text-left text-sm mt-2"
         on:click={copyText}>{maleFemalePreview}</button
       >
     </div>
