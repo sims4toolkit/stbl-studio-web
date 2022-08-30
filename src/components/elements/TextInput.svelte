@@ -70,8 +70,8 @@
     class:monospace
     class:mt-2={Boolean(label)}
     class:w-full={fillWidth}
-    class:border-gray-700={isValid}
-    class:dark:border-gray-300={isValid}
+    class:border-gray-600={isValid}
+    class:dark:border-gray-400={isValid}
     class:border-red-600={!isValid}
     class:dark:border-red-400={!isValid}
   />

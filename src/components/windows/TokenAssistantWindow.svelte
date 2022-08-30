@@ -1,17 +1,44 @@
 <script lang="ts">
+  import tokenData from "src/data/tokens.json";
   import MovableWindow from "src/components/layouts/MovableWindow.svelte";
   import TextInput from "src/components/elements/TextInput.svelte";
+  import Select from "src/components/elements/Select.svelte";
 
   export let onClose: () => void;
+
+  let hintTimeout: any;
+  let hintPara: HTMLParagraphElement;
 
   let tokenIndex = 0;
   let maleValue = "";
   let femaleValue = "";
 
-  $: maleFemalePreview = `{M${tokenIndex}.${maleValue}}{F${tokenIndex}.${femaleValue}}`;
+  let chosenToken = 0;
+  let tokenOptionIndex = 0;
+  const tokenMap = new Map<number, string>();
+  const tokenOptions = tokenData.map(({ name, tokens }) => {
+    return {
+      name,
+      options: tokens.map((text) => {
+        const value = tokenOptionIndex++;
+        tokenMap.set(value, text);
+        return { value, text };
+      }),
+    };
+  });
 
-  function copy(string: string) {
-    // TODO:
+  $: maleFemalePreview = `{M${tokenIndex}.${maleValue}}{F${tokenIndex}.${femaleValue}}`;
+  $: premadeTokenOutput = `{${tokenIndex}.${tokenMap.get(chosenToken)}}`;
+
+  function copyText(event: MouseEvent) {
+    const btn = event.target as HTMLButtonElement;
+    navigator.clipboard.writeText(btn.innerText);
+    hintPara.innerText = "Copied!";
+    if (hintTimeout) clearTimeout(hintTimeout);
+    hintTimeout = setTimeout(() => {
+      hintPara.innerText = "Click any output token to copy.";
+      hintTimeout = undefined;
+    }, 1500);
   }
 </script>
 
@@ -23,9 +50,22 @@
         type="number"
         min="0"
         bind:value={tokenIndex}
-        class="w-full block h-10 px-2 rounded text-sm placeholder-gray-500 dark:placeholder-gray-500 bg-transparent border"
+        class="w-full block h-10 px-2 rounded text-sm placeholder-gray-500 dark:placeholder-gray-500 bg-transparent border border-gray-600 dark:border-gray-400"
         placeholder="#"
       />
+    </div>
+    <div>
+      <Select
+        label="Premade Tokens"
+        name="premade-tokens-select"
+        fillWidth={true}
+        bind:selected={chosenToken}
+        optionGroups={tokenOptions}
+      />
+      <button
+        class="monospace hover:text-accent-primary-light dark:hover:text-accent-primary-dark hover:hacker-text-green text-left text-sm mt-2"
+        on:click={copyText}>{premadeTokenOutput}</button
+      >
     </div>
     <div>
       <p class="text-subtle text-xs font-bold uppercase mb-2">
@@ -46,10 +86,12 @@
         />
       </div>
       <button
-        class="monospace hover:text-accent-primary-light dark:hover:text-accent-primary-dark text-left text-sm mt-2"
-        on:click={() => copy(maleFemalePreview)}>{maleFemalePreview}</button
+        class="monospace hover:text-accent-primary-light dark:hover:text-accent-primary-dark hover:hacker-text-green text-left text-sm mt-2"
+        on:click={copyText}>{maleFemalePreview}</button
       >
-      <p class="text-xs text-subtle mt-1">Click to copy.</p>
     </div>
+    <p bind:this={hintPara} class="text-xs text-subtle mt-1">
+      Click any output token to copy.
+    </p>
   </div>
 </MovableWindow>

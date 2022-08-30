@@ -5,10 +5,18 @@
   export let fillWidth = false;
   export let alignRight = false;
   export let selected: number | bigint | string;
-  export let options: {
+
+  // only need one or the other
+  export let options: Option[] = null;
+  export let optionGroups: {
+    name: string;
+    options: Option[];
+  }[] = null;
+
+  interface Option {
     value: number | bigint | string;
     text: string;
-  }[];
+  }
 </script>
 
 <div
@@ -23,15 +31,27 @@
   <select
     {name}
     bind:value={selected}
-    class="block h-10 pl-2 pr-8 rounded text-sm bg-transparent border border-gray-700 dark:border-gray-300"
+    class="block h-10 pl-2 pr-8 rounded text-sm bg-transparent border border-gray-600 dark:border-gray-400"
     class:w-full={fillWidth}
     {disabled}
   >
-    {#each options as option, key (key)}
-      <option value={option.value}>
-        {option.text}
-      </option>
-    {/each}
+    {#if Boolean(optionGroups)}
+      {#each optionGroups as group, key (key)}
+        <optgroup label={group.name}>
+          {#each group.options as option, key (key)}
+            <option value={option.value}>
+              {option.text}
+            </option>
+          {/each}
+        </optgroup>
+      {/each}
+    {:else}
+      {#each options as option, key (key)}
+        <option value={option.value}>
+          {option.text}
+        </option>
+      {/each}
+    {/if}
   </select>
 </div>
 

@@ -45,7 +45,7 @@
           <div class="w-full">
             <input
               disabled={Settings.showAllStrings}
-              class="w-full block h-10 px-2 mt-2 rounded text-sm placeholder-gray-500 dark:placeholder-gray-500 bg-transparent border"
+              class="w-full block h-10 px-2 mt-2 rounded text-sm placeholder-gray-500 dark:placeholder-gray-500 bg-transparent border border-gray-600 dark:border-gray-400"
               name="entries-per-page-input"
               min="1"
               max="100"
