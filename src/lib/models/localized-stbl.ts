@@ -250,10 +250,14 @@ export default class LocalizedStringTable {
       }
 
       if (idList.length > 1) {
+        const trimmedString = string.length > 20
+          ? string.substring(0, 20) + "..."
+          : string;
+
         issues.push({
           idList,
           keyList: getKeys(idList),
-          message: "Repeated string value"
+          message: `Repeated string: "${trimmedString}"`
         });
       }
     });
