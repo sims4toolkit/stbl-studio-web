@@ -18,6 +18,12 @@
         },
         {
           "kind": "swimLane",
+          "title": "Keybindings",
+          "description": "Navigate STBL Studio quickly with keybindings.",
+          "link": "/keybindings"
+        },
+        {
+          "kind": "swimLane",
           "title": "Terminology",
           "description": "Definitions for STBL Studio terms, like \"Project\".",
           "link": "/terminology"
@@ -85,6 +91,72 @@
           "kind": "questionAnswer",
           "question": "Expected JSON Structure",
           "answer": "The JSON format this website uses is very flexible. The top-level structure must be an array that contains objects with two properties, one called \"key\" (case insensitive) and another called either \"value\" or \"string\" (also case insensitive). The value for the \"key\" property can either be a plain number, or a string containing an 8-digit hex number, with or without the \"0x\" prefix. This flexible format means that you can paste in the JSON content shown for string tables in S4S, the output of the <a href=\"https://frankkmods.com/#/ts4-tools/stbl-editor\" class=\"text-secondary underline hover:no-underline\" target=\"_blank\">old STBL editor</a>, or JSON representations of the <a href=\"https://sims4toolkit.com/#/docs/models/latest/resources/StringTableResource\" class=\"text-secondary underline hover:no-underline\" target=\"_blank\">StringTableResource</a> in <a href=\"https://sims4toolkit.com/#/docs/models\" class=\"text-secondary underline hover:no-underline\" target=\"_blank\">@s4tk/models</a>.",
+          "containsHtml": true
+        }
+      ]
+    },
+    "/keybindings": {
+      "title": "Keybindings",
+      "backButtonLink": "/",
+      "content": [
+        {
+          "kind": "questionAnswer",
+          "question": "All Modals",
+          "answer": "<br><mark class=\"keystroke\">ESC</mark> = Close",
+          "containsHtml": true
+        },
+        {
+          "kind": "hr"
+        },
+        {
+          "kind": "questionAnswer",
+          "question": "Home Page",
+          "answer": "<br><mark class=\"keystroke\">CMD/CTRL</mark> + <mark class=\"keystroke\">S</mark> = Save Workspace<br><br><mark class=\"keystroke\">CMD/CTRL</mark> + <mark class=\"keystroke\">U</mark> = Upload Project<br><br><mark class=\"keystroke\">CMD/CTRL</mark> + <mark class=\"keystroke\">N</mark> = New Project",
+          "containsHtml": true
+        },
+        {
+          "kind": "hr"
+        },
+        {
+          "kind": "questionAnswer",
+          "question": "Home Page (Select Mode)",
+          "answer": "<br><mark class=\"keystroke\">CMD/CTRL</mark> + <mark class=\"keystroke\">S</mark> = Download<br><br><mark class=\"keystroke\">CMD/CTRL</mark> + <mark class=\"keystroke\">P</mark> = Toggle Pin<br><br><mark class=\"keystroke\">CMD/CTRL</mark> + <mark class=\"keystroke\">D</mark> = Delete",
+          "containsHtml": true
+        },
+        {
+          "kind": "hr"
+        },
+        {
+          "kind": "questionAnswer",
+          "question": "Project Page",
+          "answer": "<br><mark class=\"keystroke\">CMD/CTRL</mark> + <mark class=\"keystroke\">S</mark> = Download<br><br><mark class=\"keystroke\">CMD/CTRL</mark> + <mark class=\"keystroke\">U</mark> = Import Strings<br><br><mark class=\"keystroke\">CMD/CTRL</mark> + <mark class=\"keystroke\">N</mark> = New String",
+          "containsHtml": true
+        },
+        {
+          "kind": "hr"
+        },
+        {
+          "kind": "questionAnswer",
+          "question": "Project Page (Select Mode)",
+          "answer": "<br><mark class=\"keystroke\">CMD/CTRL</mark> + <mark class=\"keystroke\">H</mark> = Rehash Keys<br><br><mark class=\"keystroke\">CMD/CTRL</mark> + <mark class=\"keystroke\">D</mark> = Delete Strings",
+          "containsHtml": true
+        },
+        {
+          "kind": "hr"
+        },
+        {
+          "kind": "questionAnswer",
+          "question": "Project Page (Pagination)",
+          "answer": "<br><mark class=\"keystroke\">CMD/CTRL</mark> + <mark class=\"keystroke\">&larr;</mark> = Previous Page<br><br><mark class=\"keystroke\">CMD/CTRL</mark> + <mark class=\"keystroke\">&rarr;</mark> = Next Page<br><br><mark class=\"keystroke\">CMD/CTRL</mark> + <mark class=\"keystroke\">P</mark> = Focus Page Input",
+          "containsHtml": true
+        },
+        {
+          "kind": "hr"
+        },
+        {
+          "kind": "questionAnswer",
+          "question": "New String",
+          "answer": "<br><mark class=\"keystroke\">ENTER</mark> = Save String<br><br><mark class=\"keystroke\">ESC</mark> = Cancel String<br><br><mark class=\"keystroke\">SHIFT</mark> + <mark class=\"keystroke\">ENTER</mark> = Newline",
           "containsHtml": true
         }
       ]
