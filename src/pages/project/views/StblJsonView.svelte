@@ -41,7 +41,7 @@
       Confused about the syntax? Read about it <button
         class="text-secondary underline hover:no-underline"
         on:click={() => {
-          WindowManager.request("help");
+          WindowManager.request("help", "open", { route: "/json" });
         }}>here</button
       >.
     </p>

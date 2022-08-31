@@ -6,6 +6,7 @@
   import MultipageContent from "src/components/layouts/MultipageContent.svelte";
   import FileInput from "src/components/elements/FileInput.svelte";
   import { parseFiles } from "src/lib/utilities/uploading";
+  import HelpWindow from "../windows/HelpWindow.svelte";
 
   export let startingPageNumber = 1;
   export let multipageState: MultipageContentState;
@@ -13,6 +14,7 @@
 
   let uploadError: string;
   let files: FileList;
+  let showJsonHelp = false;
 
   $: {
     if (files) parseUploadedFiles();
@@ -69,9 +71,9 @@
         by uploading them in packages.
       </p>
       <p class="text-xs text-subtle">
-        Using JSON? Read about the expected structure <span
-          class="underline text-accent-secondary-light dark:text-accent-secondary-dark"
-          >here</span
+        Using JSON? Read about the expected structure <button
+          class="text-secondary underline hover:no-underline"
+          on:click={() => (showJsonHelp = !showJsonHelp)}>here</button
         >.
       </p>
     </div>
@@ -109,3 +111,10 @@
     {/if}
   </div>
 </MultipageContent>
+
+{#if showJsonHelp}
+  <HelpWindow
+    onClose={() => (showJsonHelp = false)}
+    args={{ route: "/json" }}
+  />
+{/if}
