@@ -1,6 +1,6 @@
 # stbl-studio-web
 
-A web app for managing string tables for TS4 mods. Powered by (Sims 4 Toolkit)[https://sims4toolkit.com/];
+A web app for managing string tables for TS4 mods. Powered by [Sims 4 Toolkit](https://sims4toolkit.com/);
 
 ## Feature List
 

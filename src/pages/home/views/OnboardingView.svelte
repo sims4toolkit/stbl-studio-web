@@ -105,7 +105,6 @@
               target="_blank">feature list</a
             > to learn more about what it can do.
           </p>
-          <!-- TODO: note for translators and people just using web tools -->
           <p class="text-xs text-subtle mt-4">
             <span class="text-red-600 dark:text-red-400">WARNING:</span> This
             website is new, and is nowhere near as battle-tested as its
@@ -113,8 +112,9 @@
               class="text-secondary underline hover:no-underline"
               href="https://frankkmods.com/#/ts4-tools/stbl-editor"
               target="_blank">predecessor</a
-            >. Double-check your string tables before using them for your mods,
-            and please
+            >. It is currently considered experimental, so you should
+            double-check your string tables before using them for your mods, and
+            please
             <a
               class="text-secondary underline hover:no-underline"
               href="https://discord.gg/qNhD3Jh"
