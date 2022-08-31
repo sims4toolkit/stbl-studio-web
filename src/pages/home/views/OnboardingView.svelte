@@ -101,17 +101,9 @@
             String Table Studio is a web app that makes it easy to create, edit,
             and translate string tables for Sims 4 mods. View the <a
               class="text-secondary"
-              href="https://frankkmods.com"
+              href="https://github.com/sims4toolkit/stbl-studio-web/blob/main/README.md"
               target="_blank">feature list</a
             > to learn more about what it can do.
-          </p>
-          <!-- TODO: update links -->
-          <p>
-            Not sure where to start? Read <a
-              class="text-secondary"
-              href="https://frankkmods.com"
-              target="_blank">this guide</a
-            > to learn how to migrate your string tables to a STBL Studio project.
           </p>
           <!-- TODO: note for translators and people just using web tools -->
           <p class="text-xs text-subtle mt-4">
