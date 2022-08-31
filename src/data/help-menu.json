@@ -41,10 +41,16 @@
           "containsHtml": true
         },
         {
+          "kind": "hr"
+        },
+        {
           "kind": "questionAnswer",
           "question": "Where is my data stored?",
           "answer": "All of your data is stored in your browser - it is not in the cloud or backed up in any way. Because of this, I highly recommended regularly backing up your entire workspace by downloading it with the <img class=\"inline-block svg h-4\" src=\"./assets/desktop-download.svg\" alt=\"Download\"/> button on the home page.",
           "containsHtml": true
+        },
+        {
+          "kind": "hr"
         },
         {
           "kind": "questionAnswer",
@@ -59,20 +65,17 @@
       "content": [
         {
           "kind": "questionAnswer",
-          "question": "What is a JSON?",
-          "answer": "\"JSON\" is a user-friendly syntax commonly used to represent data."
-        },
-        {
-          "kind": "questionAnswer",
-          "question": "How does this website use JSON?",
-          "answer": "STBL Studio offers a JSON syntax to make working with STBLs for importing and exporting string tables. This is because JSON is much more easily readable and editable with a plain text editor than a binary STBL or package would be. In JSON format, you are free to add/edit/remove strings, load them into your own script, or change the order of entries."
+          "question": "What is JSON?",
+          "answer": "JSON is a syntax based off of JavaScript that is used to store data. STBL Studio lets you import/export string tables in JSON format, since JSON is much more user-friendly if you would like to manually add, edit, remove, or reorder entries."
         },
         {
           "kind": "hr"
         },
         {
-          "kind": "generalHtml",
-          "content": "<h4>Expected JSON Format</h4><p>The JSON format this website uses is very flexible. All string entries should have two properties, one called \"key\" (case insensitive) and another called either \"value\" or \"string\" (also case insensitive). The value for the \"key\" property can either be a plain number, or a string containing an 8-digit hex number, with or without the \"0x\" prefix. This flexible format means that you can paste in the JSON content shown for string tables in S4S, the output of the <a href=\"\" class=\"text-secondary underline hover:no-underline\">old STBL editor</a>, or JSON representations of the <a href=\"\" class=\"text-secondary underline hover:no-underline\">StringTableResource</a> in <a href=\"\" class=\"text-secondary underline hover:no-underline\">@s4tk/models</a>.</p><p>See some examples of valid and invalid JSON formats below:</p><p class=\"text-yellow-400\">TODO</p>"
+          "kind": "questionAnswer",
+          "question": "Expected JSON Structure",
+          "answer": "The JSON format this website uses is very flexible. The top-level structure must be an array that contains objects with two properties, one called \"key\" (case insensitive) and another called either \"value\" or \"string\" (also case insensitive). The value for the \"key\" property can either be a plain number, or a string containing an 8-digit hex number, with or without the \"0x\" prefix. This flexible format means that you can paste in the JSON content shown for string tables in S4S, the output of the <a href=\"https://frankkmods.com/#/ts4-tools/stbl-editor\" class=\"text-secondary underline hover:no-underline\" target=\"_blank\">old STBL editor</a>, or JSON representations of the <a href=\"https://sims4toolkit.com/#/docs/models/latest/resources/StringTableResource\" class=\"text-secondary underline hover:no-underline\" target=\"_blank\">StringTableResource</a> in <a href=\"https://sims4toolkit.com/#/docs/models\" class=\"text-secondary underline hover:no-underline\" target=\"_blank\">@s4tk/models</a>.",
+          "containsHtml": true
         }
       ]
     },
