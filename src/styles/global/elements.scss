@@ -22,3 +22,8 @@ select {
 	-webkit-appearance: none; 
 	appearance: none;
 }
+
+option {
+  background: var(--color-bg) !important;
+  color: var(--color-text) !important;
+}
