@@ -23,7 +23,8 @@ select {
 	appearance: none;
 }
 
-option {
+option,
+optgroup {
   background: var(--color-bg) !important;
   color: var(--color-text) !important;
 }
