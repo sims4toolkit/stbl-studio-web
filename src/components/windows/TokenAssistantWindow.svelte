@@ -21,8 +21,10 @@
       name,
       options: tokens.map((text) => {
         const value = tokenOptionIndex++;
+        const hint = tokenData.tokenHints[text];
+        const textWithHint = hint ? `${text} (${hint})` : text;
         tokenMap.set(value, text);
-        return { value, text };
+        return { value, text: textWithHint };
       }),
     };
   });
