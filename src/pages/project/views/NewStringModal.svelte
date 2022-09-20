@@ -65,6 +65,11 @@
       onComplete();
     }
   }
+
+  function onEnter(enteredValue: string) {
+    value = enteredValue;
+    addString();
+  }
 </script>
 
 <div
@@ -93,7 +98,7 @@
       fillWidth={true}
       focusOnMount={true}
       bind:value
-      onEnter={addString}
+      {onEnter}
     />
     <div class="w-full flex flex-wrap gap-2 justify-between items-center">
       <p class="text-subtle text-xs">

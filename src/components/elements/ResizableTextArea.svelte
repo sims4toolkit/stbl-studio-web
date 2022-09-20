@@ -5,7 +5,7 @@
   export let placeholder = "";
   export let fillWidth = false;
   export let focusOnMount = false;
-  export let onEnter: () => void = null;
+  export let onEnter: (value: string) => void = null;
   export let onBlur: () => void = null;
   export let tabindex: number = 0;
 
@@ -20,7 +20,7 @@
     if (event.key === "Enter") {
       if (!event.shiftKey && onEnter) {
         event.preventDefault();
-        onEnter();
+        onEnter(textarea.value);
       }
     }
   }
