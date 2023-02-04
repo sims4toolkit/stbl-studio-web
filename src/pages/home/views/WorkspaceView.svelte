@@ -5,14 +5,14 @@
   import SelectModeToggle from "src/components/controls/SelectModeToggle.svelte";
   import SectionHeader from "src/components/elements/SectionHeader.svelte";
   import ProjectView from "./ProjectView.svelte";
+  import { ProjectFlags } from "src/lib/models/project";
 
   export let workspace: Workspace;
   export let selectionGroup: SelectionGroup<Project, string>;
 
   $: sortedProjects = [...workspace.projects].sort((p1, p2) => {
-    // using ternary b/c pinned can be undefined and undefined !== false
-    const pin1 = p1.metaData.pinned ? true : false;
-    const pin2 = p2.metaData.pinned ? true : false;
+    const pin1 = p1.hasFlags(ProjectFlags.Pinned);
+    const pin2 = p2.hasFlags(ProjectFlags.Pinned);
     if (pin1 !== pin2) return pin1 ? -1 : 1;
 
     const name1 = p1.metaData.name.toLowerCase();

@@ -2,7 +2,7 @@ import DatabaseService from "../services/database.js";
 import Settings from "../services/settings.js";
 import { activeWorkspaceStore } from "../services/stores.js";
 import LocalizedStringTable from "./localized-stbl.js";
-import Project from "./project.js";
+import Project, { ProjectFlags } from "./project.js";
 
 /**
  * How a workspace will be saved in a JSON.
@@ -127,11 +127,11 @@ export default class Workspace {
    * @param projects Projects to toggle pins for
    */
   toggleProjectPins(projects: Project[]) {
-    const pinning = projects.some(p => !p.metaData.pinned);
+    const pinning = projects.some(p => !(p.hasFlags(ProjectFlags.Pinned)));
 
     projects.forEach(project => {
-      project.metaData.pinned = pinning
-      project.saveToStorage();
+      project.setFlags(ProjectFlags.Pinned, pinning);
+      project.saveToStorage(false);
     });
 
     this._updateSubscribers();
