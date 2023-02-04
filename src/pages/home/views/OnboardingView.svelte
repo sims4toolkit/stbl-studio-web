@@ -74,7 +74,7 @@
         <p class="mt-4 text-xs text-subtle">
           If you're sure you're uploading a workspace JSON, do not panic. It is
           likely that one or more of your projects are corrupt, but the others
-          are safe. Please <a
+          are safe. First, try reloading the page. If this does not work, <a
             class="text-secondary"
             href="https://frankkmods.com/#/about"
             target="_blank">contact me</a

@@ -52,7 +52,7 @@ export default class Workspace {
           return new Project(
             uuid,
             Project.deserializeMetaData(metaData),
-            LocalizedStringTable.deserialize(stbl)
+            undefined
           );
         });
 
