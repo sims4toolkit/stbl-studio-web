@@ -26,10 +26,10 @@
 <button class="relative" on:click={handleClick}>
   {#if projectCorrupt}
     <img
-      src="./assets/upload.svg"
+      src="./assets/warning-outline.svg"
       alt="Corrupt"
       title="Corrupt"
-      class="svg-accent h-4 w-4 z-10 absolute top-2 right-2 -scale-x-100"
+      class="svg-warning h-4 w-4 z-10 absolute top-2 right-2 -scale-x-100"
     />
   {:else if projectPinned}
     <img

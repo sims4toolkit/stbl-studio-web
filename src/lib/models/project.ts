@@ -226,7 +226,16 @@ export default class Project {
       DatabaseService.getItem("stbls", this.uuid)
         .then(data => {
           if (!data) return reject("Could not deserialize STBL.");
-          this._stbl = LocalizedStringTable.deserialize(data);
+
+          try {
+            this._stbl = LocalizedStringTable.deserialize(data);
+            if (this.hasFlags(ProjectFlags.Corrupt))
+              this.setFlags(ProjectFlags.Corrupt, false);
+          } catch (err) {
+            this.setFlags(ProjectFlags.Corrupt, true);
+            throw err;
+          }
+
           resolve();
         })
         .catch(err => {
