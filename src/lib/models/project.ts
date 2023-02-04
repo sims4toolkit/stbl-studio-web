@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import type { StringTableLocale } from "@s4tk/models/enums";
 import DatabaseService from "src/lib/services/database.js";
-import LocalizedStringTable, { LocalizedStringEntry } from "src/lib/models/localized-stbl.js";
+import LocalizedStringTable from "src/lib/models/localized-stbl.js";
 const { encoding, enums, hashing } = window.S4TK;
 const { Buffer } = window.S4TK.Node;
 
@@ -9,20 +9,28 @@ const { Buffer } = window.S4TK.Node;
  * Object containing meta data associated with a project.
  */
 interface ProjectMetaData {
+  flags: number; // 32 bits
   group: number;
   instance: bigint;
   name: string;
   numEntries: number; // view only; use stbl for logic
   numLocales: number; // view only; use stbl for logic
-  pinned?: boolean;
   primaryLocale: StringTableLocale; // view only; use stbl for logic
+}
+
+/**
+ * Boolean flags for project objects (max 32 bits).
+ */
+export enum ProjectFlags {
+  Pinned = 1,
+  Corrupt = 2,
 }
 
 /**
  * A model for projects in STBL studio.
  */
 export default class Project {
-  static readonly META_DATA_VERSION = 0;
+  static readonly META_DATA_VERSION = 1;
 
   //#region Getters / Setters
 
@@ -67,12 +75,14 @@ export default class Project {
     const metaData: Partial<ProjectMetaData> = {};
 
     const decoder = new encoding.BinaryDecoder(Buffer.from(string, "base64"));
-    decoder.skip(1); // version unneeded right now
+
+    const version = decoder.uint8();
+    metaData.flags = version > 0 ? decoder.uint32() : 0;
     metaData.group = decoder.uint32();
     const fullInstance = decoder.uint64();
     metaData.primaryLocale = enums.StringTableLocale.getLocale(fullInstance);
     metaData.instance = enums.StringTableLocale.getInstanceBase(fullInstance);
-    metaData.pinned = decoder.boolean();
+    if (version === 0 && decoder.boolean()) metaData.flags |= ProjectFlags.Pinned;
     metaData.numLocales = decoder.uint8();
     metaData.numEntries = decoder.uint32();
     metaData.name = decoder.string();
@@ -129,6 +139,15 @@ export default class Project {
   }
 
   /**
+   * Returns whether the given flag(s) is/are present on this project.
+   * 
+   * @param flag Flag(s) to check for
+   */
+  hasFlags(flags: ProjectFlags) {
+    return Boolean(this.metaData.flags & flags);
+  }
+
+  /**
    * Imports strings to this project and saves it to storage.
    * 
    * @param stbl Stbl of entries to import
@@ -140,6 +159,22 @@ export default class Project {
     this.metaData.numLocales = this.stbl.numLocales;
     this.saveToStorage();
     this.stbl.saveToStorage(this.uuid);
+  }
+
+  /**
+   * Sets the given flag(s) and saves the meta data.
+   * 
+   * @param flag Flag(s) to set
+   * @param value Whether the flag(s) should be true or false
+   */
+  setFlags(flags: ProjectFlags, value: boolean) {
+    if (value) {
+      this.metaData.flags |= flags;
+    } else {
+      this.metaData.flags ^= flags;
+    }
+
+    this.saveToStorage(false);
   }
 
   /**
@@ -191,7 +226,16 @@ export default class Project {
       DatabaseService.getItem("stbls", this.uuid)
         .then(data => {
           if (!data) return reject("Could not deserialize STBL.");
-          this._stbl = LocalizedStringTable.deserialize(data);
+
+          try {
+            this._stbl = LocalizedStringTable.deserialize(data);
+            if (this.hasFlags(ProjectFlags.Corrupt))
+              this.setFlags(ProjectFlags.Corrupt, false);
+          } catch (err) {
+            this.setFlags(ProjectFlags.Corrupt, true);
+            throw err;
+          }
+
           resolve();
         })
         .catch(err => {
@@ -202,10 +246,15 @@ export default class Project {
 
   /**
    * Writes this project's meta data to the DB.
+   * 
+   * @param requireStbl Whether or not to get locales/entries from STBL
    */
-  async saveToStorage() {
-    this.metaData.numLocales = this.stbl.numLocales;
-    this.metaData.numEntries = this.stbl.numEntries;
+  async saveToStorage(requireStbl: boolean = true) {
+    if (requireStbl) {
+      this.metaData.numLocales = this.stbl.numLocales;
+      this.metaData.numEntries = this.stbl.numEntries;
+    }
+
     DatabaseService.setItem("metadata", this.uuid, this.serializeMetaData());
   }
 
@@ -213,11 +262,12 @@ export default class Project {
    * Serializes the meta data for this project into a Base64-encoded string.
    */
   serializeMetaData(): string {
-    // version, numLocales, pinned == 1 byte each (3 total)
+    // version, numLocales == 1 byte each (2 total)
+    // flags == 4 bytes
     // group, numEntries == 4 bytes each (8 total)
     // instance + primary locale == 8 bytes
     // string terminator == 1 byte
-    const size = 20 + Buffer.byteLength(this.metaData.name);
+    const size = 23 + Buffer.byteLength(this.metaData.name);
     const buffer = Buffer.alloc(size);
     const encoder = new encoding.BinaryEncoder(buffer);
 
@@ -227,9 +277,9 @@ export default class Project {
     );
 
     encoder.uint8(Project.META_DATA_VERSION);
+    encoder.uint32(this.metaData.flags ?? 0);
     encoder.uint32(this.metaData.group);
     encoder.uint64(fullInstance);
-    encoder.boolean(this.metaData.pinned);
     encoder.uint8(this.metaData.numLocales);
     encoder.uint32(this.metaData.numEntries);
     encoder.charsUtf8(this.metaData.name);

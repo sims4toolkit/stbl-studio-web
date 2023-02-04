@@ -3,6 +3,7 @@
   import type Project from "src/lib/models/project";
   import type SelectionGroup from "src/lib/models/selection-group";
   import ProjectMetaDataView from "src/components/views/ProjectMetaDataView.svelte";
+  import { ProjectFlags } from "src/lib/models/project";
   const { formatAsHexString } = window.S4TK.formatting;
 
   export let project: Project;
@@ -10,6 +11,8 @@
 
   $: isInSelectMode = selectionGroup.selectMode;
   $: projectSelected = selectionGroup.isSelected(project);
+  $: projectPinned = project.hasFlags(ProjectFlags.Pinned);
+  $: projectCorrupt = project.hasFlags(ProjectFlags.Corrupt);
 
   function handleClick() {
     if (isInSelectMode) {
@@ -21,7 +24,14 @@
 </script>
 
 <button class="relative" on:click={handleClick}>
-  {#if project.metaData.pinned}
+  {#if projectCorrupt}
+    <img
+      src="./assets/warning-outline.svg"
+      alt="Corrupt"
+      title="Corrupt"
+      class="svg-warning h-4 w-4 z-10 absolute top-2 right-2 -scale-x-100"
+    />
+  {:else if projectPinned}
     <img
       src="./assets/pin.svg"
       alt="Pin"

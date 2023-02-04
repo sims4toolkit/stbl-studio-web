@@ -341,6 +341,8 @@ export default class LocalizedStringTable {
       if (!this.hasLocale(locale)) this._allLocales.add(locale);
     });
 
+    this._clearLocalesCache();
+
     if (overwriteKeys) {
       const theseKeys = this.keyMap;
 

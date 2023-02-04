@@ -12,10 +12,11 @@ LittleEndian();
 BitfieldRightToLeft();
 
 byte version;
+if (version > 0) uint32 flags;
 uint32 group <format=hex>;
 uint64 instance : 56 <format=hex>;
 uint64 primaryLocale : 8 <format=hex>;
-byte pinned;
+if (version == 0) byte pinned;
 byte numLocales;
 uint32 numEntries;
 string name;

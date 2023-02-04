@@ -2,7 +2,7 @@ import DatabaseService from "../services/database.js";
 import Settings from "../services/settings.js";
 import { activeWorkspaceStore } from "../services/stores.js";
 import LocalizedStringTable from "./localized-stbl.js";
-import Project from "./project.js";
+import Project, { ProjectFlags } from "./project.js";
 
 /**
  * How a workspace will be saved in a JSON.
@@ -10,11 +10,16 @@ import Project from "./project.js";
 interface WorkspaceJson {
   version: number;
   settings: object;
-  projects: {
-    uuid: string;
-    metaData: string;
-    stbl: string;
-  }[];
+  projects: WorkspaceProjectJson[];
+}
+
+/**
+ * How a project appears in a workspace JSON.
+ */
+interface WorkspaceProjectJson {
+  uuid: string;
+  metaData: string;
+  stbl: string;
 }
 
 /**
@@ -47,7 +52,7 @@ export default class Workspace {
           return new Project(
             uuid,
             Project.deserializeMetaData(metaData),
-            LocalizedStringTable.deserialize(stbl)
+            undefined
           );
         });
 
@@ -122,11 +127,11 @@ export default class Workspace {
    * @param projects Projects to toggle pins for
    */
   toggleProjectPins(projects: Project[]) {
-    const pinning = projects.some(p => !p.metaData.pinned);
+    const pinning = projects.some(p => !(p.hasFlags(ProjectFlags.Pinned)));
 
     projects.forEach(project => {
-      project.metaData.pinned = pinning
-      project.saveToStorage();
+      project.setFlags(ProjectFlags.Pinned, pinning);
+      project.saveToStorage(false);
     });
 
     this._updateSubscribers();
@@ -137,21 +142,30 @@ export default class Workspace {
    */
   async toJson(): Promise<WorkspaceJson> {
     return new Promise(async (resolve) => {
-      for (let i = 0; i < this.projects.length; ++i)
-        await this.projects[i].loadStringTable();
+      const projects: WorkspaceProjectJson[] = [];
+
+      for (let i = 0; i < this.projects.length; ++i) {
+        const project = this.projects[i];
+
+        try {
+          await project.loadStringTable();
+          projects.push({
+            uuid: project.uuid,
+            metaData: project.serializeMetaData(),
+            stbl: project.stbl.serialize()
+          });
+        } catch (err) {
+          console.error(err);
+          const metaData = await DatabaseService.getItem("metadata", project.uuid);
+          const stbl = await DatabaseService.getItem("stbls", project.uuid);
+          projects.push({ uuid: project.uuid, metaData, stbl });
+        }
+      }
 
       const settings: object = {};
       for (const key in Settings) settings[key] = Settings[key];
 
-      resolve({
-        version: Workspace.VERSION,
-        settings: settings,
-        projects: this.projects.map(project => ({
-          uuid: project.uuid,
-          metaData: project.serializeMetaData(),
-          stbl: project.stbl.serialize()
-        }))
-      });
+      resolve({ version: Workspace.VERSION, settings, projects });
     });
   }
 
