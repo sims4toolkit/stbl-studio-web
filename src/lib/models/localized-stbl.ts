@@ -339,6 +339,7 @@ export default class LocalizedStringTable {
   importEntries(stbl: LocalizedStringTable, overwriteKeys: boolean) {
     stbl.allLocales.forEach(locale => {
       if (!this.hasLocale(locale)) this._allLocales.add(locale);
+      this._clearLocalesCache();
     });
 
     if (overwriteKeys) {
