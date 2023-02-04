@@ -1,4 +1,5 @@
 <script lang="ts">
+  import saveAs from "file-saver";
   import { onDestroy } from "svelte";
   import { replace } from "svelte-spa-router";
   import type Project from "src/lib/models/project";
@@ -14,6 +15,7 @@
 
   export let params: { uuid: string };
 
+  let activeWorkspace: Workspace;
   let project: Project;
   let projectLoaded = false;
   let projectErrorMessage: string = undefined;
@@ -36,9 +38,21 @@
     }
   }
 
+  function copyErrorToClipboard() {
+    navigator.clipboard.writeText(projectErrorMessage);
+  }
+
+  function downloadWorkspace() {
+    activeWorkspace.toJson().then((json) => {
+      const blob = new Blob([JSON.stringify(json)]);
+      saveAs(blob, "StblStudioWorkspace.json");
+    });
+  }
+
   const subscriptions = [
     activeWorkspaceStore.subscribe(async (workspace) => {
       if (workspace) {
+        activeWorkspace = workspace;
         project = workspace.projects.find((p) => p.uuid === params.uuid);
         if (!project) {
           replace("/");
@@ -106,14 +120,21 @@
           <li>
             The error message (<button
               class="text-secondary underline hover:no-underline"
-              on:click={() =>
-                navigator.clipboard.writeText(projectErrorMessage)}
-              >click to copy</button
+              on:click={copyErrorToClipboard}>click to copy</button
             >)
           </li>
-          <li>Your workspace JSON (click to download)</li>
+          <li>
+            Your workspace JSON (<button
+              class="text-secondary underline hover:no-underline"
+              on:click={downloadWorkspace}>click to download</button
+            >)
+          </li>
           <li>What you did before you saw this error</li>
         </ul>
+        <p class="mt-4">
+          Note that your workspace JSON is most likely in an invalid state. If
+          so, it will remain broken until you delete this project.
+        </p>
         <p class="mt-8 text-subtle text-xs">Please don't hate me</p>
       </div>
     </div>

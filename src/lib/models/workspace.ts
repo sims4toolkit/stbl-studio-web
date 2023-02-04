@@ -10,11 +10,16 @@ import Project from "./project.js";
 interface WorkspaceJson {
   version: number;
   settings: object;
-  projects: {
-    uuid: string;
-    metaData: string;
-    stbl: string;
-  }[];
+  projects: WorkspaceProjectJson[];
+}
+
+/**
+ * How a project appears in a workspace JSON.
+ */
+interface WorkspaceProjectJson {
+  uuid: string;
+  metaData: string;
+  stbl: string;
 }
 
 /**
@@ -137,21 +142,30 @@ export default class Workspace {
    */
   async toJson(): Promise<WorkspaceJson> {
     return new Promise(async (resolve) => {
-      for (let i = 0; i < this.projects.length; ++i)
-        await this.projects[i].loadStringTable();
+      const projects: WorkspaceProjectJson[] = [];
+
+      for (let i = 0; i < this.projects.length; ++i) {
+        const project = this.projects[i];
+
+        try {
+          await project.loadStringTable();
+          projects.push({
+            uuid: project.uuid,
+            metaData: project.serializeMetaData(),
+            stbl: project.stbl.serialize()
+          });
+        } catch (err) {
+          console.error(err);
+          const metaData = await DatabaseService.getItem("metadata", project.uuid);
+          const stbl = await DatabaseService.getItem("stbls", project.uuid);
+          projects.push({ uuid: project.uuid, metaData, stbl });
+        }
+      }
 
       const settings: object = {};
       for (const key in Settings) settings[key] = Settings[key];
 
-      resolve({
-        version: Workspace.VERSION,
-        settings: settings,
-        projects: this.projects.map(project => ({
-          uuid: project.uuid,
-          metaData: project.serializeMetaData(),
-          stbl: project.stbl.serialize()
-        }))
-      });
+      resolve({ version: Workspace.VERSION, settings, projects });
     });
   }
 
