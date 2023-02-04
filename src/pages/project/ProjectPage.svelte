@@ -10,11 +10,13 @@
   import ProjectPageHeader from "./views/ProjectPageHeader.svelte";
   import ViewSwitcher from "./controls/ViewSwitcher.svelte";
   import ProjectActionButtons from "./controls/ProjectActionButtons.svelte";
+  import SectionHeader from "src/components/elements/SectionHeader.svelte";
 
   export let params: { uuid: string };
 
   let project: Project;
   let projectLoaded = false;
+  let projectErrorMessage: string = undefined;
   let selectionGroup: SelectionGroup<LocalizedStringEntry, number>;
 
   $: {
@@ -41,7 +43,14 @@
         if (!project) {
           replace("/");
         } else {
-          await project.loadStringTable();
+          try {
+            await project.loadStringTable();
+          } catch (err) {
+            console.error(err);
+            projectErrorMessage = err.stack ?? err.toString();
+            return;
+          }
+
           refreshSelectionGroup();
           projectLoaded = true;
         }
@@ -76,6 +85,38 @@
       </div>
     </div>
     <ProjectActionButtons bind:selectionGroup bind:project />
+  {:else if Boolean(projectErrorMessage)}
+    <div class="pt-10 flex-1 w-full flex justify-center">
+      <div class="w-full xl:max-w-screen-xl px-4 flex flex-col justify-center">
+        <div class="mb-4">
+          <SectionHeader title="Well, this sucks" />
+        </div>
+        <p class="mb-4">
+          It appears that this project has been corrupted. Please <a
+            class="text-secondary"
+            href="https://frankkmods.com/#/about"
+            target="_blank">report this problem to me ASAP</a
+          >.
+        </p>
+        <p class="mb-2">
+          I may be able to recover your project and prevent this issue from
+          occurring again. To help me help you, please send me:
+        </p>
+        <ul class="list-disc pl-6">
+          <li>
+            The error message (<button
+              class="text-secondary underline hover:no-underline"
+              on:click={() =>
+                navigator.clipboard.writeText(projectErrorMessage)}
+              >click to copy</button
+            >)
+          </li>
+          <li>Your workspace JSON (click to download)</li>
+          <li>What you did before you saw this error</li>
+        </ul>
+        <p class="mt-8 text-subtle text-xs">Please don't hate me</p>
+      </div>
+    </div>
   {:else}
     <div class="w-full flex justify-center">
       <h1
