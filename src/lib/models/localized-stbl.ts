@@ -209,7 +209,7 @@ export default class LocalizedStringTable {
         foundKeys.set(entry.key, [id]);
       }
 
-      const value = this.getValue(id);
+      const value = this.getValue(id) ?? "";
       if (foundStrings.has(value)) {
         foundStrings.get(value).push(id);
       } else {
@@ -227,8 +227,14 @@ export default class LocalizedStringTable {
         issues.push({
           idList,
           keyList: getKeys(idList),
-          message: `Key is 0x00000000`
+          message: 'Key is 0x00000000'
         });
+      } else if (key === 0x811C9DC5) {
+        issues.push({
+          idList,
+          keyList: getKeys(idList),
+          message: 'Key is 0x811C9DC5 (the hash of an empty string)'
+        })
       }
 
       if (idList.length > 1) {
