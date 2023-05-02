@@ -1,7 +1,7 @@
-import { v4 as uuidv4 } from "uuid";
 import type { StringTableLocale } from "@s4tk/models/enums";
 import DatabaseService from "src/lib/services/database.js";
 import LocalizedStringTable from "src/lib/models/localized-stbl.js";
+import saltedUuid from "src/lib/utilities/uuid";
 const { encoding, enums, hashing } = window.S4TK;
 const { Buffer } = window.S4TK.Node;
 
@@ -119,7 +119,7 @@ export default class Project {
    */
   addString(rawValue: string) {
     const value = rawValue.replace(/(?:\r\n|\r|\n)/g, "\\n");
-    const key = hashing.fnv32(`${this.uuid}:${uuidv4()}`);
+    const key = hashing.fnv32(`${this.uuid}:${saltedUuid()}`);
     this.stbl.addEntry(key, value);
     this.metaData.numEntries = this.stbl.numEntries;
     this.saveToStorage();

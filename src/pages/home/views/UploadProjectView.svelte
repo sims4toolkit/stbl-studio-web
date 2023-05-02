@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onDestroy } from "svelte";
   import { fade } from "svelte/transition";
-  import { v4 as uuidv4 } from "uuid";
   import type { StringTableLocale } from "@s4tk/models/enums";
   import {
     ParsedFilesResult,
@@ -18,13 +17,14 @@
   import MultipageContent from "src/components/layouts/MultipageContent.svelte";
   import Select from "src/components/elements/Select.svelte";
   import Switch from "src/components/elements/Switch.svelte";
+  import saltedUuid from "src/lib/utilities/uuid";
   const { enums } = window.S4TK;
   const { fnv64 } = window.S4TK.hashing;
   const { formatAsHexString } = window.S4TK.formatting;
 
   export let onComplete: () => void;
 
-  const uuid = uuidv4();
+  const uuid = saltedUuid();
   let projectName = "";
   let groupHexString = "80000000";
   let instanceHexString = formatAsHexString(
@@ -80,6 +80,7 @@
             ? instanceHexString
             : `0x${instanceHexString}`
         ),
+        flags: 0,
         numEntries: stbl.numEntries,
         numLocales: stbl.numLocales,
         primaryLocale,

@@ -355,7 +355,9 @@ export default class LocalizedStringTable {
       stbl.entries.forEach(({ key, values }) => {
         if (theseKeys.has(key)) {
           const existingEntry = this.getEntry(theseKeys.get(key));
-          existingEntry.values = new Map(values);
+          values.forEach((string, locale) => {
+            existingEntry.values.set(locale, string);
+          });
         } else {
           const id = this._nextId++;
           this._entryMap.set(id, { id, key, values: new Map(values) });

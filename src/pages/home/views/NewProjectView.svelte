@@ -1,8 +1,6 @@
 <script lang="ts">
   import { onDestroy } from "svelte";
-  import { v4 as uuidv4 } from "uuid";
   import type { StringTableLocale } from "@s4tk/models/enums";
-  import { getDisplayName } from "src/lib/utilities/localization";
   import Settings from "src/lib/services/settings";
   import Project from "src/lib/models/project";
   import LocalizedStringTable from "src/lib/models/localized-stbl";
@@ -11,13 +9,14 @@
   import MultipageProjectDataContent from "src/components/views/MultipageProjectDataContent.svelte";
   import type { MultipageContentState } from "src/components/layouts/types";
   import MultipageContentGroup from "src/components/layouts/MultipageContentGroup.svelte";
+  import saltedUuid from "src/lib/utilities/uuid";
   const { enums } = window.S4TK;
   const { fnv64 } = window.S4TK.hashing;
   const { formatAsHexString } = window.S4TK.formatting;
 
   export let onComplete: () => void;
 
-  const uuid = uuidv4();
+  const uuid = saltedUuid();
   let projectName = "";
   let groupHexString = "80000000";
   let instanceHexString = formatAsHexString(
@@ -68,6 +67,7 @@
             ? instanceHexString
             : `0x${instanceHexString}`
         ),
+        flags: 0,
         numEntries: stbl.numEntries,
         numLocales: stbl.numLocales,
         primaryLocale,

@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { v4 as uuidv4 } from "uuid";
   import type Project from "src/lib/models/project";
   import type { LocalizedStringEntry } from "src/lib/models/localized-stbl";
   import type SelectionGroup from "src/lib/models/selection-group";
   import MultipageContent from "src/components/layouts/MultipageContent.svelte";
   import MultipageContentGroup from "src/components/layouts/MultipageContentGroup.svelte";
+  import saltedUuid from "src/lib/utilities/uuid";
   const { fnv32 } = window.S4TK.hashing;
   const { formatStringKey } = window.S4TK.formatting;
 
@@ -13,7 +13,7 @@
   export let selectionGroup: SelectionGroup<LocalizedStringEntry, number>;
 
   const updatedKeys = selectionGroup.allSelectedItems.map((item) => {
-    const newKey = fnv32(`${project.uuid}:${uuidv4()}`);
+    const newKey = fnv32(`${project.uuid}:${saltedUuid()}`);
     return {
       id: item.id,
       oldKeyString: formatStringKey(item.key),
