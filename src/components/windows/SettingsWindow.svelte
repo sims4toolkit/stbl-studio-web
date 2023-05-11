@@ -85,6 +85,16 @@
           </div>
           <div>
             <Switch
+              label="Download JSON as Object"
+              bind:checked={Settings.useObjectJson}
+            />
+            <p class="text-subtle text-xs mt-2">
+              Map keys to values rather than use a list of key/value pairs. This
+              only affects downloads, not imports or the JSON editor.
+            </p>
+          </div>
+          <div>
+            <Switch
               label="Disable Networking"
               bind:checked={Settings.rickGif}
             />

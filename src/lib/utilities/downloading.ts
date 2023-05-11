@@ -2,6 +2,7 @@ import JSZip from "jszip";
 import type { StringTableLocale } from "@s4tk/models/enums";
 import type { ResourceKey } from "@s4tk/models/types";
 import type Project from "src/lib/models/project";
+import Settings from "src/lib/services/settings";
 const { models, enums, formatting } = window.S4TK;
 
 interface DownloadInfo {
@@ -152,7 +153,15 @@ function getJsonsForProject(
 ): DownloadInfo[] {
   return locales.map(locale => {
     const json = project.stbl.getJson<string>(locale, true);
-    const content = JSON.stringify(json, null, 2);
+
+    let content: string;
+    if (Settings.useObjectJson) {
+      const obj: { [key: string]: string; } = {};
+      json.forEach(({ key, value }) => obj[key] = value);
+      content = JSON.stringify(obj, null, 2)
+    } else {
+      content = JSON.stringify(json, null, 2)
+    }
 
     return {
       filename: getStblName(project, locale, "json", namingConvention),

@@ -154,6 +154,7 @@ interface UserSettings {
   downloadNamingConvention: FileNamingConvention;
   sortOrder: number;
   translateHideKeys: boolean;
+  useObjectJson: boolean;
 }
 
 type StoredUserSettings = {
@@ -283,7 +284,11 @@ const Settings = getSettingsProxy({
   translateHideKeys: {
     cls: StoredBoolean,
     defaultValue: false
-  }
+  },
+  useObjectJson: {
+    cls: StoredBoolean,
+    defaultValue: false,
+  },
 });
 
 export default Settings;

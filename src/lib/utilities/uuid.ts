@@ -5,5 +5,5 @@ import { v4 as uuidv4 } from "uuid";
  */
 export default function saltedUuid(): string {
   //@ts-ignore Date can be treated as a number in this context
-  return `${Math.floor(new Date())}${uuidv4()}`;
+  return `${Math.floor(new Date())}-${uuidv4()}`;
 }
