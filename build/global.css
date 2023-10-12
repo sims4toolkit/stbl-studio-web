@@ -1,0 +1,291 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap");
+:root {
+  --filter-dark: invert(13%) sepia(3%) saturate(427%) hue-rotate(314deg) brightness(105%) contrast(84%);
+  --filter-light: invert(99%) sepia(74%) saturate(352%) hue-rotate(196deg) brightness(121%) contrast(100%);
+}
+:root.dark {
+  --color-text: #f9f9f9;
+  --color-text-subtle: #9A9EA7;
+  --color-bg: #2F3440;
+  --color-accent: #70cfb6;
+  --color-accent-secondary: #49c6e6;
+  --color-shadow: rgba(0, 0, 0, 0.2);
+  --color-scrollbar-bg: #2F3440;
+  --color-scrollbar-fg: #5f646d;
+  --color-scrollbar-hover: #9A9EA7;
+  --color-blur-fallback: rgba(0, 0, 0, 0.8);
+  --filter-svg: var(--filter-light);
+  --filter-svg-invert: var(--filter-dark);
+  --filter-svg-accent: invert(69%) sepia(58%) saturate(256%) hue-rotate(114deg) brightness(95%) contrast(95%);
+  --filter-svg-warning: invert(79%) sepia(62%) saturate(968%) hue-rotate(334deg) brightness(99%) contrast(87%);
+  --filter-bg-blur: blur(12px) brightness(55%);
+}
+:root:not(.dark) {
+  --color-text: #1b1b1b;
+  --color-text-subtle: #474c56;
+  --color-bg: #F4F4F6;
+  --color-accent: #18ac87;
+  --color-accent-secondary: #0095eb;
+  --color-shadow: rgba(64, 64, 64, 0.15);
+  --color-scrollbar-bg: #ececf0;
+  --color-scrollbar-fg: #9A9EA7;
+  --color-scrollbar-hover: #5f646d;
+  --color-blur-fallback: rgba(255, 255, 255, 0.8);
+  --filter-svg: var(--filter-dark);
+  --filter-svg-invert: var(--filter-light);
+  --filter-svg-accent: invert(52%) sepia(99%) saturate(377%) hue-rotate(115deg) brightness(86%) contrast(86%);
+  --filter-svg-warning: invert(56%) sepia(94%) saturate(423%) hue-rotate(1deg) brightness(92%) contrast(101%);
+  --filter-bg-blur: blur(12px) brightness(96%);
+}
+
+html.theme-transition, html.theme-transition *, html.theme-transition *::before, html.theme-transition *::after, html.theme-transition *::placeholder {
+  transition: all 500ms;
+  transition-delay: 0ms;
+}
+html *,
+html *::before,
+html *::after,
+html *::placeholder {
+  color: var(--color-text);
+}
+
+body.overlay-active {
+  height: 100vh;
+  overflow-y: hidden;
+  padding-right: 12px;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+  background: var(--color-scrollbar-bg);
+  box-shadow: inset 0 0 6px var(--color-shadow);
+  -webkit-box-shadow: inset 0 0 6px var(--color-shadow);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-scrollbar-fg);
+  z-index: 1024;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-scrollbar-hover);
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 8px;
+}
+
+a {
+  text-decoration: underline;
+}
+a:hover {
+  text-decoration: none;
+}
+
+:root.dark {
+  --img-select-arrow: url(data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0Ljk1IDEwIj48ZGVmcz48c3R5bGU+LmNscy0ye2ZpbGw6I2ZmZjt9PC9zdHlsZT48L2RlZnM+PHRpdGxlPmFycm93czwvdGl0bGU+PHBvbHlnb24gY2xhc3M9ImNscy0yIiBwb2ludHM9IjEuNDEgNC42NyAyLjQ4IDMuMTggMy41NCA0LjY3IDEuNDEgNC42NyIvPjxwb2x5Z29uIGNsYXNzPSJjbHMtMiIgcG9pbnRzPSIzLjU0IDUuMzMgMi40OCA2LjgyIDEuNDEgNS4zMyAzLjU0IDUuMzMiLz48L3N2Zz4=);
+}
+:root:not(.dark) {
+  --img-select-arrow: url(data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0Ljk1IDEwIj48ZGVmcz48c3R5bGU+LmNscy0ye2ZpbGw6IzAwMDt9PC9zdHlsZT48L2RlZnM+PHRpdGxlPmFycm93czwvdGl0bGU+PHBvbHlnb24gY2xhc3M9ImNscy0yIiBwb2ludHM9IjEuNDEgNC42NyAyLjQ4IDMuMTggMy41NCA0LjY3IDEuNDEgNC42NyIvPjxwb2x5Z29uIGNsYXNzPSJjbHMtMiIgcG9pbnRzPSIzLjU0IDUuMzMgMi40OCA2LjgyIDEuNDEgNS4zMyAzLjU0IDUuMzMiLz48L3N2Zz4=);
+}
+
+select {
+  background: var(--img-select-arrow) no-repeat 95% 50%;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+option,
+optgroup {
+  background: var(--color-bg) !important;
+  color: var(--color-text) !important;
+}
+
+:root {
+  --font-sans: "Noto Sans";
+  --font-mono: "Roboto Mono";
+}
+
+body {
+  font-family: var(--font-sans), sans-serif;
+}
+
+.monospace {
+  font-family: var(--font-mono), monospace;
+}
+
+.svg {
+  filter: var(--filter-svg);
+}
+
+.svg-invert {
+  filter: var(--filter-svg-invert);
+}
+
+.svg-dark {
+  filter: var(--filter-dark);
+}
+
+.svg-light {
+  filter: var(--filter-light);
+}
+
+.svg-accent {
+  filter: var(--filter-svg-accent);
+}
+
+.svg-warning {
+  filter: var(--filter-svg-warning);
+}
+
+:root[data-allow-blur=true] .blurred-bg {
+  background-color: var(--color-blur-fallback);
+}
+
+@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+  :root[data-allow-blur=true] .blurred-bg {
+    background-color: transparent;
+    backdrop-filter: var(--filter-bg-blur);
+    -webkit-backdrop-filter: var(--filter-bg-blur);
+  }
+}
+.bottom-shadow {
+  box-shadow: 0px 2px 4px var(--color-shadow);
+}
+
+.tint-on-hover:hover {
+  opacity: 0.65;
+}
+
+.text-primary {
+  color: var(--color-accent);
+}
+
+.text-secondary {
+  color: var(--color-accent-secondary);
+}
+
+.text-subtle,
+.hover\:text-subtle:hover {
+  color: var(--color-text-subtle);
+}
+
+.text-gradient {
+  background-image: linear-gradient(45deg, var(--color-accent) 0%, var(--color-accent-secondary) 100%);
+  display: inline-block;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.bg-primary {
+  background-color: var(--color-accent);
+}
+
+.bg-secondary {
+  background-color: var(--color-accent-secondary);
+}
+
+.border-primary {
+  border-color: var(--color-accent);
+}
+
+.border-secondary {
+  border-color: var(--color-accent-secondary);
+}
+
+mark.keystroke {
+  color: var(--color-text-subtle);
+  background-color: transparent;
+  border: 1px solid var(--color-text-subtle);
+  text-transform: uppercase;
+  border-radius: 2px;
+  padding-left: 0.35rem;
+  padding-right: 0.35rem;
+}
+
+button.default-button {
+  color: var(--color-text);
+}
+button.default-button img {
+  filter: var(--filter-svg);
+}
+button.default-button:not(:disabled):hover {
+  color: var(--color-bg);
+  border-color: var(--color-accent-secondary);
+  background-color: var(--color-accent-secondary);
+}
+button.default-button:not(:disabled):hover img {
+  filter: var(--filter-svg-invert);
+}
+
+:root[data-hacker-theme=true] {
+  --color-text: lime;
+  --color-text-subtle: green;
+  --color-bg: black;
+  --color-accent: green;
+  --color-accent-secondary: lime;
+  --color-shadow: transparent;
+  --color-scrollbar-bg: rgb(14, 14, 14);
+  --color-scrollbar-fg: lime;
+  --color-scrollbar-hover: green;
+  --color-blur-fallback: rgba(0, 0, 0, 0.8);
+  --filter-svg: invert(68%) sepia(85%) saturate(1334%) hue-rotate(67deg) brightness(90%) contrast(87%);
+  --filter-svg-invert: var(--filter-dark);
+  --filter-svg-accent: invert(68%) sepia(85%) saturate(1334%) hue-rotate(67deg) brightness(90%) contrast(87%);
+  --filter-bg-blur: blur(12px) brightness(55%);
+}
+:root[data-hacker-theme=true] *,
+:root[data-hacker-theme=true] *::before,
+:root[data-hacker-theme=true] *::after,
+:root[data-hacker-theme=true] *::placeholder {
+  font-family: var(--font-mono), monospace !important;
+}
+:root[data-hacker-theme=true] img.hacker-svg {
+  filter: var(--filter-svg) !important;
+}
+:root[data-hacker-theme=true] .hacker-text-lime,
+:root[data-hacker-theme=true] .hover\:hacker-text-lime:hover {
+  color: var(--color-text) !important;
+}
+:root[data-hacker-theme=true] .hacker-text-green,
+:root[data-hacker-theme=true] .hover\:hacker-text-green:hover {
+  color: var(--color-text-subtle) !important;
+}
+:root[data-hacker-theme=true] .hacker-border-gray {
+  border-width: 1px;
+  border-color: #212121 !important;
+}
+:root[data-hacker-theme=true] nav,
+:root[data-hacker-theme=true] .hacker-border-b-gray {
+  border-bottom-width: 1px;
+  border-bottom-color: #212121 !important;
+}
+:root[data-hacker-theme=true] footer,
+:root[data-hacker-theme=true] .hacker-border-t-gray {
+  border-top-width: 1px;
+  border-top-color: #212121 !important;
+}
+:root[data-hacker-theme=true] .hacker-bg-gray,
+:root[data-hacker-theme=true] .hover\:hacker-bg-gray:hover {
+  background-color: #212121 !important;
+}
+:root[data-hacker-theme=true] nav,
+:root[data-hacker-theme=true] footer,
+:root[data-hacker-theme=true] body,
+:root[data-hacker-theme=true] .hacker-bg-black {
+  background-color: black !important;
+}
+:root[data-hacker-theme=true] .hacker-bg-black-trans {
+  background-color: rgba(8, 12, 8, 0.6) !important;
+}
+:root[data-hacker-theme=true] input,
+:root[data-hacker-theme=true] textarea,
+:root[data-hacker-theme=true] select {
+  background-color: rgb(14, 14, 14) !important;
+}
+
+/*# sourceMappingURL=global.css.map */
