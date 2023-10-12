@@ -116,21 +116,10 @@
               target="_blank">feature list</a
             > to learn more about what it can do.
           </p>
-          <p class="text-xs text-subtle mt-4">
-            <span class="text-red-600 dark:text-red-400">WARNING:</span> This
-            website is new, and is nowhere near as battle-tested as its
-            <a
-              class="text-secondary underline hover:no-underline"
-              href="https://frankkmods.com/#/ts4-tools/stbl-editor"
-              target="_blank">predecessor</a
-            >. It is currently considered experimental, so you should
-            double-check your string tables before using them for your mods, and
-            please
-            <a
-              class="text-secondary underline hover:no-underline"
-              href="https://discord.gg/qNhD3Jh"
-              target="_blank">report any issues to me</a
-            > ASAP.
+          <p class="mt-4">
+            If you're transferring from another device or browser, upload your
+            workspace JSON file to pick up where you left off. Otherwise, click
+            "Next" to create a new workspace.
           </p>
         </div>
       </MultipageContent>
