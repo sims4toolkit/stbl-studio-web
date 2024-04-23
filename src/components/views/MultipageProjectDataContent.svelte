@@ -101,8 +101,8 @@
           message: "Must be non-empty",
         },
         {
-          test: (value) => value.trim().length <= 30,
-          message: "Cannot exceed 30 characters",
+          test: (value) => value.trim().length <= 50,
+          message: "Cannot exceed 50 characters",
         },
         {
           test: (value) =>
@@ -148,6 +148,7 @@
             message: "Must be non-zero",
           },
           {
+            isWarning: true,
             test: (value) =>
               !workspace.projects.some((project) => {
                 return (
@@ -156,7 +157,7 @@
                     value.replace("0x", "").toUpperCase()
                 );
               }),
-            message: "Instances must be unique",
+            message: "Instances should be unique",
           },
         ]}
       />
