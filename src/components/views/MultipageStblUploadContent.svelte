@@ -52,13 +52,19 @@
 
 <MultipageContent pageNumber={startingPageNumber} bind:state={multipageState}>
   <div class="w-full flex flex-col gap-6">
-    <p>
-      Upload the string table(s) you'd like to include in this project. They can
-      be binary, JSON, or in packages. Feel free to upload all of the packages
-      for your mod, unneeded files will be ignored.
-    </p>
+    <div>
+      <p>
+        Upload string table(s) as binary, JSON, or in packages. For bulk strings
+        that need unique keys generated, use a plain text file where each string
+        is on its own line.
+      </p>
+      <p class="mt-1 text-xs text-subtle">
+        You can upload all of your mod's packages; unneeded files will be
+        ignored.
+      </p>
+    </div>
     <FileInput
-      accept=".package,.stbl,.binary,.json"
+      accept=".package,.stbl,.binary,.json,.txt"
       label="upload files"
       bind:files
       multiple={true}

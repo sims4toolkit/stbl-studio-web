@@ -4,7 +4,8 @@ import type { ResourceKey } from "@s4tk/models/types";
 import LocalizedStringTable, { LocalizedStringEntry } from "src/lib/models/localized-stbl";
 import Settings from "src/lib/services/settings";
 import { normalizeJson } from "./json";
-const { enums, models } = window.S4TK;
+import saltedUuid from "./uuid";
+const { enums, models, hashing } = window.S4TK;
 const { Buffer } = window.S4TK.Node;
 
 //#region Types
@@ -194,6 +195,8 @@ function parseFile(filename: string, buffer: Buffer): ParsedStringTable[] {
 
   if (ext === "package") {
     return parsePackage(buffer);
+  } else if (ext === "txt") {
+    return [parsePlainText(buffer)];
   } else {
     const key = getResourceKey(filename);
 
@@ -236,6 +239,16 @@ function parsePackage(buffer: Buffer): ParsedStringTable[] {
       instanceBase: enums.StringTableLocale.getInstanceBase(key.instance),
       stbl: value.toJsonObject(false, false) as StringTableJson<number>
     }));
+}
+
+function parsePlainText(buffer: Buffer): ParsedStringTable {
+  const stbl: { key: number; value: string; }[] = [];
+  buffer.toString().split("\n").forEach(line => {
+    if (!line) return;
+    stbl.push({ key: hashing.fnv32(saltedUuid()), value: line });
+  });
+
+  return { locale: Settings.defaultLocale, instanceBase: 0n, stbl };
 }
 
 //#endregion File Parsing
