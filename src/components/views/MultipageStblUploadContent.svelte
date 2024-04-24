@@ -14,7 +14,7 @@
 
   let uploadError: string;
   let files: FileList;
-  let showJsonHelp = false;
+  let showHelpRoute: string = null;
 
   $: {
     if (files) parseUploadedFiles();
@@ -54,17 +54,16 @@
   <div class="w-full flex flex-col gap-6">
     <div>
       <p>
-        Upload string table(s) as binary, JSON, or in packages. For bulk strings
-        that need unique keys generated, use a plain text file where each string
-        is on its own line.
+        Upload string table(s) as binary, JSON, or within packages. For bulk
+        strings that need unique keys generated, use plain text (single locale)
+        or CSV (multiple locales).
       </p>
       <p class="mt-1 text-xs text-subtle">
-        You can upload all of your mod's packages; unneeded files will be
-        ignored.
+        Feel free to upload entire packages; unneeded files will be ignored.
       </p>
     </div>
     <FileInput
-      accept=".package,.stbl,.binary,.json,.txt"
+      accept=".package,.stbl,.binary,.json,.txt,.csv"
       label="upload files"
       bind:files
       multiple={true}
@@ -72,15 +71,22 @@
     />
     <div>
       <p class="text-xs text-subtle mb-2">
-        If there are multiple tables for the same language, they will be merged.
-        The best way to ensure that multiple languages are handled properly is
-        by uploading them in packages.
+        <strong class="text-subtle">Tip</strong>: The best way to ensure that
+        multiple locales are handled properly is by uploading them in packages.
       </p>
       <p class="text-xs text-subtle">
-        Using JSON? Read about the expected structure <button
+        Need help? Read about expected <button
           class="text-secondary underline hover:no-underline"
-          on:click={() => (showJsonHelp = !showJsonHelp)}>here</button
-        >.
+          on:click={() => (showHelpRoute = "/json")}>JSON</button
+        >,
+        <button
+          class="text-secondary underline hover:no-underline"
+          on:click={() => (showHelpRoute = "/csv")}>CSV</button
+        >, and
+        <button
+          class="text-secondary underline hover:no-underline"
+          on:click={() => (showHelpRoute = "/plain-text")}>plain text</button
+        > syntax.
       </p>
     </div>
   </div>
@@ -118,9 +124,9 @@
   </div>
 </MultipageContent>
 
-{#if showJsonHelp}
+{#if Boolean(showHelpRoute)}
   <HelpWindow
-    onClose={() => (showJsonHelp = false)}
-    args={{ route: "/json" }}
+    onClose={() => (showHelpRoute = null)}
+    args={{ route: showHelpRoute, suppressBack: true }}
   />
 {/if}

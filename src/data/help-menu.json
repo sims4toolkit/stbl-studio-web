@@ -6,6 +6,12 @@
       "content": [
         {
           "kind": "swimLane",
+          "title": "CSV Imports",
+          "description": "Learn about the CSV import syntax.",
+          "link": "/csv"
+        },
+        {
+          "kind": "swimLane",
           "title": "General FAQs",
           "description": "Answers to general questions you might have.",
           "link": "/faqs"
@@ -24,6 +30,12 @@
         },
         {
           "kind": "swimLane",
+          "title": "Plain Text Imports",
+          "description": "Learn about the Plain Text import syntax.",
+          "link": "/plain-text"
+        },
+        {
+          "kind": "swimLane",
           "title": "Terminology",
           "description": "Definitions for STBL Studio terms, like \"Project\".",
           "link": "/terminology"
@@ -33,7 +45,7 @@
         },
         {
           "kind": "generalHtml",
-          "content": "<p class=\"text-xs text-center text-subtle\">This menu is still under construction. If you have questions that are not answered here, please ask me.</p>"
+          "content": "<p class=\"text-xs text-center text-subtle\">This menu is still under construction. If you have questions that are not answered here, please <a class=\"text-secondary\" href=\"https://frankkmods.com/#/contact\" target=\"_blank\">ask me</a>.</p>"
         }
       ]
     },
@@ -91,6 +103,55 @@
           "kind": "questionAnswer",
           "question": "Expected JSON Structure",
           "answer": "The JSON format this website uses is very flexible. The top-level structure must be an array that contains objects with two properties, one called \"key\" (case insensitive) and another called either \"value\" or \"string\" (also case insensitive). The value for the \"key\" property can either be a plain number, or a string containing an 8-digit hex number, with or without the \"0x\" prefix. This flexible format means that you can paste in the JSON content shown for string tables in S4S, the output of the <a href=\"https://frankkmods.com/#/ts4-tools/stbl-editor\" class=\"text-secondary underline hover:no-underline\" target=\"_blank\">old STBL editor</a>, or JSON representations of the <a href=\"https://sims4toolkit.com/#/docs/models/latest/resources/StringTableResource\" class=\"text-secondary underline hover:no-underline\" target=\"_blank\">StringTableResource</a> in <a href=\"https://sims4toolkit.com/#/docs/models\" class=\"text-secondary underline hover:no-underline\" target=\"_blank\">@s4tk/models</a>.",
+          "containsHtml": true
+        }
+      ]
+    },
+    "/csv": {
+      "title": "CSV Import Syntax",
+      "backButtonLink": "/",
+      "content": [
+        {
+          "kind": "questionAnswer",
+          "question": "What is CSV?",
+          "answer": "CSV (Comma Separated Values) is a file format that STBL Studio supports as a way to bulk upload strings in multiple locales."
+        },
+        {
+          "kind": "hr"
+        },
+        {
+          "kind": "questionAnswer",
+          "question": "Expected CSV Syntax",
+          "answer": "The first row (the header) should contain a comma-separated list of locale names, as defined in <a href=\"https://sims4toolkit.com/#/docs/models/latest/enums/StringTableLocale\" class=\"text-secondary underline hover:no-underline\" target=\"_blank\">the StringTableLocale enum</a>.<br><br>All subsequent rows should contain a comma-separated list of strings for each of the locales in the header. If strings contain commas (,), they must be placed within quotes (\"). If strings contain quotes, they must be doubled (\"\").<br><br><strong class=\"text-subtle\">Tip</strong>: If you write your strings in Excel, exporting as a CSV will already account for these comma/quote rules.",
+          "containsHtml": true
+        },
+        {
+          "kind": "hr"
+        },
+        {
+          "kind": "questionAnswer",
+          "question": "Example",
+          "answer": "<strong>CSV File:</strong><br><pre class=\"text-subtle\">English,Italian\nHi,Ciao\n\"OK, bye!\",\"OK, ciao!\"\n\"I said \"\"yes\"\"!\",\"Ho detto \"\"sì\"\"!\"</pre><br><strong>Parsed As:</strong><br>EN: 'Hi', IT: 'Ciao'<br>EN: 'OK, bye!', IT: 'OK, ciao!'<br>EN: 'I said \"yes\"!', IT: 'Ho detto \"sì\"!'",
+          "containsHtml": true
+        }
+      ]
+    },
+    "/plain-text": {
+      "title": "Plain Text Imports",
+      "backButtonLink": "/",
+      "content": [
+        {
+          "kind": "questionAnswer",
+          "question": "What are Plain Text Imports?",
+          "answer": "If you have a lot of strings that you haven't hashed yet, you can import them as a plain text (.txt) file, and STBL Studio will automatically create unique hashes for them."
+        },
+        {
+          "kind": "hr"
+        },
+        {
+          "kind": "questionAnswer",
+          "question": "Expected Structure",
+          "answer": "Plain text string files are simple – just put every string on its own line. That's it.<br><br>There is one catch, though – plain text imports only work with one locale, specifically, the default locale you have in your website settings. To upload plain text strings with multiple locales, use CSV imports.",
           "containsHtml": true
         }
       ]

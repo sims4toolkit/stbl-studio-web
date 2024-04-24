@@ -3,8 +3,9 @@
   import HelpContentDelegate from "./HelpContentDelegate.svelte";
 
   export let routeData: HelpRouteData;
+  export let suppressBack: boolean = false;
 
-  $: hasBackButton = Boolean(routeData.backButtonLink);
+  $: hasBackButton = Boolean(routeData.backButtonLink) && !suppressBack;
 
   const goBack = () =>
     WindowManager.request("help", "open", {

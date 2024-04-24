@@ -28,6 +28,7 @@
     "@s4tk/models": "^0.4.0",
     "@tsconfig/svelte": "^2.0.0",
     "@types/file-saver": "^2.0.5",
+    "@types/papaparse": "^5.3.14",
     "@types/uuid": "^8.3.4",
     "browserify": "^17.0.0",
     "chai": "^4.3.6",
@@ -52,6 +53,7 @@
   "dependencies": {
     "file-saver": "^2.0.5",
     "jszip": "^3.10.0",
+    "papaparse": "^5.4.1",
     "svelte-spa-router": "^3.2.0",
     "uuid": "^8.3.2"
   },

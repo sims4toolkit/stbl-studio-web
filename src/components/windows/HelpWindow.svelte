@@ -5,15 +5,17 @@
   import HelpRoute from "src/components/help/HelpRoute.svelte";
 
   export let onClose: () => void;
-  export let args: { route?: string } = {};
+  export let args: { route?: string; suppressBack?: boolean } = {};
 
   $: route = args.route ?? "/";
-  $: routeData = helpMenuData.routes[route];
+  $: routeData = helpMenuData.routes[route] ?? helpMenuData.routes["/"];
 </script>
 
 <MovableWindow title="Help" {onClose}>
   <div class="flex-1 flex flex-col gap-4">
-    <HelpRoute {routeData} />
+    {#if Boolean(routeData)}
+      <HelpRoute {routeData} suppressBack={args.suppressBack ?? false} />
+    {/if}
     {#if route === "/faqs"}
       <hr class="border-black dark:border-white hacker-border-gray" />
       <div>

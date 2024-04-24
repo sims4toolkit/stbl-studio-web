@@ -1,3 +1,4 @@
+import CsvParser from "papaparse";
 import type { StringTableResource } from "@s4tk/models";
 import type { StringTableLocale } from "@s4tk/models/enums";
 import type { ResourceKey } from "@s4tk/models/types";
@@ -197,6 +198,8 @@ function parseFile(filename: string, buffer: Buffer): ParsedStringTable[] {
     return parsePackage(buffer);
   } else if (ext === "txt") {
     return [parsePlainText(buffer)];
+  } else if (ext === "csv") {
+    return parseCsv(buffer);
   } else {
     const key = getResourceKey(filename);
 
@@ -241,14 +244,65 @@ function parsePackage(buffer: Buffer): ParsedStringTable[] {
     }));
 }
 
+/**
+ * Parses strings from a plain text file, where each line represents a new 
+ * string. Unique hashes will be generated for each.
+ * 
+ * @param buffer Buffer containing newline-separated string data
+ */
 function parsePlainText(buffer: Buffer): ParsedStringTable {
   const stbl: { key: number; value: string; }[] = [];
   buffer.toString().split("\n").forEach(line => {
-    if (!line) return;
+    if (!line.trim()) return;
     stbl.push({ key: hashing.fnv32(saltedUuid()), value: line });
   });
 
   return { locale: Settings.defaultLocale, instanceBase: 0n, stbl };
+}
+
+/**
+ * Parses strings from a CSV where each column is a language, indicated by the
+ * plain-text name of the language in the header.
+ * 
+ * @param buffer Buffer containing CSV STBL data
+ */
+function parseCsv(buffer: Buffer): ParsedStringTable[] {
+  const result = CsvParser.parse(buffer.toString(), {
+    header: true,
+    transformHeader: (header) => enums.StringTableLocale[header],
+    delimiter: ",",
+    comments: "#",
+    skipEmptyLines: true
+  });
+
+  const entries = new Map<StringTableLocale, string[]>();
+  result.meta.fields.forEach(locale => {
+    if (typeof locale !== "number")
+      throw new Error("Unrecognized locale name found in CSV.");
+    entries.set(locale, []);
+  });
+
+  const locales = [...entries.keys()];
+  const keys: number[] = [];
+  result.data.forEach(entry => {
+    keys.push(hashing.fnv32(saltedUuid()));
+    locales.forEach(locale => {
+      entries.get(locale).push(entry[locale]);
+    });
+  });
+
+
+  const stbls: ParsedStringTable[] = [];
+  entries.forEach((strings, locale) => {
+    const stbl = strings.map((string, i) => ({
+      key: keys[i],
+      value: string
+    }));
+
+    stbls.push({ locale, instanceBase: 0n, stbl });
+  });
+
+  return stbls;
 }
 
 //#endregion File Parsing
